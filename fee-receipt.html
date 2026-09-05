@@ -352,115 +352,474 @@ body {
     line-height: 1.6;
 }
 
+
+/* =====================================================
+   PDF ONE PAGE MODE
+===================================================== */
+
+.pdf-mode {
+
+    width: 190mm !important;
+
+    max-width: 190mm !important;
+
+    min-height: 277mm !important;
+
+    padding: 12mm 13mm !important;
+
+    margin: 0 auto !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Prevent page splitting */
+
+.pdf-mode .receipt-header,
+.pdf-mode .receipt-title,
+.pdf-mode .student-grid,
+.pdf-mode .info-box,
+.pdf-mode .payment-box,
+.pdf-mode .payment-row,
+.pdf-mode .footer,
+.pdf-mode .footer-content,
+.pdf-mode .signature-area {
+
+    break-inside: avoid !important;
+
+    page-break-inside: avoid !important;
+
+}
+
+
+/* PDF Header */
+
+.pdf-mode .receipt-header {
+
+    min-height: 78px !important;
+
+    padding: 5px 90px 12px 15px !important;
+
+}
+
+.pdf-mode .academy-name h1 {
+
+    font-size: 24px !important;
+
+}
+
+.pdf-mode .owner-line {
+
+    margin-top: 4px !important;
+
+    font-size: 11px !important;
+
+}
+
+.pdf-mode .logo-area {
+
+    width: 65px !important;
+
+    height: 65px !important;
+
+    right: 0 !important;
+
+    top: 0 !important;
+
+}
+
+.pdf-mode .logo-area img {
+
+    width: 65px !important;
+
+    height: 65px !important;
+
+}
+
+
+/* PDF Title */
+
+.pdf-mode .receipt-title {
+
+    margin-top: 12px !important;
+
+    margin-bottom: 12px !important;
+
+}
+
+.pdf-mode .receipt-title h2 {
+
+    font-size: 19px !important;
+
+}
+
+
+/* PDF Sections */
+
+.pdf-mode .section-title {
+
+    margin-top: 10px !important;
+
+    margin-bottom: 6px !important;
+
+    font-size: 13px !important;
+
+}
+
+
+/* Student boxes */
+
+.pdf-mode .student-grid {
+
+    gap: 7px !important;
+
+}
+
+.pdf-mode .info-box {
+
+    padding: 7px 10px !important;
+
+    min-height: 42px !important;
+
+}
+
+.pdf-mode .label {
+
+    font-size: 9px !important;
+
+    margin-bottom: 3px !important;
+
+}
+
+.pdf-mode .value {
+
+    font-size: 12px !important;
+
+}
+
+
+/* Payment */
+
+.pdf-mode .payment-box {
+
+    margin-top: 2px !important;
+
+}
+
+.pdf-mode .payment-row {
+
+    min-height: 36px !important;
+
+    padding: 6px 12px !important;
+
+}
+
+.pdf-mode .payment-label {
+
+    font-size: 12px !important;
+
+}
+
+.pdf-mode .payment-value {
+
+    font-size: 13px !important;
+
+}
+
+
+/* Footer */
+
+.pdf-mode .footer {
+
+    margin-top: 17px !important;
+
+    padding-top: 11px !important;
+
+}
+
+.pdf-mode .thank-you {
+
+    font-size: 11px !important;
+
+    line-height: 1.35 !important;
+
+    padding: 0 5px !important;
+
+}
+
+.pdf-mode .footer-content {
+
+    margin-top: 13px !important;
+
+    min-height: 65px !important;
+
+    padding: 0 2px !important;
+
+}
+
+.pdf-mode .owner-details {
+
+    width: 45% !important;
+
+    font-size: 11px !important;
+
+    line-height: 1.5 !important;
+
+}
+
+.pdf-mode .owner-name {
+
+    font-size: 12px !important;
+
+}
+
+.pdf-mode .owner-mobile {
+
+    font-size: 11px !important;
+
+}
+
+.pdf-mode .signature-area {
+
+    width: 165px !important;
+
+    min-height: 62px !important;
+
+}
+
+.pdf-mode .signature-img {
+
+    width: 125px !important;
+
+    height: 48px !important;
+
+    margin: 0 auto 3px !important;
+
+}
+
+.pdf-mode .signature-line {
+
+    width: 150px !important;
+
+    padding-top: 4px !important;
+
+    font-size: 11px !important;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media(max-width: 600px) {
 
     .page {
+
         padding: 12px 8px 30px;
+
     }
 
     #receipt {
+
         padding: 25px 18px;
+
         border-radius: 10px;
+
     }
 
     .receipt-header {
+
         min-height: 88px;
+
         padding: 8px 75px 15px 8px;
+
     }
 
     .academy-name h1 {
+
         font-size: 21px;
+
     }
 
     .logo-area {
+
         width: 65px;
+
         height: 65px;
+
         right: 0;
+
     }
 
     .logo-area img {
+
         width: 65px;
+
         height: 65px;
+
     }
 
     .student-grid {
+
         grid-template-columns: 1fr;
+
     }
 
     .payment-row {
+
         min-height: 51px;
+
         padding: 10px 12px;
+
     }
 
     .payment-label {
+
         font-size: 13px;
+
     }
 
     .payment-value {
+
         font-size: 14px;
+
     }
 
     .footer {
+
         margin-top: 38px;
+
         padding-top: 20px;
+
     }
 
     .thank-you {
+
         font-size: 13px;
+
     }
 
     .footer-content {
+
         margin-top: 30px;
+
         min-height: 90px;
+
         padding: 0;
+
     }
 
     .owner-details {
+
         width: 45%;
+
         font-size: 12px;
+
     }
 
     .owner-name {
+
         font-size: 13px;
+
     }
 
     .signature-area {
+
         width: 155px;
+
         min-height: 80px;
+
     }
 
     .signature-img {
+
         width: 125px;
+
         height: 55px;
+
     }
 
     .signature-line {
+
         width: 140px;
+
         font-size: 12px;
+
     }
 
 }
 
+
+/* =====================================================
+   PRINT
+===================================================== */
+
 @media print {
 
+    @page {
+
+        size: A4 portrait;
+
+        margin: 5mm;
+
+    }
+
     body {
+
         background: white;
+
     }
 
     .topbar,
     .actions {
+
         display: none !important;
+
     }
 
     .page {
+
         max-width: none;
+
         padding: 0;
+
     }
 
     #receipt {
+
+        width: 190mm;
+
+        max-width: 190mm;
+
+        min-height: 277mm;
+
+        margin: 0 auto;
+
         box-shadow: none;
+
         border-radius: 0;
-        padding: 30px;
+
+        padding: 12mm 13mm;
+
+    }
+
+    .receipt-header,
+    .receipt-title,
+    .student-grid,
+    .info-box,
+    .payment-box,
+    .payment-row,
+    .footer,
+    .footer-content,
+    .signature-area {
+
+        break-inside: avoid !important;
+
+        page-break-inside: avoid !important;
+
     }
 
 }
@@ -469,7 +828,9 @@ body {
 
 </head>
 
+
 <body>
+
 
 <div class="topbar">
 
@@ -488,6 +849,7 @@ body {
 
 <div class="page">
 
+
     <div class="actions">
 
         <button
@@ -498,6 +860,7 @@ body {
 
         </button>
 
+
         <button
             class="action-btn share-btn"
             onclick="shareReceipt()">
@@ -505,6 +868,7 @@ body {
             📤 Share
 
         </button>
+
 
         <button
             class="action-btn print-btn"
@@ -538,18 +902,28 @@ body {
         id="receipt"
         style="display:none;">
 
+
+        <!-- HEADER -->
+
         <div class="receipt-header">
+
 
             <div class="academy-name">
 
+
                 <h1 id="academyName">
+
                     Music Academy
+
                 </h1>
+
 
                 <div
                     class="owner-line"
                     id="headerOwner">
+
                 </div>
+
 
             </div>
 
@@ -566,8 +940,11 @@ body {
 
             </div>
 
+
         </div>
 
+
+        <!-- TITLE -->
 
         <div class="receipt-title">
 
@@ -576,23 +953,32 @@ body {
         </div>
 
 
+        <!-- STUDENT DETAILS -->
+
         <div class="section-title">
+
             Student Details
+
         </div>
 
 
         <div class="student-grid">
 
+
             <div class="info-box">
 
                 <div class="label">
+
                     Name
+
                 </div>
 
                 <div
                     class="value"
                     id="studentName">
+
                     -
+
                 </div>
 
             </div>
@@ -601,13 +987,17 @@ body {
             <div class="info-box">
 
                 <div class="label">
+
                     Number
+
                 </div>
 
                 <div
                     class="value"
                     id="studentNumber">
+
                     -
+
                 </div>
 
             </div>
@@ -616,13 +1006,17 @@ body {
             <div class="info-box">
 
                 <div class="label">
+
                     Instrument
+
                 </div>
 
                 <div
                     class="value"
                     id="instrument">
+
                     -
+
                 </div>
 
             </div>
@@ -631,13 +1025,17 @@ body {
             <div class="info-box">
 
                 <div class="label">
+
                     Batch
+
                 </div>
 
                 <div
                     class="value"
                     id="batch">
+
                     -
+
                 </div>
 
             </div>
@@ -646,13 +1044,17 @@ body {
             <div class="info-box">
 
                 <div class="label">
+
                     Fees Month & Year
+
                 </div>
 
                 <div
                     class="value"
                     id="feesMonthYear">
+
                     -
+
                 </div>
 
             </div>
@@ -661,37 +1063,51 @@ body {
             <div class="info-box">
 
                 <div class="label">
+
                     Payment Date
+
                 </div>
 
                 <div
                     class="value"
                     id="paymentDate">
+
                     -
+
                 </div>
 
             </div>
 
+
         </div>
 
 
+        <!-- PAYMENT -->
+
         <div class="section-title">
+
             Payment Details
+
         </div>
 
 
         <div class="payment-box">
 
+
             <div class="payment-row">
 
                 <span class="payment-label">
+
                     Total Fees
+
                 </span>
 
                 <span
                     class="payment-value"
                     id="totalFees">
+
                     ₹0.00
+
                 </span>
 
             </div>
@@ -700,13 +1116,17 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
+
                     Total Received
+
                 </span>
 
                 <span
                     class="payment-value received"
                     id="receivedAmount">
+
                     ₹0.00
+
                 </span>
 
             </div>
@@ -715,13 +1135,17 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
+
                     Balance
+
                 </span>
 
                 <span
                     class="payment-value balance"
                     id="balanceDue">
+
                     ₹0.00
+
                 </span>
 
             </div>
@@ -730,13 +1154,17 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
+
                     Status
+
                 </span>
 
                 <span
                     class="payment-value"
                     id="paymentStatus">
+
                     Unpaid
+
                 </span>
 
             </div>
@@ -745,21 +1173,29 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
+
                     Payment Mode
+
                 </span>
 
                 <span
                     class="payment-value"
                     id="paymentMode">
+
                     -
+
                 </span>
 
             </div>
 
+
         </div>
 
 
+        <!-- FOOTER -->
+
         <div class="footer">
+
 
             <div class="thank-you">
 
@@ -771,24 +1207,37 @@ body {
 
             <div class="footer-content">
 
+
+                <!-- OWNER NAME + NUMBER -->
+
                 <div class="owner-details">
+
 
                     <div
                         class="owner-name"
                         id="ownerName">
+
                         -
+
                     </div>
+
 
                     <div
                         class="owner-mobile"
                         id="ownerMobile">
+
                         -
+
                     </div>
+
 
                 </div>
 
 
+                <!-- SIGNATURE -->
+
                 <div class="signature-area">
+
 
                     <img
                         id="signatureImage"
@@ -797,15 +1246,22 @@ body {
                         src=""
                         alt="Signature">
 
+
                     <div class="signature-line">
+
                         Signature
+
                     </div>
+
 
                 </div>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -813,6 +1269,7 @@ body {
 
 
 <script>
+
 
 /* =====================================================
    URL PARAMETERS
@@ -823,15 +1280,6 @@ const params =
         window.location.search
     );
 
-
-/*
- * IMPORTANT:
- * Student Fees page now sends:
- *
- * fee-receipt.html?student=ID&mobile=MOBILE
- *
- * We will use mobile directly for Student.
- */
 
 const urlStudentId =
     params.get("student") ||
@@ -923,6 +1371,7 @@ function money(value) {
 function monthName(month) {
 
     const months = [
+
         "January",
         "February",
         "March",
@@ -935,6 +1384,7 @@ function monthName(month) {
         "October",
         "November",
         "December"
+
     ];
 
     return (
@@ -951,8 +1401,11 @@ function monthName(month) {
 
 function formatDate(value) {
 
-    if (!value)
+    if (!value) {
+
         return "-";
+
+    }
 
 
     const date =
@@ -996,8 +1449,11 @@ function getOwnerLogin() {
             );
 
 
-        if (!saved)
+        if (!saved) {
+
             return null;
+
+        }
 
 
         return JSON.parse(
@@ -1076,10 +1532,6 @@ function getStudentLogin() {
 
     try {
 
-        /*
-         * Remember Me ON
-         */
-
         const localSaved =
             localStorage.getItem(
                 "studentLogin"
@@ -1094,10 +1546,6 @@ function getStudentLogin() {
 
         }
 
-
-        /*
-         * Remember Me OFF
-         */
 
         const sessionSaved =
             sessionStorage.getItem(
@@ -1132,14 +1580,10 @@ function getStudentLogin() {
 
 
 /* =====================================================
-   GET STUDENT MOBILE
+   STUDENT MOBILE
 ===================================================== */
 
 function getStudentMobile() {
-
-    /*
-     * 1. URL mobile has highest priority
-     */
 
     let mobile =
         String(
@@ -1153,10 +1597,6 @@ function getStudentMobile() {
 
     }
 
-
-    /*
-     * 2. Student login storage
-     */
 
     const login =
         getStudentLogin();
@@ -1185,7 +1625,7 @@ function getStudentMobile() {
 
 
 /* =====================================================
-   LOAD ACADEMY SETTINGS FOR STUDENT
+   STUDENT ACADEMY SETTINGS
 ===================================================== */
 
 async function loadStudentAcademySettings(
@@ -1194,10 +1634,6 @@ async function loadStudentAcademySettings(
 
     let settings = null;
 
-
-    /*
-     * First try database using owner_id.
-     */
 
     if (ownerId) {
 
@@ -1228,10 +1664,6 @@ async function loadStudentAcademySettings(
 
     }
 
-
-    /*
-     * Local fallback
-     */
 
     if (!settings) {
 
@@ -1275,17 +1707,6 @@ async function loadStudentAcademySettings(
 
 async function loadStudentReceipt() {
 
-    /*
-     * IMPORTANT:
-     *
-     * We DO NOT directly query students table here.
-     *
-     * We use the public RPC.
-     *
-     * This avoids Student RLS problem.
-     */
-
-
     const mobile =
         getStudentMobile();
 
@@ -1305,11 +1726,7 @@ async function loadStudentReceipt() {
     }
 
 
-    /*
-     * =============================================
-     * GET STUDENT + FEE
-     * =============================================
-     */
+    /* GET STUDENT + FEE */
 
     const {
         data: feeRpcData,
@@ -1383,11 +1800,7 @@ async function loadStudentReceipt() {
         {};
 
 
-    /*
-     * =============================================
-     * GET PAYMENT HISTORY
-     * =============================================
-     */
+    /* PAYMENT HISTORY */
 
     const {
         data: historyRpcData,
@@ -1400,13 +1813,6 @@ async function loadStudentReceipt() {
                     mobile
             }
         );
-
-
-    console.log(
-        "Student payment RPC:",
-        historyRpcData,
-        historyError
-    );
 
 
     if (historyError) {
@@ -1447,11 +1853,7 @@ async function loadStudentReceipt() {
     }
 
 
-    /*
-     * =============================================
-     * SORT PAYMENTS
-     * =============================================
-     */
+    /* SORT */
 
     payments.sort(
         (
@@ -1477,25 +1879,13 @@ async function loadStudentReceipt() {
     );
 
 
-    /*
-     * =============================================
-     * LATEST PAYMENT
-     * =============================================
-     */
-
     const latestPayment =
         payments.length > 0
             ? payments[0]
             : null;
 
 
-    /*
-     * =============================================
-     * MONTHLY FEES
-     * =============================================
-     *
-     * Student fees_amount is primary.
-     */
+    /* TOTAL FEES */
 
     const totalFees =
         Number(
@@ -1506,11 +1896,7 @@ async function loadStudentReceipt() {
         );
 
 
-    /*
-     * =============================================
-     * TOTAL RECEIVED
-     * =============================================
-     */
+    /* TOTAL RECEIVED */
 
     const totalReceived =
         payments.reduce(
@@ -1529,11 +1915,7 @@ async function loadStudentReceipt() {
         );
 
 
-    /*
-     * =============================================
-     * BALANCE
-     * =============================================
-     */
+    /* BALANCE */
 
     const balance =
         Math.max(
@@ -1543,11 +1925,7 @@ async function loadStudentReceipt() {
         );
 
 
-    /*
-     * =============================================
-     * STATUS
-     * =============================================
-     */
+    /* STATUS */
 
     let status =
         "Unpaid";
@@ -1573,11 +1951,7 @@ async function loadStudentReceipt() {
     }
 
 
-    /*
-     * =============================================
-     * DATE
-     * =============================================
-     */
+    /* MONTH YEAR */
 
     const dateSource =
         latestPayment?.payment_date ||
@@ -1618,23 +1992,13 @@ async function loadStudentReceipt() {
     }
 
 
-    /*
-     * =============================================
-     * ACADEMY SETTINGS
-     * =============================================
-     */
+    /* SETTINGS */
 
     const settings =
         await loadStudentAcademySettings(
             student.owner_id
         );
 
-
-    /*
-     * =============================================
-     * FINAL DATA
-     * =============================================
-     */
 
     return {
 
@@ -1773,9 +2137,7 @@ async function loadOwnerReceipt() {
     }
 
 
-    /*
-     * STUDENT
-     */
+    /* STUDENT */
 
     const {
         data: studentList,
@@ -1820,9 +2182,7 @@ async function loadOwnerReceipt() {
     }
 
 
-    /*
-     * SETTINGS
-     */
+    /* SETTINGS */
 
     const {
         data: settingsList
@@ -1843,9 +2203,7 @@ async function loadOwnerReceipt() {
             : null;
 
 
-    /*
-     * FEE
-     */
+    /* FEE */
 
     const {
         data: feeData,
@@ -1887,9 +2245,7 @@ async function loadOwnerReceipt() {
             : null;
 
 
-    /*
-     * PAYMENTS
-     */
+    /* PAYMENTS */
 
     const {
         data: payments,
@@ -2160,9 +2516,7 @@ async function loadStaffReceipt() {
     }
 
 
-    /*
-     * GET STAFF STUDENTS
-     */
+    /* STUDENTS */
 
     const {
         data: students,
@@ -2213,9 +2567,7 @@ async function loadStaffReceipt() {
     }
 
 
-    /*
-     * STAFF FEES
-     */
+    /* FEES */
 
     const {
         data: staffFees,
@@ -2270,9 +2622,7 @@ async function loadStaffReceipt() {
         ) || null;
 
 
-    /*
-     * PAYMENT HISTORY
-     */
+    /* PAYMENT HISTORY */
 
     const {
         data: payments,
@@ -2371,9 +2721,7 @@ async function loadStaffReceipt() {
     }
 
 
-    /*
-     * SETTINGS
-     */
+    /* SETTINGS */
 
     let settings = null;
 
@@ -2412,10 +2760,6 @@ async function loadStaffReceipt() {
 
     }
 
-
-    /*
-     * LOCAL SETTINGS
-     */
 
     if (!settings) {
 
@@ -2597,10 +2941,6 @@ async function loadReceipt() {
 
     try {
 
-        /*
-         * STAFF
-         */
-
         if (isStaff) {
 
             console.log(
@@ -2612,17 +2952,6 @@ async function loadReceipt() {
                 await loadStaffReceipt();
 
         }
-
-
-        /*
-         * STUDENT
-         *
-         * IMPORTANT:
-         *
-         * URL mobile is enough.
-         * Student login is not required if
-         * mobile is present in URL.
-         */
 
         else if (
             urlMobile ||
@@ -2638,11 +2967,6 @@ async function loadReceipt() {
                 await loadStudentReceipt();
 
         }
-
-
-        /*
-         * OWNER
-         */
 
         else {
 
@@ -2688,7 +3012,7 @@ async function loadReceipt() {
 
 
 /* =====================================================
-   RENDER RECEIPT
+   RENDER
 ===================================================== */
 
 function renderReceipt() {
@@ -2708,9 +3032,7 @@ function renderReceipt() {
         {};
 
 
-    /*
-     * ACADEMY
-     */
+    /* ACADEMY */
 
     document.getElementById(
         "academyName"
@@ -2726,9 +3048,7 @@ function renderReceipt() {
         "";
 
 
-    /*
-     * LOGO
-     */
+    /* LOGO */
 
     if (
         academy.logo_url
@@ -2756,9 +3076,7 @@ function renderReceipt() {
     }
 
 
-    /*
-     * STUDENT
-     */
+    /* STUDENT */
 
     document.getElementById(
         "studentName"
@@ -2788,9 +3106,7 @@ function renderReceipt() {
         "-";
 
 
-    /*
-     * MONTH YEAR
-     */
+    /* MONTH YEAR */
 
     const month =
         Number(
@@ -2845,9 +3161,7 @@ function renderReceipt() {
         monthYear;
 
 
-    /*
-     * PAYMENT DATE
-     */
+    /* PAYMENT DATE */
 
     document.getElementById(
         "paymentDate"
@@ -2857,9 +3171,7 @@ function renderReceipt() {
         );
 
 
-    /*
-     * TOTAL FEES
-     */
+    /* TOTAL FEES */
 
     const totalFees =
         Number(
@@ -2870,9 +3182,7 @@ function renderReceipt() {
         );
 
 
-    /*
-     * TOTAL RECEIVED
-     */
+    /* TOTAL RECEIVED */
 
     const totalReceived =
         Number(
@@ -2881,9 +3191,7 @@ function renderReceipt() {
         );
 
 
-    /*
-     * BALANCE
-     */
+    /* BALANCE */
 
     const balance =
         Math.max(
@@ -2893,9 +3201,7 @@ function renderReceipt() {
         );
 
 
-    /*
-     * STATUS
-     */
+    /* STATUS */
 
     let status =
         "Unpaid";
@@ -2939,10 +3245,6 @@ function renderReceipt() {
         money(balance);
 
 
-    /*
-     * STATUS
-     */
-
     const statusElement =
         document.getElementById(
             "paymentStatus"
@@ -2984,9 +3286,7 @@ function renderReceipt() {
     }
 
 
-    /*
-     * PAYMENT MODE
-     */
+    /* PAYMENT MODE */
 
     document.getElementById(
         "paymentMode"
@@ -2995,9 +3295,7 @@ function renderReceipt() {
         "-";
 
 
-    /*
-     * OWNER
-     */
+    /* OWNER NAME */
 
     document.getElementById(
         "ownerName"
@@ -3006,6 +3304,8 @@ function renderReceipt() {
         "-";
 
 
+    /* OWNER MOBILE */
+
     document.getElementById(
         "ownerMobile"
     ).textContent =
@@ -3013,9 +3313,7 @@ function renderReceipt() {
         "-";
 
 
-    /*
-     * SIGNATURE
-     */
+    /* SIGNATURE */
 
     if (
         academy.signature_url
@@ -3037,9 +3335,7 @@ function renderReceipt() {
     }
 
 
-    /*
-     * SHOW
-     */
+    /* SHOW */
 
     document.getElementById(
         "loading"
@@ -3084,7 +3380,7 @@ function showError(message) {
 
 
 /* =====================================================
-   DOWNLOAD PDF
+   DOWNLOAD PDF - ONE PAGE
 ===================================================== */
 
 async function downloadPDF() {
@@ -3152,15 +3448,95 @@ async function downloadPDF() {
         ".pdf";
 
 
+    /*
+     * Add PDF class
+     */
+
+    receipt.classList.add(
+        "pdf-mode"
+    );
+
+
+    /*
+     * Wait for images
+     */
+
+    const images =
+        receipt.querySelectorAll(
+            "img"
+        );
+
+
+    const imagePromises =
+        Array.from(
+            images
+        ).map(
+            img => {
+
+                if (
+                    img.complete
+                ) {
+
+                    return Promise.resolve();
+
+                }
+
+
+                return new Promise(
+                    resolve => {
+
+                        img.onload =
+                            resolve;
+
+                        img.onerror =
+                            resolve;
+
+                    }
+                );
+
+            }
+        );
+
+
     try {
+
+        await Promise.all(
+            imagePromises
+        );
+
+
+        /*
+         * Give browser time
+         * to render signature/logo.
+         */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    300
+                )
+        );
+
 
         await html2pdf()
             .set({
 
-                margin: 10,
+                /*
+                 * Small A4 margins
+                 */
+
+                margin: [
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+
 
                 filename:
                     filename,
+
 
                 image: {
 
@@ -3170,13 +3546,24 @@ async function downloadPDF() {
 
                 },
 
+
                 html2canvas: {
 
                     scale: 2,
 
-                    useCORS: true
+                    useCORS: true,
+
+                    allowTaint: false,
+
+                    backgroundColor:
+                        "#ffffff",
+
+                    scrollX: 0,
+
+                    scrollY: 0
 
                 },
+
 
                 jsPDF: {
 
@@ -3184,7 +3571,22 @@ async function downloadPDF() {
 
                     format: "a4",
 
-                    orientation: "portrait"
+                    orientation:
+                        "portrait",
+
+                    compress:
+                        true
+
+                },
+
+
+                pagebreak: {
+
+                    mode: [
+                        "avoid-all",
+                        "css",
+                        "legacy"
+                    ]
 
                 }
 
@@ -3192,16 +3594,30 @@ async function downloadPDF() {
             .from(receipt)
             .save();
 
+
     }
     catch (error) {
 
         console.error(
+            "PDF Error:",
             error
         );
 
 
         alert(
             "PDF could not be generated."
+        );
+
+    }
+    finally {
+
+        /*
+         * Remove PDF mode
+         * after generating.
+         */
+
+        receipt.classList.remove(
+            "pdf-mode"
         );
 
     }
