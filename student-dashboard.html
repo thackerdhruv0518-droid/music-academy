@@ -24,13 +24,16 @@
 
         body {
             min-height: 100vh;
+
             background: linear-gradient(
                 135deg,
                 #f5f0ff,
                 #fff1f7,
                 #eef2ff
             );
+
             padding: 18px;
+
             color: #333;
         }
 
@@ -40,7 +43,10 @@
             margin: auto;
         }
 
+        /* ================= HEADER ================= */
+
         .header {
+
             background: linear-gradient(
                 135deg,
                 #6d28d9,
@@ -49,6 +55,7 @@
             );
 
             border-radius: 24px;
+
             padding: 23px 26px;
 
             display: flex;
@@ -63,31 +70,52 @@
         }
 
         .header h1 {
+
             color: white;
+
             font-size: 26px;
+
             margin-bottom: 6px;
         }
 
         .header p {
+
             color: rgba(255, 255, 255, 0.88);
+
             font-size: 14px;
         }
 
         .logout-btn {
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.16);
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.35);
+
+            background:
+                rgba(255, 255, 255, 0.16);
+
             color: white;
+
             padding: 10px 17px;
+
             border-radius: 20px;
+
             cursor: pointer;
+
             font-weight: bold;
         }
 
+        /* ================= WELCOME ================= */
+
         .welcome-card {
+
             background: white;
+
             border: 1px solid #eadcff;
+
             border-radius: 23px;
+
             padding: 24px;
+
             margin-bottom: 18px;
 
             box-shadow:
@@ -96,15 +124,21 @@
         }
 
         .welcome-top {
+
             display: flex;
+
             align-items: center;
+
             gap: 15px;
+
             margin-bottom: 20px;
         }
 
         .welcome-icon {
+
             width: 62px;
             height: 62px;
+
             min-width: 62px;
 
             border-radius: 18px;
@@ -119,85 +153,127 @@
             color: white;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-size: 28px;
         }
 
         .welcome-card h2 {
+
             color: #4c2870;
+
             font-size: 21px;
+
             margin-bottom: 5px;
         }
 
         .welcome-card p {
+
             color: #85768d;
+
             font-size: 13px;
         }
 
+        /* ================= STUDENT INFO ================= */
+
         .student-info {
+
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 12px;
         }
 
         .info-box {
+
             border-radius: 16px;
+
             padding: 15px;
+
             min-height: 78px;
         }
 
         .info-box:nth-child(1) {
+
             background: #f3e8ff;
         }
 
         .info-box:nth-child(2) {
+
             background: #fce7f3;
         }
 
         .info-box:nth-child(3) {
+
             background: #e0f2fe;
         }
 
         .info-box:nth-child(4) {
+
             background: #fef3c7;
         }
 
         .info-title {
+
             color: #82778b;
+
             font-size: 10px;
+
             margin-bottom: 7px;
+
             font-weight: bold;
         }
 
         .info-value {
+
             color: #43364b;
+
             font-size: 14px;
+
             font-weight: bold;
+
             word-break: break-word;
         }
 
+        /* ================= FEES ================= */
+
         .summary-title {
+
             color: #513d60;
+
             font-size: 20px;
+
             font-weight: bold;
+
             margin: 4px 5px 13px;
         }
 
         .fee-summary {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 14px;
+
             margin-bottom: 12px;
         }
 
         .fee-box {
+
             border-radius: 19px;
+
             padding: 19px;
         }
 
         .monthly-box {
+
             background: linear-gradient(
                 135deg,
                 #ede9fe,
@@ -206,6 +282,7 @@
         }
 
         .received-box {
+
             background: linear-gradient(
                 135deg,
                 #dcfce7,
@@ -214,6 +291,7 @@
         }
 
         .balance-box {
+
             background: linear-gradient(
                 135deg,
                 #fee2e2,
@@ -222,88 +300,138 @@
         }
 
         .fee-label {
+
             color: #71677a;
+
             font-size: 11px;
+
             font-weight: bold;
+
             margin-bottom: 8px;
         }
 
         .fee-value {
+
             color: #41344b;
+
             font-size: 24px;
+
             font-weight: 800;
         }
 
         .fee-small {
+
             color: #82778b;
+
             font-size: 11px;
+
             margin-top: 5px;
         }
 
+        /* ================= STATUS ================= */
+
         .status-card {
+
             background: white;
+
             border: 1px solid #eadcff;
+
             border-radius: 18px;
+
             padding: 15px 18px;
+
             margin-bottom: 23px;
 
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
         }
 
         .status-left {
+
             color: #62556c;
+
             font-size: 13px;
+
             font-weight: bold;
         }
 
         .status-badge {
+
             padding: 7px 14px;
+
             border-radius: 20px;
+
             font-size: 11px;
+
             font-weight: 800;
         }
 
         .status-pending {
+
             background: #fee2e2;
+
             color: #b91c1c;
         }
 
         .status-paid {
+
             background: #dcfce7;
+
             color: #15803d;
         }
 
         .status-partial {
+
             background: #fef3c7;
+
             color: #a16207;
         }
 
+        /* ================= SERVICES ================= */
+
         .section-title {
+
             color: #513d60;
+
             font-size: 20px;
+
             font-weight: bold;
+
             margin: 0 5px 14px;
         }
 
         .services {
+
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
             gap: 15px;
         }
 
         .service-card {
+
             border-radius: 21px;
+
             padding: 21px;
+
             cursor: pointer;
+
             min-height: 165px;
+
             position: relative;
+
             transition: 0.2s;
         }
 
         .service-card:hover {
-            transform: translateY(-4px);
+
+            transform:
+                translateY(-4px);
 
             box-shadow:
                 0 12px 28px
@@ -311,21 +439,28 @@
         }
 
         .service-icon {
+
             width: 51px;
             height: 51px;
+
             border-radius: 15px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-size: 23px;
+
             margin-bottom: 13px;
 
-            background: rgba(255, 255, 255, 0.68);
+            background:
+                rgba(255, 255, 255, 0.68);
         }
 
         .fees-card {
+
             background: linear-gradient(
                 135deg,
                 #ede9fe,
@@ -334,6 +469,7 @@
         }
 
         .receipt-card {
+
             background: linear-gradient(
                 135deg,
                 #fce7f3,
@@ -342,6 +478,7 @@
         }
 
         .history-card {
+
             background: linear-gradient(
                 135deg,
                 #e0f2fe,
@@ -350,6 +487,7 @@
         }
 
         .pin-card {
+
             background: linear-gradient(
                 135deg,
                 #fef3c7,
@@ -358,35 +496,79 @@
         }
 
         .service-card h3 {
+
             color: #44374c;
+
             font-size: 18px;
+
             margin-bottom: 7px;
         }
 
         .service-card p {
+
             color: #716876;
+
             font-size: 13px;
+
             line-height: 1.5;
         }
 
         .arrow {
+
             position: absolute;
+
             right: 20px;
+
             top: 21px;
+
             font-size: 21px;
         }
 
+        /* ================= FOOTER ================= */
+
         .footer {
+
             text-align: center;
+
             color: #897d91;
+
             font-size: 12px;
+
             margin-top: 25px;
         }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+
+            text-align: center;
+
+            color: #716876;
+
+            font-size: 13px;
+
+            margin: 15px 0;
+        }
+
+        .error-message {
+
+            text-align: center;
+
+            color: #b91c1c;
+
+            font-size: 13px;
+
+            margin: 15px 0;
+        }
+
+        /* ================= RESPONSIVE ================= */
 
         @media (max-width: 800px) {
 
             .student-info {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
 
         }
@@ -394,14 +576,17 @@
         @media (max-width: 650px) {
 
             .fee-summary {
+
                 grid-template-columns: 1fr;
             }
 
             .services {
+
                 grid-template-columns: 1fr;
             }
 
             .header h1 {
+
                 font-size: 21px;
             }
 
@@ -410,14 +595,17 @@
         @media (max-width: 420px) {
 
             .student-info {
+
                 grid-template-columns: 1fr;
             }
 
             .header {
+
                 padding: 18px;
             }
 
             .header h1 {
+
                 font-size: 19px;
             }
 
@@ -433,7 +621,7 @@
 <div class="container">
 
 
-    <!-- HEADER -->
+    <!-- ================= HEADER ================= -->
 
     <div class="header">
 
@@ -451,16 +639,15 @@
 
         <button
             class="logout-btn"
-            onclick="logout()">
-
+            onclick="logout()"
+        >
             Logout
-
         </button>
 
     </div>
 
 
-    <!-- WELCOME -->
+    <!-- ================= WELCOME ================= -->
 
     <div class="welcome-card">
 
@@ -485,6 +672,8 @@
         </div>
 
 
+        <!-- STUDENT INFORMATION -->
+
         <div class="student-info">
 
 
@@ -496,10 +685,9 @@
 
                 <div
                     class="info-value"
-                    id="studentName">
-
+                    id="studentName"
+                >
                     -
-
                 </div>
 
             </div>
@@ -513,10 +701,9 @@
 
                 <div
                     class="info-value"
-                    id="studentMobile">
-
+                    id="studentMobile"
+                >
                     -
-
                 </div>
 
             </div>
@@ -530,10 +717,9 @@
 
                 <div
                     class="info-value"
-                    id="studentInstrument">
-
+                    id="studentInstrument"
+                >
                     -
-
                 </div>
 
             </div>
@@ -547,10 +733,9 @@
 
                 <div
                     class="info-value"
-                    id="studentBatch">
-
+                    id="studentBatch"
+                >
                     -
-
                 </div>
 
             </div>
@@ -561,7 +746,7 @@
     </div>
 
 
-    <!-- FEES -->
+    <!-- ================= FEES SUMMARY ================= -->
 
     <div class="summary-title">
         Fees Summary
@@ -571,6 +756,8 @@
     <div class="fee-summary">
 
 
+        <!-- MONTHLY FEES -->
+
         <div class="fee-box monthly-box">
 
             <div class="fee-label">
@@ -579,10 +766,9 @@
 
             <div
                 class="fee-value"
-                id="monthlyFees">
-
+                id="monthlyFees"
+            >
                 ₹0
-
             </div>
 
             <div class="fee-small">
@@ -592,6 +778,8 @@
         </div>
 
 
+        <!-- RECEIVED -->
+
         <div class="fee-box received-box">
 
             <div class="fee-label">
@@ -600,10 +788,9 @@
 
             <div
                 class="fee-value"
-                id="receivedFees">
-
+                id="receivedFees"
+            >
                 ₹0
-
             </div>
 
             <div class="fee-small">
@@ -613,6 +800,8 @@
         </div>
 
 
+        <!-- BALANCE -->
+
         <div class="fee-box balance-box">
 
             <div class="fee-label">
@@ -621,10 +810,9 @@
 
             <div
                 class="fee-value"
-                id="balanceFees">
-
+                id="balanceFees"
+            >
                 ₹0
-
             </div>
 
             <div class="fee-small">
@@ -637,7 +825,7 @@
     </div>
 
 
-    <!-- STATUS -->
+    <!-- ================= STATUS ================= -->
 
     <div class="status-card">
 
@@ -647,16 +835,25 @@
 
         <div
             class="status-badge status-pending"
-            id="feeStatus">
-
+            id="feeStatus"
+        >
             PENDING
-
         </div>
 
     </div>
 
 
-    <!-- SERVICES -->
+    <!-- ================= LOADING ================= -->
+
+    <div
+        id="loadingMessage"
+        class="loading"
+    >
+        Loading student data...
+    </div>
+
+
+    <!-- ================= SERVICES ================= -->
 
     <div class="section-title">
         Student Services
@@ -666,9 +863,12 @@
     <div class="services">
 
 
+        <!-- MY FEES -->
+
         <div
             class="service-card fees-card"
-            onclick="openFees()">
+            onclick="openFees()"
+        >
 
             <div class="service-icon">
                 ₹
@@ -689,9 +889,12 @@
         </div>
 
 
+        <!-- RECEIPT -->
+
         <div
             class="service-card receipt-card"
-            onclick="openReceipt()">
+            onclick="openReceipt()"
+        >
 
             <div class="service-icon">
                 🧾
@@ -712,9 +915,12 @@
         </div>
 
 
+        <!-- PAYMENT HISTORY -->
+
         <div
             class="service-card history-card"
-            onclick="openPaymentHistory()">
+            onclick="openPaymentHistory()"
+        >
 
             <div class="service-icon">
                 📋
@@ -735,9 +941,12 @@
         </div>
 
 
+        <!-- CHANGE PIN -->
+
         <div
             class="service-card pin-card"
-            onclick="changePin()">
+            onclick="changePin()"
+        >
 
             <div class="service-icon">
                 🔐
@@ -771,87 +980,127 @@
 
 <script>
 
-/* =========================================
-   GET SAVED STUDENT LOGIN
-========================================= */
+/* =====================================================
+   STUDENT LOGIN DATA
+===================================================== */
 
-const savedLogin =
-    localStorage.getItem("studentLogin");
+let loginData = null;
 
+try {
 
-if (!savedLogin) {
+    const savedLogin =
+        localStorage.getItem(
+            "studentLogin"
+        );
 
-    window.location.href =
-        "student-login.html";
+    if (!savedLogin) {
 
-}
+        window.location.href =
+            "student-login.html";
 
-
-/* =========================================
-   LOAD DASHBOARD
-========================================= */
-
-async function loadStudentDashboard() {
-
-    let loginData;
-
-    try {
+    } else {
 
         loginData =
             JSON.parse(savedLogin);
 
-    } catch (error) {
-
-        console.error(error);
-
-        logout();
-
-        return;
-
     }
 
+} catch (error) {
 
-    if (!loginData) {
-
-        logout();
-
-        return;
-
-    }
-
-
-    /* MOBILE FROM LOGIN */
-
-    const mobile =
-        loginData.mobile ||
-        loginData.mobile_number ||
-        loginData.mobileNumber;
-
-
-    if (!mobile) {
-
-        alert(
-            "Student mobile number not found. Please login again."
-        );
-
-        logout();
-
-        return;
-
-    }
-
-
-    console.log(
-        "Loading student dashboard for:",
-        mobile
+    console.error(
+        "Login data error:",
+        error
     );
 
+    localStorage.removeItem(
+        "studentLogin"
+    );
 
-    /* =========================================
-       CALL SUPABASE RPC
-    ========================================= */
+    window.location.href =
+        "student-login.html";
+}
 
-    const { data, error } =
+
+/* =====================================================
+   GET MOBILE NUMBER
+===================================================== */
+
+function getStudentMobile() {
+
+    if (!loginData) {
+        return "";
+    }
+
+    return String(
+        loginData.mobile ||
+        loginData.mobile_number ||
+        loginData.mobileNumber ||
+        ""
+    ).trim();
+
+}
+
+
+/* =====================================================
+   MONEY FORMAT
+===================================================== */
+
+function formatMoney(amount) {
+
+    return "₹" +
+        Number(amount || 0)
+        .toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+/* =====================================================
+   LOAD STUDENT DATA FROM SUPABASE
+===================================================== */
+
+async function loadStudentDashboard() {
+
+    const loading =
+        document.getElementById(
+            "loadingMessage"
+        );
+
+
+    try {
+
+        const mobile =
+            getStudentMobile();
+
+
+        if (!mobile) {
+
+            throw new Error(
+                "Student mobile number not found."
+            );
+
+        }
+
+
+        console.log(
+            "Loading student:",
+            mobile
+        );
+
+
+        /* =============================================
+           SUPABASE RPC
+        ============================================= */
+
+        const {
+            data,
+            error
+        } =
         await supabaseClient.rpc(
             "student_get_dashboard",
             {
@@ -860,239 +1109,331 @@ async function loadStudentDashboard() {
         );
 
 
-    console.log(
-        "Dashboard response:",
-        data
-    );
-
-
-    if (error) {
-
-        console.error(
-            "Supabase error:",
-            error
-        );
-
-        alert(
-            "Unable to load student data."
-        );
-
-        return;
-
-    }
-
-
-    if (!data || data.success !== true) {
-
-        alert(
-            data?.message ||
-            "Student data not found."
-        );
-
-        return;
-
-    }
-
-
-    /* =========================================
-       STUDENT DATA
-    ========================================= */
-
-    const student =
-        data.student || {};
-
-
-    const fee =
-        data.fee || {};
-
-
-    const name =
-        student.full_name ||
-        "Student";
-
-
-    const studentMobile =
-        student.mobile_number ||
-        mobile;
-
-
-    const instrument =
-        student.instrument ||
-        "-";
-
-
-    const batch =
-        student.batch ||
-        "-";
-
-
-    /* =========================================
-       SHOW STUDENT DETAILS
-    ========================================= */
-
-    document.getElementById(
-        "headerName"
-    ).textContent =
-        "Welcome, " + name;
-
-
-    document.getElementById(
-        "welcomeName"
-    ).textContent =
-        "Welcome, " + name;
-
-
-    document.getElementById(
-        "studentName"
-    ).textContent =
-        name;
-
-
-    document.getElementById(
-        "studentMobile"
-    ).textContent =
-        studentMobile;
-
-
-    document.getElementById(
-        "studentInstrument"
-    ).textContent =
-        instrument;
-
-
-    document.getElementById(
-        "studentBatch"
-    ).textContent =
-        batch;
-
-
-    /* =========================================
-       FEES
-    ========================================= */
-
-    const monthlyFee =
-        Number(
-            student.monthly_fee ||
-            fee.amount ||
-            0
+        console.log(
+            "Supabase dashboard data:",
+            data
         );
 
 
-    const received =
-        Number(
-            fee.paid_amount ||
-            0
-        );
+        if (error) {
+
+            console.error(
+                "Supabase error:",
+                error
+            );
+
+            throw error;
+
+        }
 
 
-    const balance =
-        Number(
-            fee.balance ||
-            Math.max(
-                monthlyFee - received,
+        if (
+            !data ||
+            data.success !== true
+        ) {
+
+            throw new Error(
+                data?.message ||
+                "Student data not found."
+            );
+
+        }
+
+
+        /* =============================================
+           STUDENT
+        ============================================= */
+
+        const student =
+            data.student || {};
+
+
+        const fee =
+            data.fee || {};
+
+
+        const name =
+            student.full_name ||
+            loginData.name ||
+            "Student";
+
+
+        const mobileNumber =
+            student.mobile_number ||
+            mobile;
+
+
+        const instrument =
+            student.instrument ||
+            "-";
+
+
+        const batch =
+            student.batch ||
+            "-";
+
+
+        /* =============================================
+           SHOW STUDENT DATA
+        ============================================= */
+
+        document.getElementById(
+            "headerName"
+        ).textContent =
+            "Welcome, " + name;
+
+
+        document.getElementById(
+            "welcomeName"
+        ).textContent =
+            "Welcome, " + name;
+
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+            name;
+
+
+        document.getElementById(
+            "studentMobile"
+        ).textContent =
+            mobileNumber;
+
+
+        document.getElementById(
+            "studentInstrument"
+        ).textContent =
+            instrument;
+
+
+        document.getElementById(
+            "studentBatch"
+        ).textContent =
+            batch;
+
+
+        /* =============================================
+           FEES
+
+           IMPORTANT:
+           Actual students column = fees_amount
+        ============================================= */
+
+        const monthlyFee =
+            Number(
+                student.fees_amount ??
+                fee.amount ??
                 0
+            );
+
+
+        const received =
+            Number(
+                fee.paid_amount ??
+                0
+            );
+
+
+        const balance =
+            Math.max(
+                monthlyFee -
+                received,
+                0
+            );
+
+
+        /* =============================================
+           SHOW FEES
+        ============================================= */
+
+        document.getElementById(
+            "monthlyFees"
+        ).textContent =
+            formatMoney(
+                monthlyFee
+            );
+
+
+        document.getElementById(
+            "receivedFees"
+        ).textContent =
+            formatMoney(
+                received
+            );
+
+
+        document.getElementById(
+            "balanceFees"
+        ).textContent =
+            formatMoney(
+                balance
+            );
+
+
+        /* =============================================
+           PAYMENT STATUS
+        ============================================= */
+
+        const status =
+            String(
+                fee.status ||
+                (
+                    balance <= 0 &&
+                    monthlyFee > 0
+                        ? "paid"
+                        : received > 0
+                        ? "partial"
+                        : "unpaid"
+                )
+            ).toLowerCase();
+
+
+        const statusElement =
+            document.getElementById(
+                "feeStatus"
+            );
+
+
+        statusElement.className =
+            "status-badge";
+
+
+        if (status === "paid") {
+
+            statusElement.classList.add(
+                "status-paid"
+            );
+
+            statusElement.textContent =
+                "PAID";
+
+        }
+
+        else if (
+            status === "partial"
+        ) {
+
+            statusElement.classList.add(
+                "status-partial"
+            );
+
+            statusElement.textContent =
+                "PARTIAL";
+
+        }
+
+        else {
+
+            statusElement.classList.add(
+                "status-pending"
+            );
+
+            statusElement.textContent =
+                "PENDING";
+
+        }
+
+
+        /* =============================================
+           SAVE UPDATED LOGIN DATA
+        ============================================= */
+
+        loginData = {
+
+            ...loginData,
+
+            id:
+                student.id,
+
+            owner_id:
+                student.owner_id,
+
+            name:
+                student.full_name,
+
+            full_name:
+                student.full_name,
+
+            mobile:
+                student.mobile_number,
+
+            mobile_number:
+                student.mobile_number,
+
+            instrument:
+                student.instrument,
+
+            batch:
+                student.batch,
+
+            fees_amount:
+                student.fees_amount,
+
+            joining_date:
+                student.joining_date
+
+        };
+
+
+        localStorage.setItem(
+            "studentLogin",
+            JSON.stringify(
+                loginData
             )
         );
 
 
-    document.getElementById(
-        "monthlyFees"
-    ).textContent =
-        formatMoney(monthlyFee);
+        loading.textContent =
+            "Student data loaded successfully.";
 
+        loading.className =
+            "loading";
 
-    document.getElementById(
-        "receivedFees"
-    ).textContent =
-        formatMoney(received);
-
-
-    document.getElementById(
-        "balanceFees"
-    ).textContent =
-        formatMoney(balance);
-
-
-    /* =========================================
-       PAYMENT STATUS
-    ========================================= */
-
-    const statusElement =
-        document.getElementById(
-            "feeStatus"
-        );
-
-
-    const status =
-        String(
-            fee.status ||
-            "unpaid"
-        ).toLowerCase();
-
-
-    statusElement.className =
-        "status-badge";
-
-
-    if (status === "paid") {
-
-        statusElement.classList.add(
-            "status-paid"
-        );
-
-        statusElement.textContent =
-            "PAID";
-
-    }
-    else if (status === "partial") {
-
-        statusElement.classList.add(
-            "status-partial"
-        );
-
-        statusElement.textContent =
-            "PARTIAL";
-
-    }
-    else {
-
-        statusElement.classList.add(
-            "status-pending"
-        );
-
-        statusElement.textContent =
-            "PENDING";
 
     }
 
+    catch (error) {
+
+        console.error(
+            "Dashboard error:",
+            error
+        );
+
+
+        loading.textContent =
+            "Unable to load student data.";
+
+
+        loading.className =
+            "error-message";
+
+    }
 
 }
 
 
-/* =========================================
-   MONEY FORMAT
-========================================= */
-
-function formatMoney(amount) {
-
-    return "₹" +
-        Number(amount || 0)
-            .toLocaleString(
-                "en-IN",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2
-                }
-            );
-
-}
-
-
-/* =========================================
+/* =====================================================
    MY FEES
-========================================= */
+===================================================== */
 
 function openFees() {
+
+    const saved =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    if (!saved) {
+
+        window.location.href =
+            "student-login.html";
+
+        return;
+
+    }
+
 
     window.location.href =
         "student-fees.html";
@@ -1100,11 +1441,27 @@ function openFees() {
 }
 
 
-/* =========================================
-   RECEIPT
-========================================= */
+/* =====================================================
+   FEE RECEIPT
+===================================================== */
 
 function openReceipt() {
+
+    const saved =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    if (!saved) {
+
+        window.location.href =
+            "student-login.html";
+
+        return;
+
+    }
+
 
     window.location.href =
         "fee-receipt.html";
@@ -1112,11 +1469,27 @@ function openReceipt() {
 }
 
 
-/* =========================================
+/* =====================================================
    PAYMENT HISTORY
-========================================= */
+===================================================== */
 
 function openPaymentHistory() {
+
+    const saved =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    if (!saved) {
+
+        window.location.href =
+            "student-login.html";
+
+        return;
+
+    }
+
 
     window.location.href =
         "student-fees.html";
@@ -1124,11 +1497,27 @@ function openPaymentHistory() {
 }
 
 
-/* =========================================
+/* =====================================================
    CHANGE PIN
-========================================= */
+===================================================== */
 
 function changePin() {
+
+    const saved =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    if (!saved) {
+
+        window.location.href =
+            "student-login.html";
+
+        return;
+
+    }
+
 
     window.location.href =
         "student-change-pin.html";
@@ -1136,9 +1525,9 @@ function changePin() {
 }
 
 
-/* =========================================
+/* =====================================================
    LOGOUT
-========================================= */
+===================================================== */
 
 function logout() {
 
@@ -1156,9 +1545,9 @@ function logout() {
 }
 
 
-/* =========================================
+/* =====================================================
    START
-========================================= */
+===================================================== */
 
 loadStudentDashboard();
 
