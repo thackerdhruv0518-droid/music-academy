@@ -2,90 +2,59 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Student Login</title>
-
 
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
 
-
     <style>
-
         * {
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
             min-height: 100vh;
-
             font-family: Arial, sans-serif;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+            background: linear-gradient(
+                135deg,
+                #1d2671,
+                #c33764
+            );
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             padding: 25px;
-
         }
-
 
         .container {
-
             width: 100%;
-
             max-width: 430px;
-
         }
 
-
         .card {
-
             background: white;
-
             border-radius: 25px;
-
             padding: 35px;
 
             box-shadow:
-                0 20px 60px
-                rgba(0,0,0,0.25);
-
+                0 20px 60px rgba(0,0,0,0.25);
         }
-
 
         .header {
-
             text-align: center;
-
             margin-bottom: 30px;
-
         }
 
-
         .logo {
-
             width: 90px;
-
             height: 90px;
 
             margin: auto;
@@ -93,128 +62,126 @@
             border-radius: 50%;
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             font-size: 42px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+            background: linear-gradient(
+                135deg,
+                #1d2671,
+                #c33764
+            );
 
             color: white;
 
             box-shadow:
-                0 10px 25px
-                rgba(0,0,0,0.18);
+                0 10px 25px rgba(0,0,0,0.18);
 
             overflow: hidden;
-
         }
-
 
         .logo img {
-
             width: 100%;
-
             height: 100%;
-
             object-fit: cover;
-
         }
 
-
         .academy-name {
-
             margin-top: 18px;
-
             margin-bottom: 6px;
 
             color: #222;
-
             font-size: 28px;
-
             font-weight: bold;
-
         }
-
 
         .subtitle {
-
             color: #777;
-
             font-size: 15px;
-
         }
 
-
         h2 {
-
             text-align: center;
-
             color: #222;
 
             margin-top: 25px;
-
             margin-bottom: 25px;
 
             font-size: 24px;
-
         }
 
-
         label {
-
             display: block;
 
             margin-top: 15px;
-
             margin-bottom: 7px;
 
             color: #222;
 
             font-size: 14px;
-
             font-weight: bold;
-
         }
 
-
         input {
-
             width: 100%;
 
             padding: 14px;
 
             border: 1px solid #ddd;
-
             border-radius: 10px;
 
             font-size: 15px;
 
             outline: none;
-
         }
 
-
         input:focus {
-
             border-color: #1d2671;
 
             box-shadow:
-                0 0 0 2px
-                rgba(29,38,113,0.08);
-
+                0 0 0 2px rgba(29,38,113,0.08);
         }
 
+        /* ========================================
+           REMEMBER ME
+        ======================================== */
+
+        .remember-row {
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .remember-label {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 0;
+
+            color: #555;
+
+            font-size: 14px;
+            font-weight: normal;
+
+            cursor: pointer;
+        }
+
+        .remember-label input {
+            width: 17px;
+            height: 17px;
+
+            margin: 0;
+
+            padding: 0;
+
+            cursor: pointer;
+
+            accent-color: #1d2671;
+        }
 
         button {
-
             width: 100%;
 
             border: none;
@@ -226,70 +193,46 @@
             margin-top: 20px;
 
             font-size: 15px;
-
             font-weight: bold;
 
             cursor: pointer;
 
             color: white;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+            background: linear-gradient(
+                135deg,
+                #1d2671,
+                #c33764
+            );
 
             transition: 0.2s;
-
         }
-
 
         button:hover {
-
             opacity: 0.9;
-
             transform: scale(1.02);
-
         }
-
 
         button:active {
-
             transform: scale(0.98);
-
         }
-
 
         button:disabled {
-
             opacity: 0.6;
-
             cursor: not-allowed;
-
         }
-
 
         .secondary-button {
-
             background: #eeeeee;
-
             color: #222;
-
         }
-
 
         .secondary-button:hover {
-
             background: #e5e5e5;
-
             color: #222;
-
         }
 
-
         .link-button {
-
             display: block;
 
             width: 100%;
@@ -307,21 +250,14 @@
             font-size: 14px;
 
             cursor: pointer;
-
         }
-
 
         .link-button:hover {
-
             color: #c33764;
-
             transform: none;
-
         }
 
-
         .small-text {
-
             text-align: center;
 
             color: #777;
@@ -331,12 +267,9 @@
             line-height: 1.5;
 
             margin-bottom: 20px;
-
         }
 
-
         .message {
-
             display: none;
 
             margin-top: 15px;
@@ -348,76 +281,48 @@
             text-align: center;
 
             font-size: 14px;
-
         }
-
 
         .success {
-
             background: #e8f5e9;
-
             color: #2e7d32;
-
         }
-
 
         .error {
-
             background: #ffebee;
-
             color: #c62828;
-
         }
-
 
         @media(max-width: 500px) {
 
             body {
-
                 padding: 15px;
 
                 align-items: flex-start;
 
                 padding-top: 25px;
-
             }
-
 
             .card {
-
                 padding: 28px 20px;
-
                 border-radius: 20px;
-
             }
 
-
             .logo {
-
                 width: 75px;
-
                 height: 75px;
 
                 font-size: 35px;
-
             }
-
 
             .academy-name {
-
                 font-size: 24px;
-
             }
-
 
             h2 {
-
                 font-size: 22px;
-
             }
-
         }
-
     </style>
 
 </head>
@@ -425,18 +330,14 @@
 
 <body>
 
-
 <div class="container">
 
 
-    <!-- ================================= -->
-    <!-- STUDENT LOGIN -->
-    <!-- ================================= -->
+    <!-- ============================= -->
+    <!-- LOGIN CARD -->
+    <!-- ============================= -->
 
-    <div
-        class="card"
-        id="loginCard"
-    >
+    <div class="card" id="loginCard">
 
         <div class="header">
 
@@ -444,44 +345,31 @@
                 class="logo"
                 id="logoBox"
             >
-
                 🎵
-
             </div>
-
 
             <div
                 class="academy-name"
                 id="academyName"
             >
-
                 Music Academy
-
             </div>
 
-
             <div class="subtitle">
-
                 Student Login
-
             </div>
 
         </div>
 
 
         <h2>
-
             🎓 Student Login
-
         </h2>
 
 
         <label>
-
             Mobile Number
-
         </label>
-
 
         <input
             type="tel"
@@ -493,11 +381,8 @@
 
 
         <label>
-
             4-Digit PIN
-
         </label>
-
 
         <input
             type="password"
@@ -508,13 +393,34 @@
         >
 
 
+        <!-- ============================= -->
+        <!-- REMEMBER ME -->
+        <!-- ============================= -->
+
+        <div class="remember-row">
+
+            <label class="remember-label">
+
+                <input
+                    type="checkbox"
+                    id="rememberMe"
+                    checked
+                >
+
+                <span>
+                    Remember Me
+                </span>
+
+            </label>
+
+        </div>
+
+
         <button
             id="loginButton"
             onclick="studentLogin()"
         >
-
             STUDENT LOGIN
-
         </button>
 
 
@@ -528,9 +434,7 @@
             class="link-button"
             onclick="showCreatePin()"
         >
-
             Create PIN
-
         </button>
 
 
@@ -538,9 +442,7 @@
             class="link-button"
             onclick="showForgotPin()"
         >
-
             Forgot PIN?
-
         </button>
 
 
@@ -548,18 +450,15 @@
             class="secondary-button"
             onclick="goBack()"
         >
-
             ← Back
-
         </button>
 
     </div>
 
 
-
-    <!-- ================================= -->
-    <!-- CREATE PIN -->
-    <!-- ================================= -->
+    <!-- ============================= -->
+    <!-- CREATE PIN CARD -->
+    <!-- ============================= -->
 
     <div
         class="card"
@@ -570,51 +469,36 @@
         <div class="header">
 
             <div class="logo">
-
                 🎵
-
             </div>
-
 
             <div
                 class="academy-name"
                 id="createAcademyName"
             >
-
                 Music Academy
-
             </div>
 
-
             <div class="subtitle">
-
                 Create Student PIN
-
             </div>
 
         </div>
 
 
         <h2>
-
             🔐 Create PIN
-
         </h2>
 
 
         <p class="small-text">
-
             Create a 4-digit PIN for your student account.
-
         </p>
 
 
         <label>
-
             Mobile Number
-
         </label>
-
 
         <input
             type="tel"
@@ -626,11 +510,8 @@
 
 
         <label>
-
             New 4-Digit PIN
-
         </label>
-
 
         <input
             type="password"
@@ -642,11 +523,8 @@
 
 
         <label>
-
             Confirm PIN
-
         </label>
-
 
         <input
             type="password"
@@ -661,9 +539,7 @@
             id="createButton"
             onclick="createStudentPin()"
         >
-
             CREATE PIN
-
         </button>
 
 
@@ -677,18 +553,15 @@
             class="secondary-button"
             onclick="showLogin()"
         >
-
             ← Back to Student Login
-
         </button>
 
     </div>
 
 
-
-    <!-- ================================= -->
-    <!-- FORGOT PIN -->
-    <!-- ================================= -->
+    <!-- ============================= -->
+    <!-- FORGOT PIN CARD -->
+    <!-- ============================= -->
 
     <div
         class="card"
@@ -699,52 +572,37 @@
         <div class="header">
 
             <div class="logo">
-
                 🎵
-
             </div>
-
 
             <div
                 class="academy-name"
                 id="forgotAcademyName"
             >
-
                 Music Academy
-
             </div>
 
-
             <div class="subtitle">
-
                 Reset Student PIN
-
             </div>
 
         </div>
 
 
         <h2>
-
             🔑 Forgot PIN?
-
         </h2>
 
 
         <p class="small-text">
-
             Enter your mobile number and joining date
             to create a new PIN.
-
         </p>
 
 
         <label>
-
             Mobile Number
-
         </label>
-
 
         <input
             type="tel"
@@ -756,11 +614,8 @@
 
 
         <label>
-
             Joining Date
-
         </label>
-
 
         <input
             type="date"
@@ -769,11 +624,8 @@
 
 
         <label>
-
             New 4-Digit PIN
-
         </label>
-
 
         <input
             type="password"
@@ -785,11 +637,8 @@
 
 
         <label>
-
             Confirm New PIN
-
         </label>
-
 
         <input
             type="password"
@@ -804,9 +653,7 @@
             id="forgotButton"
             onclick="resetStudentPin()"
         >
-
             RESET PIN
-
         </button>
 
 
@@ -820,23 +667,19 @@
             class="secondary-button"
             onclick="showLogin()"
         >
-
             ← Back to Student Login
-
         </button>
 
     </div>
 
-
 </div>
-
 
 
 <script>
 
 
 // ========================================
-// BRANDING
+// LOAD BRANDING
 // ========================================
 
 async function loadBranding(mobile) {
@@ -846,7 +689,6 @@ async function loadBranding(mobile) {
     if (!mobile) {
         return;
     }
-
 
     try {
 
@@ -858,7 +700,6 @@ async function loadBranding(mobile) {
                 }
             );
 
-
         if (error) {
 
             console.error(
@@ -869,48 +710,46 @@ async function loadBranding(mobile) {
             return;
         }
 
+        let result = data;
 
-        if (data && data.success) {
+        if (Array.isArray(data)) {
+            result = data[0] || {};
+        }
+
+        if (result && result.success) {
 
             const academy =
-                data.class_name ||
+                result.class_name ||
                 "Music Academy";
 
 
-            document
-                .getElementById("academyName")
-                .textContent =
-                academy;
+            document.getElementById(
+                "academyName"
+            ).textContent = academy;
 
 
-            document
-                .getElementById("createAcademyName")
-                .textContent =
-                academy;
+            document.getElementById(
+                "createAcademyName"
+            ).textContent = academy;
 
 
-            document
-                .getElementById("forgotAcademyName")
-                .textContent =
-                academy;
+            document.getElementById(
+                "forgotAcademyName"
+            ).textContent = academy;
 
 
-            if (data.logo_url) {
+            if (result.logo_url) {
 
-                document
-                    .getElementById("logoBox")
-                    .innerHTML =
-                    `<img
-                        src="${data.logo_url}"
-                        alt="Logo"
-                    >`;
+                document.getElementById(
+                    "logoBox"
+                ).innerHTML =
+                    `<img src="${result.logo_url}" alt="Logo">`;
 
             }
 
         }
 
     }
-
     catch (error) {
 
         console.error(
@@ -923,8 +762,10 @@ async function loadBranding(mobile) {
 }
 
 
+// ========================================
+// LOAD BRANDING WHEN MOBILE CHANGES
+// ========================================
 
-// Load academy branding
 document
     .getElementById("loginMobile")
     .addEventListener(
@@ -941,13 +782,73 @@ document
     );
 
 
+// ========================================
+// REMEMBER ME STATE
+// ========================================
+
+function loadRememberedStudent() {
+
+    try {
+
+        const savedStudent =
+            localStorage.getItem(
+                "studentLogin"
+            );
+
+        if (!savedStudent) {
+            return;
+        }
+
+        const student =
+            JSON.parse(savedStudent);
+
+        if (!student) {
+            return;
+        }
+
+        /*
+         * Remember Me is active.
+         *
+         * We do NOT automatically redirect here.
+         * Instead, mobile is filled so the student
+         * can see that the account is remembered.
+         */
+
+        if (student.mobile) {
+
+            document.getElementById(
+                "loginMobile"
+            ).value =
+                student.mobile;
+
+            loadBranding(
+                student.mobile
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "Remembered student error:",
+            error
+        );
+
+        localStorage.removeItem(
+            "studentLogin"
+        );
+
+    }
+
+}
+
 
 // ========================================
 // STUDENT LOGIN
 // ========================================
 
 async function studentLogin() {
-
 
     const mobile =
         document
@@ -963,7 +864,12 @@ async function studentLogin() {
             .trim();
 
 
-    // Check mobile
+    const rememberMe =
+        document
+            .getElementById("rememberMe")
+            .checked;
+
+
     if (!mobile) {
 
         showMessage(
@@ -976,7 +882,6 @@ async function studentLogin() {
     }
 
 
-    // Check PIN
     if (!pin) {
 
         showMessage(
@@ -989,7 +894,6 @@ async function studentLogin() {
     }
 
 
-    // Check PIN format
     if (!/^\d{4}$/.test(pin)) {
 
         showMessage(
@@ -1003,8 +907,9 @@ async function studentLogin() {
 
 
     const button =
-        document
-            .getElementById("loginButton");
+        document.getElementById(
+            "loginButton"
+        );
 
 
     button.disabled = true;
@@ -1015,21 +920,10 @@ async function studentLogin() {
 
     try {
 
-
         console.log(
             "Student login started"
         );
 
-
-        console.log(
-            "Mobile:",
-            mobile
-        );
-
-
-        // ====================================
-        // VERIFY STUDENT
-        // ====================================
 
         const { data, error } =
             await supabaseClient.rpc(
@@ -1042,21 +936,13 @@ async function studentLogin() {
 
 
         console.log(
-            "RPC DATA:",
+            "Login response:",
             data
         );
 
 
-        console.log(
-            "RPC ERROR:",
-            error
-        );
-
-
         if (error) {
-
             throw error;
-
         }
 
 
@@ -1068,10 +954,6 @@ async function studentLogin() {
 
         }
 
-
-        // ====================================
-        // HANDLE ARRAY / OBJECT RESPONSE
-        // ====================================
 
         let student = data;
 
@@ -1086,21 +968,10 @@ async function studentLogin() {
 
             }
 
-
             student = data[0];
 
         }
 
-
-        console.log(
-            "Student response:",
-            student
-        );
-
-
-        // ====================================
-        // CHECK LOGIN RESULT
-        // ====================================
 
         if (
             student.success === false ||
@@ -1122,12 +993,11 @@ async function studentLogin() {
                 "STUDENT LOGIN";
 
             return;
-
         }
 
 
         // ====================================
-        // SAVE STUDENT INFORMATION
+        // SAVE STUDENT LOGIN DATA
         // ====================================
 
         const studentLoginData = {
@@ -1137,28 +1007,23 @@ async function studentLogin() {
                 student.student_id ||
                 "",
 
-
             owner_id:
                 student.owner_id ||
                 "",
-
 
             name:
                 student.name ||
                 student.full_name ||
                 "",
 
-
             mobile:
                 student.mobile ||
                 student.mobile_number ||
                 mobile,
 
-
             batch:
                 student.batch ||
                 "",
-
 
             instrument:
                 student.instrument ||
@@ -1168,39 +1033,91 @@ async function studentLogin() {
 
 
         console.log(
-            "Student login data:",
+            "Student Login Data:",
             studentLoginData
         );
 
 
         // ====================================
-        // SAVE TO LOCAL STORAGE
+        // REMEMBER ME
         // ====================================
 
-        localStorage.setItem(
-            "studentLogin",
-            JSON.stringify(
-                studentLoginData
-            )
-        );
+        if (rememberMe) {
 
+            /*
+             * Remember Me ON
+             *
+             * Student login stays saved
+             * in this browser/device.
+             */
 
-        // Check saved data
-        const savedStudent =
-            localStorage.getItem(
+            localStorage.setItem(
+                "studentLogin",
+                JSON.stringify(
+                    studentLoginData
+                )
+            );
+
+            /*
+             * Remove temporary session
+             * if it exists.
+             */
+
+            sessionStorage.removeItem(
                 "studentLogin"
             );
 
+        }
+        else {
+
+            /*
+             * Remember Me OFF
+             *
+             * Do not keep permanent login.
+             */
+
+            localStorage.removeItem(
+                "studentLogin"
+            );
+
+            /*
+             * Keep login only for the
+             * current browser session.
+             */
+
+            sessionStorage.setItem(
+                "studentLogin",
+                JSON.stringify(
+                    studentLoginData
+                )
+            );
+
+        }
+
+
+        // ====================================
+        // CHECK STORAGE
+        // ====================================
 
         console.log(
-            "Saved student login:",
-            savedStudent
+            "Remember Me:",
+            rememberMe
         );
 
+        console.log(
+            "Local Student:",
+            localStorage.getItem(
+                "studentLogin"
+            )
+        );
 
-        // ====================================
-        // SUCCESS MESSAGE
-        // ====================================
+        console.log(
+            "Session Student:",
+            sessionStorage.getItem(
+                "studentLogin"
+            )
+        );
+
 
         showMessage(
             "loginMessage",
@@ -1220,14 +1137,11 @@ async function studentLogin() {
                     "student-dashboard.html";
 
             },
-            500
+            700
         );
 
-
     }
-
     catch (error) {
-
 
         console.error(
             "STUDENT LOGIN ERROR:",
@@ -1253,30 +1167,25 @@ async function studentLogin() {
 }
 
 
-
 // ========================================
 // SHOW CREATE PIN
 // ========================================
 
 function showCreatePin() {
 
-
-    document
-        .getElementById("loginCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "loginCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("forgotPinCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "forgotPinCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("createPinCard")
-        .style.display =
-        "block";
+    document.getElementById(
+        "createPinCard"
+    ).style.display = "block";
 
 
     clearMessages();
@@ -1284,13 +1193,11 @@ function showCreatePin() {
 }
 
 
-
 // ========================================
-// CREATE STUDENT PIN
+// CREATE PIN
 // ========================================
 
 async function createStudentPin() {
-
 
     const mobile =
         document
@@ -1322,7 +1229,6 @@ async function createStudentPin() {
         );
 
         return;
-
     }
 
 
@@ -1335,7 +1241,6 @@ async function createStudentPin() {
         );
 
         return;
-
     }
 
 
@@ -1348,13 +1253,13 @@ async function createStudentPin() {
         );
 
         return;
-
     }
 
 
     const button =
-        document
-            .getElementById("createButton");
+        document.getElementById(
+            "createButton"
+        );
 
 
     button.disabled = true;
@@ -1364,7 +1269,6 @@ async function createStudentPin() {
 
 
     try {
-
 
         const { data, error } =
             await supabaseClient.rpc(
@@ -1377,30 +1281,13 @@ async function createStudentPin() {
 
 
         console.log(
-            "Create PIN response:",
+            "Create PIN:",
             data
         );
 
 
-        console.log(
-            "Create PIN error:",
-            error
-        );
-
-
         if (error) {
-
             throw error;
-
-        }
-
-
-        if (!data) {
-
-            throw new Error(
-                "No response received."
-            );
-
         }
 
 
@@ -1408,13 +1295,14 @@ async function createStudentPin() {
 
 
         if (Array.isArray(data)) {
-
             result = data[0] || {};
-
         }
 
 
-        if (result.success === false) {
+        if (
+            result &&
+            result.success === false
+        ) {
 
             showMessage(
                 "createMessage",
@@ -1423,14 +1311,7 @@ async function createStudentPin() {
                 "error"
             );
 
-
-            button.disabled = false;
-
-            button.textContent =
-                "CREATE PIN";
-
             return;
-
         }
 
 
@@ -1441,25 +1322,22 @@ async function createStudentPin() {
         );
 
 
-        document
-            .getElementById("createMobile")
-            .value = "";
+        document.getElementById(
+            "createMobile"
+        ).value = "";
 
 
-        document
-            .getElementById("createPin")
-            .value = "";
+        document.getElementById(
+            "createPin"
+        ).value = "";
 
 
-        document
-            .getElementById("confirmCreatePin")
-            .value = "";
-
+        document.getElementById(
+            "confirmCreatePin"
+        ).value = "";
 
     }
-
     catch (error) {
-
 
         console.error(
             "CREATE PIN ERROR:",
@@ -1485,30 +1363,25 @@ async function createStudentPin() {
 }
 
 
-
 // ========================================
 // SHOW FORGOT PIN
 // ========================================
 
 function showForgotPin() {
 
-
-    document
-        .getElementById("loginCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "loginCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("createPinCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "createPinCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("forgotPinCard")
-        .style.display =
-        "block";
+    document.getElementById(
+        "forgotPinCard"
+    ).style.display = "block";
 
 
     clearMessages();
@@ -1516,13 +1389,11 @@ function showForgotPin() {
 }
 
 
-
 // ========================================
-// RESET STUDENT PIN
+// RESET PIN
 // ========================================
 
 async function resetStudentPin() {
-
 
     const mobile =
         document
@@ -1566,7 +1437,6 @@ async function resetStudentPin() {
         );
 
         return;
-
     }
 
 
@@ -1579,7 +1449,6 @@ async function resetStudentPin() {
         );
 
         return;
-
     }
 
 
@@ -1592,13 +1461,13 @@ async function resetStudentPin() {
         );
 
         return;
-
     }
 
 
     const button =
-        document
-            .getElementById("forgotButton");
+        document.getElementById(
+            "forgotButton"
+        );
 
 
     button.disabled = true;
@@ -1608,7 +1477,6 @@ async function resetStudentPin() {
 
 
     try {
-
 
         const { data, error } =
             await supabaseClient.rpc(
@@ -1622,30 +1490,13 @@ async function resetStudentPin() {
 
 
         console.log(
-            "Reset PIN response:",
+            "Reset PIN:",
             data
         );
 
 
-        console.log(
-            "Reset PIN error:",
-            error
-        );
-
-
         if (error) {
-
             throw error;
-
-        }
-
-
-        if (!data) {
-
-            throw new Error(
-                "No response received."
-            );
-
         }
 
 
@@ -1653,13 +1504,14 @@ async function resetStudentPin() {
 
 
         if (Array.isArray(data)) {
-
             result = data[0] || {};
-
         }
 
 
-        if (result.success === false) {
+        if (
+            result &&
+            result.success === false
+        ) {
 
             showMessage(
                 "forgotMessage",
@@ -1668,14 +1520,7 @@ async function resetStudentPin() {
                 "error"
             );
 
-
-            button.disabled = false;
-
-            button.textContent =
-                "RESET PIN";
-
             return;
-
         }
 
 
@@ -1686,30 +1531,27 @@ async function resetStudentPin() {
         );
 
 
-        document
-            .getElementById("forgotMobile")
-            .value = "";
+        document.getElementById(
+            "forgotMobile"
+        ).value = "";
 
 
-        document
-            .getElementById("forgotJoiningDate")
-            .value = "";
+        document.getElementById(
+            "forgotJoiningDate"
+        ).value = "";
 
 
-        document
-            .getElementById("forgotPin")
-            .value = "";
+        document.getElementById(
+            "forgotPin"
+        ).value = "";
 
 
-        document
-            .getElementById("confirmForgotPin")
-            .value = "";
-
+        document.getElementById(
+            "confirmForgotPin"
+        ).value = "";
 
     }
-
     catch (error) {
-
 
         console.error(
             "RESET PIN ERROR:",
@@ -1735,36 +1577,30 @@ async function resetStudentPin() {
 }
 
 
-
 // ========================================
 // SHOW LOGIN
 // ========================================
 
 function showLogin() {
 
-
-    document
-        .getElementById("createPinCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "createPinCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("forgotPinCard")
-        .style.display =
-        "none";
+    document.getElementById(
+        "forgotPinCard"
+    ).style.display = "none";
 
 
-    document
-        .getElementById("loginCard")
-        .style.display =
-        "block";
+    document.getElementById(
+        "loginCard"
+    ).style.display = "block";
 
 
     clearMessages();
 
 }
-
 
 
 // ========================================
@@ -1773,11 +1609,18 @@ function showLogin() {
 
 function goBack() {
 
+    /*
+     * Student Login is the first page
+     * of the Student section.
+     *
+     * So Back goes to the main
+     * login-selection page.
+     */
+
     window.location.href =
         "index.html";
 
 }
-
 
 
 // ========================================
@@ -1789,7 +1632,6 @@ function showMessage(
     message,
     type
 ) {
-
 
     const element =
         document.getElementById(id);
@@ -1809,7 +1651,6 @@ function showMessage(
 }
 
 
-
 // ========================================
 // CLEAR MESSAGES
 // ========================================
@@ -1817,11 +1658,9 @@ function showMessage(
 function clearMessages() {
 
     const messages = [
-
         "loginMessage",
         "createMessage",
         "forgotMessage"
-
     ];
 
 
@@ -1830,6 +1669,7 @@ function clearMessages() {
 
             const element =
                 document.getElementById(id);
+
 
             if (element) {
 
@@ -1846,9 +1686,40 @@ function clearMessages() {
 
 }
 
+
+// ========================================
+// PAGE LOAD
+// ========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        /*
+         * Default Remember Me = ON
+         */
+
+        const rememberMe =
+            document.getElementById(
+                "rememberMe"
+            );
+
+        if (rememberMe) {
+            rememberMe.checked = true;
+        }
+
+
+        /*
+         * Load previously remembered
+         * student's mobile number.
+         */
+
+        loadRememberedStudent();
+
+    }
+);
+
 </script>
 
-
 </body>
-
 </html>
