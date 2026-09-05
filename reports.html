@@ -1,0 +1,3297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | Music Academy</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            min-height: 100vh;
+
+            padding: 20px;
+
+        }
+
+
+        .page {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            background: white;
+
+            min-height: calc(100vh - 40px);
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.25);
+
+        }
+
+
+        /* =================================
+           HEADER
+        ================================= */
+
+        .header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #171d4f,
+                    #7b2355
+                );
+
+            color: white;
+
+            padding: 25px 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .header-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .header-icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.15);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+
+        }
+
+
+        .header h1 {
+
+            margin: 0;
+
+            font-size: 25px;
+
+        }
+
+
+        .header p {
+
+            margin: 5px 0 0;
+
+            font-size: 12px;
+
+            opacity: .8;
+
+        }
+
+
+        .back-btn {
+
+            border: none;
+
+            background:
+                rgba(255,255,255,.15);
+
+            color: white;
+
+            padding: 11px 17px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .back-btn:hover {
+
+            background:
+                rgba(255,255,255,.25);
+
+        }
+
+
+        /* =================================
+           CONTENT
+        ================================= */
+
+        .content {
+
+            padding: 30px;
+
+        }
+
+
+        /* =================================
+           REPORT CARDS
+        ================================= */
+
+        .report-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .report-card {
+
+            border: 2px solid #eee;
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            cursor: pointer;
+
+            background: white;
+
+            transition: .2s;
+
+        }
+
+
+        .report-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,.08);
+
+        }
+
+
+        .report-card.active {
+
+            border-color: #7b2355;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #faf5ff,
+                    #fff1f7
+                );
+
+        }
+
+
+        .report-icon {
+
+            font-size: 30px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .report-card h3 {
+
+            margin: 0 0 7px;
+
+            color: #222;
+
+            font-size: 17px;
+
+        }
+
+
+        .report-card p {
+
+            margin: 0;
+
+            color: #777;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =================================
+           FILTER AREA
+        ================================= */
+
+        .filter-box {
+
+            background:
+                #f8f6fa;
+
+            border-radius: 17px;
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .filter-title {
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .filters {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 2fr auto;
+
+            gap: 12px;
+
+            align-items: end;
+
+        }
+
+
+        .field label {
+
+            display: block;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            color: #666;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .field input,
+        .field select {
+
+            width: 100%;
+
+            height: 43px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 10px;
+
+            padding: 0 12px;
+
+            font-size: 13px;
+
+            outline: none;
+
+            background: white;
+
+        }
+
+
+        .field input:focus,
+        .field select:focus {
+
+            border-color: #7b2355;
+
+        }
+
+
+        .apply-btn {
+
+            height: 43px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 0 20px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b2355,
+                    #c33764
+                );
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =================================
+           SUMMARY
+        ================================= */
+
+        .summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .summary-card {
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+        }
+
+
+        .summary-card.students {
+
+            background: #ede9fe;
+
+        }
+
+
+        .summary-card.amount {
+
+            background: #dcfce7;
+
+        }
+
+
+        .summary-card.balance {
+
+            background: #fee2e2;
+
+        }
+
+
+        .summary-title {
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            color: #666;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .summary-value {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            margin-top: 7px;
+
+            color: #25212a;
+
+        }
+
+
+        /* =================================
+           TABLE
+        ================================= */
+
+        .table-box {
+
+            border:
+                1px solid #eee;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            background: white;
+
+        }
+
+
+        .table-header {
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+
+            border-bottom:
+                1px solid #eee;
+
+        }
+
+
+        .table-title {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            color: #222;
+
+        }
+
+
+        .print-btn {
+
+            border: none;
+
+            background: #f2edf4;
+
+            color: #7b2355;
+
+            padding: 9px 14px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+        }
+
+
+        .table-scroll {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 650px;
+
+        }
+
+
+        th {
+
+            background:
+                #f8f6fa;
+
+            color: #666;
+
+            text-align: left;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            padding: 13px 15px;
+
+            white-space: nowrap;
+
+        }
+
+
+        td {
+
+            padding: 14px 15px;
+
+            border-top:
+                1px solid #f0f0f0;
+
+            color: #333;
+
+            font-size: 13px;
+
+        }
+
+
+        tbody tr:hover {
+
+            background:
+                #fcf9fd;
+
+        }
+
+
+        .student-name {
+
+            font-weight: bold;
+
+            color: #29212c;
+
+        }
+
+
+        .amount {
+
+            font-weight: bold;
+
+        }
+
+
+        .green {
+
+            color: #16803b;
+
+        }
+
+
+        .red {
+
+            color: #c62828;
+
+        }
+
+
+        .status {
+
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+        }
+
+
+        .status-paid {
+
+            background: #dcfce7;
+
+            color: #16803b;
+
+        }
+
+
+        .status-partial {
+
+            background: #fef3c7;
+
+            color: #a16207;
+
+        }
+
+
+        .status-unpaid {
+
+            background: #fee2e2;
+
+            color: #c62828;
+
+        }
+
+
+        /* =================================
+           EMPTY
+        ================================= */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color: #888;
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 40px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =================================
+           LOADING
+        ================================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 40px;
+
+            color: #777;
+
+        }
+
+
+        /* =================================
+           MOBILE
+        ================================= */
+
+        @media(max-width: 900px) {
+
+            .report-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .filters {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .apply-btn {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            body {
+
+                padding: 0;
+
+            }
+
+
+            .page {
+
+                min-height: 100vh;
+
+                border-radius: 0;
+
+            }
+
+
+            .header {
+
+                padding: 20px;
+
+            }
+
+
+            .content {
+
+                padding: 18px;
+
+            }
+
+
+            .header h1 {
+
+                font-size: 21px;
+
+            }
+
+
+            .header-icon {
+
+                width: 45px;
+
+                height: 45px;
+
+                font-size: 23px;
+
+            }
+
+
+            .filters {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .summary {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        /* =================================
+           PRINT
+        ================================= */
+
+        @media print {
+
+            body {
+
+                background: white;
+
+                padding: 0;
+
+            }
+
+
+            .page {
+
+                box-shadow: none;
+
+                border-radius: 0;
+
+            }
+
+
+            .header {
+
+                background: white !important;
+
+                color: black;
+
+                border-bottom:
+                    2px solid #222;
+
+            }
+
+
+            .header-icon,
+            .back-btn,
+            .report-grid,
+            .filter-box,
+            .print-btn {
+
+                display: none !important;
+
+            }
+
+
+            .content {
+
+                padding: 10px;
+
+            }
+
+
+            .table-box {
+
+                border: none;
+
+            }
+
+
+            table {
+
+                min-width: 0;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- =================================
+         HEADER
+    ================================== -->
+
+    <div class="header">
+
+
+        <div class="header-left">
+
+            <div class="header-icon">
+
+                📊
+
+            </div>
+
+
+            <div>
+
+                <h1>
+                    Reports
+                </h1>
+
+                <p>
+                    Owner only • Academy payment reports
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="back-btn"
+            onclick="goBack()">
+
+            ← Back
+
+        </button>
+
+
+    </div>
+
+
+
+    <div class="content">
+
+
+        <!-- =================================
+             REPORT SELECTOR
+        ================================== -->
+
+        <div class="report-grid">
+
+
+            <div
+                class="report-card active"
+                id="todayCard"
+                onclick="selectReport('today')">
+
+
+                <div class="report-icon">
+                    💰
+                </div>
+
+
+                <h3>
+                    Today's Amount
+                </h3>
+
+
+                <p>
+                    View today's received
+                    payment amount student-wise.
+                </p>
+
+
+            </div>
+
+
+
+            <div
+                class="report-card"
+                id="monthlyCard"
+                onclick="selectReport('monthly')">
+
+
+                <div class="report-icon">
+                    📅
+                </div>
+
+
+                <h3>
+                    Monthly Received Amount
+                </h3>
+
+
+                <p>
+                    View monthly received amount
+                    student-wise.
+                </p>
+
+
+            </div>
+
+
+
+            <div
+                class="report-card"
+                id="unpaidCard"
+                onclick="selectReport('unpaid')">
+
+
+                <div class="report-icon">
+                    🔴
+                </div>
+
+
+                <h3>
+                    Monthly Unpaid Fees
+                </h3>
+
+
+                <p>
+                    View unpaid and balance fees
+                    student-wise.
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             FILTER
+        ================================== -->
+
+        <div
+            class="filter-box"
+            id="filterBox">
+
+
+            <div class="filter-title">
+
+                Report Filters
+
+            </div>
+
+
+            <div class="filters">
+
+
+                <!-- MONTH -->
+
+                <div
+                    class="field"
+                    id="monthField">
+
+                    <label>
+                        Month
+                    </label>
+
+
+                    <select
+                        id="monthSelect">
+
+                        <option value="1">
+                            January
+                        </option>
+
+                        <option value="2">
+                            February
+                        </option>
+
+                        <option value="3">
+                            March
+                        </option>
+
+                        <option value="4">
+                            April
+                        </option>
+
+                        <option value="5">
+                            May
+                        </option>
+
+                        <option value="6">
+                            June
+                        </option>
+
+                        <option value="7">
+                            July
+                        </option>
+
+                        <option value="8">
+                            August
+                        </option>
+
+                        <option value="9">
+                            September
+                        </option>
+
+                        <option value="10">
+                            October
+                        </option>
+
+                        <option value="11">
+                            November
+                        </option>
+
+                        <option value="12">
+                            December
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- YEAR -->
+
+                <div
+                    class="field"
+                    id="yearField">
+
+                    <label>
+                        Year
+                    </label>
+
+
+                    <select
+                        id="yearSelect">
+                    </select>
+
+                </div>
+
+
+
+                <!-- SEARCH -->
+
+                <div class="field">
+
+                    <label>
+                        Search Student
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Student name or batch..."
+                        oninput="filterTable()">
+
+                </div>
+
+
+
+                <!-- APPLY -->
+
+                <button
+                    class="apply-btn"
+                    onclick="loadReport()">
+
+                    View Report
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             SUMMARY
+        ================================== -->
+
+        <div class="summary">
+
+
+            <div class="summary-card students">
+
+                <div class="summary-title"
+                     id="studentSummaryTitle">
+
+                    Students
+
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="summaryStudents">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card amount">
+
+                <div class="summary-title"
+                     id="amountSummaryTitle">
+
+                    Total Amount
+
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="summaryAmount">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card balance">
+
+                <div class="summary-title"
+                     id="balanceSummaryTitle">
+
+                    Balance
+
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="summaryBalance">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             TABLE
+        ================================== -->
+
+        <div class="table-box">
+
+
+            <div class="table-header">
+
+
+                <div
+                    class="table-title"
+                    id="tableTitle">
+
+                    Today's Amount
+
+                </div>
+
+
+                <button
+                    class="print-btn"
+                    onclick="window.print()">
+
+                    🖨️ Print / PDF
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                class="table-scroll"
+                id="tableContainer">
+
+                <div class="loading">
+
+                    Loading report...
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+let currentUser = null;
+
+let currentReport = "today";
+
+let reportRows = [];
+
+
+
+/* =========================================
+   MONEY
+========================================= */
+
+function money(value) {
+
+    return "₹" +
+        (Number(value) || 0)
+        .toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+
+/* =========================================
+   DATE
+========================================= */
+
+function formatDate(dateValue) {
+
+    if (!dateValue) {
+
+        return "-";
+
+    }
+
+
+    const date =
+        new Date(dateValue);
+
+
+    if (isNaN(date.getTime())) {
+
+        return "-";
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   MONTH NAME
+========================================= */
+
+function monthName(month) {
+
+    return new Date(
+        2000,
+        month - 1,
+        1
+    ).toLocaleString(
+        "en-IN",
+        {
+            month: "long"
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   YEAR DROPDOWN
+========================================= */
+
+function createYears() {
+
+    const select =
+        document.getElementById(
+            "yearSelect"
+        );
+
+
+    const currentYear =
+        new Date().getFullYear();
+
+
+    for (
+        let year = currentYear - 2;
+        year <= currentYear + 2;
+        year++
+    ) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            year;
+
+
+        option.textContent =
+            year;
+
+
+        select.appendChild(
+            option
+        );
+
+    }
+
+
+    select.value =
+        currentYear;
+
+}
+
+
+
+/* =========================================
+   SET CURRENT MONTH
+========================================= */
+
+function setCurrentMonth() {
+
+    document
+        .getElementById("monthSelect")
+        .value =
+            new Date().getMonth() + 1;
+
+}
+
+
+
+/* =========================================
+   OWNER LOGIN CHECK
+========================================= */
+
+async function checkOwner() {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (
+        error ||
+        !data ||
+        !data.session
+    ) {
+
+        window.location.href =
+            "owner-login.html";
+
+        return false;
+
+    }
+
+
+    const user =
+        data.session.user;
+
+
+    const {
+        data: profile,
+        error: profileError
+    } =
+    await supabaseClient
+        .from("profiles")
+        .select(
+            "id,role"
+        )
+        .eq(
+            "id",
+            user.id
+        )
+        .maybeSingle();
+
+
+    if (
+        profileError ||
+        !profile ||
+        profile.role !== "owner"
+    ) {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+
+        window.location.href =
+            "owner-login.html";
+
+        return false;
+
+    }
+
+
+    currentUser =
+        user;
+
+
+    return true;
+
+}
+
+
+
+/* =========================================
+   SELECT REPORT
+========================================= */
+
+function selectReport(type) {
+
+
+    currentReport =
+        type;
+
+
+    document
+        .getElementById("todayCard")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("monthlyCard")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("unpaidCard")
+        .classList.remove("active");
+
+
+    if (type === "today") {
+
+        document
+            .getElementById("todayCard")
+            .classList.add("active");
+
+    }
+
+
+    if (type === "monthly") {
+
+        document
+            .getElementById("monthlyCard")
+            .classList.add("active");
+
+    }
+
+
+    if (type === "unpaid") {
+
+        document
+            .getElementById("unpaidCard")
+            .classList.add("active");
+
+    }
+
+
+    const monthField =
+        document.getElementById(
+            "monthField"
+        );
+
+
+    const yearField =
+        document.getElementById(
+            "yearField"
+        );
+
+
+    if (type === "today") {
+
+        monthField.style.display =
+            "none";
+
+        yearField.style.display =
+            "none";
+
+    }
+
+    else {
+
+        monthField.style.display =
+            "block";
+
+        yearField.style.display =
+            "block";
+
+    }
+
+
+    if (type === "today") {
+
+        document
+            .getElementById("tableTitle")
+            .textContent =
+                "Today's Amount";
+
+    }
+
+
+    if (type === "monthly") {
+
+        document
+            .getElementById("tableTitle")
+            .textContent =
+                "Monthly Received Amount — Student Wise";
+
+    }
+
+
+    if (type === "unpaid") {
+
+        document
+            .getElementById("tableTitle")
+            .textContent =
+                "Monthly Unpaid Fees — Student Wise";
+
+    }
+
+
+    loadReport();
+
+}
+
+
+
+/* =========================================
+   TODAY REPORT
+========================================= */
+
+async function loadTodayReport() {
+
+
+    const today =
+        new Date();
+
+
+    const start =
+        new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            0,
+            0,
+            0
+        );
+
+
+    const end =
+        new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            23,
+            59,
+            59
+        );
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("fee_payments")
+        .select(`
+            id,
+            amount,
+            payment_date,
+            student_id,
+            students (
+                full_name,
+                batch
+            )
+        `)
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .gte(
+            "payment_date",
+            start.toISOString()
+        )
+        .lte(
+            "payment_date",
+            end.toISOString()
+        )
+        .order(
+            "payment_date",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to load today's report."
+        );
+
+        return;
+
+    }
+
+
+    reportRows =
+        data || [];
+
+
+    let total =
+        0;
+
+
+    reportRows.forEach(
+        row => {
+
+            total +=
+                Number(
+                    row.amount
+                ) || 0;
+
+        }
+    );
+
+
+    document
+        .getElementById("summaryStudents")
+        .textContent =
+            reportRows.length;
+
+
+    document
+        .getElementById("summaryAmount")
+        .textContent =
+            money(total);
+
+
+    document
+        .getElementById("summaryBalance")
+        .textContent =
+            "₹0";
+
+
+    document
+        .getElementById("studentSummaryTitle")
+        .textContent =
+            "Payments Today";
+
+
+    document
+        .getElementById("amountSummaryTitle")
+        .textContent =
+            "Today's Total";
+
+
+    document
+        .getElementById("balanceSummaryTitle")
+        .textContent =
+            "Balance";
+
+
+    renderTodayTable();
+
+}
+
+
+
+/* =========================================
+   TODAY TABLE
+========================================= */
+
+function renderTodayTable() {
+
+
+    if (!reportRows.length) {
+
+        showEmpty(
+            "No payments received today."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Payment Amount</th>
+
+                    <th>Payment Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    reportRows.forEach(
+        row => {
+
+
+            const student =
+                row.students || {};
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            student.full_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            student.batch || "-"
+                        )}
+                    </td>
+
+                    <td class="amount green">
+                        ${money(row.amount)}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            row.payment_date
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   MONTHLY RECEIVED
+========================================= */
+
+async function loadMonthlyReceived() {
+
+
+    const month =
+        Number(
+            document.getElementById(
+                "monthSelect"
+            ).value
+        );
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "yearSelect"
+            ).value
+        );
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("fee_payments")
+        .select(`
+            id,
+            amount,
+            payment_date,
+            student_id,
+            students (
+                full_name,
+                batch,
+                fees_amount
+            ),
+            fees (
+                monthly_amount,
+                fees_month,
+                fees_year
+            )
+        `)
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .order(
+            "payment_date",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to load monthly received report."
+        );
+
+        return;
+
+    }
+
+
+    const payments =
+        (data || []).filter(
+            row => {
+
+                const fee =
+                    row.fees;
+
+
+                return fee &&
+                    Number(
+                        fee.fees_month
+                    ) === month &&
+                    Number(
+                        fee.fees_year
+                    ) === year;
+
+            }
+        );
+
+
+    /*
+       Group by student.
+    */
+
+    const grouped =
+        {};
+
+
+    payments.forEach(
+        row => {
+
+
+            const studentId =
+                row.student_id;
+
+
+            if (!grouped[studentId]) {
+
+                grouped[studentId] = {
+
+                    student:
+                        row.students || {},
+
+                    monthlyAmount:
+                        Number(
+                            row.fees?.monthly_amount
+                        ) ||
+                        Number(
+                            row.students?.fees_amount
+                        ) ||
+                        0,
+
+                    received:
+                        0,
+
+                    latestDate:
+                        row.payment_date
+
+                };
+
+            }
+
+
+            grouped[studentId]
+                .received +=
+                    Number(
+                        row.amount
+                    ) || 0;
+
+
+            if (
+                new Date(
+                    row.payment_date
+                ) >
+                new Date(
+                    grouped[studentId]
+                        .latestDate
+                )
+            ) {
+
+                grouped[studentId]
+                    .latestDate =
+                        row.payment_date;
+
+            }
+
+        }
+    );
+
+
+    reportRows =
+        Object.values(
+            grouped
+        );
+
+
+    let totalReceived =
+        0;
+
+
+    reportRows.forEach(
+        row => {
+
+            totalReceived +=
+                row.received;
+
+        }
+    );
+
+
+    document
+        .getElementById("summaryStudents")
+        .textContent =
+            reportRows.length;
+
+
+    document
+        .getElementById("summaryAmount")
+        .textContent =
+            money(totalReceived);
+
+
+    document
+        .getElementById("summaryBalance")
+        .textContent =
+            "₹0";
+
+
+    document
+        .getElementById("studentSummaryTitle")
+        .textContent =
+            "Students Paid";
+
+
+    document
+        .getElementById("amountSummaryTitle")
+        .textContent =
+            "Monthly Received";
+
+
+    document
+        .getElementById("balanceSummaryTitle")
+        .textContent =
+            monthName(month) +
+            " " +
+            year;
+
+
+    renderMonthlyReceivedTable();
+
+}
+
+
+
+/* =========================================
+   MONTHLY RECEIVED TABLE
+========================================= */
+
+function renderMonthlyReceivedTable() {
+
+
+    if (!reportRows.length) {
+
+        showEmpty(
+            "No received payments found for this month."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Monthly Fees</th>
+
+                    <th>Received Amount</th>
+
+                    <th>Last Payment</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    reportRows.forEach(
+        row => {
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            row.student.full_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            row.student.batch || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${money(
+                            row.monthlyAmount
+                        )}
+                    </td>
+
+                    <td class="amount green">
+                        ${money(
+                            row.received
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            row.latestDate
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   MONTHLY UNPAID
+========================================= */
+
+async function loadMonthlyUnpaid() {
+
+
+    const month =
+        Number(
+            document.getElementById(
+                "monthSelect"
+            ).value
+        );
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "yearSelect"
+            ).value
+        );
+
+
+    /*
+       Get all students
+    */
+
+    const {
+        data: students,
+        error: studentError
+    } =
+    await supabaseClient
+        .from("students")
+        .select(
+            "id,full_name,batch,fees_amount"
+        )
+        .eq(
+            "owner_id",
+            currentUser.id
+        );
+
+
+    if (studentError) {
+
+        console.error(
+            studentError
+        );
+
+        showError(
+            "Unable to load students."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Get monthly fee records
+    */
+
+    const {
+        data: fees,
+        error: feeError
+    } =
+    await supabaseClient
+        .from("fees")
+        .select(
+            "student_id,monthly_amount,paid_amount,status"
+        )
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .eq(
+            "fees_month",
+            month
+        )
+        .eq(
+            "fees_year",
+            year
+        );
+
+
+    if (feeError) {
+
+        console.error(
+            feeError
+        );
+
+        showError(
+            "Unable to load fees."
+        );
+
+        return;
+
+    }
+
+
+    const feeMap =
+        {};
+
+
+    (fees || []).forEach(
+        fee => {
+
+            feeMap[
+                fee.student_id
+            ] =
+                fee;
+
+        }
+    );
+
+
+    /*
+       Include students who have
+       balance due.
+
+       If no fee record exists,
+       student's monthly fee is
+       treated as unpaid.
+    */
+
+    reportRows = [];
+
+
+    (students || []).forEach(
+        student => {
+
+
+            const fee =
+                feeMap[
+                    student.id
+                ];
+
+
+            const monthlyAmount =
+                Number(
+                    fee?.monthly_amount
+                ) ||
+                Number(
+                    student.fees_amount
+                ) ||
+                0;
+
+
+            const paidAmount =
+                Number(
+                    fee?.paid_amount
+                ) || 0;
+
+
+            const balance =
+                Math.max(
+                    monthlyAmount -
+                    paidAmount,
+                    0
+                );
+
+
+            if (balance > 0) {
+
+                reportRows.push({
+
+                    student:
+                        student,
+
+                    monthlyAmount:
+                        monthlyAmount,
+
+                    paidAmount:
+                        paidAmount,
+
+                    balance:
+                        balance,
+
+                    status:
+                        paidAmount > 0
+                            ? "partial"
+                            : "unpaid"
+
+                });
+
+            }
+
+        }
+    );
+
+
+    let totalBalance =
+        0;
+
+
+    reportRows.forEach(
+        row => {
+
+            totalBalance +=
+                row.balance;
+
+        }
+    );
+
+
+    document
+        .getElementById("summaryStudents")
+        .textContent =
+            reportRows.length;
+
+
+    document
+        .getElementById("summaryAmount")
+        .textContent =
+            money(totalBalance);
+
+
+    document
+        .getElementById("summaryBalance")
+        .textContent =
+            money(totalBalance);
+
+
+    document
+        .getElementById("studentSummaryTitle")
+        .textContent =
+            "Unpaid Students";
+
+
+    document
+        .getElementById("amountSummaryTitle")
+        .textContent =
+            "Total Unpaid";
+
+
+    document
+        .getElementById("balanceSummaryTitle")
+        .textContent =
+            "Balance Due";
+
+
+    renderUnpaidTable();
+
+}
+
+
+
+/* =========================================
+   UNPAID TABLE
+========================================= */
+
+function renderUnpaidTable() {
+
+
+    if (!reportRows.length) {
+
+        showEmpty(
+            "🎉 No unpaid fees for this month."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Monthly Fees</th>
+
+                    <th>Paid Amount</th>
+
+                    <th>Balance Due</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    reportRows.forEach(
+        row => {
+
+
+            const statusClass =
+                row.status === "partial"
+                    ? "status-partial"
+                    : "status-unpaid";
+
+
+            const statusText =
+                row.status === "partial"
+                    ? "PARTIAL"
+                    : "UNPAID";
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            row.student.full_name
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            row.student.batch || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${money(
+                            row.monthlyAmount
+                        )}
+                    </td>
+
+                    <td class="amount">
+                        ${money(
+                            row.paidAmount
+                        )}
+                    </td>
+
+                    <td class="amount red">
+                        ${money(
+                            row.balance
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${statusText}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   LOAD REPORT
+========================================= */
+
+async function loadReport() {
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML = `
+
+            <div class="loading">
+
+                Loading report...
+
+            </div>
+
+        `;
+
+
+    if (
+        currentReport ===
+        "today"
+    ) {
+
+        await loadTodayReport();
+
+    }
+
+
+    else if (
+        currentReport ===
+        "monthly"
+    ) {
+
+        await loadMonthlyReceived();
+
+    }
+
+
+    else if (
+        currentReport ===
+        "unpaid"
+    ) {
+
+        await loadMonthlyUnpaid();
+
+    }
+
+}
+
+
+
+/* =========================================
+   SEARCH / FILTER
+========================================= */
+
+function filterTable() {
+
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    if (!search) {
+
+        if (
+            currentReport ===
+            "today"
+        ) {
+
+            renderTodayTable();
+
+        }
+
+        else if (
+            currentReport ===
+            "monthly"
+        ) {
+
+            renderMonthlyReceivedTable();
+
+        }
+
+        else {
+
+            renderUnpaidTable();
+
+        }
+
+        return;
+
+    }
+
+
+    if (
+        currentReport ===
+        "today"
+    ) {
+
+
+        const filtered =
+            reportRows.filter(
+                row => {
+
+                    const student =
+                        row.students || {};
+
+
+                    return (
+                        String(
+                            student.full_name || ""
+                        )
+                        .toLowerCase()
+                        .includes(search)
+                    ) ||
+                    String(
+                        student.batch || ""
+                    )
+                    .toLowerCase()
+                    .includes(search);
+
+                }
+            );
+
+
+        renderTodayRows(
+            filtered
+        );
+
+    }
+
+
+    else {
+
+
+        const filtered =
+            reportRows.filter(
+                row => {
+
+                    return (
+                        String(
+                            row.student?.full_name || ""
+                        )
+                        .toLowerCase()
+                        .includes(search)
+                    ) ||
+                    String(
+                        row.student?.batch || ""
+                    )
+                    .toLowerCase()
+                    .includes(search);
+
+                }
+            );
+
+
+        if (
+            currentReport ===
+            "monthly"
+        ) {
+
+            renderMonthlyRows(
+                filtered
+            );
+
+        }
+
+        else {
+
+            renderUnpaidRows(
+                filtered
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================
+   FILTERED TODAY ROWS
+========================================= */
+
+function renderTodayRows(rows) {
+
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Payment Amount</th>
+
+                    <th>Payment Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    rows.forEach(
+        row => {
+
+
+            const student =
+                row.students || {};
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            student.full_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            student.batch || "-"
+                        )}
+                    </td>
+
+                    <td class="amount green">
+                        ${money(row.amount)}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            row.payment_date
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   FILTERED MONTHLY ROWS
+========================================= */
+
+function renderMonthlyRows(rows) {
+
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Monthly Fees</th>
+
+                    <th>Received Amount</th>
+
+                    <th>Last Payment</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    rows.forEach(
+        row => {
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            row.student.full_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            row.student.batch || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${money(
+                            row.monthlyAmount
+                        )}
+                    </td>
+
+                    <td class="amount green">
+                        ${money(
+                            row.received
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            row.latestDate
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   FILTERED UNPAID ROWS
+========================================= */
+
+function renderUnpaidRows(rows) {
+
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student Name</th>
+
+                    <th>Batch</th>
+
+                    <th>Monthly Fees</th>
+
+                    <th>Paid Amount</th>
+
+                    <th>Balance Due</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    rows.forEach(
+        row => {
+
+
+            const statusClass =
+                row.status === "partial"
+                    ? "status-partial"
+                    : "status-unpaid";
+
+
+            const statusText =
+                row.status === "partial"
+                    ? "PARTIAL"
+                    : "UNPAID";
+
+
+            html += `
+
+                <tr>
+
+                    <td class="student-name">
+                        ${escapeHtml(
+                            row.student.full_name
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            row.student.batch || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${money(
+                            row.monthlyAmount
+                        )}
+                    </td>
+
+                    <td>
+                        ${money(
+                            row.paidAmount
+                        )}
+                    </td>
+
+                    <td class="amount red">
+                        ${money(
+                            row.balance
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${statusText}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML =
+            html;
+
+}
+
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+function showEmpty(message) {
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📭
+                </div>
+
+                ${message}
+
+            </div>
+
+        `;
+
+}
+
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+function showError(message) {
+
+
+    document
+        .getElementById(
+            "tableContainer"
+        )
+        .innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                ${message}
+
+            </div>
+
+        `;
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+
+    return String(value ?? "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack() {
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+async function start() {
+
+
+    createYears();
+
+    setCurrentMonth();
+
+
+    const allowed =
+        await checkOwner();
+
+
+    if (!allowed) {
+
+        return;
+
+    }
+
+
+    /*
+       Today's report is default.
+    */
+
+    selectReport(
+        "today"
+    );
+
+}
+
+
+start();
+
+
+</script>
+
+
+</body>
+
+</html>
