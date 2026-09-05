@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f0ff 0%,
+                    #fff1f7 50%,
+                    #eef2ff 100%
+                );
+
+            padding: 18px;
+
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1080px;
+            margin: auto;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6d28d9,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+            border-radius: 24px;
+
+            padding: 23px 26px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+
+            box-shadow:
+                0 12px 30px
+                rgba(109,40,217,0.22);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .header-left {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.88);
+            font-size: 14px;
+        }
+
+        .logout-btn {
+
+            position: relative;
+            z-index: 3;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.35);
+
+            background:
+                rgba(255,255,255,0.16);
+
+            color: white;
+
+            padding: 10px 17px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background:
+                rgba(255,255,255,0.28);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ================= WELCOME ================= */
+
+        .welcome-card {
+
+            background: white;
+
+            border:
+                1px solid #eadcff;
+
+            border-radius: 23px;
+
+            padding: 24px;
+
+            margin-bottom: 18px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(100,60,130,0.08);
+        }
+
+        .welcome-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .welcome-icon {
+
+            width: 62px;
+            height: 62px;
+
+            min-width: 62px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #a855f7,
+                    #ec4899
+                );
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            box-shadow:
+                0 7px 18px
+                rgba(124,58,237,0.22);
+        }
+
+        .welcome-card h2 {
+
+            color: #4c2870;
+
+            font-size: 21px;
+
+            margin-bottom: 5px;
+        }
+
+        .welcome-card > p {
+
+            color: #85768d;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= STUDENT INFO ================= */
+
+        .student-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+        }
+
+        .info-box {
+
+            border-radius: 16px;
+
+            padding: 15px;
+
+            min-height: 78px;
+        }
+
+        .info-box:nth-child(1) {
+            background: #f3e8ff;
+            border: 1px solid #e4d4ff;
+        }
+
+        .info-box:nth-child(2) {
+            background: #fce7f3;
+            border: 1px solid #f7cde1;
+        }
+
+        .info-box:nth-child(3) {
+            background: #e0f2fe;
+            border: 1px solid #c7e6f8;
+        }
+
+        .info-box:nth-child(4) {
+            background: #fef3c7;
+            border: 1px solid #f8df9b;
+        }
+
+        .info-title {
+
+            color: #82778b;
+
+            font-size: 10px;
+
+            margin-bottom: 7px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.4px;
+        }
+
+        .info-value {
+
+            color: #43364b;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+
+        /* ================= FEES ================= */
+
+        .summary-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin:
+                4px 5px 13px;
+        }
+
+        .summary-title {
+
+            color: #513d60;
+
+            font-size: 20px;
+
+            font-weight: 700;
+        }
+
+        .current-month {
+
+            color: #7c3aed;
+
+            background: #f3e8ff;
+
+            border: 1px solid #e3d5ff;
+
+            padding: 7px 12px;
+
+            border-radius: 15px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .fee-summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        .fee-box {
+
+            border-radius: 19px;
+
+            padding: 19px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 6px 18px
+                rgba(70,50,100,0.06);
+        }
+
+        .fee-box::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 75px;
+
+            height: 75px;
+
+            border-radius: 50%;
+
+            right: -25px;
+
+            bottom: -30px;
+
+            background:
+                rgba(255,255,255,0.30);
+        }
+
+        .monthly-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ede9fe,
+                    #ddd6fe
+                );
+
+            border:
+                1px solid #d9cff8;
+        }
+
+        .received-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dcfce7,
+                    #bbf7d0
+                );
+
+            border:
+                1px solid #b9e8c7;
+        }
+
+        .balance-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fee2e2,
+                    #fecaca
+                );
+
+            border:
+                1px solid #f4c0c0;
+        }
+
+        .fee-label {
+
+            color: #71677a;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .fee-value {
+
+            color: #41344b;
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .fee-small {
+
+            color: #82778b;
+
+            font-size: 11px;
+
+            margin-top: 5px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status-card {
+
+            background: white;
+
+            border:
+                1px solid #eadcff;
+
+            border-radius: 18px;
+
+            padding: 15px 18px;
+
+            margin-bottom: 23px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 6px 18px
+                rgba(70,50,100,0.06);
+        }
+
+        .status-left {
+
+            color: #62556c;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .status-badge {
+
+            padding:
+                7px 14px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+        }
+
+        .status-partial {
+
+            background: #fef3c7;
+
+            color: #a16207;
+        }
+
+        .status-paid {
+
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+
+            text-align: center;
+
+            color: #8a7c92;
+
+            font-size: 12px;
+
+            margin-top: 10px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= SERVICES ================= */
+
+        .section-title {
+
+            color: #513d60;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            margin:
+                0 5px 14px;
+        }
+
+        .services {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .service-card {
+
+            border-radius: 21px;
+
+            padding: 21px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 165px;
+        }
+
+        .service-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(70,50,100,0.13);
+        }
+
+        .service-icon {
+
+            width: 51px;
+
+            height: 51px;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+
+            margin-bottom: 13px;
+
+            background:
+                rgba(255,255,255,0.68);
+        }
+
+        .fees-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ede9fe,
+                    #ddd6fe
+                );
+
+            border:
+                1px solid #d8cef9;
+        }
+
+        .receipt-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fce7f3,
+                    #fbcfe8
+                );
+
+            border:
+                1px solid #f5c5dc;
+        }
+
+        .history-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e0f2fe,
+                    #bae6fd
+                );
+
+            border:
+                1px solid #b8def2;
+        }
+
+        .pin-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fef3c7,
+                    #fde68a
+                );
+
+            border:
+                1px solid #f7dc91;
+        }
+
+        .fees-card .service-icon {
+            color: #6941b6;
+        }
+
+        .receipt-card .service-icon {
+            color: #c43d78;
+        }
+
+        .history-card .service-icon {
+            color: #16709c;
+        }
+
+        .pin-card .service-icon {
+            color: #a06b00;
+        }
+
+        .service-card h3 {
+
+            color: #44374c;
+
+            font-size: 18px;
+
+            margin-bottom: 7px;
+        }
+
+        .service-card p {
+
+            color: #716876;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .arrow {
+
+            position: absolute;
+
+            right: 20px;
+
+            top: 21px;
+
+            font-size: 21px;
+
+            color:
+                rgba(70,50,80,0.45);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+
+            text-align: center;
+
+            color: #897d91;
+
+            font-size: 12px;
+
+            margin-top: 25px;
+
+            padding-bottom: 5px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            .student-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .fee-summary {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 21px;
+            }
+
+            .fee-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .services {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-header {
+                align-items: flex-start;
+                gap: 8px;
+                flex-direction: column;
+            }
+        }
+
+
+        @media (max-width: 420px) {
+
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 19px;
+            }
+
+            .logout-btn {
+                padding: 8px 11px;
+            }
+
+            .welcome-card {
+                padding: 19px;
+            }
+
+            .status-card {
+                align-items: flex-start;
+                gap: 10px;
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="header">
+
+        <div class="header-left">
+
+            <h1>
+                Student Dashboard
+            </h1>
+
+            <p id="headerName">
+                Welcome
+            </p>
+
+        </div>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ================= WELCOME ================= -->
+
+    <div class="welcome-card">
+
+        <div class="welcome-top">
+
+            <div class="welcome-icon">
+                🎵
+            </div>
+
+            <div>
+
+                <h2 id="welcomeName">
+                    Welcome Student
+                </h2>
+
+                <p>
+                    Welcome to your student portal
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENT INFO -->
+
+        <div class="student-info">
+
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    STUDENT NAME
+                </div>
+
+                <div
+                    class="info-value"
+                    id="studentName">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    MOBILE NUMBER
+                </div>
+
+                <div
+                    class="info-value"
+                    id="studentMobile">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    INSTRUMENT
+                </div>
+
+                <div
+                    class="info-value"
+                    id="studentInstrument">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    BATCH
+                </div>
+
+                <div
+                    class="info-value"
+                    id="studentBatch">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= FEES SUMMARY ================= -->
+
+    <div class="summary-header">
+
+        <div class="summary-title">
+            Fees Summary
+        </div>
+
+        <div
+            class="current-month"
+            id="currentMonth">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+
+    <div class="fee-summary">
+
+
+        <!-- MONTHLY -->
+
+        <div class="fee-box monthly-box">
+
+            <div class="fee-label">
+                MONTHLY FEES
+            </div>
+
+            <div
+                class="fee-value"
+                id="monthlyFees">
+
+                ₹0
+
+            </div>
+
+            <div class="fee-small">
+                Monthly fee amount
+            </div>
+
+        </div>
+
+
+        <!-- RECEIVED -->
+
+        <div class="fee-box received-box">
+
+            <div class="fee-label">
+                RECEIVED
+            </div>
+
+            <div
+                class="fee-value"
+                id="receivedFees">
+
+                ₹0
+
+            </div>
+
+            <div class="fee-small">
+                Amount received
+            </div>
+
+        </div>
+
+
+        <!-- BALANCE -->
+
+        <div class="fee-box balance-box">
+
+            <div class="fee-label">
+                BALANCE DUE
+            </div>
+
+            <div
+                class="fee-value"
+                id="balanceFees">
+
+                ₹0
+
+            </div>
+
+            <div class="fee-small">
+                Remaining amount
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= STATUS ================= -->
+
+    <div class="status-card">
+
+        <div class="status-left">
+            Current Month Payment Status
+        </div>
+
+        <div
+            class="status-badge status-pending"
+            id="feeStatus">
+
+            PENDING
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="loading"
+        id="feeLoading">
+
+        Loading current month fees...
+
+    </div>
+
+
+
+    <!-- ================= SERVICES ================= -->
+
+    <div class="section-title">
+
+        Student Services
+
+    </div>
+
+
+    <div class="services">
+
+
+        <!-- MY FEES -->
+
+        <div
+            class="service-card fees-card"
+            onclick="openFees()">
+
+            <div class="service-icon">
+                ₹
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <h3>
+                My Fees
+            </h3>
+
+            <p>
+                View monthly fees, received amount
+                and balance due.
+            </p>
+
+        </div>
+
+
+
+        <!-- FEE RECEIPT -->
+
+        <div
+            class="service-card receipt-card"
+            onclick="openReceipt()">
+
+            <div class="service-icon">
+                🧾
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <h3>
+                Fee Receipt
+            </h3>
+
+            <p>
+                View and download your fee receipt.
+            </p>
+
+        </div>
+
+
+
+        <!-- PAYMENT HISTORY -->
+
+        <div
+            class="service-card history-card"
+            onclick="openPaymentHistory()">
+
+            <div class="service-icon">
+                📋
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <h3>
+                Payment History
+            </h3>
+
+            <p>
+                Check previous payments and
+                payment dates.
+            </p>
+
+        </div>
+
+
+
+        <!-- CHANGE PIN -->
+
+        <div
+            class="service-card pin-card"
+            onclick="changePin()">
+
+            <div class="service-icon">
+                🔐
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <h3>
+                Change PIN
+            </h3>
+
+            <p>
+                Change your student login PIN.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <div class="footer">
+
+        Student Portal
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    /* =========================================
+       LOGIN DATA
+    ========================================= */
+
+    const studentLogin =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    const studentSessionToken =
+        localStorage.getItem(
+            "studentSessionToken"
+        );
+
+
+    /* =========================================
+       LOGIN CHECK
+    ========================================= */
+
+    if (
+        !studentLogin ||
+        !studentSessionToken
+    ) {
+
+        window.location.href =
+            "student-login.html";
+
+    }
+
+
+    /* =========================================
+       LOAD STUDENT
+    ========================================= */
+
+    let student = null;
+
+
+    try {
+
+        student =
+            JSON.parse(studentLogin);
+
+
+        document.getElementById(
+            "headerName"
+        ).innerText =
+            "Welcome, " +
+            (
+                student.full_name ||
+                "Student"
+            );
+
+
+        document.getElementById(
+            "welcomeName"
+        ).innerText =
+            "Welcome, " +
+            (
+                student.full_name ||
+                "Student"
+            );
+
+
+        document.getElementById(
+            "studentName"
+        ).innerText =
+            student.full_name || "-";
+
+
+        document.getElementById(
+            "studentMobile"
+        ).innerText =
+            student.mobile_number || "-";
+
+
+        document.getElementById(
+            "studentInstrument"
+        ).innerText =
+            student.instrument || "-";
+
+
+        document.getElementById(
+            "studentBatch"
+        ).innerText =
+            student.batch || "-";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        logout();
+
+    }
+
+
+
+    /* =========================================
+       CURRENT MONTH
+    ========================================= */
+
+    const today =
+        new Date();
+
+
+    const currentMonth =
+        today.getMonth() + 1;
+
+
+    const currentYear =
+        today.getFullYear();
+
+
+    const monthNames = [
+
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+
+    ];
+
+
+    document.getElementById(
+        "currentMonth"
+    ).innerText =
+        monthNames[currentMonth - 1]
+        + " "
+        + currentYear;
+
+
+
+    /* =========================================
+       LOAD CURRENT MONTH FEES
+    ========================================= */
+
+    async function loadCurrentMonthFees() {
+
+        const loading =
+            document.getElementById(
+                "feeLoading"
+            );
+
+
+        try {
+
+            loading.innerText =
+                "Loading current month fees...";
+
+
+            const { data, error } =
+                await supabaseClient.rpc(
+                    "student_get_fees",
+                    {
+                        p_token:
+                            studentSessionToken,
+
+                        p_month:
+                            currentMonth,
+
+                        p_year:
+                            currentYear
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(error);
+
+                throw error;
+
+            }
+
+
+            if (
+                !data ||
+                data.success !== true
+            ) {
+
+                throw new Error(
+                    data?.message ||
+                    "Unable to load fees"
+                );
+
+            }
+
+
+            /* =========================
+               GET FEE DATA
+            ========================= */
+
+            const fee =
+                data.fee || {};
+
+
+            const monthly =
+                Number(
+                    fee.monthly_amount || 0
+                );
+
+
+            const received =
+                Number(
+                    fee.paid_amount || 0
+                );
+
+
+            const balance =
+                Number(
+                    fee.balance_due || 0
+                );
+
+
+            const status =
+                (
+                    fee.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+
+            /* =========================
+               DISPLAY AMOUNTS
+            ========================= */
+
+            document.getElementById(
+                "monthlyFees"
+            ).innerText =
+                formatMoney(monthly);
+
+
+            document.getElementById(
+                "receivedFees"
+            ).innerText =
+                formatMoney(received);
+
+
+            document.getElementById(
+                "balanceFees"
+            ).innerText =
+                formatMoney(balance);
+
+
+
+            /* =========================
+               DISPLAY STATUS
+            ========================= */
+
+            const statusElement =
+                document.getElementById(
+                    "feeStatus"
+                );
+
+
+            statusElement.className =
+                "status-badge";
+
+
+            if (status === "paid") {
+
+                statusElement.classList.add(
+                    "status-paid"
+                );
+
+                statusElement.innerText =
+                    "PAID";
+
+            }
+
+            else if (
+                status === "partial"
+            ) {
+
+                statusElement.classList.add(
+                    "status-partial"
+                );
+
+                statusElement.innerText =
+                    "PARTIAL";
+
+            }
+
+            else {
+
+                statusElement.classList.add(
+                    "status-pending"
+                );
+
+                statusElement.innerText =
+                    "PENDING";
+
+            }
+
+
+            loading.innerText =
+                "Fees updated from Supabase";
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Fee loading error:",
+                error
+            );
+
+
+            document.getElementById(
+                "monthlyFees"
+            ).innerText =
+                "₹0";
+
+
+            document.getElementById(
+                "receivedFees"
+            ).innerText =
+                "₹0";
+
+
+            document.getElementById(
+                "balanceFees"
+            ).innerText =
+                "₹0";
+
+
+            document.getElementById(
+                "feeStatus"
+            ).innerText =
+                "UNAVAILABLE";
+
+
+            loading.innerText =
+                "Unable to load current month fees.";
+
+        }
+
+    }
+
+
+
+    /* =========================================
+       MONEY FORMAT
+    ========================================= */
+
+    function formatMoney(amount) {
+
+        return "₹" +
+            Number(amount || 0)
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    }
+                );
+
+    }
+
+
+
+    /* =========================================
+       MY FEES
+    ========================================= */
+
+    function openFees() {
+
+        window.location.href =
+            "student-fees.html";
+
+    }
+
+
+
+    /* =========================================
+       PAYMENT HISTORY
+    ========================================= */
+
+    function openPaymentHistory() {
+
+        window.location.href =
+            "student-fees.html";
+
+    }
+
+
+
+    /* =========================================
+       FEE RECEIPT
+    ========================================= */
+
+    function openReceipt() {
+
+        window.location.href =
+            "fee-receipt.html";
+
+    }
+
+
+
+    /* =========================================
+       CHANGE PIN
+    ========================================= */
+
+    function changePin() {
+
+        window.location.href =
+            "student-change-pin.html";
+
+    }
+
+
+
+    /* =========================================
+       LOGOUT
+    ========================================= */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "studentLogin"
+        );
+
+
+        localStorage.removeItem(
+            "studentSessionToken"
+        );
+
+
+        window.location.href =
+            "student-login.html";
+
+    }
+
+
+
+    /* =========================================
+       START
+    ========================================= */
+
+    loadCurrentMonthFees();
+
+
+</script>
+
+
+</body>
+
+</html>

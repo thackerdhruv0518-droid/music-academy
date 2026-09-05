@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Access</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            padding: 25px;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: auto;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,.25);
+        }
+
+        .header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #171d4f, #7b2355);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            opacity: .8;
+        }
+
+        .back {
+            border: 0;
+            padding: 11px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: #171d4f;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-card {
+            background: #f7f8fc;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            color: #171d4f;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #5b5bd6;
+        }
+
+        .send {
+            margin-top: 20px;
+            border: 0;
+            padding: 14px 25px;
+            border-radius: 11px;
+            background: linear-gradient(135deg,#1d2671,#c33764);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .send:disabled {
+            opacity: .6;
+        }
+
+        .section-title {
+            color: #171d4f;
+            margin-bottom: 15px;
+        }
+
+        .request {
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            box-shadow: 0 5px 18px rgba(0,0,0,.06);
+        }
+
+        .request-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .name {
+            font-size: 19px;
+            font-weight: bold;
+            color: #171d4f;
+        }
+
+        .info {
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.7;
+        }
+
+        .status {
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff4d6;
+            color: #9a6900;
+        }
+
+        .approved {
+            background: #e5f8ec;
+            color: #16803c;
+        }
+
+        .rejected {
+            background: #fde8e8;
+            color: #c62828;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .actions button {
+            border: 0;
+            padding: 10px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .approve {
+            background: #16803c;
+            color: white;
+        }
+
+        .reject {
+            background: #c62828;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+            background: #f7f8fc;
+            border-radius: 16px;
+        }
+
+        #message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            display: block !important;
+            background: #e7f8ed;
+            color: #16803c;
+        }
+
+        .error {
+            display: block !important;
+            background: #fde8e8;
+            color: #c62828;
+        }
+
+        @media(max-width: 750px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .request-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions button {
+                width: 100%;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+        <div>
+            <h1>👥 Staff Access</h1>
+            <p>Manage staff access requests</p>
+        </div>
+
+        <button class="back" onclick="location.href='settings.html'">
+            ← Settings
+        </button>
+    </div>
+
+    <div class="content">
+
+        <!-- ADD STAFF REQUEST -->
+        <div class="form-card">
+
+            <h2>Request Staff Access</h2>
+
+            <div class="grid">
+
+                <div>
+                    <label>Staff Full Name</label>
+                    <input
+                        id="fullName"
+                        type="text"
+                        placeholder="Enter full name"
+                    >
+                </div>
+
+                <div>
+                    <label>Mobile Number</label>
+                    <input
+                        id="mobile"
+                        type="tel"
+                        placeholder="Enter mobile number"
+                    >
+                </div>
+
+                <div>
+                    <label>Email Address</label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="Enter email"
+                    >
+                </div>
+
+            </div>
+
+            <button
+                class="send"
+                id="sendBtn"
+                onclick="sendRequest()"
+            >
+                Send Access Request
+            </button>
+
+            <div id="message"></div>
+
+        </div>
+
+
+        <!-- REQUEST LIST -->
+
+        <h2 class="section-title">
+            Staff Access Requests
+        </h2>
+
+        <div id="requestList">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let ownerId = null;
+
+
+// ===============================
+// START
+// ===============================
+
+async function init() {
+
+    try {
+
+        const {
+            data: { user },
+            error
+        } = await supabaseClient.auth.getUser();
+
+        if (error || !user) {
+            location.href = "owner-login.html";
+            return;
+        }
+
+        ownerId = user.id;
+
+        const { data: profile, error: profileError } =
+            await supabaseClient
+                .from("profiles")
+                .select("role")
+                .eq("id", ownerId)
+                .single();
+
+        if (profileError || !profile || profile.role !== "owner") {
+            alert("Owner access required.");
+            location.href = "dashboard.html";
+            return;
+        }
+
+        loadRequests();
+
+    } catch (error) {
+
+        console.error(error);
+
+        location.href = "owner-login.html";
+    }
+}
+
+
+// ===============================
+// SEND REQUEST
+// ===============================
+
+async function sendRequest() {
+
+    const fullName =
+        document.getElementById("fullName").value.trim();
+
+    const mobile =
+        document.getElementById("mobile").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const btn =
+        document.getElementById("sendBtn");
+
+    if (!fullName || !mobile || !email) {
+
+        showMessage(
+            "Please fill all details.",
+            "error"
+        );
+
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Sending...";
+
+    try {
+
+        const { error } =
+            await supabaseClient
+                .from("staff_requests")
+                .insert({
+                    owner_id: ownerId,
+                    full_name: fullName,
+                    mobile_number: mobile,
+                    email: email,
+                    status: "pending"
+                });
+
+        if (error) {
+            throw error;
+        }
+
+        document.getElementById("fullName").value = "";
+        document.getElementById("mobile").value = "";
+        document.getElementById("email").value = "";
+
+        showMessage(
+            "Staff request added successfully.",
+            "success"
+        );
+
+        loadRequests();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message || "Could not send request.",
+            "error"
+        );
+
+    } finally {
+
+        btn.disabled = false;
+        btn.innerText = "Send Access Request";
+    }
+}
+
+
+// ===============================
+// LOAD REQUESTS
+// ===============================
+
+async function loadRequests() {
+
+    const list =
+        document.getElementById("requestList");
+
+    list.innerHTML = "Loading...";
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("staff_requests")
+        .select("*")
+        .eq("owner_id", ownerId)
+        .order("created_at", {
+            ascending: false
+        });
+
+    if (error) {
+
+        console.error(error);
+
+        list.innerHTML =
+            `<div class="empty">
+                Could not load requests.
+            </div>`;
+
+        return;
+    }
+
+    if (!data || data.length === 0) {
+
+        list.innerHTML =
+            `<div class="empty">
+                No staff access requests yet.
+            </div>`;
+
+        return;
+    }
+
+    list.innerHTML =
+        data.map(request => {
+
+            const date =
+                new Date(request.created_at)
+                    .toLocaleDateString("en-IN");
+
+            return `
+                <div class="request">
+
+                    <div class="request-top">
+
+                        <div>
+                            <div class="name">
+                                ${escapeHtml(request.full_name)}
+                            </div>
+
+                            <div class="info">
+                                📱 ${escapeHtml(request.mobile_number)}
+                                <br>
+                                ✉️ ${escapeHtml(request.email)}
+                                <br>
+                                📅 ${date}
+                            </div>
+                        </div>
+
+                        <div class="status ${request.status}">
+                            ${request.status.toUpperCase()}
+                        </div>
+
+                    </div>
+
+                    ${
+                        request.status === "pending"
+                        ? `
+                            <div class="actions">
+
+                                <button
+                                    class="approve"
+                                    onclick="updateStatus(
+                                        '${request.id}',
+                                        'approved'
+                                    )"
+                                >
+                                    ✓ Approve
+                                </button>
+
+                                <button
+                                    class="reject"
+                                    onclick="updateStatus(
+                                        '${request.id}',
+                                        'rejected'
+                                    )"
+                                >
+                                    ✕ Reject
+                                </button>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+// ===============================
+// APPROVE / REJECT
+// ===============================
+
+async function updateStatus(id, status) {
+
+    const text =
+        status === "approved"
+            ? "Approve this staff request?"
+            : "Reject this staff request?";
+
+    if (!confirm(text)) {
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("staff_requests")
+            .update({
+                status: status
+            })
+            .eq("id", id)
+            .eq("owner_id", ownerId);
+
+    if (error) {
+
+        alert(
+            "Could not update request: " +
+            error.message
+        );
+
+        return;
+    }
+
+    loadRequests();
+}
+
+
+// ===============================
+// MESSAGE
+// ===============================
+
+function showMessage(text, type) {
+
+    const message =
+        document.getElementById("message");
+
+    message.innerText = text;
+    message.className = type;
+    message.style.display = "block";
+
+    setTimeout(() => {
+        message.style.display = "none";
+    }, 3500);
+}
+
+
+// ===============================
+// SECURITY HTML
+// ===============================
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>

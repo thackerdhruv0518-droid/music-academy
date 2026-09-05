@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Add Student | Staff</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#1d2671,#c33764);
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    border-radius:22px;
+    padding:30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    color:#222;
+}
+
+.back-btn{
+    border:none;
+    background:#f2f2f2;
+    color:#7b2355;
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    background:white;
+}
+
+input:focus,
+select:focus{
+    border-color:#7b2355;
+}
+
+.save-btn{
+    width:100%;
+    border:none;
+    background:linear-gradient(135deg,#1d2671,#c33764);
+    color:white;
+    padding:14px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:8px;
+}
+
+.save-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.message{
+    display:none;
+    padding:12px;
+    border-radius:9px;
+    margin-bottom:18px;
+    font-size:14px;
+}
+
+.success{
+    background:#e9f8ef;
+    color:#18733b;
+}
+
+.error{
+    background:#fdecec;
+    color:#b42318;
+}
+
+.loading{
+    text-align:center;
+    color:#777;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .container{
+        padding:22px 18px;
+        border-radius:16px;
+    }
+
+    .header h1{
+        font-size:23px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>Add Student</h1>
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+        >
+            ← Back
+        </button>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading instruments and batches...
+    </div>
+
+
+    <!-- STUDENT NAME -->
+
+    <div class="form-group">
+
+        <label>
+            Student Full Name
+        </label>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter student name"
+        >
+
+    </div>
+
+
+    <!-- MOBILE -->
+
+    <div class="form-group">
+
+        <label>
+            Mobile Number
+        </label>
+
+        <input
+            type="tel"
+            id="mobile"
+            placeholder="Enter mobile number"
+        >
+
+    </div>
+
+
+    <!-- INSTRUMENT -->
+
+    <div class="form-group">
+
+        <label>
+            Instrument
+        </label>
+
+        <select id="instrument">
+
+            <option value="">
+                Select Instrument
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- BATCH -->
+
+    <div class="form-group">
+
+        <label>
+            Batch
+        </label>
+
+        <select id="batch">
+
+            <option value="">
+                Select Batch
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- FEES -->
+
+    <div class="form-group">
+
+        <label>
+            Monthly Fees Amount
+        </label>
+
+        <input
+            type="number"
+            id="fees"
+            placeholder="Enter monthly fees"
+            min="0"
+        >
+
+    </div>
+
+
+    <!-- JOINING DATE -->
+
+    <div class="form-group">
+
+        <label>
+            Joining Date
+        </label>
+
+        <input
+            type="date"
+            id="joiningDate"
+        >
+
+    </div>
+
+
+    <!-- SAVE -->
+
+    <button
+        class="save-btn"
+        id="saveBtn"
+        onclick="saveStudent()"
+    >
+
+        Save Student
+
+    </button>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   STAFF LOGIN
+========================= */
+
+let staffInfo = null;
+
+
+/* =========================
+   GET STAFF
+========================= */
+
+function getStaff(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "staffLogin"
+            );
+
+        if(!saved){
+
+            return null;
+
+        }
+
+        return JSON.parse(saved);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================
+   CHECK STAFF
+========================= */
+
+function checkStaff(){
+
+    staffInfo =
+        getStaff();
+
+    if(
+        !staffInfo ||
+        !staffInfo.id
+    ){
+
+        window.location.href =
+            "staff-login.html";
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+    box.textContent =
+        text;
+
+    box.className =
+        "message " +
+        type;
+
+    box.style.display =
+        "block";
+
+}
+
+
+/* =========================
+   LOAD DROPDOWNS
+========================= */
+
+async function loadDropdowns(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "staff_get_dropdowns",
+                {
+                    p_staff_id:
+                        staffInfo.id
+                }
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+            showMessage(
+                "Could not load instruments and batches.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            showMessage(
+                data?.message ||
+                "Staff access not approved.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const instruments =
+            Array.isArray(
+                data.instruments
+            )
+            ? data.instruments
+            : [];
+
+
+        const batches =
+            Array.isArray(
+                data.batches
+            )
+            ? data.batches
+            : [];
+
+
+        const instrumentSelect =
+            document.getElementById(
+                "instrument"
+            );
+
+
+        const batchSelect =
+            document.getElementById(
+                "batch"
+            );
+
+
+        /* INSTRUMENTS */
+
+        instruments.forEach(
+            function(item){
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    item.name;
+
+                option.textContent =
+                    item.name;
+
+                instrumentSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        /* BATCHES */
+
+        batches.forEach(
+            function(item){
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    item.name;
+
+                option.textContent =
+                    item.name;
+
+                batchSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Something went wrong while loading data.",
+            "error"
+        );
+
+    }
+    finally{
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================
+   SAVE STUDENT
+========================= */
+
+async function saveStudent(){
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const mobile =
+        document.getElementById(
+            "mobile"
+        ).value.trim();
+
+
+    const instrument =
+        document.getElementById(
+            "instrument"
+        ).value;
+
+
+    const batch =
+        document.getElementById(
+            "batch"
+        ).value;
+
+
+    const fees =
+        document.getElementById(
+            "fees"
+        ).value;
+
+
+    const joiningDate =
+        document.getElementById(
+            "joiningDate"
+        ).value;
+
+
+    /* VALIDATION */
+
+    if(!name){
+
+        showMessage(
+            "Please enter student name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!mobile){
+
+        showMessage(
+            "Please enter mobile number.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!instrument){
+
+        showMessage(
+            "Please select instrument.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!batch){
+
+        showMessage(
+            "Please select batch.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        fees === "" ||
+        Number(fees) < 0
+    ){
+
+        showMessage(
+            "Please enter valid fees amount.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!joiningDate){
+
+        showMessage(
+            "Please select joining date.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* DISABLE BUTTON */
+
+    const button =
+        document.getElementById(
+            "saveBtn"
+        );
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Saving...";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "staff_add_student",
+                {
+
+                    p_staff_id:
+                        staffInfo.id,
+
+                    p_full_name:
+                        name,
+
+                    p_mobile:
+                        mobile,
+
+                    p_instrument:
+                        instrument,
+
+                    p_batch:
+                        batch,
+
+                    p_fees:
+                        Number(fees),
+
+                    p_joining_date:
+                        joiningDate
+
+                }
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+            showMessage(
+                error.message ||
+                "Student could not be saved.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            showMessage(
+                data?.message ||
+                "Student could not be saved.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        showMessage(
+            "Student added successfully!",
+            "success"
+        );
+
+
+        /* CLEAR FORM */
+
+        document.getElementById(
+            "studentName"
+        ).value = "";
+
+
+        document.getElementById(
+            "mobile"
+        ).value = "";
+
+
+        document.getElementById(
+            "instrument"
+        ).value = "";
+
+
+        document.getElementById(
+            "batch"
+        ).value = "";
+
+
+        document.getElementById(
+            "fees"
+        ).value = "";
+
+
+        document.getElementById(
+            "joiningDate"
+        ).value = "";
+
+
+        /*
+         * Open Staff Student Details
+         * after a short delay.
+         */
+
+        setTimeout(
+            function(){
+
+                window.location.href =
+                    "student-details.html";
+
+            },
+            900
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Something went wrong.",
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Save Student";
+
+    }
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function goBack(){
+
+    window.location.href =
+        "staff-dashboard.html";
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+if(checkStaff()){
+
+    loadDropdowns();
+
+}
+
+</script>
+
+
+</body>
+
+</html>

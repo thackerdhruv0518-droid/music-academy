@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Add Student - Music Academy</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      padding: 25px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #171d4f, #7b2355);
+      color: white;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      margin-top: 5px;
+      color: #ddd;
+      font-size: 14px;
+    }
+
+    .back-btn {
+      padding: 11px 20px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 9px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: #222;
+      margin-bottom: 25px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.10);
+    }
+
+    .button-area {
+      margin-top: 30px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .save-btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .save-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .clear-btn {
+      width: 150px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f5f5f5;
+      color: #333;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #message {
+      display: none;
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 9px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .success {
+      display: block !important;
+      background: #e5f8ea;
+      color: #16803c;
+    }
+
+    .error {
+      display: block !important;
+      background: #ffe5e5;
+      color: #c62828;
+    }
+
+    .manage-note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    @media (max-width: 700px) {
+
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        padding: 25px 20px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+
+      .content {
+        padding: 25px 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .button-area {
+        flex-direction: column;
+      }
+
+      .clear-btn {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <div class="header-left">
+
+        <div class="logo">
+          🎵
+        </div>
+
+        <div>
+
+          <h1>
+            Add Student
+          </h1>
+
+          <p>
+            Music Academy Student Management
+          </p>
+
+        </div>
+
+      </div>
+
+      <button
+        class="back-btn"
+        onclick="goDashboard()">
+
+        ← Dashboard
+
+      </button>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+      <h2 class="section-title">
+        Student Details
+      </h2>
+
+
+      <div class="form-grid">
+
+
+        <!-- FULL NAME -->
+
+        <div class="form-group full">
+
+          <label>
+            Student Full Name *
+          </label>
+
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Enter student full name"
+            autocomplete="off">
+
+        </div>
+
+
+        <!-- MOBILE -->
+
+        <div class="form-group">
+
+          <label>
+            Mobile Number *
+          </label>
+
+          <input
+            type="tel"
+            id="mobile"
+            placeholder="Enter mobile number"
+            maxlength="15"
+            autocomplete="off">
+
+        </div>
+
+
+        <!-- INSTRUMENT -->
+
+        <div class="form-group">
+
+          <label>
+            Instrument *
+          </label>
+
+          <select id="instrument">
+
+            <option value="">
+              Loading instruments...
+            </option>
+
+          </select>
+
+          <div class="manage-note">
+            Add instruments from Settings.
+          </div>
+
+        </div>
+
+
+        <!-- BATCH -->
+
+        <div class="form-group">
+
+          <label>
+            Batch *
+          </label>
+
+          <select id="batch">
+
+            <option value="">
+              Loading batches...
+            </option>
+
+          </select>
+
+          <div class="manage-note">
+            Add batches from Settings.
+          </div>
+
+        </div>
+
+
+        <!-- FEES -->
+
+        <div class="form-group">
+
+          <label>
+            Monthly Fees *
+          </label>
+
+          <input
+            type="number"
+            id="fees"
+            placeholder="Enter monthly fees"
+            min="0"
+            step="0.01">
+
+        </div>
+
+
+        <!-- JOINING DATE -->
+
+        <div class="form-group">
+
+          <label>
+            Joining Date *
+          </label>
+
+          <input
+            type="date"
+            id="joiningDate">
+
+        </div>
+
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="button-area">
+
+        <button
+          class="save-btn"
+          id="saveBtn">
+
+          💾 Save Student
+
+        </button>
+
+        <button
+          class="clear-btn"
+          id="clearBtn">
+
+          Clear
+
+        </button>
+
+      </div>
+
+
+      <div id="message"></div>
+
+
+    </div>
+
+  </div>
+
+
+<script>
+
+
+  // ==========================================
+  // ELEMENTS
+  // ==========================================
+
+  const fullNameInput =
+    document.getElementById("fullName");
+
+  const mobileInput =
+    document.getElementById("mobile");
+
+  const instrumentInput =
+    document.getElementById("instrument");
+
+  const batchInput =
+    document.getElementById("batch");
+
+  const feesInput =
+    document.getElementById("fees");
+
+  const joiningDateInput =
+    document.getElementById("joiningDate");
+
+  const saveBtn =
+    document.getElementById("saveBtn");
+
+  const clearBtn =
+    document.getElementById("clearBtn");
+
+  const message =
+    document.getElementById("message");
+
+
+  // ==========================================
+  // TODAY DATE
+  // ==========================================
+
+  joiningDateInput.value =
+    new Date().toISOString().split("T")[0];
+
+
+  // ==========================================
+  // MESSAGE
+  // ==========================================
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className = "";
+
+    message.classList.add(type);
+
+  }
+
+
+  // ==========================================
+  // DASHBOARD
+  // ==========================================
+
+  function goDashboard() {
+
+    window.location.href =
+      "dashboard.html";
+
+  }
+
+
+  // ==========================================
+  // CHECK OWNER
+  // ==========================================
+
+  async function checkOwner() {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (
+      error ||
+      !data ||
+      !data.session
+    ) {
+
+      window.location.href =
+        "owner-login.html";
+
+      return null;
+
+    }
+
+
+    const user =
+      data.session.user;
+
+
+    const {
+      data: profile,
+      error: profileError
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select("id, role")
+        .eq("id", user.id)
+        .single();
+
+
+    if (
+      profileError ||
+      !profile ||
+      profile.role !== "owner"
+    ) {
+
+      window.location.href =
+        "owner-login.html";
+
+      return null;
+
+    }
+
+
+    return user;
+
+  }
+
+
+  // ==========================================
+  // LOAD INSTRUMENTS
+  // ==========================================
+
+  async function loadInstruments(user) {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("instruments")
+        .select("id, name")
+        .eq("owner_id", user.id)
+        .order("name");
+
+
+    if (error) {
+
+      console.error(error);
+
+      instrumentInput.innerHTML = `
+        <option value="">
+          Could not load instruments
+        </option>
+      `;
+
+      return;
+
+    }
+
+
+    instrumentInput.innerHTML = `
+      <option value="">
+        Select Instrument
+      </option>
+    `;
+
+
+    if (!data || data.length === 0) {
+
+      instrumentInput.innerHTML = `
+        <option value="">
+          No instruments added
+        </option>
+      `;
+
+      return;
+
+    }
+
+
+    data.forEach(item => {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        item.name;
+
+      option.textContent =
+        item.name;
+
+      instrumentInput.appendChild(option);
+
+    });
+
+  }
+
+
+  // ==========================================
+  // LOAD BATCHES
+  // ==========================================
+
+  async function loadBatches(user) {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("batches")
+        .select("id, name")
+        .eq("owner_id", user.id)
+        .order("name");
+
+
+    if (error) {
+
+      console.error(error);
+
+      batchInput.innerHTML = `
+        <option value="">
+          Could not load batches
+        </option>
+      `;
+
+      return;
+
+    }
+
+
+    batchInput.innerHTML = `
+      <option value="">
+        Select Batch
+      </option>
+    `;
+
+
+    if (!data || data.length === 0) {
+
+      batchInput.innerHTML = `
+        <option value="">
+          No batches added
+        </option>
+      `;
+
+      return;
+
+    }
+
+
+    data.forEach(item => {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        item.name;
+
+      option.textContent =
+        item.name;
+
+      batchInput.appendChild(option);
+
+    });
+
+  }
+
+
+  // ==========================================
+  // CLEAR FORM
+  // ==========================================
+
+  clearBtn.addEventListener(
+    "click",
+    function() {
+
+      fullNameInput.value = "";
+
+      mobileInput.value = "";
+
+      instrumentInput.value = "";
+
+      batchInput.value = "";
+
+      feesInput.value = "";
+
+      joiningDateInput.value =
+        new Date().toISOString().split("T")[0];
+
+      message.className = "";
+
+      message.textContent = "";
+
+    }
+  );
+
+
+  // ==========================================
+  // SAVE STUDENT
+  // ==========================================
+
+  saveBtn.addEventListener(
+    "click",
+    async function() {
+
+
+      const fullName =
+        fullNameInput.value.trim();
+
+      const mobile =
+        mobileInput.value.trim();
+
+      const instrument =
+        instrumentInput.value;
+
+      const batch =
+        batchInput.value;
+
+      const fees =
+        feesInput.value.trim();
+
+      const joiningDate =
+        joiningDateInput.value;
+
+
+      // VALIDATION
+
+      if (!fullName) {
+
+        showMessage(
+          "Please enter student full name.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (!mobile) {
+
+        showMessage(
+          "Please enter mobile number.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (!instrument) {
+
+        showMessage(
+          "Please select instrument.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (!batch) {
+
+        showMessage(
+          "Please select batch.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        fees === "" ||
+        Number(fees) < 0
+      ) {
+
+        showMessage(
+          "Please enter valid monthly fees.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (!joiningDate) {
+
+        showMessage(
+          "Please select joining date.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      saveBtn.disabled = true;
+
+      saveBtn.textContent =
+        "Saving Student...";
+
+
+      try {
+
+
+        // SESSION
+
+        const {
+          data: sessionData,
+          error: sessionError
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
+
+
+        if (
+          sessionError ||
+          !sessionData ||
+          !sessionData.session
+        ) {
+
+          window.location.href =
+            "owner-login.html";
+
+          return;
+
+        }
+
+
+        const user =
+          sessionData.session.user;
+
+
+        // SAVE
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("students")
+            .insert({
+
+              owner_id:
+                user.id,
+
+              full_name:
+                fullName,
+
+              mobile_number:
+                mobile,
+
+              instrument:
+                instrument,
+
+              batch:
+                batch,
+
+              fees_amount:
+                Number(fees),
+
+              joining_date:
+                joiningDate
+
+            });
+
+
+        if (error) {
+
+          console.error(error);
+
+          throw new Error(
+            error.message
+          );
+
+        }
+
+
+        showMessage(
+          "Student saved successfully! 🎉",
+          "success"
+        );
+
+
+        // CLEAR
+
+        fullNameInput.value = "";
+
+        mobileInput.value = "";
+
+        instrumentInput.value = "";
+
+        batchInput.value = "";
+
+        feesInput.value = "";
+
+        joiningDateInput.value =
+          new Date().toISOString().split("T")[0];
+
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Could not save student.",
+          "error"
+        );
+
+      }
+
+
+      saveBtn.disabled = false;
+
+      saveBtn.textContent =
+        "💾 Save Student";
+
+    }
+  );
+
+
+  // ==========================================
+  // START PAGE
+  // ==========================================
+
+  async function startPage() {
+
+    const user =
+      await checkOwner();
+
+    if (!user) return;
+
+
+    // IMPORTANT:
+    // Settings માંથી options load થશે
+
+    await loadInstruments(user);
+
+    await loadBatches(user);
+
+  }
+
+
+  startPage();
+
+
+</script>
+
+</body>
+
+</html>

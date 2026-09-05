@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Music Academy</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            padding: 20px;
+
+        }
+
+
+        /* =========================================
+           MAIN PAGE
+        ========================================= */
+
+        .page {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            min-height: 650px;
+
+            margin: auto;
+
+            background: white;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            display: grid;
+
+            grid-template-columns: 290px 1fr;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.25);
+
+        }
+
+
+        /* =========================================
+           LEFT SIDE
+        ========================================= */
+
+        .left {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #171d4f,
+                    #7b2355
+                );
+
+            color: white;
+
+            padding: 38px 28px;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .logo-circle {
+
+            width: 76px;
+
+            height: 76px;
+
+            background: white;
+
+            color: #7b2355;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 36px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 20px
+                rgba(0,0,0,.15);
+
+        }
+
+
+        .logo-circle img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+        }
+
+
+        .left h1 {
+
+            font-size: 28px;
+
+            margin: 0 0 9px;
+
+            line-height: 1.2;
+
+        }
+
+
+        .left p {
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            opacity: .88;
+
+            margin: 0;
+
+        }
+
+
+        /* =========================================
+           MENU
+        ========================================= */
+
+        .academy-menu {
+
+            margin-top: 34px;
+
+        }
+
+
+        .menu-item {
+
+            padding: 13px 15px;
+
+            margin-bottom: 8px;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            transition: .2s;
+
+        }
+
+
+        .menu-item:hover {
+
+            background:
+                rgba(255,255,255,.12);
+
+            transform:
+                translateX(2px);
+
+        }
+
+
+        .menu-item.active {
+
+            background:
+                rgba(255,255,255,.18);
+
+        }
+
+
+        .left-bottom {
+
+            margin-top: auto;
+
+            font-size: 12px;
+
+            opacity: .65;
+
+        }
+
+
+        /* =========================================
+           RIGHT SIDE
+        ========================================= */
+
+        .right {
+
+            padding: 38px;
+
+            overflow-y: auto;
+
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+
+            gap: 15px;
+
+        }
+
+
+        .topbar h2 {
+
+            margin: 0;
+
+            font-size: 29px;
+
+            color: #222;
+
+        }
+
+
+        .owner {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-top: 6px;
+
+        }
+
+
+        .logout {
+
+            border: none;
+
+            background: #f5f3f6;
+
+            color: #7b2355;
+
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+        }
+
+
+        .logout:hover {
+
+            background: #ece8ec;
+
+        }
+
+
+        /* =========================================
+           MONTH BAR
+        ========================================= */
+
+        .month-bar {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7f2ff,
+                    #fff0f7
+                );
+
+            border:
+                1px solid #eadcf0;
+
+            border-radius: 15px;
+
+            padding: 13px 17px;
+
+            margin-bottom: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+        }
+
+
+        .month-title {
+
+            color: #6c5875;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .month-value {
+
+            color: #7b2355;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================================
+           STATISTICS
+        ========================================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .stat-card {
+
+            border-radius: 17px;
+
+            padding: 19px;
+
+            min-height: 155px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: .2s;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,.10);
+
+        }
+
+
+        .stat-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+
+            height: 80px;
+
+            border-radius: 50%;
+
+            right: -28px;
+
+            bottom: -30px;
+
+            background:
+                rgba(255,255,255,.28);
+
+        }
+
+
+        .students-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ede9fe,
+                    #ddd6fe
+                );
+
+            border:
+                1px solid #d8cef9;
+
+        }
+
+
+        .total-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fce7f3,
+                    #fbcfe8
+                );
+
+            border:
+                1px solid #f4c5dc;
+
+        }
+
+
+        .received-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dcfce7,
+                    #bbf7d0
+                );
+
+            border:
+                1px solid #bce6c9;
+
+        }
+
+
+        .balance-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fee2e2,
+                    #fecaca
+                );
+
+            border:
+                1px solid #f3c1c1;
+
+        }
+
+
+        .stat-icon {
+
+            font-size: 27px;
+
+            margin-bottom: 11px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .stat-title {
+
+            color: #766b7c;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            letter-spacing: .3px;
+
+            margin-bottom: 7px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .stat-value {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            color: #302733;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .stat-sub {
+
+            color: #847989;
+
+            font-size: 11px;
+
+            margin-top: 6px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* =========================================
+           MANAGEMENT
+        ========================================= */
+
+        .section-title {
+
+            font-size: 21px;
+
+            color: #222;
+
+            margin-bottom: 15px;
+
+            font-weight: bold;
+
+        }
+
+
+        .management {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .action-card {
+
+            border:
+                1px solid #eeeeee;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+            background: white;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .action-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 9px 23px
+                rgba(0,0,0,.08);
+
+            border-color:
+                #7b2355;
+
+        }
+
+
+        .action-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 14px;
+
+            background:
+                #f7f1fa;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 24px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .action-card h3 {
+
+            margin: 0 0 6px;
+
+            color: #222;
+
+            font-size: 17px;
+
+        }
+
+
+        .action-card p {
+
+            margin: 0;
+
+            color: #777;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .action-arrow {
+
+            position: absolute;
+
+            right: 18px;
+
+            top: 20px;
+
+            color: #aaa;
+
+            font-size: 20px;
+
+        }
+
+
+        /* =========================================
+           LOADING
+        ========================================= */
+
+        .loading {
+
+            opacity: .45;
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width: 1000px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media(max-width: 850px) {
+
+            .page {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .left {
+
+                padding: 30px;
+
+            }
+
+
+            .academy-menu {
+
+                display: none;
+
+            }
+
+
+            .left-bottom {
+
+                margin-top: 20px;
+
+            }
+
+
+            .right {
+
+                padding: 30px;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            body {
+
+                padding: 0;
+
+            }
+
+
+            .page {
+
+                border-radius: 0;
+
+                min-height: 100vh;
+
+            }
+
+
+            .right {
+
+                padding: 22px;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .management {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .topbar {
+
+                align-items: flex-start;
+
+            }
+
+
+            .topbar h2 {
+
+                font-size: 24px;
+
+            }
+
+
+            .month-bar {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- =========================================
+         LEFT
+    ========================================== -->
+
+    <div class="left">
+
+
+        <div
+            class="logo-circle"
+            id="academyLogo">
+
+            🎵
+
+        </div>
+
+
+        <h1 id="academyName">
+
+            Music Academy
+
+        </h1>
+
+
+        <p>
+
+            Professional academy management
+            system for students, fees and
+            payments.
+
+        </p>
+
+
+        <div class="academy-menu">
+
+
+            <div
+                class="menu-item active"
+                onclick="openPage('dashboard.html')">
+
+                🏠 Dashboard
+
+            </div>
+
+
+            <div
+                class="menu-item"
+                onclick="openPage('add-student.html')">
+
+                ➕ Add Student
+
+            </div>
+
+
+            <div
+                class="menu-item"
+                onclick="openPage('student-details.html')">
+
+                👨‍🎓 Student Details
+
+            </div>
+
+
+            <div
+                class="menu-item"
+                onclick="openPage('fees.html')">
+
+                🧾 Fees Receipts
+
+            </div>
+
+
+            <div
+                class="menu-item"
+                onclick="openPage('settings.html')">
+
+                ⚙️ Settings
+
+            </div>
+
+
+        </div>
+
+
+        <div class="left-bottom">
+
+            Owner Dashboard
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RIGHT
+    ========================================== -->
+
+    <div class="right">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+
+            <div>
+
+                <h2>
+                    Dashboard
+                </h2>
+
+
+                <div class="owner">
+
+                    Welcome,
+                    <span id="ownerName">
+                        Owner
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="logout"
+                onclick="logout()">
+
+                LOGOUT
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- CURRENT MONTH -->
+
+        <div class="month-bar">
+
+            <div class="month-title">
+
+                Current Fee Month
+
+            </div>
+
+
+            <div
+                class="month-value"
+                id="currentMonth">
+
+                Loading...
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             STATISTICS
+        ====================================== -->
+
+        <div class="stats">
+
+
+            <!-- TOTAL STUDENTS -->
+
+            <div class="stat-card students-card">
+
+                <div class="stat-icon">
+                    👨‍🎓
+                </div>
+
+
+                <div class="stat-title">
+                    Total Students
+                </div>
+
+
+                <div
+                    class="stat-value"
+                    id="totalStudents">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-sub">
+                    Active students
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL MONTHLY FEES -->
+
+            <div class="stat-card total-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+
+                <div class="stat-title">
+                    Total Monthly Fees
+                </div>
+
+
+                <div
+                    class="stat-value"
+                    id="totalFees">
+
+                    ₹0
+
+                </div>
+
+
+                <div class="stat-sub">
+                    All students
+                </div>
+
+            </div>
+
+
+
+            <!-- RECEIVED -->
+
+            <div class="stat-card received-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+
+                <div class="stat-title">
+                    Received Fees
+                </div>
+
+
+                <div
+                    class="stat-value"
+                    id="receivedFees">
+
+                    ₹0
+
+                </div>
+
+
+                <div
+                    class="stat-sub"
+                    id="receivedLabel">
+
+                    Current month
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BALANCE -->
+
+            <div class="stat-card balance-card">
+
+                <div class="stat-icon">
+                    🔴
+                </div>
+
+
+                <div class="stat-title">
+                    Balance Due
+                </div>
+
+
+                <div
+                    class="stat-value"
+                    id="balanceFees">
+
+                    ₹0
+
+                </div>
+
+
+                <div
+                    class="stat-sub"
+                    id="balanceLabel">
+
+                    Current month
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             MANAGEMENT
+        ====================================== -->
+
+        <div class="section-title">
+
+            Management
+
+        </div>
+
+
+        <div class="management">
+
+
+            <!-- ADD STUDENT -->
+
+            <div
+                class="action-card"
+                onclick="openPage('add-student.html')">
+
+
+                <div class="action-icon">
+                    ➕
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+
+                <h3>
+                    Add Student
+                </h3>
+
+
+                <p>
+                    Add a new student with
+                    complete details.
+                </p>
+
+
+            </div>
+
+
+
+            <!-- STUDENT DETAILS -->
+
+            <div
+                class="action-card"
+                onclick="openPage('student-details.html')">
+
+
+                <div class="action-icon">
+                    👨‍🎓
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+
+                <h3>
+                    Student Details
+                </h3>
+
+
+                <p>
+                    View students batch-wise
+                    and manage student details.
+                </p>
+
+
+            </div>
+
+
+
+            <!-- FEES -->
+
+            <div
+                class="action-card"
+                onclick="openPage('fees.html')">
+
+
+                <div class="action-icon">
+                    🧾
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+
+                <h3>
+                    Fees Receipts
+                </h3>
+
+
+                <p>
+                    Manage fees, payments and
+                    generate student receipts.
+                </p>
+
+
+            </div>
+
+
+
+            <!-- SETTINGS -->
+
+            <div
+                class="action-card"
+                onclick="openPage('settings.html')">
+
+
+                <div class="action-icon">
+                    ⚙️
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+
+                <h3>
+                    Settings
+                </h3>
+
+
+                <p>
+                    Manage academy and owner
+                    information.
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   GLOBAL USER
+========================================= */
+
+let currentUser = null;
+
+
+
+/* =========================================
+   FORMAT MONEY
+========================================= */
+
+function formatMoney(amount) {
+
+    const number =
+        Number(amount) || 0;
+
+
+    return "₹" +
+        number.toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+
+/* =========================================
+   CURRENT MONTH
+========================================= */
+
+function getCurrentMonth() {
+
+    return new Date().getMonth() + 1;
+
+}
+
+
+function getCurrentYear() {
+
+    return new Date().getFullYear();
+
+}
+
+
+
+/* =========================================
+   MONTH NAME
+========================================= */
+
+function getMonthName(month, year) {
+
+    return new Date(
+        year,
+        month - 1,
+        1
+    ).toLocaleString(
+        "en-IN",
+        {
+            month: "long"
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   CHECK OWNER LOGIN
+========================================= */
+
+async function checkLogin() {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (
+        error ||
+        !data ||
+        !data.session
+    ) {
+
+        window.location.href =
+            "owner-login.html";
+
+        return null;
+
+    }
+
+
+    const session =
+        data.session;
+
+
+    const {
+        data: profile,
+        error: profileError
+    } =
+    await supabaseClient
+        .from("profiles")
+        .select(
+            "id,full_name,role"
+        )
+        .eq(
+            "id",
+            session.user.id
+        )
+        .maybeSingle();
+
+
+    if (profileError) {
+
+        console.error(
+            "Profile error:",
+            profileError
+        );
+
+        alert(
+            "Could not load Owner profile."
+        );
+
+        return null;
+
+    }
+
+
+    if (
+        !profile ||
+        profile.role !== "owner"
+    ) {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+
+        window.location.href =
+            "owner-login.html";
+
+        return null;
+
+    }
+
+
+    currentUser =
+        session.user;
+
+
+    document
+        .getElementById("ownerName")
+        .textContent =
+            profile.full_name ||
+            "Owner";
+
+
+    return session;
+
+}
+
+
+
+/* =========================================
+   LOAD ACADEMY SETTINGS
+========================================= */
+
+async function loadAcademySettings() {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("academy_settings")
+        .select(
+            "class_name,owner_name,logo_url"
+        )
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Academy settings error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (!data) {
+
+        return;
+
+    }
+
+
+    /* ACADEMY NAME */
+
+    if (data.class_name) {
+
+        document
+            .getElementById("academyName")
+            .textContent =
+                data.class_name;
+
+    }
+
+
+    /* OWNER NAME */
+
+    if (data.owner_name) {
+
+        document
+            .getElementById("ownerName")
+            .textContent =
+                data.owner_name;
+
+    }
+
+
+    /* LOGO */
+
+    if (data.logo_url) {
+
+        const logo =
+            document.getElementById(
+                "academyLogo"
+            );
+
+
+        logo.innerHTML = "";
+
+
+        const img =
+            document.createElement(
+                "img"
+            );
+
+
+        img.src =
+            data.logo_url;
+
+
+        img.alt =
+            "Academy Logo";
+
+
+        logo.appendChild(img);
+
+    }
+
+}
+
+
+
+/* =========================================
+   LOAD DASHBOARD DATA
+========================================= */
+
+async function loadDashboard() {
+
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+
+    /* LOADING */
+
+    document
+        .getElementById("totalStudents")
+        .classList.add("loading");
+
+
+    document
+        .getElementById("totalFees")
+        .classList.add("loading");
+
+
+    document
+        .getElementById("receivedFees")
+        .classList.add("loading");
+
+
+    document
+        .getElementById("balanceFees")
+        .classList.add("loading");
+
+
+
+    /* =====================================
+       CURRENT MONTH
+    ====================================== */
+
+    const month =
+        getCurrentMonth();
+
+
+    const year =
+        getCurrentYear();
+
+
+    const monthName =
+        getMonthName(
+            month,
+            year
+        );
+
+
+    document
+        .getElementById("currentMonth")
+        .textContent =
+            monthName +
+            " " +
+            year;
+
+
+    document
+        .getElementById("receivedLabel")
+        .textContent =
+            monthName +
+            " " +
+            year;
+
+
+    document
+        .getElementById("balanceLabel")
+        .textContent =
+            monthName +
+            " " +
+            year;
+
+
+
+    /* =====================================
+       GET STUDENTS
+    ====================================== */
+
+    const {
+        data: students,
+        error: studentError
+    } =
+    await supabaseClient
+        .from("students")
+        .select(
+            "id,fees_amount"
+        )
+        .eq(
+            "owner_id",
+            currentUser.id
+        );
+
+
+    let studentList =
+        students || [];
+
+
+    if (studentError) {
+
+        console.error(
+            "Students error:",
+            studentError
+        );
+
+        document
+            .getElementById("totalStudents")
+            .textContent =
+                "0";
+
+
+        document
+            .getElementById("totalFees")
+            .textContent =
+                "₹0";
+
+    }
+
+    else {
+
+
+        /* TOTAL STUDENTS */
+
+        document
+            .getElementById("totalStudents")
+            .textContent =
+                studentList.length;
+
+
+
+        /* TOTAL MONTHLY FEES */
+
+        let totalMonthlyFees =
+            0;
+
+
+        studentList.forEach(
+            function(student) {
+
+                totalMonthlyFees +=
+                    Number(
+                        student.fees_amount
+                    ) || 0;
+
+            }
+        );
+
+
+        document
+            .getElementById("totalFees")
+            .textContent =
+                formatMoney(
+                    totalMonthlyFees
+                );
+
+    }
+
+
+
+    /* =====================================
+       GET CURRENT MONTH FEES
+    ====================================== */
+
+    const {
+        data: fees,
+        error: feeError
+    } =
+    await supabaseClient
+        .from("fees")
+        .select(
+            "monthly_amount,paid_amount"
+        )
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .eq(
+            "fees_month",
+            month
+        )
+        .eq(
+            "fees_year",
+            year
+        );
+
+
+    let feeList =
+        fees || [];
+
+
+    if (feeError) {
+
+        console.error(
+            "Fees error:",
+            feeError
+        );
+
+
+        document
+            .getElementById("receivedFees")
+            .textContent =
+                "₹0";
+
+
+        document
+            .getElementById("balanceFees")
+            .textContent =
+                "₹0";
+
+    }
+
+    else {
+
+
+        let monthlyTotal =
+            0;
+
+
+        let receivedTotal =
+            0;
+
+
+        feeList.forEach(
+            function(fee) {
+
+
+                monthlyTotal +=
+                    Number(
+                        fee.monthly_amount
+                    ) || 0;
+
+
+                receivedTotal +=
+                    Number(
+                        fee.paid_amount
+                    ) || 0;
+
+            }
+        );
+
+
+        /* RECEIVED */
+
+        document
+            .getElementById("receivedFees")
+            .textContent =
+                formatMoney(
+                    receivedTotal
+                );
+
+
+        /* BALANCE */
+
+        const balanceTotal =
+            Math.max(
+                monthlyTotal -
+                receivedTotal,
+                0
+            );
+
+
+        document
+            .getElementById("balanceFees")
+            .textContent =
+                formatMoney(
+                    balanceTotal
+                );
+
+
+
+        /*
+         * If current month fee records
+         * exist, Total Monthly Fees
+         * will use them.
+         */
+
+        if (monthlyTotal > 0) {
+
+            document
+                .getElementById("totalFees")
+                .textContent =
+                    formatMoney(
+                        monthlyTotal
+                    );
+
+        }
+
+    }
+
+
+
+    /* =====================================
+       REMOVE LOADING
+    ====================================== */
+
+    document
+        .getElementById("totalStudents")
+        .classList.remove("loading");
+
+
+    document
+        .getElementById("totalFees")
+        .classList.remove("loading");
+
+
+    document
+        .getElementById("receivedFees")
+        .classList.remove("loading");
+
+
+    document
+        .getElementById("balanceFees")
+        .classList.remove("loading");
+
+}
+
+
+
+/* =========================================
+   OPEN PAGE
+========================================= */
+
+function openPage(page) {
+
+    window.location.href =
+        page;
+
+}
+
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout() {
+
+
+    const ok =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if (!ok) {
+
+        return;
+
+    }
+
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+
+    window.location.href =
+        "owner-login.html";
+
+}
+
+
+
+/* =========================================
+   START DASHBOARD
+========================================= */
+
+async function startDashboard() {
+
+
+    const session =
+        await checkLogin();
+
+
+    if (!session) {
+
+        return;
+
+    }
+
+
+    await loadAcademySettings();
+
+
+    await loadDashboard();
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+startDashboard();
+
+
+</script>
+
+
+</body>
+
+</html>

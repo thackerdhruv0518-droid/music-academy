@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Music Academy Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 25px;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1100px;
+
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 50px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.25);
+
+        }
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+
+        }
+
+        .logo {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 42px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            color: white;
+
+        }
+
+        h1 {
+
+            margin-bottom: 10px;
+
+            color: #222;
+
+            font-size: 36px;
+
+        }
+
+        .subtitle {
+
+            color: #777;
+
+            font-size: 17px;
+
+        }
+
+        .login-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+
+        }
+
+        .login-card {
+
+            border:
+                1px solid #eee;
+
+            border-radius: 18px;
+
+            padding: 35px 25px;
+
+            text-align: center;
+
+            transition: 0.3s;
+
+        }
+
+        .login-card:hover {
+
+            transform:
+                translateY(-8px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0,0,0,0.12);
+
+        }
+
+        .icon {
+
+            width: 75px;
+
+            height: 75px;
+
+            margin:
+                0 auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 34px;
+
+            background: #f4f5ff;
+
+        }
+
+        .login-card h2 {
+
+            color: #222;
+
+            margin-bottom: 12px;
+
+        }
+
+        .login-card p {
+
+            color: #777;
+
+            line-height: 1.6;
+
+            min-height: 50px;
+
+        }
+
+        button {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+        }
+
+        button:hover {
+
+            opacity: 0.9;
+
+        }
+
+        @media(max-width: 800px) {
+
+            .login-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+            .container {
+
+                padding: 30px 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <div class="logo">
+
+            🎵
+
+        </div>
+
+        <h1>
+
+            MUSIC ACADEMY
+
+        </h1>
+
+        <p class="subtitle">
+
+            Academy Management System
+
+        </p>
+
+    </div>
+
+
+
+    <div class="login-grid">
+
+
+        <!-- OWNER -->
+
+        <div class="login-card">
+
+            <div class="icon">
+
+                👑
+
+            </div>
+
+            <h2>
+
+                Owner Login
+
+            </h2>
+
+            <p>
+
+                Manage students, fees,
+                payments, staff and
+                academy settings.
+
+            </p>
+
+            <button
+                onclick="window.location.href='owner-login.html'"
+            >
+
+                OWNER LOGIN
+
+            </button>
+
+        </div>
+
+
+
+        <!-- STAFF -->
+
+        <div class="login-card">
+
+            <div class="icon">
+
+                👨‍💼
+
+            </div>
+
+            <h2>
+
+                Staff Login
+
+            </h2>
+
+            <p>
+
+                Access academy functions
+                after approval from
+                the owner.
+
+            </p>
+
+            <button
+                onclick="window.location.href='staff.html'"
+            >
+
+                STAFF LOGIN
+
+            </button>
+
+        </div>
+
+
+
+        <!-- STUDENT -->
+
+        <div class="login-card">
+
+            <div class="icon">
+
+                🎓
+
+            </div>
+
+            <h2>
+
+                Student Login
+
+            </h2>
+
+            <p>
+
+                View student details,
+                fees and payment
+                history.
+
+            </p>
+
+            <button
+                onclick="window.location.href='student-login.html'"
+            >
+
+                STUDENT LOGIN
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

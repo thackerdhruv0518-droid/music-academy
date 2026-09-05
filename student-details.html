@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Details - Music Academy</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#29245f,#bd2863);
+}
+
+.container{
+    width:95%;
+    max-width:1250px;
+    margin:30px auto;
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.header{
+    background:linear-gradient(135deg,#20205b,#47205b);
+    color:white;
+    padding:30px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.logo-circle{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+}
+
+.header h1{
+    margin:0;
+    font-size:30px;
+}
+
+.header p{
+    margin:5px 0 0;
+    opacity:.9;
+}
+
+.back-btn{
+    border:1px solid rgba(255,255,255,.5);
+    background:rgba(255,255,255,.12);
+    color:white;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.content{
+    padding:35px;
+}
+
+.filters{
+    display:grid;
+    grid-template-columns:1fr 270px;
+    gap:16px;
+    margin-bottom:28px;
+}
+
+input,select{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:#6c63ff;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:24px;
+}
+
+.count{
+    color:#777;
+}
+
+.student-list{
+    display:grid;
+    gap:12px;
+}
+
+.student-card{
+    border:1px solid #e5e5e5;
+    border-radius:15px;
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:.2s;
+}
+
+.student-card:hover{
+    box-shadow:0 5px 18px rgba(0,0,0,.1);
+    transform:translateY(-1px);
+}
+
+.student-main{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.student-icon{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#eeeaff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.student-name{
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.student-info{
+    color:#777;
+    font-size:14px;
+}
+
+.student-actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:0;
+    padding:10px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.edit-btn{
+    background:#eeeaff;
+    color:#5148d8;
+}
+
+.delete-btn{
+    background:#ffe8e8;
+    color:#d33;
+}
+
+.empty{
+    text-align:center;
+    padding:50px 20px;
+    color:#777;
+}
+
+.loading{
+    text-align:center;
+    padding:40px;
+    color:#555;
+}
+
+.details-box{
+    display:none;
+}
+
+.details-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.detail-item{
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:15px;
+}
+
+.detail-label{
+    color:#777;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.detail-value{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.form-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+}
+
+.save-btn{
+    background:#5148d8;
+    color:white;
+}
+
+.cancel-btn{
+    background:#eee;
+}
+
+.staff-badge{
+    display:inline-block;
+    margin-top:8px;
+    padding:5px 10px;
+    background:#ffffff22;
+    border:1px solid #ffffff55;
+    border-radius:20px;
+    font-size:12px;
+}
+
+@media(max-width:700px){
+
+    .container{
+        width:100%;
+        margin:0;
+        border-radius:0;
+        min-height:100vh;
+    }
+
+    .header{
+        padding:22px;
+    }
+
+    .header h1{
+        font-size:23px;
+    }
+
+    .header p{
+        font-size:13px;
+    }
+
+    .content{
+        padding:20px;
+    }
+
+    .filters{
+        grid-template-columns:1fr;
+    }
+
+    .student-card{
+        align-items:flex-start;
+        gap:15px;
+        flex-direction:column;
+    }
+
+    .student-actions{
+        width:100%;
+    }
+
+    .student-actions button{
+        flex:1;
+    }
+
+    .details-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="header-left">
+
+            <div class="logo-circle">🎓</div>
+
+            <div>
+                <h1>Student Details</h1>
+                <p>Music Academy Student Management</p>
+                <div id="staffBadge" class="staff-badge" style="display:none;">
+                    Staff Access
+                </div>
+            </div>
+
+        </div>
+
+        <button class="back-btn" onclick="goBack()">
+            ← Back
+        </button>
+
+    </div>
+
+
+    <div class="content">
+
+        <!-- LIST SECTION -->
+
+        <div id="listSection">
+
+            <div class="filters">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔎 Search student name or mobile"
+                >
+
+                <select id="batchFilter">
+                    <option value="">All Batches</option>
+                </select>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>Students</h2>
+
+                <div class="count" id="studentCount">
+                    0 Students
+                </div>
+
+            </div>
+
+
+            <div id="loading" class="loading">
+                Loading students...
+            </div>
+
+            <div id="studentList" class="student-list"></div>
+
+        </div>
+
+
+        <!-- DETAILS SECTION -->
+
+        <div id="detailsSection" style="display:none;">
+
+            <div class="section-title">
+                <h2>Edit Student</h2>
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Student Full Name
+                    </div>
+
+                    <input id="editName">
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Mobile Number
+                    </div>
+
+                    <input id="editMobile">
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Instrument
+                    </div>
+
+                    <select id="editInstrument"></select>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Batch
+                    </div>
+
+                    <select id="editBatch"></select>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Monthly Fees
+                    </div>
+
+                    <input
+                        id="editFees"
+                        type="number"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Joining Date
+                    </div>
+
+                    <input
+                        id="editJoiningDate"
+                        type="date"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-buttons">
+
+                <button
+                    class="btn save-btn"
+                    onclick="saveStudent()"
+                >
+                    💾 Save Changes
+                </button>
+
+                <button
+                    class="btn cancel-btn"
+                    onclick="showList()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let students = [];
+let selectedStudent = null;
+
+let isStaff = false;
+let staffInfo = null;
+
+
+/* =========================
+   START
+========================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    checkStaff();
+
+});
+
+
+/* =========================
+   CHECK STAFF
+========================= */
+
+function checkStaff(){
+
+    try{
+
+        const saved = localStorage.getItem("staffLogin");
+
+        if(saved){
+
+            staffInfo = JSON.parse(saved);
+
+            if(
+                staffInfo &&
+                staffInfo.name &&
+                staffInfo.email &&
+                staffInfo.mobile
+            ){
+
+                isStaff = true;
+
+                document.getElementById("staffBadge").style.display =
+                    "inline-block";
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+    loadStudents();
+
+}
+
+
+/* =========================
+   LOAD STUDENTS
+========================= */
+
+async function loadStudents(){
+
+    document.getElementById("loading").style.display = "block";
+
+    document.getElementById("studentList").innerHTML = "";
+
+    try{
+
+        let data;
+        let error;
+
+
+        /* STAFF */
+
+        if(isStaff){
+
+            const result =
+                await supabaseClient.rpc(
+                    "staff_get_students_by_login",
+                    {
+                        p_name: staffInfo.name,
+                        p_email: staffInfo.email,
+                        p_mobile: staffInfo.mobile
+                    }
+                );
+
+            data = result.data;
+            error = result.error;
+
+        }
+
+
+        /* OWNER */
+
+        else{
+
+            const userResult =
+                await supabaseClient.auth.getUser();
+
+            const user = userResult.data.user;
+
+            if(!user){
+
+                alert("Please login again.");
+
+                window.location.href = "login.html";
+
+                return;
+
+            }
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .select("*")
+                    .eq("owner_id", user.id)
+                    .order("full_name");
+
+            data = result.data;
+            error = result.error;
+
+        }
+
+
+        if(error){
+
+            console.error(error);
+
+            document.getElementById("loading").innerHTML =
+                "❌ Error loading students";
+
+            return;
+
+        }
+
+
+        /* STAFF RPC */
+
+        if(isStaff){
+
+            if(!data || !data.success){
+
+                document.getElementById("loading").innerHTML =
+                    "❌ Staff access not approved";
+
+                return;
+
+            }
+
+            students = data.students || [];
+
+        }
+
+
+        /* OWNER */
+
+        else{
+
+            students = data || [];
+
+        }
+
+
+        document.getElementById("loading").style.display = "none";
+
+        createBatchFilter();
+
+        renderStudents();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        document.getElementById("loading").innerHTML =
+            "❌ Something went wrong";
+
+    }
+
+}
+
+
+/* =========================
+   BATCH FILTER
+========================= */
+
+function createBatchFilter(){
+
+    const select =
+        document.getElementById("batchFilter");
+
+    select.innerHTML =
+        `<option value="">All Batches</option>`;
+
+    const batches = [...new Set(
+        students
+            .map(s => s.batch)
+            .filter(Boolean)
+    )].sort();
+
+    batches.forEach(batch => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = batch;
+        option.textContent = batch;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderStudents(){
+
+    const list =
+        document.getElementById("studentList");
+
+    const search =
+        document.getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const batch =
+        document.getElementById("batchFilter").value;
+
+
+    const filtered =
+        students.filter(student => {
+
+            const name =
+                (student.full_name || "").toLowerCase();
+
+            const mobile =
+                (student.mobile_number || "").toLowerCase();
+
+            const studentBatch =
+                student.batch || "";
+
+            const matchSearch =
+                !search ||
+                name.includes(search) ||
+                mobile.includes(search);
+
+            const matchBatch =
+                !batch ||
+                studentBatch === batch;
+
+            return matchSearch && matchBatch;
+
+        });
+
+
+    document.getElementById("studentCount").textContent =
+        `${filtered.length} Students`;
+
+
+    if(filtered.length === 0){
+
+        list.innerHTML = `
+            <div class="empty">
+                <div style="font-size:45px;">👨‍🎓</div>
+                <h3>No students found</h3>
+                <p>Students added by the owner will appear here.</p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML = filtered.map(student => `
+
+        <div class="student-card">
+
+            <div class="student-main">
+
+                <div class="student-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <div class="student-name">
+                        ${escapeHtml(student.full_name || "No Name")}
+                    </div>
+
+                    <div class="student-info">
+                        📱 ${escapeHtml(student.mobile_number || "-")}
+                        &nbsp; | &nbsp;
+                        🎵 ${escapeHtml(student.instrument || "-")}
+                        &nbsp; | &nbsp;
+                        🕐 ${escapeHtml(student.batch || "-")}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="student-actions">
+
+                <button
+                    class="btn edit-btn"
+                    onclick="editStudent('${student.id}')"
+                >
+                    ✏️ Edit
+                </button>
+
+                <button
+                    class="btn delete-btn"
+                    onclick="deleteStudent('${student.id}')"
+                >
+                    🗑️ Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+function editStudent(id){
+
+    selectedStudent =
+        students.find(s => s.id === id);
+
+    if(!selectedStudent) return;
+
+
+    document.getElementById("listSection").style.display =
+        "none";
+
+    document.getElementById("detailsSection").style.display =
+        "block";
+
+
+    document.getElementById("editName").value =
+        selectedStudent.full_name || "";
+
+    document.getElementById("editMobile").value =
+        selectedStudent.mobile_number || "";
+
+    document.getElementById("editFees").value =
+        selectedStudent.fees_amount || "";
+
+    document.getElementById("editJoiningDate").value =
+        selectedStudent.joining_date || "";
+
+
+    loadEditDropdowns();
+
+}
+
+
+/* =========================
+   DROPDOWNS
+========================= */
+
+async function loadEditDropdowns(){
+
+    const instrumentSelect =
+        document.getElementById("editInstrument");
+
+    const batchSelect =
+        document.getElementById("editBatch");
+
+
+    let instruments = [];
+    let batches = [];
+
+
+    if(isStaff){
+
+        const result =
+            await supabaseClient.rpc(
+                "staff_get_dropdowns",
+                {
+                    p_staff_id: staffInfo.id
+                }
+            );
+
+        if(result.data && result.data.success){
+
+            instruments =
+                result.data.instruments || [];
+
+            batches =
+                result.data.batches || [];
+
+        }
+
+    }
+    else{
+
+        const userResult =
+            await supabaseClient.auth.getUser();
+
+        const user = userResult.data.user;
+
+        if(user){
+
+            const iResult =
+                await supabaseClient
+                    .from("instruments")
+                    .select("*")
+                    .eq("owner_id", user.id)
+                    .order("name");
+
+            const bResult =
+                await supabaseClient
+                    .from("batches")
+                    .select("*")
+                    .eq("owner_id", user.id)
+                    .order("name");
+
+            instruments =
+                iResult.data || [];
+
+            batches =
+                bResult.data || [];
+
+        }
+
+    }
+
+
+    instrumentSelect.innerHTML = "";
+
+    instruments.forEach(item => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = item.name;
+        option.textContent = item.name;
+
+        instrumentSelect.appendChild(option);
+
+    });
+
+
+    batchSelect.innerHTML = "";
+
+    batches.forEach(item => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = item.name;
+        option.textContent = item.name;
+
+        batchSelect.appendChild(option);
+
+    });
+
+
+    instrumentSelect.value =
+        selectedStudent.instrument || "";
+
+    batchSelect.value =
+        selectedStudent.batch || "";
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+async function saveStudent(){
+
+    if(!selectedStudent) return;
+
+
+    const name =
+        document.getElementById("editName").value.trim();
+
+    const mobile =
+        document.getElementById("editMobile").value.trim();
+
+    const instrument =
+        document.getElementById("editInstrument").value;
+
+    const batch =
+        document.getElementById("editBatch").value;
+
+    const fees =
+        Number(document.getElementById("editFees").value || 0);
+
+    const joiningDate =
+        document.getElementById("editJoiningDate").value;
+
+
+    if(!name){
+
+        alert("Student name is required.");
+
+        return;
+
+    }
+
+
+    try{
+
+        let result;
+
+
+        if(isStaff){
+
+            result =
+                await supabaseClient.rpc(
+                    "staff_update_student",
+                    {
+                        p_staff_id: staffInfo.id,
+                        p_student_id: selectedStudent.id,
+                        p_full_name: name,
+                        p_mobile: mobile,
+                        p_instrument: instrument,
+                        p_batch: batch,
+                        p_fees: fees,
+                        p_joining_date: joiningDate
+                    }
+                );
+
+        }
+        else{
+
+            result =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        full_name: name,
+                        mobile_number: mobile,
+                        instrument: instrument,
+                        batch: batch,
+                        fees_amount: fees,
+                        joining_date: joiningDate
+                    })
+                    .eq("id", selectedStudent.id);
+
+        }
+
+
+        if(result.error){
+
+            alert("❌ Update failed");
+
+            console.error(result.error);
+
+            return;
+
+        }
+
+
+        if(isStaff && !result.data?.success){
+
+            alert(
+                "❌ " +
+                (result.data?.message || "Update failed")
+            );
+
+            return;
+
+        }
+
+
+        alert("✅ Student updated successfully.");
+
+        showList();
+
+        loadStudents();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert("❌ Something went wrong.");
+
+    }
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+async function deleteStudent(id){
+
+    const student =
+        students.find(s => s.id === id);
+
+    if(!student) return;
+
+
+    const confirmDelete =
+        confirm(
+            `Delete ${student.full_name}?`
+        );
+
+    if(!confirmDelete) return;
+
+
+    try{
+
+        let result;
+
+
+        if(isStaff){
+
+            result =
+                await supabaseClient.rpc(
+                    "staff_delete_student",
+                    {
+                        p_staff_id: staffInfo.id,
+                        p_student_id: id
+                    }
+                );
+
+        }
+        else{
+
+            result =
+                await supabaseClient
+                    .from("students")
+                    .delete()
+                    .eq("id", id);
+
+        }
+
+
+        if(result.error){
+
+            alert("❌ Delete failed");
+
+            console.error(result.error);
+
+            return;
+
+        }
+
+
+        if(isStaff && !result.data?.success){
+
+            alert(
+                "❌ " +
+                (result.data?.message || "Delete failed")
+            );
+
+            return;
+
+        }
+
+
+        alert("✅ Student deleted successfully.");
+
+        loadStudents();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert("❌ Something went wrong.");
+
+    }
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        renderStudents
+    );
+
+
+document
+    .getElementById("batchFilter")
+    .addEventListener(
+        "change",
+        renderStudents
+    );
+
+
+/* =========================
+   SHOW LIST
+========================= */
+
+function showList(){
+
+    document.getElementById("detailsSection").style.display =
+        "none";
+
+    document.getElementById("listSection").style.display =
+        "block";
+
+    selectedStudent = null;
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function goBack(){
+
+    if(isStaff){
+
+        window.location.href =
+            "staff-dashboard.html";
+
+    }
+    else{
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

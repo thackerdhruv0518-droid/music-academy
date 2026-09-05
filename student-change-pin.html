@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Change PIN</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #292879 0%,
+                    #6c2d78 45%,
+                    #bd2d68 100%
+                );
+
+            padding: 35px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 500px;
+        }
+
+        .card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,0.25);
+        }
+
+        .top {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .title-area h1 {
+
+            font-size: 27px;
+
+            color: #111827;
+
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .back-button {
+
+            border: none;
+
+            background: #f1f1f1;
+
+            color: #9b245e;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+
+            background: #e5e5e5;
+        }
+
+        .student-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3e8ff,
+                    #fce7f3
+                );
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            margin-bottom: 25px;
+        }
+
+        .student-label {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+        .student-name {
+
+            color: #111827;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+        .form-group {
+
+            margin-bottom: 18px;
+        }
+
+        label {
+
+            display: block;
+
+            color: #111827;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        input {
+
+            width: 100%;
+
+            height: 50px;
+
+            border:
+                1px solid #d6d6d6;
+
+            border-radius: 11px;
+
+            padding: 0 14px;
+
+            font-size: 16px;
+
+            outline: none;
+
+            background: white;
+
+            letter-spacing: 4px;
+        }
+
+        input:focus {
+
+            border-color: #8a2d72;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(138,45,114,0.10);
+        }
+
+        .change-button {
+
+            width: 100%;
+
+            height: 50px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            margin-top: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #292879,
+                    #bd2d68
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .change-button:hover {
+
+            opacity: 0.95;
+        }
+
+        .change-button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+        .message {
+
+            display: none;
+
+            padding: 13px 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .message.show {
+
+            display: block;
+        }
+
+        .message.error {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .message.success {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .info {
+
+            margin-top: 20px;
+
+            background: #f8fafc;
+
+            border-radius: 11px;
+
+            padding: 14px;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            text-align: center;
+        }
+
+        .footer {
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.8);
+
+            font-size: 12px;
+
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 20px 12px;
+            }
+
+            .card {
+
+                padding: 25px 20px;
+
+                border-radius: 20px;
+            }
+
+            .title-area h1 {
+
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+
+        <!-- HEADER -->
+
+        <div class="top">
+
+            <div class="title-area">
+
+                <h1>
+                    Change PIN
+                </h1>
+
+                <div class="subtitle">
+                    Update your student login PIN
+                </div>
+
+            </div>
+
+
+            <button
+                class="back-button"
+                onclick="goBack()">
+
+                ← Back
+
+            </button>
+
+        </div>
+
+
+        <!-- STUDENT -->
+
+        <div class="student-box">
+
+            <div class="student-label">
+                Student
+            </div>
+
+            <div
+                class="student-name"
+                id="studentName">
+
+                Student
+
+            </div>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- CURRENT PIN -->
+
+        <div class="form-group">
+
+            <label>
+                Current PIN
+            </label>
+
+            <input
+                type="password"
+                id="currentPin"
+                maxlength="4"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="Enter current PIN">
+
+        </div>
+
+
+        <!-- NEW PIN -->
+
+        <div class="form-group">
+
+            <label>
+                New 4-Digit PIN
+            </label>
+
+            <input
+                type="password"
+                id="newPin"
+                maxlength="4"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="Enter new PIN">
+
+        </div>
+
+
+        <!-- CONFIRM PIN -->
+
+        <div class="form-group">
+
+            <label>
+                Confirm New PIN
+            </label>
+
+            <input
+                type="password"
+                id="confirmPin"
+                maxlength="4"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="Confirm new PIN">
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <button
+            id="changeButton"
+            class="change-button"
+            onclick="changePin()">
+
+            Change PIN
+
+        </button>
+
+
+        <div class="info">
+
+            Your PIN must contain exactly
+            4 digits.
+
+            <br>
+
+            After changing the PIN,
+            you can use the new PIN
+            for your next login.
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        Music Academy Management
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+// ============================================
+// GLOBAL
+// ============================================
+
+let studentData = null;
+
+
+// ============================================
+// PAGE LOAD
+// ============================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadStudent();
+
+        setupInputs();
+
+    }
+);
+
+
+// ============================================
+// LOAD STUDENT
+// ============================================
+
+function loadStudent() {
+
+    const savedStudent =
+        localStorage.getItem(
+            "studentLogin"
+        );
+
+
+    if (!savedStudent) {
+
+        window.location.href =
+            "student-login.html";
+
+        return;
+
+    }
+
+
+    try {
+
+        studentData =
+            JSON.parse(
+                savedStudent
+            );
+
+
+        if (
+            !studentData ||
+            !studentData.id
+        ) {
+
+            throw new Error(
+                "Invalid student"
+            );
+
+        }
+
+
+        document.getElementById(
+            "studentName"
+        ).innerText =
+            studentData.full_name ||
+            "Student";
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        localStorage.removeItem(
+            "studentLogin"
+        );
+
+        localStorage.removeItem(
+            "studentSessionToken"
+        );
+
+        window.location.href =
+            "student-login.html";
+
+    }
+
+}
+
+
+// ============================================
+// INPUTS
+// ============================================
+
+function setupInputs() {
+
+    const inputs = [
+
+        document.getElementById(
+            "currentPin"
+        ),
+
+        document.getElementById(
+            "newPin"
+        ),
+
+        document.getElementById(
+            "confirmPin"
+        )
+
+    ];
+
+
+    inputs.forEach(
+        function (input) {
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                        .replace(
+                            /[^0-9]/g,
+                            ""
+                        )
+                        .slice(
+                            0,
+                            4
+                        );
+
+                }
+            );
+
+            input.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key ===
+                        "Enter"
+                    ) {
+
+                        changePin();
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// CHANGE PIN
+// ============================================
+
+async function changePin() {
+
+    if (!studentData || !studentData.id) {
+
+        showMessage(
+            "Student information is not available.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const currentPin =
+        document.getElementById(
+            "currentPin"
+        ).value.trim();
+
+
+    const newPin =
+        document.getElementById(
+            "newPin"
+        ).value.trim();
+
+
+    const confirmPin =
+        document.getElementById(
+            "confirmPin"
+        ).value.trim();
+
+
+    // CURRENT PIN
+
+    if (
+        !/^[0-9]{4}$/.test(
+            currentPin
+        )
+    ) {
+
+        showMessage(
+            "Please enter your current 4-digit PIN.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // NEW PIN
+
+    if (
+        !/^[0-9]{4}$/.test(
+            newPin
+        )
+    ) {
+
+        showMessage(
+            "New PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // CONFIRM PIN
+
+    if (
+        newPin !== confirmPin
+    ) {
+
+        showMessage(
+            "New PIN and Confirm PIN do not match.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // SAME PIN
+
+    if (
+        currentPin === newPin
+    ) {
+
+        showMessage(
+            "New PIN must be different from your current PIN.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    hideMessage();
+
+
+    const button =
+        document.getElementById(
+            "changeButton"
+        );
+
+
+    button.disabled = true;
+
+    button.innerText =
+        "Changing PIN...";
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "change_student_pin",
+                {
+                    p_student_id:
+                        studentData.id,
+
+                    p_current_pin:
+                        currentPin,
+
+                    p_new_pin:
+                        newPin
+                }
+            );
+
+
+        if (error) {
+
+            console.error(error);
+
+            showMessage(
+                error.message ||
+                "Unable to change PIN.",
+                "error"
+            );
+
+            button.disabled = false;
+
+            button.innerText =
+                "Change PIN";
+
+            return;
+
+        }
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            showMessage(
+                data?.message ||
+                "Unable to change PIN.",
+                "error"
+            );
+
+            button.disabled = false;
+
+            button.innerText =
+                "Change PIN";
+
+            return;
+
+        }
+
+
+        showMessage(
+            "PIN changed successfully.",
+            "success"
+        );
+
+
+        document.getElementById(
+            "currentPin"
+        ).value = "";
+
+        document.getElementById(
+            "newPin"
+        ).value = "";
+
+        document.getElementById(
+            "confirmPin"
+        ).value = "";
+
+
+        button.disabled = false;
+
+        button.innerText =
+            "Change PIN";
+
+
+        setTimeout(
+            function () {
+
+                window.location.href =
+                    "student-dashboard.html";
+
+            },
+            1200
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Something went wrong. Please try again.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.innerText =
+            "Change PIN";
+
+    }
+
+}
+
+
+// ============================================
+// BACK
+// ============================================
+
+function goBack() {
+
+    window.location.href =
+        "student-dashboard.html";
+
+}
+
+
+// ============================================
+// MESSAGE
+// ============================================
+
+function showMessage(
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            "message"
+        );
+
+
+    element.innerText =
+        message;
+
+
+    element.className =
+        "message show " +
+        type;
+
+}
+
+
+function hideMessage() {
+
+    const element =
+        document.getElementById(
+            "message"
+        );
+
+
+    element.className =
+        "message";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

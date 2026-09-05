@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Staff Dashboard | Music Academy</title>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1d2671,
+            #c33764
+        );
+
+    padding:20px;
+
+}
+
+
+/* =========================
+   MAIN PAGE
+========================= */
+
+.page{
+
+    width:100%;
+
+    max-width:1200px;
+
+    min-height:650px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    display:grid;
+
+    grid-template-columns:300px 1fr;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.25);
+
+}
+
+
+/* =========================
+   LEFT SIDE
+========================= */
+
+.left{
+
+    background:
+        linear-gradient(
+            135deg,
+            #171d4f,
+            #7b2355
+        );
+
+    color:white;
+
+    padding:40px 30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+.logo-circle{
+
+    width:75px;
+
+    height:75px;
+
+    background:white;
+
+    color:#7b2355;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:36px;
+
+    margin-bottom:20px;
+
+    overflow:hidden;
+
+}
+
+
+.logo-circle img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+.left h1{
+
+    font-size:30px;
+
+    margin:0 0 10px;
+
+}
+
+
+.left p{
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    opacity:.9;
+
+}
+
+
+.academy-menu{
+
+    margin-top:35px;
+
+}
+
+
+.menu-item{
+
+    padding:13px 15px;
+
+    margin-bottom:8px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:.2s;
+
+}
+
+
+.menu-item:hover{
+
+    background:
+        rgba(255,255,255,.12);
+
+}
+
+
+.menu-item.active{
+
+    background:
+        rgba(255,255,255,.18);
+
+}
+
+
+.left-bottom{
+
+    margin-top:auto;
+
+    font-size:12px;
+
+    opacity:.7;
+
+}
+
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.right{
+
+    padding:40px;
+
+    overflow-y:auto;
+
+}
+
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+
+.topbar h2{
+
+    margin:0;
+
+    font-size:30px;
+
+    color:#222;
+
+}
+
+
+.staff-info{
+
+    color:#777;
+
+    font-size:14px;
+
+    margin-top:6px;
+
+}
+
+
+.logout{
+
+    border:none;
+
+    background:#f2f2f2;
+
+    color:#7b2355;
+
+    padding:10px 15px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+
+.logout:hover{
+
+    background:#ececec;
+
+}
+
+
+/* =========================
+   WELCOME BOX
+========================= */
+
+.welcome-box{
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f9ff,
+            #fff3f7
+        );
+
+    border:1px solid #eeeeee;
+
+    border-radius:15px;
+
+    padding:24px;
+
+    margin-bottom:30px;
+
+}
+
+
+.welcome-box h3{
+
+    margin:0 0 8px;
+
+    font-size:21px;
+
+    color:#222;
+
+}
+
+
+.welcome-box p{
+
+    margin:0;
+
+    color:#777;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+
+    margin-bottom:30px;
+
+}
+
+
+.stat-card{
+
+    border:1px solid #eeeeee;
+
+    border-radius:15px;
+
+    padding:22px;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.05);
+
+}
+
+
+.stat-icon{
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+}
+
+
+.stat-title{
+
+    color:#777;
+
+    font-size:13px;
+
+    margin-bottom:8px;
+
+}
+
+
+.stat-value{
+
+    font-size:27px;
+
+    font-weight:bold;
+
+    color:#222;
+
+}
+
+
+.stat-sub{
+
+    color:#999;
+
+    font-size:12px;
+
+    margin-top:6px;
+
+}
+
+
+/* =========================
+   MANAGEMENT
+========================= */
+
+.section-title{
+
+    font-size:21px;
+
+    color:#222;
+
+    margin-bottom:15px;
+
+}
+
+
+.management{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+
+.action-card{
+
+    border:1px solid #eeeeee;
+
+    border-radius:13px;
+
+    padding:20px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    background:white;
+
+}
+
+
+.action-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(0,0,0,.08);
+
+    border-color:#7b2355;
+
+}
+
+
+.action-icon{
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+}
+
+
+.action-card h3{
+
+    margin:0 0 6px;
+
+    color:#222;
+
+    font-size:17px;
+
+}
+
+
+.action-card p{
+
+    margin:0;
+
+    color:#777;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================
+   DISABLED
+========================= */
+
+.disabled-card{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+
+.disabled-card:hover{
+
+    transform:none;
+
+    box-shadow:none;
+
+    border-color:#eeeeee;
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+
+    opacity:.5;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:850px){
+
+    body{
+
+        padding:10px;
+
+    }
+
+
+    .page{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .left{
+
+        padding:30px;
+
+    }
+
+
+    .academy-menu{
+
+        display:none;
+
+    }
+
+
+    .left-bottom{
+
+        margin-top:20px;
+
+    }
+
+
+    .stats{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:550px){
+
+    body{
+
+        padding:0;
+
+    }
+
+
+    .page{
+
+        border-radius:0;
+
+        min-height:100vh;
+
+    }
+
+
+    .left{
+
+        padding:25px;
+
+    }
+
+
+    .right{
+
+        padding:25px 18px;
+
+    }
+
+
+    .stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .management{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .topbar{
+
+        align-items:flex-start;
+
+        gap:12px;
+
+    }
+
+
+    .topbar h2{
+
+        font-size:24px;
+
+    }
+
+
+    .logout{
+
+        padding:9px 12px;
+
+        font-size:12px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+<!-- =========================
+     LEFT
+========================= -->
+
+<div class="left">
+
+
+    <div
+        class="logo-circle"
+        id="academyLogo"
+    >
+
+        🎵
+
+    </div>
+
+
+    <h1 id="academyName">
+
+        Music Academy
+
+    </h1>
+
+
+    <p>
+
+        Staff management panel for
+        students, fees and receipts.
+
+    </p>
+
+
+    <div class="academy-menu">
+
+
+        <div
+            class="menu-item active"
+            onclick="openPage('staff-dashboard.html')"
+        >
+
+            🏠 Dashboard
+
+        </div>
+
+
+        <div
+            class="menu-item"
+            onclick="openPage('staff-add-student.html')"
+        >
+
+            ➕ Add Student
+
+        </div>
+
+
+        <div
+            class="menu-item"
+            onclick="openPage('student-details.html')"
+        >
+
+            👨‍🎓 Student Details
+
+        </div>
+
+
+        <div
+            class="menu-item"
+            onclick="openPage('fees.html')"
+        >
+
+            💰 Fees
+
+        </div>
+
+
+        <div
+            class="menu-item"
+            onclick="openPage('fees.html')"
+        >
+
+            🧾 Fee Receipts
+
+        </div>
+
+
+    </div>
+
+
+    <div class="left-bottom">
+
+        Staff Dashboard
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================
+     RIGHT
+========================= -->
+
+<div class="right">
+
+
+    <div class="topbar">
+
+
+        <div>
+
+            <h2>
+
+                Staff Dashboard
+
+            </h2>
+
+
+            <div class="staff-info">
+
+                Welcome,
+                <span id="staffName">
+                    Staff
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+
+            LOGOUT
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         WELCOME
+    ========================== -->
+
+    <div class="welcome-box">
+
+
+        <h3>
+
+            Welcome to Staff Panel 👋
+
+        </h3>
+
+
+        <p>
+
+            You can manage students,
+            fees and fee receipts from
+            this dashboard.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         STATISTICS
+    ========================== -->
+
+    <div class="stats">
+
+
+        <!-- TOTAL STUDENTS -->
+
+        <div class="stat-card">
+
+
+            <div class="stat-icon">
+
+                👨‍🎓
+
+            </div>
+
+
+            <div class="stat-title">
+
+                Total Students
+
+            </div>
+
+
+            <div
+                class="stat-value"
+                id="totalStudents"
+            >
+
+                0
+
+            </div>
+
+
+            <div class="stat-sub">
+
+                Active students
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- MONTHLY FEES -->
+
+        <div class="stat-card">
+
+
+            <div class="stat-icon">
+
+                💰
+
+            </div>
+
+
+            <div class="stat-title">
+
+                Monthly Fees
+
+            </div>
+
+
+            <div
+                class="stat-value"
+                id="monthlyFees"
+            >
+
+                ₹0
+
+            </div>
+
+
+            <div
+                class="stat-sub"
+                id="monthlyLabel"
+            >
+
+                Current month
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RECEIVED -->
+
+        <div class="stat-card">
+
+
+            <div class="stat-icon">
+
+                ✅
+
+            </div>
+
+
+            <div class="stat-title">
+
+                Received Fees
+
+            </div>
+
+
+            <div
+                class="stat-value"
+                id="receivedFees"
+            >
+
+                ₹0
+
+            </div>
+
+
+            <div
+                class="stat-sub"
+                id="receivedLabel"
+            >
+
+                Current month
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         MANAGEMENT
+    ========================== -->
+
+    <div class="section-title">
+
+        Management
+
+    </div>
+
+
+    <div class="management">
+
+
+        <!-- ADD STUDENT -->
+
+        <div
+            class="action-card"
+            onclick="openPage('staff-add-student.html')"
+        >
+
+            <div class="action-icon">
+
+                ➕
+
+            </div>
+
+
+            <h3>
+
+                Add Student
+
+            </h3>
+
+
+            <p>
+
+                Add a new student with
+                complete details.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STUDENT DETAILS -->
+
+        <div
+            class="action-card"
+            onclick="openPage('student-details.html')"
+        >
+
+            <div class="action-icon">
+
+                👨‍🎓
+
+            </div>
+
+
+            <h3>
+
+                Student Details
+
+            </h3>
+
+
+            <p>
+
+                View students batch-wise
+                and manage student details.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEES -->
+
+        <div
+            class="action-card"
+            onclick="openPage('fees.html')"
+        >
+
+            <div class="action-icon">
+
+                💰
+
+            </div>
+
+
+            <h3>
+
+                Fees
+
+            </h3>
+
+
+            <p>
+
+                Manage student fees and
+                record payments.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- RECEIPTS -->
+
+        <div
+            class="action-card"
+            onclick="openPage('fees.html')"
+        >
+
+            <div class="action-icon">
+
+                🧾
+
+            </div>
+
+
+            <h3>
+
+                Fee Receipts
+
+            </h3>
+
+
+            <p>
+
+                Open fees and generate
+                student fee receipts.
+
+            </p>
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   STAFF INFORMATION
+========================= */
+
+let staffInfo = null;
+
+
+/* =========================
+   GET STAFF LOGIN
+========================= */
+
+function getStaffLogin(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "staffLogin"
+            );
+
+
+        if(!saved){
+
+            return null;
+
+        }
+
+
+        return JSON.parse(
+            saved
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================
+   CHECK STAFF LOGIN
+========================= */
+
+function checkStaffLogin(){
+
+    staffInfo =
+        getStaffLogin();
+
+
+    if(
+        !staffInfo ||
+        !staffInfo.id
+    ){
+
+        window.location.href =
+            "staff-login.html";
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================
+   FORMAT MONEY
+========================= */
+
+function formatMoney(amount){
+
+    const number =
+        Number(amount) || 0;
+
+
+    return "₹" +
+        number.toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits:0,
+                maximumFractionDigits:2
+            }
+        );
+
+}
+
+
+/* =========================
+   CURRENT MONTH
+========================= */
+
+function getCurrentMonth(){
+
+    return new Date().getMonth() + 1;
+
+}
+
+
+/* =========================
+   CURRENT YEAR
+========================= */
+
+function getCurrentYear(){
+
+    return new Date().getFullYear();
+
+}
+
+
+/* =========================
+   MONTH NAME
+========================= */
+
+function getMonthName(month){
+
+    const months = [
+
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+
+    ];
+
+
+    return months[
+        month - 1
+    ] || "";
+
+}
+
+
+/* =========================
+   SHOW STAFF NAME
+========================= */
+
+function showStaffName(){
+
+    document.getElementById(
+        "staffName"
+    ).textContent =
+        staffInfo.name ||
+        "Staff";
+
+}
+
+
+/* =========================
+   LOAD ACADEMY SETTINGS
+========================= */
+
+async function loadAcademySettings(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "staff_get_academy_settings",
+                {
+                    p_staff_id:
+                        staffInfo.id
+                }
+            );
+
+
+        /*
+         * If this RPC does not exist,
+         * dashboard will still work.
+         */
+
+        if(error){
+
+            console.log(
+                "Academy settings RPC not available."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            return;
+
+        }
+
+
+        const academy =
+            data.academy ||
+            {};
+
+
+        if(academy.class_name){
+
+            document.getElementById(
+                "academyName"
+            ).textContent =
+                academy.class_name;
+
+        }
+
+
+        if(academy.logo_url){
+
+            const logo =
+                document.getElementById(
+                    "academyLogo"
+                );
+
+
+            logo.innerHTML = "";
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+
+            img.src =
+                academy.logo_url;
+
+
+            img.alt =
+                "Academy Logo";
+
+
+            logo.appendChild(
+                img
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.log(
+            "Academy settings not loaded.",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOAD STUDENT COUNT
+========================= */
+
+async function loadStudentCount(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "staff_get_students_by_login",
+                {
+
+                    p_name:
+                        staffInfo.name || "",
+
+                    p_email:
+                        staffInfo.email || "",
+
+                    p_mobile:
+                        staffInfo.mobile || ""
+
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                "Student count error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            return;
+
+        }
+
+
+        const students =
+            Array.isArray(
+                data.students
+            )
+            ? data.students
+            : [];
+
+
+        document.getElementById(
+            "totalStudents"
+        ).textContent =
+            students.length;
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================
+   LOAD FEES
+========================= */
+
+async function loadFees(){
+
+    try{
+
+        const month =
+            getCurrentMonth();
+
+
+        const year =
+            getCurrentYear();
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "staff_get_fees",
+                {
+
+                    p_staff_id:
+                        staffInfo.id,
+
+                    p_month:
+                        month,
+
+                    p_year:
+                        year
+
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                "Fees dashboard error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            return;
+
+        }
+
+
+        const fees =
+            Array.isArray(
+                data.fees
+            )
+            ? data.fees
+            : [];
+
+
+        let monthlyTotal =
+            0;
+
+
+        let received =
+            0;
+
+
+        fees.forEach(
+            function(fee){
+
+                monthlyTotal +=
+                    Number(
+                        fee.monthly_amount
+                    ) || 0;
+
+
+                received +=
+                    Number(
+                        fee.paid_amount
+                    ) || 0;
+
+            }
+        );
+
+
+        document.getElementById(
+            "monthlyFees"
+        ).textContent =
+            formatMoney(
+                monthlyTotal
+            );
+
+
+        document.getElementById(
+            "receivedFees"
+        ).textContent =
+            formatMoney(
+                received
+            );
+
+
+        const monthText =
+            getMonthName(month) +
+            " " +
+            year;
+
+
+        document.getElementById(
+            "monthlyLabel"
+        ).textContent =
+            monthText;
+
+
+        document.getElementById(
+            "receivedLabel"
+        ).textContent =
+            monthText;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================
+   OPEN PAGE
+========================= */
+
+function openPage(page){
+
+    window.location.href =
+        page;
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    const ok =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if(!ok){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "staffLogin"
+    );
+
+
+    window.location.href =
+        "staff-login.html";
+
+}
+
+
+/* =========================
+   START DASHBOARD
+========================= */
+
+async function startDashboard(){
+
+    if(!checkStaffLogin()){
+
+        return;
+
+    }
+
+
+    showStaffName();
+
+
+    await loadAcademySettings();
+
+
+    await loadStudentCount();
+
+
+    await loadFees();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+startDashboard();
+
+</script>
+
+
+</body>
+
+</html>

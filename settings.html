@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - Music Academy</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            padding: 25px;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            min-height: calc(100vh - 50px);
+        }
+
+        /* HEADER */
+
+        .header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, #171d4f, #7b2355);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            color: #20234d;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .section-subtitle {
+            color: #777;
+            font-size: 13px;
+            margin-top: -8px;
+            margin-bottom: 18px;
+        }
+
+        /* CARDS */
+
+        .card {
+            background: #fff;
+            border: 1px solid #e8e8ee;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus {
+            border-color: #5d5fef;
+            box-shadow: 0 0 0 3px rgba(93,95,239,0.10);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            color: white;
+        }
+
+        .btn-success {
+            background: #16803c;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #eee;
+            color: #333;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .save-row {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* PREVIEW */
+
+        .preview-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .preview-box {
+            width: 180px;
+            min-height: 130px;
+            border: 1px dashed #ccc;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 90px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .preview-label {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        /* MANAGEMENT */
+
+        .add-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .add-row input {
+            flex: 1;
+        }
+
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            background: #f7f7fb;
+            border: 1px solid #e8e8ee;
+            padding: 12px 14px;
+            border-radius: 10px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .delete-small {
+            border: none;
+            background: #ffe8e8;
+            color: #d32f2f;
+            border-radius: 7px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* STAFF */
+
+        .staff-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 18px;
+            border: 1px solid #e5e5ed;
+            border-radius: 13px;
+            margin-bottom: 10px;
+            background: #fafaff;
+        }
+
+        .staff-info h3 {
+            color: #25274d;
+            margin-bottom: 5px;
+        }
+
+        .staff-info p {
+            font-size: 13px;
+            color: #777;
+            margin: 3px 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .pending {
+            background: #fff4d6;
+            color: #9a6b00;
+        }
+
+        .approved {
+            background: #e4f7ea;
+            color: #16803c;
+        }
+
+        .rejected {
+            background: #ffe7e7;
+            color: #c62828;
+        }
+
+        .staff-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* PIN */
+
+        .pin-box {
+            max-width: 450px;
+        }
+
+        .pin-note {
+            background: #f3f4ff;
+            padding: 12px;
+            border-radius: 10px;
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* LOGOUT */
+
+        .logout-section {
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+            margin-top: 10px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 11px;
+            background: #d32f2f;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* MESSAGE */
+
+        #message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .msg-success {
+            background: #16803c;
+        }
+
+        .msg-error {
+            background: #d32f2f;
+        }
+
+        /* LOADING */
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                min-height: calc(100vh - 20px);
+                border-radius: 16px;
+            }
+
+            .header {
+                padding: 18px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .item-list {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .staff-actions {
+                width: 100%;
+            }
+
+            .staff-actions .btn {
+                flex: 1;
+            }
+
+            .add-row {
+                flex-direction: column;
+            }
+
+            .save-row {
+                justify-content: stretch;
+            }
+
+            .save-row .btn {
+                width: 100%;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="header-left">
+
+            <button
+                class="back-btn"
+                onclick="window.location.href='dashboard.html'">
+                ←
+            </button>
+
+            <div>
+                <h1>⚙️ Settings</h1>
+                <p>Manage your Music Academy</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="content">
+
+
+        <!-- ACADEMY DETAILS -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🏫 Academy Details
+            </div>
+
+            <div class="section-subtitle">
+                Update your class and owner information.
+            </div>
+
+            <div class="card">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Class Name</label>
+
+                        <input
+                            type="text"
+                            id="className"
+                            placeholder="Music Academy">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Owner Name</label>
+
+                        <input
+                            type="text"
+                            id="ownerName"
+                            placeholder="Owner Name">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Owner Mobile</label>
+
+                        <input
+                            type="tel"
+                            id="ownerMobile"
+                            placeholder="Mobile Number">
+
+                    </div>
+
+                </div>
+
+
+                <div class="save-row">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="saveAcademyDetails()">
+                        💾 Save Academy Details
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOGO AND SIGNATURE -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🖼️ Logo & Signature
+            </div>
+
+            <div class="section-subtitle">
+                These will also be used on Fee Receipts.
+            </div>
+
+            <div class="card">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Class Logo</label>
+
+                        <input
+                            type="file"
+                            id="logoFile"
+                            accept="image/*">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Owner Signature</label>
+
+                        <input
+                            type="file"
+                            id="signatureFile"
+                            accept="image/*">
+
+                    </div>
+
+                </div>
+
+
+                <div class="preview-row">
+
+                    <div class="preview-box">
+
+                        <div class="preview-label">
+                            Current Logo
+                        </div>
+
+                        <img
+                            id="logoPreview"
+                            style="display:none;">
+
+                        <div id="logoEmpty">
+                            No logo
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview-box">
+
+                        <div class="preview-label">
+                            Current Signature
+                        </div>
+
+                        <img
+                            id="signaturePreview"
+                            style="display:none;">
+
+                        <div id="signatureEmpty">
+                            No signature
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="save-row">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="uploadAssets()">
+                        ⬆️ Upload Images
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STAFF ACCESS -->
+
+        <div class="section">
+
+            <div class="section-title">
+                👥 Staff Access Requests
+            </div>
+
+            <div class="section-subtitle">
+                Approve or reject staff members who requested access.
+            </div>
+
+            <div class="card">
+
+                <div id="staffRequests">
+                    <div class="loading">
+                        Loading staff requests...
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INSTRUMENTS -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🎵 Instruments
+            </div>
+
+            <div class="section-subtitle">
+                Add or remove instruments used by your academy.
+            </div>
+
+            <div class="card">
+
+                <div class="add-row">
+
+                    <input
+                        type="text"
+                        id="instrumentName"
+                        placeholder="Example: Guitar">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="addInstrument()">
+                        + Add Instrument
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="instrumentList"
+                    class="item-list">
+
+                    <div class="loading">
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BATCHES -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🕐 Batches
+            </div>
+
+            <div class="section-subtitle">
+                Add or remove your academy batches.
+            </div>
+
+            <div class="card">
+
+                <div class="add-row">
+
+                    <input
+                        type="text"
+                        id="batchName"
+                        placeholder="Example: Morning Batch">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="addBatch()">
+                        + Add Batch
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="batchList"
+                    class="item-list">
+
+                    <div class="loading">
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- OWNER PIN -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🔐 Change Owner PIN
+            </div>
+
+            <div class="section-subtitle">
+                Change the 4-digit PIN used for Owner login.
+            </div>
+
+            <div class="card pin-box">
+
+                <div class="pin-note">
+                    Your PIN must contain exactly 4 numbers.
+                </div>
+
+                <div class="form-group">
+
+                    <label>New 4-Digit PIN</label>
+
+                    <input
+                        type="password"
+                        id="newPin"
+                        maxlength="4"
+                        inputmode="numeric"
+                        placeholder="••••">
+
+                </div>
+
+
+                <div style="margin-top:15px;">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="changePin()">
+                        🔐 Change PIN
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOGOUT -->
+
+        <div class="logout-section">
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+                🚪 Logout Owner
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div id="message"></div>
+
+
+<script>
+
+let currentUser = null;
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text, type = "success") {
+
+    const box = document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+        type === "success"
+            ? "msg-success"
+            : "msg-error";
+
+    box.style.display = "block";
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 3000);
+}
+
+
+/* =========================
+   AUTH CHECK
+========================= */
+
+async function checkOwner() {
+
+    const {
+        data: { session },
+        error
+    } = await supabaseClient.auth.getSession();
+
+    if (error || !session) {
+
+        window.location.href = "owner-login.html";
+        return false;
+    }
+
+    currentUser = session.user;
+
+    const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", currentUser.id)
+        .single();
+
+    if (!profile || profile.role !== "owner") {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "owner-login.html";
+
+        return false;
+    }
+
+    return true;
+}
+
+
+/* =========================
+   LOAD ACADEMY SETTINGS
+========================= */
+
+async function loadAcademySettings() {
+
+    const { data, error } = await supabaseClient
+        .from("academy_settings")
+        .select("*")
+        .eq("owner_id", currentUser.id)
+        .maybeSingle();
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+    }
+
+    if (!data) {
+        return;
+    }
+
+    document.getElementById("className").value =
+        data.class_name || "";
+
+    document.getElementById("ownerName").value =
+        data.owner_name || "";
+
+    document.getElementById("ownerMobile").value =
+        data.owner_mobile || "";
+
+
+    if (data.logo_url) {
+
+        const img = document.getElementById("logoPreview");
+
+        img.src = data.logo_url;
+
+        img.style.display = "block";
+
+        document.getElementById("logoEmpty")
+            .style.display = "none";
+    }
+
+
+    if (data.signature_url) {
+
+        const img = document.getElementById("signaturePreview");
+
+        img.src = data.signature_url;
+
+        img.style.display = "block";
+
+        document.getElementById("signatureEmpty")
+            .style.display = "none";
+    }
+
+}
+
+
+/* =========================
+   SAVE ACADEMY DETAILS
+========================= */
+
+async function saveAcademyDetails() {
+
+    const className =
+        document.getElementById("className").value.trim();
+
+    const ownerName =
+        document.getElementById("ownerName").value.trim();
+
+    const ownerMobile =
+        document.getElementById("ownerMobile").value.trim();
+
+
+    if (!className) {
+
+        showMessage(
+            "Please enter Class Name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const { error } = await supabaseClient
+        .from("academy_settings")
+        .upsert({
+
+            owner_id: currentUser.id,
+
+            class_name: className,
+
+            owner_name: ownerName,
+
+            owner_mobile: ownerMobile,
+
+            updated_at: new Date().toISOString()
+
+        }, {
+            onConflict: "owner_id"
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Could not save academy details: " + error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Academy details saved successfully."
+    );
+}
+
+
+/* =========================
+   UPLOAD ASSETS
+========================= */
+
+async function uploadAssets() {
+
+    const logoFile =
+        document.getElementById("logoFile").files[0];
+
+    const signatureFile =
+        document.getElementById("signatureFile").files[0];
+
+
+    if (!logoFile && !signatureFile) {
+
+        showMessage(
+            "Please select logo or signature.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    let logoUrl = null;
+    let signatureUrl = null;
+
+
+    if (logoFile) {
+
+        const extension =
+            logoFile.name.split(".").pop();
+
+        const filePath =
+            currentUser.id +
+            "/logo." +
+            extension;
+
+
+        const { error } =
+            await supabaseClient.storage
+                .from("academy-assets")
+                .upload(
+                    filePath,
+                    logoFile,
+                    {
+                        upsert: true
+                    }
+                );
+
+
+        if (error) {
+
+            showMessage(
+                "Logo upload failed: " + error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        const { data } =
+            supabaseClient.storage
+                .from("academy-assets")
+                .getPublicUrl(filePath);
+
+
+        logoUrl = data.publicUrl;
+    }
+
+
+    if (signatureFile) {
+
+        const extension =
+            signatureFile.name.split(".").pop();
+
+        const filePath =
+            currentUser.id +
+            "/signature." +
+            extension;
+
+
+        const { error } =
+            await supabaseClient.storage
+                .from("academy-assets")
+                .upload(
+                    filePath,
+                    signatureFile,
+                    {
+                        upsert: true
+                    }
+                );
+
+
+        if (error) {
+
+            showMessage(
+                "Signature upload failed: " + error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        const { data } =
+            supabaseClient.storage
+                .from("academy-assets")
+                .getPublicUrl(filePath);
+
+
+        signatureUrl = data.publicUrl;
+    }
+
+
+    const updateData = {
+
+        owner_id: currentUser.id,
+
+        updated_at:
+            new Date().toISOString()
+
+    };
+
+
+    if (logoUrl) {
+        updateData.logo_url = logoUrl;
+    }
+
+    if (signatureUrl) {
+        updateData.signature_url = signatureUrl;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("academy_settings")
+            .upsert(
+                updateData,
+                {
+                    onConflict: "owner_id"
+                }
+            );
+
+
+    if (error) {
+
+        showMessage(
+            "Could not save image details: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Images uploaded successfully."
+    );
+
+    await loadAcademySettings();
+}
+
+
+/* =========================
+   INSTRUMENTS
+========================= */
+
+async function loadInstruments() {
+
+    const list =
+        document.getElementById("instrumentList");
+
+    list.innerHTML =
+        '<div class="loading">Loading...</div>';
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("instruments")
+            .select("id,name")
+            .eq("owner_id", currentUser.id)
+            .order("created_at", {
+                ascending: true
+            });
+
+
+    if (error) {
+
+        list.innerHTML =
+            "<div>Unable to load instruments.</div>";
+
+        console.error(error);
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        list.innerHTML =
+            "<div>No instruments added yet.</div>";
+
+        return;
+    }
+
+
+    list.innerHTML = data.map(item => `
+
+        <div class="item">
+
+            <div class="item-name">
+                ${escapeHtml(item.name)}
+            </div>
+
+            <button
+                class="delete-small"
+                onclick="deleteInstrument('${item.id}')">
+                Delete
+            </button>
+
+        </div>
+
+    `).join("");
+}
+
+
+async function addInstrument() {
+
+    const input =
+        document.getElementById("instrumentName");
+
+    const name =
+        input.value.trim();
+
+
+    if (!name) {
+
+        showMessage(
+            "Please enter instrument name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("instruments")
+            .insert({
+
+                owner_id: currentUser.id,
+
+                name: name
+
+            });
+
+
+    if (error) {
+
+        showMessage(
+            "Could not add instrument: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    input.value = "";
+
+    showMessage(
+        "Instrument added."
+    );
+
+    loadInstruments();
+}
+
+
+async function deleteInstrument(id) {
+
+    if (!confirm(
+        "Delete this instrument?"
+    )) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("instruments")
+            .delete()
+            .eq("id", id)
+            .eq("owner_id", currentUser.id);
+
+
+    if (error) {
+
+        showMessage(
+            "Could not delete instrument.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Instrument deleted."
+    );
+
+    loadInstruments();
+}
+
+
+/* =========================
+   BATCHES
+========================= */
+
+async function loadBatches() {
+
+    const list =
+        document.getElementById("batchList");
+
+    list.innerHTML =
+        '<div class="loading">Loading...</div>';
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("batches")
+            .select("id,name")
+            .eq("owner_id", currentUser.id)
+            .order("created_at", {
+                ascending: true
+            });
+
+
+    if (error) {
+
+        list.innerHTML =
+            "<div>Unable to load batches.</div>";
+
+        console.error(error);
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        list.innerHTML =
+            "<div>No batches added yet.</div>";
+
+        return;
+    }
+
+
+    list.innerHTML = data.map(item => `
+
+        <div class="item">
+
+            <div class="item-name">
+                ${escapeHtml(item.name)}
+            </div>
+
+            <button
+                class="delete-small"
+                onclick="deleteBatch('${item.id}')">
+                Delete
+            </button>
+
+        </div>
+
+    `).join("");
+}
+
+
+async function addBatch() {
+
+    const input =
+        document.getElementById("batchName");
+
+    const name =
+        input.value.trim();
+
+
+    if (!name) {
+
+        showMessage(
+            "Please enter batch name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("batches")
+            .insert({
+
+                owner_id: currentUser.id,
+
+                name: name
+
+            });
+
+
+    if (error) {
+
+        showMessage(
+            "Could not add batch: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    input.value = "";
+
+    showMessage(
+        "Batch added."
+    );
+
+    loadBatches();
+}
+
+
+async function deleteBatch(id) {
+
+    if (!confirm(
+        "Delete this batch?"
+    )) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("batches")
+            .delete()
+            .eq("id", id)
+            .eq("owner_id", currentUser.id);
+
+
+    if (error) {
+
+        showMessage(
+            "Could not delete batch.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Batch deleted."
+    );
+
+    loadBatches();
+}
+
+
+/* =========================
+   STAFF REQUESTS
+========================= */
+
+async function loadStaffRequests() {
+
+    const container =
+        document.getElementById("staffRequests");
+
+    container.innerHTML =
+        '<div class="loading">Loading staff requests...</div>';
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("staff_requests")
+            .select("*")
+            .eq("owner_id", currentUser.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div style="color:#c62828;">
+                Unable to load staff requests.
+                <br>
+                ${escapeHtml(error.message)}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        container.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:25px;
+                color:#777;">
+                No staff access requests yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = data.map(staff => {
+
+        const statusClass =
+            staff.status === "approved"
+                ? "approved"
+                : staff.status === "rejected"
+                ? "rejected"
+                : "pending";
+
+
+        return `
+
+            <div class="staff-card">
+
+                <div class="staff-info">
+
+                    <h3>
+                        ${escapeHtml(staff.full_name)}
+                    </h3>
+
+                    <p>
+                        📧 ${escapeHtml(staff.email)}
+                    </p>
+
+                    <p>
+                        📱 ${escapeHtml(staff.mobile_number)}
+                    </p>
+
+                    <span class="status ${statusClass}">
+                        ${staff.status.toUpperCase()}
+                    </span>
+
+                </div>
+
+
+                <div class="staff-actions">
+
+                    ${
+                        staff.status === "pending"
+                        ? `
+
+                        <button
+                            class="btn btn-success"
+                            onclick="updateStaffStatus('${staff.id}','approved')">
+                            ✓ Approve
+                        </button>
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="updateStaffStatus('${staff.id}','rejected')">
+                            ✕ Reject
+                        </button>
+
+                        `
+                        : `
+                        <button
+                            class="btn btn-secondary"
+                            onclick="deleteStaffRequest('${staff.id}')">
+                            Delete
+                        </button>
+                        `
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }).join("");
+}
+
+
+async function updateStaffStatus(id, status) {
+
+    const action =
+        status === "approved"
+            ? "approve"
+            : "reject";
+
+
+    if (!confirm(
+        `Are you sure you want to ${action} this staff request?`
+    )) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("staff_requests")
+            .update({
+                status: status
+            })
+            .eq("id", id)
+            .eq("owner_id", currentUser.id);
+
+
+    if (error) {
+
+        showMessage(
+            "Could not update staff request.",
+            "error"
+        );
+
+        console.error(error);
+
+        return;
+    }
+
+
+    showMessage(
+        `Staff request ${status}.`
+    );
+
+    loadStaffRequests();
+}
+
+
+async function deleteStaffRequest(id) {
+
+    if (!confirm(
+        "Delete this staff request?"
+    )) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("staff_requests")
+            .delete()
+            .eq("id", id)
+            .eq("owner_id", currentUser.id);
+
+
+    if (error) {
+
+        showMessage(
+            "Could not delete request.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Staff request deleted."
+    );
+
+    loadStaffRequests();
+}
+
+
+/* =========================
+   CHANGE PIN
+========================= */
+
+async function changePin() {
+
+    const pin =
+        document.getElementById("newPin").value.trim();
+
+
+    if (!/^[0-9]{4}$/.test(pin)) {
+
+        showMessage(
+            "PIN must be exactly 4 numbers.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "set_owner_pin",
+            {
+                p_pin: pin
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Could not change PIN: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (data !== true) {
+
+        showMessage(
+            "Could not change PIN.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    document.getElementById("newPin").value = "";
+
+
+    showMessage(
+        "Owner PIN changed successfully."
+    );
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    localStorage.removeItem("staffLogin");
+
+    window.location.href =
+        "owner-login.html";
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+(async function() {
+
+    const ok = await checkOwner();
+
+    if (!ok) {
+        return;
+    }
+
+    await loadAcademySettings();
+
+    await loadInstruments();
+
+    await loadBatches();
+
+    await loadStaffRequests();
+
+})();
+
+</script>
+
+</body>
+</html>
