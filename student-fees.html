@@ -400,6 +400,7 @@
             .payment-row {
                 gap: 15px;
             }
+
         }
 
         @media (max-width: 420px) {
@@ -407,6 +408,7 @@
             .student-grid {
                 grid-template-columns: 1fr;
             }
+
         }
 
     </style>
@@ -707,6 +709,69 @@ let paymentHistoryData = [];
 
 
 /* =====================================================
+   GET STUDENT LOGIN
+===================================================== */
+
+function getStudentLogin() {
+
+    try {
+
+        /*
+         * Remember Me ON
+         */
+
+        const localData =
+            localStorage.getItem(
+                "studentLogin"
+            );
+
+
+        if (localData) {
+
+            return JSON.parse(
+                localData
+            );
+
+        }
+
+
+        /*
+         * Remember Me OFF
+         */
+
+        const sessionData =
+            sessionStorage.getItem(
+                "studentLogin"
+            );
+
+
+        if (sessionData) {
+
+            return JSON.parse(
+                sessionData
+            );
+
+        }
+
+
+        return null;
+
+    }
+    catch (error) {
+
+        console.error(
+            "Student login error:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
    PAGE LOAD
 ===================================================== */
 
@@ -724,13 +789,10 @@ document.addEventListener(
    LOAD STUDENT
 ===================================================== */
 
-function loadStudent() {
-
+async function loadStudent() {
 
     const savedStudent =
-        localStorage.getItem(
-            "studentLogin"
-        );
+        getStudentLogin();
 
 
     if (!savedStudent) {
@@ -745,27 +807,17 @@ function loadStudent() {
 
     try {
 
-
         studentData =
-            JSON.parse(
-                savedStudent
-            );
-
-
-        if (!studentData) {
-
-            throw new Error(
-                "Student information not found."
-            );
-
-        }
+            savedStudent;
 
 
         const mobile =
-            studentData.mobile ||
-            studentData.mobile_number ||
-            studentData.mobileNumber ||
-            "";
+            String(
+                studentData.mobile ||
+                studentData.mobile_number ||
+                studentData.mobileNumber ||
+                ""
+            ).trim();
 
 
         if (!mobile) {
@@ -777,20 +829,26 @@ function loadStudent() {
         }
 
 
+        /*
+         * First show saved student information.
+         */
+
         showStudentInformation(
             studentData,
             mobile
         );
 
 
-        loadFees(
+        /*
+         * Then get fresh student data
+         * from Supabase.
+         */
+
+        await loadFees(
             mobile
         );
 
-
     }
-
-
     catch (error) {
 
         console.error(
@@ -799,8 +857,12 @@ function loadStudent() {
         );
 
 
+        hideLoading();
+
+
         showMessage(
-            error.message
+            error.message ||
+            "Unable to load student."
         );
 
     }
@@ -816,7 +878,6 @@ function showStudentInformation(
     student,
     mobile
 ) {
-
 
     document.getElementById(
         "studentName"
@@ -864,14 +925,12 @@ async function loadFees(
     mobile
 ) {
 
-
     showLoading();
 
     hideMessage();
 
 
     try {
-
 
         console.log(
             "Loading fees for:",
@@ -887,13 +946,13 @@ async function loadFees(
             data,
             error
         } =
-        await supabaseClient.rpc(
-            "student_get_fees_by_mobile",
-            {
-                p_mobile:
-                    mobile
-            }
-        );
+            await supabaseClient.rpc(
+                "student_get_fees_by_mobile",
+                {
+                    p_mobile:
+                        mobile
+                }
+            );
 
 
         console.log(
@@ -925,12 +984,16 @@ async function loadFees(
 
 
         /* =========================================
-           STUDENT
+           STUDENT FROM SUPABASE
         ========================================= */
 
         const student =
             data.student || {};
 
+
+        /*
+         * Merge fresh data.
+         */
 
         studentData = {
 
@@ -938,37 +1001,76 @@ async function loadFees(
 
             ...student,
 
+            id:
+                student.id ||
+                studentData.id ||
+                studentData.student_id ||
+                "",
+
+            student_id:
+                student.id ||
+                studentData.student_id ||
+                studentData.id ||
+                "",
+
             mobile:
                 student.mobile_number ||
                 mobile,
 
+            mobile_number:
+                student.mobile_number ||
+                mobile,
+
             full_name:
-                student.full_name
+                student.full_name ||
+                studentData.full_name ||
+                studentData.name ||
+                "",
+
+            instrument:
+                student.instrument ||
+                studentData.instrument ||
+                "",
+
+            batch:
+                student.batch ||
+                studentData.batch ||
+                ""
 
         };
 
 
-        localStorage.setItem(
-            "studentLogin",
-            JSON.stringify(
-                studentData
-            )
+        /*
+         * IMPORTANT:
+         *
+         * Save updated data to whichever
+         * storage contains the login.
+         */
+
+        saveStudentLogin(
+            studentData
         );
 
 
         showStudentInformation(
-            student,
+            studentData,
             mobile
         );
 
 
         /* =========================================
-           MONTHLY FEES
+           FEE
         ========================================= */
 
         const fee =
             data.fee || {};
 
+
+        /*
+         * Monthly fee.
+         *
+         * Student fees_amount is primary.
+         */
 
         const monthly =
             Number(
@@ -982,7 +1084,7 @@ async function loadFees(
 
 
         /* =========================================
-           GET ACTUAL PAYMENT HISTORY
+           PAYMENT HISTORY
         ========================================= */
 
         await loadPaymentHistory(
@@ -991,22 +1093,15 @@ async function loadFees(
 
 
         /*
-           paymentHistoryData now contains
-           every payment.
-
-           Example:
-
-           ₹500
-           ₹700
-           ₹800
-
-           Latest payment = ₹800
-
-           Total received = ₹2000
-        */
-
+         * Total payments
+         */
 
         let totalReceived = 0;
+
+
+        /*
+         * Latest payment amount
+         */
 
         let latestPaymentAmount = 0;
 
@@ -1014,7 +1109,6 @@ async function loadFees(
         if (
             paymentHistoryData.length > 0
         ) {
-
 
             paymentHistoryData.forEach(
                 function(payment) {
@@ -1029,12 +1123,14 @@ async function loadFees(
 
 
             /*
-               History is ordered newest first
-               by the Supabase RPC.
-
-               Therefore first payment =
-               latest payment.
-            */
+             * RPC returns newest payment first.
+             *
+             * Therefore:
+             *
+             * paymentHistoryData[0]
+             *
+             * = latest payment.
+             */
 
             latestPaymentAmount =
                 Number(
@@ -1057,7 +1153,7 @@ async function loadFees(
 
 
         /* =========================================
-           SHOW MONTHLY FEES
+           MONTHLY
         ========================================= */
 
         document.getElementById(
@@ -1069,7 +1165,7 @@ async function loadFees(
 
 
         /* =========================================
-           SHOW LATEST PAYMENT
+           PAYMENT AMOUNT
         ========================================= */
 
         document.getElementById(
@@ -1081,7 +1177,7 @@ async function loadFees(
 
 
         /* =========================================
-           SHOW BALANCE
+           BALANCE
         ========================================= */
 
         document.getElementById(
@@ -1109,7 +1205,6 @@ async function loadFees(
                 "paid";
 
         }
-
         else if (
             totalReceived > 0 &&
             totalReceived < monthly
@@ -1117,13 +1212,6 @@ async function loadFees(
 
             statusValue =
                 "partial";
-
-        }
-
-        else {
-
-            statusValue =
-                "unpaid";
 
         }
 
@@ -1150,7 +1238,6 @@ async function loadFees(
                 "PAID";
 
         }
-
         else if (
             statusValue === "partial"
         ) {
@@ -1163,7 +1250,6 @@ async function loadFees(
                 "PARTIAL";
 
         }
-
         else {
 
             statusElement.classList.add(
@@ -1189,8 +1275,6 @@ async function loadFees(
             "block";
 
     }
-
-
     catch (error) {
 
         console.error(
@@ -1213,13 +1297,99 @@ async function loadFees(
 
 
 /* =====================================================
+   SAVE STUDENT LOGIN
+===================================================== */
+
+function saveStudentLogin(
+    data
+) {
+
+    try {
+
+        /*
+         * If localStorage has studentLogin,
+         * keep using localStorage.
+         */
+
+        if (
+            localStorage.getItem(
+                "studentLogin"
+            )
+        ) {
+
+            localStorage.setItem(
+                "studentLogin",
+                JSON.stringify(
+                    data
+                )
+            );
+
+        }
+
+
+        /*
+         * If sessionStorage has studentLogin,
+         * update sessionStorage.
+         */
+
+        if (
+            sessionStorage.getItem(
+                "studentLogin"
+            )
+        ) {
+
+            sessionStorage.setItem(
+                "studentLogin",
+                JSON.stringify(
+                    data
+                )
+            );
+
+        }
+
+
+        /*
+         * Safety fallback.
+         */
+
+        if (
+            !localStorage.getItem(
+                "studentLogin"
+            ) &&
+            !sessionStorage.getItem(
+                "studentLogin"
+            )
+        ) {
+
+            localStorage.setItem(
+                "studentLogin",
+                JSON.stringify(
+                    data
+                )
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "Could not save student login:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    PAYMENT HISTORY
 ===================================================== */
 
 async function loadPaymentHistory(
     mobile
 ) {
-
 
     const historyCard =
         document.getElementById(
@@ -1243,18 +1413,17 @@ async function loadPaymentHistory(
 
     try {
 
-
         const {
             data,
             error
         } =
-        await supabaseClient.rpc(
-            "student_get_payment_history_by_mobile",
-            {
-                p_mobile:
-                    mobile
-            }
-        );
+            await supabaseClient.rpc(
+                "student_get_payment_history_by_mobile",
+                {
+                    p_mobile:
+                        mobile
+                }
+            );
 
 
         if (error) {
@@ -1283,8 +1452,33 @@ async function loadPaymentHistory(
             Array.isArray(
                 data.payments
             )
-            ? data.payments
-            : [];
+                ? data.payments
+                : [];
+
+
+        /*
+         * Make sure newest payment is first.
+         */
+
+        paymentHistoryData.sort(
+            function(a, b) {
+
+                const dateA =
+                    new Date(
+                        a.payment_date || 0
+                    ).getTime();
+
+
+                const dateB =
+                    new Date(
+                        b.payment_date || 0
+                    ).getTime();
+
+
+                return dateB - dateA;
+
+            }
+        );
 
 
         /* =========================================
@@ -1313,7 +1507,6 @@ async function loadPaymentHistory(
 
         paymentHistoryData.forEach(
             function(payment) {
-
 
                 const row =
                     document.createElement(
@@ -1433,8 +1626,6 @@ async function loadPaymentHistory(
         );
 
     }
-
-
     catch (error) {
 
         console.error(
@@ -1456,15 +1647,29 @@ async function loadPaymentHistory(
 
 
 /* =====================================================
-   RECEIPT
+   OPEN RECEIPT
 ===================================================== */
 
 function openReceipt() {
 
+    /*
+     * Get latest student data.
+     */
 
-    if (
-        !studentData
-    ) {
+    const login =
+        getStudentLogin();
+
+
+    /*
+     * Prefer current studentData.
+     */
+
+    const student =
+        studentData ||
+        login;
+
+
+    if (!student) {
 
         showMessage(
             "Student information is not available."
@@ -1475,14 +1680,43 @@ function openReceipt() {
     }
 
 
-    const studentId =
-        studentData.id;
+    /*
+     * Get ID.
+     */
+
+    const id =
+        student.id ||
+        student.student_id ||
+        login?.id ||
+        login?.student_id ||
+        "";
 
 
-    if (!studentId) {
+    /*
+     * Get mobile.
+     */
+
+    const mobile =
+        String(
+            student.mobile_number ||
+            student.mobile ||
+            login?.mobile_number ||
+            login?.mobile ||
+            ""
+        ).trim();
+
+
+    /*
+     * We need at least ID OR mobile.
+     */
+
+    if (
+        !id &&
+        !mobile
+    ) {
 
         showMessage(
-            "Student ID is not available."
+            "Student ID and mobile number are not available."
         );
 
         return;
@@ -1490,12 +1724,68 @@ function openReceipt() {
     }
 
 
-    window.location.href =
-        "fee-receipt.html" +
-        "?student=" +
-        encodeURIComponent(
-            studentId
+    /*
+     * =========================================
+     * BUILD RECEIPT URL
+     * =========================================
+     *
+     * Send BOTH ID and mobile.
+     *
+     * Receipt page can use whichever
+     * one is available.
+     */
+
+    let url =
+        "fee-receipt.html";
+
+
+    const query =
+        [];
+
+
+    if (id) {
+
+        query.push(
+            "student=" +
+            encodeURIComponent(
+                id
+            )
         );
+
+    }
+
+
+    if (mobile) {
+
+        query.push(
+            "mobile=" +
+            encodeURIComponent(
+                mobile
+            )
+        );
+
+    }
+
+
+    if (
+        query.length > 0
+    ) {
+
+        url +=
+            "?" +
+            query.join("&");
+
+    }
+
+
+    console.log(
+        "Opening student receipt:",
+        url
+    );
+
+
+    window.location.href =
+        url;
 
 }
 
@@ -1541,7 +1831,6 @@ function formatMoney(
 function formatDate(
     dateString
 ) {
-
 
     if (!dateString) {
 
