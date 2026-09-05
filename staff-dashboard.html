@@ -1320,11 +1320,6 @@ async function loadAcademySettings(){
             );
 
 
-        /*
-         * If this RPC does not exist,
-         * dashboard will still work.
-         */
-
         if(error){
 
             console.log(
@@ -1534,6 +1529,11 @@ async function loadFees(){
             data.success !== true
         ){
 
+            console.error(
+                "Fees dashboard returned no data:",
+                data
+            );
+
             return;
 
         }
@@ -1558,16 +1558,53 @@ async function loadFees(){
         fees.forEach(
             function(fee){
 
-                monthlyTotal +=
+                /*
+                 * CURRENT FEES AMOUNT
+                 *
+                 * New table:
+                 * fees.amount
+                 *
+                 * Old RPC may return:
+                 * monthly_amount
+                 *
+                 * Student fallback:
+                 * fees_amount
+                 */
+
+                const feeAmount =
                     Number(
-                        fee.monthly_amount
+                        fee.amount ??
+                        fee.monthly_amount ??
+                        fee.fees_amount ??
+                        0
+                    ) || 0;
+
+
+                monthlyTotal +=
+                    feeAmount;
+
+
+                /*
+                 * RECEIVED FEES
+                 *
+                 * Current staff_get_fees RPC
+                 * should return paid_amount.
+                 *
+                 * We also support other
+                 * possible field names.
+                 */
+
+                const paidAmount =
+                    Number(
+                        fee.paid_amount ??
+                        fee.received_amount ??
+                        fee.total_received ??
+                        0
                     ) || 0;
 
 
                 received +=
-                    Number(
-                        fee.paid_amount
-                    ) || 0;
+                    paidAmount;
 
             }
         );
@@ -1609,7 +1646,10 @@ async function loadFees(){
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Load fees error:",
+            error
+        );
 
     }
 
