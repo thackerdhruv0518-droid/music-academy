@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Student Login</title>
 
@@ -12,1311 +15,1528 @@
     <script src="supabase.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
+
+            margin: 0;
+
             min-height: 100vh;
-            background: linear-gradient(135deg, #6a11cb, #e83e8c);
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
             display: flex;
-            justify-content: center;
+
             align-items: center;
-            padding: 20px;
+
+            justify-content: center;
+
+            padding: 25px;
+
         }
 
         .container {
+
             width: 100%;
+
             max-width: 430px;
+
         }
 
         .card {
-            background: #ffffff;
+
+            background: white;
+
             border-radius: 25px;
-            padding: 30px 25px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
-            position: relative;
+
+            padding: 35px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.25);
+
         }
 
-        .back-btn {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            border: none;
-            background: #f1f1f1;
-            color: #555;
-            padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-        }
+        .header {
 
-        .back-btn:hover {
-            background: #e5e5e5;
+            text-align: center;
+
+            margin-bottom: 30px;
+
         }
 
         .logo {
-            width: 75px;
-            height: 75px;
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: auto;
+
             border-radius: 50%;
-            margin: 15px auto 15px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            background: linear-gradient(135deg, #6a11cb, #e83e8c);
+
+            font-size: 42px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
             color: white;
-            font-size: 32px;
-            font-weight: bold;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.18);
+
+            overflow: hidden;
+
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 27px;
-            margin-bottom: 7px;
+        .logo img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+        }
+
+        .academy-name {
+
+            margin-top: 18px;
+
+            margin-bottom: 6px;
+
+            color: #222;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
         }
 
         .subtitle {
-            text-align: center;
+
             color: #777;
-            font-size: 14px;
-            margin-bottom: 25px;
+
+            font-size: 15px;
+
         }
 
-        .form-group {
-            margin-bottom: 17px;
+        h2 {
+
+            text-align: center;
+
+            color: #222;
+
+            margin-top: 25px;
+
+            margin-bottom: 25px;
+
+            font-size: 24px;
+
         }
 
         label {
+
             display: block;
+
+            margin-top: 15px;
+
             margin-bottom: 7px;
-            color: #444;
+
+            color: #222;
+
             font-size: 14px;
-            font-weight: 600;
+
+            font-weight: bold;
+
         }
 
         input {
+
             width: 100%;
-            padding: 14px 15px;
+
+            padding: 14px;
+
             border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
             outline: none;
-            transition: 0.2s;
+
         }
 
         input:focus {
-            border-color: #8e44ad;
-            box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.10);
+
+            border-color: #1d2671;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(29,38,113,0.08);
+
         }
 
-        .pin-input {
-            letter-spacing: 7px;
-            text-align: center;
-            font-weight: bold;
-        }
+        button {
 
-        .main-btn {
             width: 100%;
+
             border: none;
+
             padding: 14px;
-            border-radius: 13px;
-            background: linear-gradient(135deg, #6a11cb, #e83e8c);
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
             color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            transition: 0.2s;
+
         }
 
-        .main-btn:hover {
-            opacity: 0.92;
+        button:hover {
+
+            opacity: 0.9;
+
+            transform: scale(1.02);
+
         }
 
-        .main-btn:disabled {
+        button:active {
+
+            transform: scale(0.98);
+
+        }
+
+        button:disabled {
+
             opacity: 0.6;
+
             cursor: not-allowed;
+
         }
 
-        .secondary-btn {
+        .secondary-button {
+
+            background: #eeeeee;
+
+            color: #222;
+
+        }
+
+        .secondary-button:hover {
+
+            background: #e5e5e5;
+
+            color: #222;
+
+        }
+
+        .link-button {
+
+            display: block;
+
             width: 100%;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            background: #f5f5f5;
-            color: #6a11cb;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
+
             margin-top: 12px;
-        }
 
-        .links {
-            text-align: center;
-            margin-top: 18px;
-        }
+            padding: 8px;
 
-        .links button {
             border: none;
-            background: none;
-            color: #7b2cbf;
+
+            background: transparent;
+
+            color: #1d2671;
+
             font-size: 14px;
+
             cursor: pointer;
-            margin: 0 7px;
+
         }
 
-        .links button:hover {
-            text-decoration: underline;
+        .link-button:hover {
+
+            color: #c33764;
+
+            transform: none;
+
+        }
+
+        .small-text {
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+
         }
 
         .message {
-            display: none;
-            padding: 11px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            text-align: center;
-        }
 
-        .error {
-            background: #ffe5e5;
-            color: #c0392b;
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 14px;
+
         }
 
         .success {
-            background: #e7f8ed;
-            color: #218838;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
         }
 
-        .section {
-            display: none;
+        .error {
+
+            background: #ffebee;
+
+            color: #c62828;
+
         }
 
-        .section.active {
-            display: block;
+        @media(max-width: 500px) {
+
+            body {
+
+                padding: 15px;
+
+                align-items: flex-start;
+
+                padding-top: 25px;
+
+            }
+
+            .card {
+
+                padding: 28px 20px;
+
+                border-radius: 20px;
+
+            }
+
+            .logo {
+
+                width: 75px;
+
+                height: 75px;
+
+                font-size: 35px;
+
+            }
+
+            .academy-name {
+
+                font-size: 24px;
+
+            }
+
+            h2 {
+
+                font-size: 22px;
+
+            }
+
         }
 
-        .forgot-note,
-        .pin-note {
-            background: #f8f3ff;
-            color: #666;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 17px;
-        }
-
-        .loading {
-            text-align: center;
-            color: white;
-            font-size: 16px;
-        }
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <div id="loadingScreen" class="loading">
-            Checking login...
-        </div>
+<div class="container">
 
-        <div id="mainCard" class="card" style="display:none;">
 
-            <button class="back-btn" onclick="goBack()">Back</button>
+    <!-- ================================= -->
+    <!-- STUDENT LOGIN -->
+    <!-- ================================= -->
 
-            <div class="logo">
+    <div
+        class="card"
+        id="loginCard"
+    >
+
+        <div class="header">
+
+            <div
+                class="logo"
+                id="logoBox"
+            >
+
                 🎵
-            </div>
-
-            <!-- ================= LOGIN ================= -->
-
-            <div id="loginSection" class="section active">
-
-                <h1>Student Login</h1>
-
-                <div class="subtitle">
-                    Login to your student account
-                </div>
-
-                <div id="loginMessage" class="message"></div>
-
-                <div class="form-group">
-                    <label>Mobile Number</label>
-
-                    <input
-                        type="tel"
-                        id="loginMobile"
-                        placeholder="Enter mobile number"
-                        maxlength="15">
-                </div>
-
-                <div class="form-group">
-                    <label>4-Digit PIN</label>
-
-                    <input
-                        type="password"
-                        id="loginPin"
-                        class="pin-input"
-                        placeholder="••••"
-                        maxlength="4"
-                        inputmode="numeric">
-                </div>
-
-                <button
-                    class="main-btn"
-                    id="loginBtn"
-                    onclick="studentLogin()">
-                    Login
-                </button>
-
-                <div class="links">
-
-                    <button onclick="showCreatePin()">
-                        First Login? Create PIN
-                    </button>
-
-                    <br>
-
-                    <button onclick="showForgotPin()">
-                        Forgot PIN?
-                    </button>
-
-                </div>
 
             </div>
 
+            <div
+                class="academy-name"
+                id="academyName"
+            >
 
-            <!-- ================= CREATE PIN ================= -->
-
-            <div id="createPinSection" class="section">
-
-                <h1>Create PIN</h1>
-
-                <div class="subtitle">
-                    First time login
-                </div>
-
-                <div class="pin-note">
-                    Enter your registered mobile number and create
-                    your own 4-digit PIN.
-                </div>
-
-                <div id="createMessage" class="message"></div>
-
-                <div class="form-group">
-
-                    <label>Mobile Number</label>
-
-                    <input
-                        type="tel"
-                        id="createMobile"
-                        placeholder="Enter mobile number"
-                        maxlength="15">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>New 4-Digit PIN</label>
-
-                    <input
-                        type="password"
-                        id="createPin"
-                        class="pin-input"
-                        placeholder="••••"
-                        maxlength="4"
-                        inputmode="numeric">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Confirm PIN</label>
-
-                    <input
-                        type="password"
-                        id="confirmPin"
-                        class="pin-input"
-                        placeholder="••••"
-                        maxlength="4"
-                        inputmode="numeric">
-
-                </div>
-
-                <button
-                    class="main-btn"
-                    id="createBtn"
-                    onclick="createPin()">
-                    Create PIN
-                </button>
-
-                <button
-                    class="secondary-btn"
-                    onclick="showLogin()">
-                    Back to Login
-                </button>
+                Music Academy
 
             </div>
 
+            <div class="subtitle">
 
-            <!-- ================= FORGOT PIN ================= -->
-
-            <div id="forgotPinSection" class="section">
-
-                <h1>Forgot PIN</h1>
-
-                <div class="subtitle">
-                    Reset your student PIN
-                </div>
-
-                <div class="forgot-note">
-                    Enter your registered mobile number and
-                    Date of Joining to create a new PIN.
-                </div>
-
-                <div id="forgotMessage" class="message"></div>
-
-                <div class="form-group">
-
-                    <label>Mobile Number</label>
-
-                    <input
-                        type="tel"
-                        id="forgotMobile"
-                        placeholder="Enter mobile number"
-                        maxlength="15">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Date of Joining</label>
-
-                    <input
-                        type="date"
-                        id="forgotJoiningDate">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>New 4-Digit PIN</label>
-
-                    <input
-                        type="password"
-                        id="forgotNewPin"
-                        class="pin-input"
-                        placeholder="••••"
-                        maxlength="4"
-                        inputmode="numeric">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Confirm New PIN</label>
-
-                    <input
-                        type="password"
-                        id="forgotConfirmPin"
-                        class="pin-input"
-                        placeholder="••••"
-                        maxlength="4"
-                        inputmode="numeric">
-
-                </div>
-
-                <button
-                    class="main-btn"
-                    id="forgotBtn"
-                    onclick="resetPin()">
-                    Change PIN
-                </button>
-
-                <button
-                    class="secondary-btn"
-                    onclick="showLogin()">
-                    Back to Login
-                </button>
+                Student Login
 
             </div>
 
         </div>
+
+
+        <h2>
+
+            🎓 Student Login
+
+        </h2>
+
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="tel"
+            id="loginMobile"
+            placeholder="Enter your mobile number"
+            maxlength="15"
+        >
+
+
+        <label>
+
+            4-Digit PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="loginPin"
+            placeholder="Enter 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
+        >
+
+
+        <button
+            id="loginButton"
+            onclick="studentLogin()"
+        >
+
+            STUDENT LOGIN
+
+        </button>
+
+
+        <div
+            id="loginMessage"
+            class="message"
+        ></div>
+
+
+        <!-- CREATE PIN -->
+
+        <button
+            class="link-button"
+            onclick="showCreatePin()"
+        >
+
+            Create PIN
+
+        </button>
+
+
+        <!-- FORGOT PIN -->
+
+        <button
+            class="link-button"
+            onclick="showForgotPin()"
+        >
+
+            Forgot PIN?
+
+        </button>
+
+
+        <button
+            class="secondary-button"
+            onclick="goBack()"
+        >
+
+            ← Back
+
+        </button>
 
     </div>
 
 
-    <script>
 
-        /* =========================================
-           INITIAL CHECK
-        ========================================= */
+    <!-- ================================= -->
+    <!-- CREATE PIN -->
+    <!-- ================================= -->
 
-        window.addEventListener("DOMContentLoaded", async function () {
+    <div
+        class="card"
+        id="createPinCard"
+        style="display:none;"
+    >
 
-            const studentLogin =
-                localStorage.getItem("studentLogin");
+        <div class="header">
 
-            const studentSessionToken =
-                localStorage.getItem("studentSessionToken");
+            <div class="logo">
 
-            /*
-             * If both login information and session token
-             * are available, directly open dashboard.
-             */
+                🎵
 
-            if (studentLogin && studentSessionToken) {
+            </div>
+
+            <div
+                class="academy-name"
+                id="createAcademyName"
+            >
+
+                Music Academy
+
+            </div>
+
+            <div class="subtitle">
+
+                Create Student PIN
+
+            </div>
+
+        </div>
+
+
+        <h2>
+
+            🔐 Create PIN
+
+        </h2>
+
+
+        <p class="small-text">
+
+            Create a 4-digit PIN for your student account.
+
+        </p>
+
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="tel"
+            id="createMobile"
+            placeholder="Enter your mobile number"
+            maxlength="15"
+        >
+
+
+        <label>
+
+            New 4-Digit PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="createPin"
+            placeholder="Enter 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
+        >
+
+
+        <label>
+
+            Confirm PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="confirmCreatePin"
+            placeholder="Re-enter 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
+        >
+
+
+        <button
+            id="createButton"
+            onclick="createStudentPin()"
+        >
+
+            CREATE PIN
+
+        </button>
+
+
+        <div
+            id="createMessage"
+            class="message"
+        ></div>
+
+
+        <button
+            class="secondary-button"
+            onclick="showLogin()"
+        >
+
+            ← Back to Student Login
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- FORGOT PIN -->
+    <!-- ================================= -->
+
+    <div
+        class="card"
+        id="forgotPinCard"
+        style="display:none;"
+    >
+
+        <div class="header">
+
+            <div class="logo">
+
+                🎵
+
+            </div>
+
+            <div
+                class="academy-name"
+                id="forgotAcademyName"
+            >
+
+                Music Academy
+
+            </div>
+
+            <div class="subtitle">
+
+                Reset Student PIN
+
+            </div>
+
+        </div>
+
+
+        <h2>
+
+            🔑 Forgot PIN?
+
+        </h2>
+
+
+        <p class="small-text">
+
+            Enter your mobile number and joining date
+            to create a new PIN.
+
+        </p>
+
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="tel"
+            id="forgotMobile"
+            placeholder="Enter your mobile number"
+            maxlength="15"
+        >
+
+
+        <label>
+
+            Joining Date
+
+        </label>
+
+        <input
+            type="date"
+            id="forgotJoiningDate"
+        >
+
+
+        <label>
+
+            New 4-Digit PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="forgotPin"
+            placeholder="Enter new 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
+        >
+
+
+        <label>
+
+            Confirm New PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="confirmForgotPin"
+            placeholder="Re-enter new PIN"
+            maxlength="4"
+            inputmode="numeric"
+        >
+
+
+        <button
+            id="forgotButton"
+            onclick="resetStudentPin()"
+        >
+
+            RESET PIN
+
+        </button>
+
+
+        <div
+            id="forgotMessage"
+            class="message"
+        ></div>
+
+
+        <button
+            class="secondary-button"
+            onclick="showLogin()"
+        >
+
+            ← Back to Student Login
+
+        </button>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// ========================================
+// BRANDING
+// ========================================
+
+async function loadBranding(mobile) {
+
+    mobile =
+        mobile.trim();
+
+
+    if (!mobile) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "get_student_branding",
+                {
+                    p_mobile: mobile
+                }
+            );
+
+
+        if (error) {
+
+            console.log(error);
+
+            return;
+
+        }
+
+
+        if (data && data.success) {
+
+            const academy =
+                data.class_name ||
+                "Music Academy";
+
+
+            document
+                .getElementById("academyName")
+                .textContent =
+                    academy;
+
+
+            document
+                .getElementById("createAcademyName")
+                .textContent =
+                    academy;
+
+
+            document
+                .getElementById("forgotAcademyName")
+                .textContent =
+                    academy;
+
+
+            if (data.logo_url) {
+
+                document
+                    .getElementById("logoBox")
+                    .innerHTML =
+                    `<img src="${data.logo_url}" alt="Logo">`;
+
+            }
+
+        }
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+
+document
+    .getElementById("loginMobile")
+    .addEventListener(
+        "blur",
+        function() {
+
+            loadBranding(
+                document
+                    .getElementById("loginMobile")
+                    .value
+            );
+
+        }
+    );
+
+
+
+// ========================================
+// STUDENT LOGIN
+// ========================================
+
+async function studentLogin() {
+
+
+    const mobile =
+        document
+            .getElementById("loginMobile")
+            .value
+            .trim();
+
+
+    const pin =
+        document
+            .getElementById("loginPin")
+            .value
+            .trim();
+
+
+    if (!mobile || !pin) {
+
+        showMessage(
+            "loginMessage",
+            "Please enter mobile number and PIN.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!/^\d{4}$/.test(pin)) {
+
+        showMessage(
+            "loginMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById("loginButton");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "LOGGING IN...";
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "verify_student_login",
+                {
+                    p_mobile: mobile,
+                    p_pin: pin
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.success === false) {
+
+            showMessage(
+                "loginMessage",
+                data?.message ||
+                "Invalid mobile number or PIN.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "STUDENT LOGIN";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "studentLogin",
+            JSON.stringify({
+
+                id:
+                    data.id,
+
+                owner_id:
+                    data.owner_id,
+
+                name:
+                    data.name,
+
+                mobile:
+                    data.mobile,
+
+                batch:
+                    data.batch,
+
+                instrument:
+                    data.instrument
+
+            })
+        );
+
+
+        showMessage(
+            "loginMessage",
+            "Login successful.",
+            "success"
+        );
+
+
+        setTimeout(
+            function() {
 
                 window.location.href =
                     "student-dashboard.html";
 
-                return;
-            }
-
-            /*
-             * Old login without session token:
-             * remove old login so user can login again
-             * and create a new secure session.
-             */
-
-            if (studentLogin && !studentSessionToken) {
-
-                localStorage.removeItem("studentLogin");
-
-            }
-
-            document.getElementById("loadingScreen")
-                .style.display = "none";
-
-            document.getElementById("mainCard")
-                .style.display = "block";
-
-        });
-
-
-        /* =========================================
-           SHOW LOGIN
-        ========================================= */
-
-        function showLogin() {
-
-            hideAllSections();
-
-            document
-                .getElementById("loginSection")
-                .classList.add("active");
-
-            clearMessages();
-
-        }
-
-
-        /* =========================================
-           SHOW CREATE PIN
-        ========================================= */
-
-        function showCreatePin() {
-
-            hideAllSections();
-
-            document
-                .getElementById("createPinSection")
-                .classList.add("active");
-
-            clearMessages();
-
-            const mobile =
-                document.getElementById("loginMobile").value.trim();
-
-            if (mobile) {
-
-                document.getElementById("createMobile").value =
-                    mobile;
-
-            }
-
-        }
-
-
-        /* =========================================
-           SHOW FORGOT PIN
-        ========================================= */
-
-        function showForgotPin() {
-
-            hideAllSections();
-
-            document
-                .getElementById("forgotPinSection")
-                .classList.add("active");
-
-            clearMessages();
-
-            const mobile =
-                document.getElementById("loginMobile").value.trim();
-
-            if (mobile) {
-
-                document.getElementById("forgotMobile").value =
-                    mobile;
-
-            }
-
-        }
-
-
-        /* =========================================
-           HIDE ALL SECTIONS
-        ========================================= */
-
-        function hideAllSections() {
-
-            document
-                .querySelectorAll(".section")
-                .forEach(function (section) {
-
-                    section.classList.remove("active");
-
-                });
-
-        }
-
-
-        /* =========================================
-           LOGIN
-        ========================================= */
-
-        async function studentLogin() {
-
-            const mobile =
-                document.getElementById("loginMobile")
-                    .value.trim();
-
-            const pin =
-                document.getElementById("loginPin")
-                    .value.trim();
-
-            hideMessage("loginMessage");
-
-            if (!mobile) {
-
-                showMessage(
-                    "loginMessage",
-                    "Please enter mobile number.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (!/^\d{4}$/.test(pin)) {
-
-                showMessage(
-                    "loginMessage",
-                    "Please enter a valid 4-digit PIN.",
-                    "error"
-                );
-
-                return;
-            }
-
-            const btn =
-                document.getElementById("loginBtn");
-
-            btn.disabled = true;
-            btn.innerText = "Logging in...";
-
-            try {
-
-                /*
-                 * STEP 1
-                 * Verify student mobile + PIN
-                 */
-
-                const { data, error } =
-                    await supabaseClient.rpc(
-                        "verify_student_login",
-                        {
-                            p_mobile: mobile,
-                            p_pin: pin
-                        }
-                    );
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "loginMessage",
-                        error.message ||
-                        "Login failed.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-                if (!data || !data.success) {
-
-                    showMessage(
-                        "loginMessage",
-                        data?.message ||
-                        "Invalid mobile number or PIN.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * STEP 2
-                 * Save student information
-                 */
-
-                localStorage.setItem(
-                    "studentLogin",
-                    JSON.stringify(data.student)
-                );
-
-
-                /*
-                 * STEP 3
-                 * CREATE STUDENT SESSION TOKEN
-                 *
-                 * This fixes:
-                 * "Student session is not available"
-                 */
-
-                const sessionResult =
-                    await supabaseClient.rpc(
-                        "create_student_session",
-                        {
-                            p_student_id: data.student.id
-                        }
-                    );
-
-                if (sessionResult.error) {
-
-                    console.error(
-                        sessionResult.error
-                    );
-
-                    localStorage.removeItem(
-                        "studentLogin"
-                    );
-
-                    showMessage(
-                        "loginMessage",
-                        "Login successful, but student session could not be created.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    !sessionResult.data ||
-                    !sessionResult.data.success
-                ) {
-
-                    localStorage.removeItem(
-                        "studentLogin"
-                    );
-
-                    showMessage(
-                        "loginMessage",
-                        sessionResult.data?.message ||
-                        "Student session could not be created.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * STEP 4
-                 * SAVE SESSION TOKEN
-                 */
-
-                localStorage.setItem(
-                    "studentSessionToken",
-                    sessionResult.data.token
-                );
-
-
-                /*
-                 * STEP 5
-                 * OPEN STUDENT DASHBOARD
-                 */
-
-                showMessage(
-                    "loginMessage",
-                    "Login successful!",
-                    "success"
-                );
-
-                setTimeout(function () {
-
-                    window.location.href =
-                        "student-dashboard.html";
-
-                }, 500);
-
-            }
-
-            catch (err) {
-
-                console.error(err);
-
-                showMessage(
-                    "loginMessage",
-                    "Something went wrong. Please try again.",
-                    "error"
-                );
-
-            }
-
-            finally {
-
-                btn.disabled = false;
-                btn.innerText = "Login";
-
-            }
-
-        }
-
-
-        /* =========================================
-           CREATE PIN
-        ========================================= */
-
-        async function createPin() {
-
-            const mobile =
-                document.getElementById("createMobile")
-                    .value.trim();
-
-            const pin =
-                document.getElementById("createPin")
-                    .value.trim();
-
-            const confirmPin =
-                document.getElementById("confirmPin")
-                    .value.trim();
-
-            hideMessage("createMessage");
-
-            if (!mobile) {
-
-                showMessage(
-                    "createMessage",
-                    "Please enter mobile number.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (!/^\d{4}$/.test(pin)) {
-
-                showMessage(
-                    "createMessage",
-                    "PIN must be exactly 4 digits.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (pin !== confirmPin) {
-
-                showMessage(
-                    "createMessage",
-                    "PIN and Confirm PIN do not match.",
-                    "error"
-                );
-
-                return;
-            }
-
-            const btn =
-                document.getElementById("createBtn");
-
-            btn.disabled = true;
-            btn.innerText = "Creating PIN...";
-
-            try {
-
-                /*
-                 * CREATE PIN
-                 */
-
-                const { data, error } =
-                    await supabaseClient.rpc(
-                        "create_student_pin",
-                        {
-                            p_mobile: mobile,
-                            p_pin: pin
-                        }
-                    );
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "createMessage",
-                        error.message ||
-                        "Could not create PIN.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-                if (!data || !data.success) {
-
-                    showMessage(
-                        "createMessage",
-                        data?.message ||
-                        "Could not create PIN.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * PIN created.
-                 * Now login automatically so that
-                 * student session token is also created.
-                 */
-
-                const loginResult =
-                    await supabaseClient.rpc(
-                        "verify_student_login",
-                        {
-                            p_mobile: mobile,
-                            p_pin: pin
-                        }
-                    );
-
-                if (
-                    loginResult.error ||
-                    !loginResult.data ||
-                    !loginResult.data.success
-                ) {
-
-                    showMessage(
-                        "createMessage",
-                        "PIN created. Please login.",
-                        "success"
-                    );
-
-                    setTimeout(function () {
-
-                        document.getElementById(
-                            "loginMobile"
-                        ).value = mobile;
-
-                        showLogin();
-
-                    }, 1200);
-
-                    return;
-                }
-
-
-                /*
-                 * SAVE STUDENT LOGIN
-                 */
-
-                localStorage.setItem(
-                    "studentLogin",
-                    JSON.stringify(
-                        loginResult.data.student
-                    )
-                );
-
-
-                /*
-                 * CREATE SESSION TOKEN
-                 */
-
-                const sessionResult =
-                    await supabaseClient.rpc(
-                        "create_student_session",
-                        {
-                            p_student_id:
-                                loginResult.data.student.id
-                        }
-                    );
-
-                if (
-                    sessionResult.error ||
-                    !sessionResult.data ||
-                    !sessionResult.data.success
-                ) {
-
-                    localStorage.removeItem(
-                        "studentLogin"
-                    );
-
-                    showMessage(
-                        "createMessage",
-                        "PIN created, but session could not be created. Please login again.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * SAVE SESSION TOKEN
-                 */
-
-                localStorage.setItem(
-                    "studentSessionToken",
-                    sessionResult.data.token
-                );
-
-
-                showMessage(
-                    "createMessage",
-                    "PIN created successfully!",
-                    "success"
-                );
-
-
-                setTimeout(function () {
-
-                    window.location.href =
-                        "student-dashboard.html";
-
-                }, 700);
-
-            }
-
-            catch (err) {
-
-                console.error(err);
-
-                showMessage(
-                    "createMessage",
-                    "Something went wrong. Please try again.",
-                    "error"
-                );
-
-            }
-
-            finally {
-
-                btn.disabled = false;
-                btn.innerText = "Create PIN";
-
-            }
-
-        }
-
-
-        /* =========================================
-           FORGOT / RESET PIN
-        ========================================= */
-
-        async function resetPin() {
-
-            const mobile =
-                document.getElementById("forgotMobile")
-                    .value.trim();
-
-            const joiningDate =
-                document.getElementById(
-                    "forgotJoiningDate"
-                ).value;
-
-            const newPin =
-                document.getElementById(
-                    "forgotNewPin"
-                ).value.trim();
-
-            const confirmPin =
-                document.getElementById(
-                    "forgotConfirmPin"
-                ).value.trim();
-
-            hideMessage("forgotMessage");
-
-            if (!mobile) {
-
-                showMessage(
-                    "forgotMessage",
-                    "Please enter mobile number.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (!joiningDate) {
-
-                showMessage(
-                    "forgotMessage",
-                    "Please enter Date of Joining.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (!/^\d{4}$/.test(newPin)) {
-
-                showMessage(
-                    "forgotMessage",
-                    "PIN must be exactly 4 digits.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (newPin !== confirmPin) {
-
-                showMessage(
-                    "forgotMessage",
-                    "PIN and Confirm PIN do not match.",
-                    "error"
-                );
-
-                return;
-            }
-
-            const btn =
-                document.getElementById("forgotBtn");
-
-            btn.disabled = true;
-            btn.innerText = "Changing PIN...";
-
-            try {
-
-                /*
-                 * RESET PIN
-                 */
-
-                const { data, error } =
-                    await supabaseClient.rpc(
-                        "reset_student_pin",
-                        {
-                            p_mobile: mobile,
-                            p_joining_date: joiningDate,
-                            p_new_pin: newPin
-                        }
-                    );
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "forgotMessage",
-                        error.message ||
-                        "Could not change PIN.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-                if (!data || !data.success) {
-
-                    showMessage(
-                        "forgotMessage",
-                        data?.message ||
-                        "Mobile number and Date of Joining do not match.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                /*
-                 * Remove old login/session.
-                 */
-
-                localStorage.removeItem(
-                    "studentLogin"
-                );
-
-                localStorage.removeItem(
-                    "studentSessionToken"
-                );
-
-
-                showMessage(
-                    "forgotMessage",
-                    "PIN changed successfully. Please login with your new PIN.",
-                    "success"
-                );
-
-
-                setTimeout(function () {
-
-                    document.getElementById(
-                        "loginMobile"
-                    ).value = mobile;
-
-                    document.getElementById(
-                        "loginPin"
-                    ).value = "";
-
-                    showLogin();
-
-                }, 1200);
-
-            }
-
-            catch (err) {
-
-                console.error(err);
-
-                showMessage(
-                    "forgotMessage",
-                    "Something went wrong. Please try again.",
-                    "error"
-                );
-
-            }
-
-            finally {
-
-                btn.disabled = false;
-                btn.innerText = "Change PIN";
-
-            }
-
-        }
-
-
-        /* =========================================
-           MESSAGE
-        ========================================= */
-
-        function showMessage(
-            elementId,
-            message,
-            type
-        ) {
-
-            const element =
-                document.getElementById(elementId);
-
-            element.innerText = message;
-
-            element.className =
-                "message " + type;
-
-            element.style.display = "block";
-
-        }
-
-
-        function hideMessage(elementId) {
-
-            const element =
-                document.getElementById(elementId);
-
-            element.style.display = "none";
-
-        }
-
-
-        function clearMessages() {
-
-            document
-                .querySelectorAll(".message")
-                .forEach(function (element) {
-
-                    element.style.display = "none";
-
-                });
-
-        }
-
-
-        /* =========================================
-           BACK BUTTON
-        ========================================= */
-
-        function goBack() {
-
-            window.location.href =
-                "index.html";
-
-        }
-
-
-        /* =========================================
-           ENTER KEY
-        ========================================= */
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key !== "Enter") {
-                    return;
-                }
-
-                const loginActive =
-                    document
-                        .getElementById("loginSection")
-                        .classList
-                        .contains("active");
-
-                const createActive =
-                    document
-                        .getElementById("createPinSection")
-                        .classList
-                        .contains("active");
-
-                const forgotActive =
-                    document
-                        .getElementById("forgotPinSection")
-                        .classList
-                        .contains("active");
-
-
-                if (loginActive) {
-
-                    studentLogin();
-
-                }
-                else if (createActive) {
-
-                    createPin();
-
-                }
-                else if (forgotActive) {
-
-                    resetPin();
-
-                }
-
-            }
+            },
+            500
         );
 
-    </script>
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+            "loginMessage",
+            error.message ||
+            "Student login failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "STUDENT LOGIN";
+
+    }
+
+}
+
+
+
+// ========================================
+// SHOW CREATE PIN
+// ========================================
+
+function showCreatePin() {
+
+    document
+        .getElementById("loginCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("createPinCard")
+        .style.display =
+        "block";
+
+}
+
+
+
+// ========================================
+// CREATE STUDENT PIN
+// ========================================
+
+async function createStudentPin() {
+
+
+    const mobile =
+        document
+            .getElementById("createMobile")
+            .value
+            .trim();
+
+
+    const pin =
+        document
+            .getElementById("createPin")
+            .value
+            .trim();
+
+
+    const confirmPin =
+        document
+            .getElementById("confirmCreatePin")
+            .value
+            .trim();
+
+
+    if (!mobile || !pin || !confirmPin) {
+
+        showMessage(
+            "createMessage",
+            "Please fill all details.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!/^\d{4}$/.test(pin)) {
+
+        showMessage(
+            "createMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (pin !== confirmPin) {
+
+        showMessage(
+            "createMessage",
+            "PIN and Confirm PIN do not match.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById("createButton");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "CREATING...";
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "create_student_pin",
+                {
+                    p_mobile: mobile,
+                    p_pin: pin
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.success === false) {
+
+            showMessage(
+                "createMessage",
+                data?.message ||
+                "PIN creation failed.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "CREATE PIN";
+
+            return;
+
+        }
+
+
+        showMessage(
+            "createMessage",
+            "PIN created successfully. You can now login.",
+            "success"
+        );
+
+
+        document
+            .getElementById("createMobile")
+            .value = "";
+
+
+        document
+            .getElementById("createPin")
+            .value = "";
+
+
+        document
+            .getElementById("confirmCreatePin")
+            .value = "";
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "CREATE PIN";
+
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+            "createMessage",
+            error.message ||
+            "PIN creation failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "CREATE PIN";
+
+    }
+
+}
+
+
+
+// ========================================
+// SHOW FORGOT PIN
+// ========================================
+
+function showForgotPin() {
+
+    document
+        .getElementById("loginCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("createPinCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinCard")
+        .style.display =
+        "block";
+
+}
+
+
+
+// ========================================
+// RESET STUDENT PIN
+// ========================================
+
+async function resetStudentPin() {
+
+
+    const mobile =
+        document
+            .getElementById("forgotMobile")
+            .value
+            .trim();
+
+
+    const joiningDate =
+        document
+            .getElementById("forgotJoiningDate")
+            .value
+            .trim();
+
+
+    const pin =
+        document
+            .getElementById("forgotPin")
+            .value
+            .trim();
+
+
+    const confirmPin =
+        document
+            .getElementById("confirmForgotPin")
+            .value
+            .trim();
+
+
+    if (
+        !mobile ||
+        !joiningDate ||
+        !pin ||
+        !confirmPin
+    ) {
+
+        showMessage(
+            "forgotMessage",
+            "Please fill all details.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!/^\d{4}$/.test(pin)) {
+
+        showMessage(
+            "forgotMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (pin !== confirmPin) {
+
+        showMessage(
+            "forgotMessage",
+            "PIN and Confirm PIN do not match.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById("forgotButton");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "RESETTING...";
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "reset_student_pin",
+                {
+                    p_mobile: mobile,
+                    p_joining_date: joiningDate,
+                    p_pin: pin
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.success === false) {
+
+            showMessage(
+                "forgotMessage",
+                data?.message ||
+                "PIN reset failed.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "RESET PIN";
+
+            return;
+
+        }
+
+
+        showMessage(
+            "forgotMessage",
+            "PIN reset successfully. You can now login.",
+            "success"
+        );
+
+
+        document
+            .getElementById("forgotMobile")
+            .value = "";
+
+
+        document
+            .getElementById("forgotJoiningDate")
+            .value = "";
+
+
+        document
+            .getElementById("forgotPin")
+            .value = "";
+
+
+        document
+            .getElementById("confirmForgotPin")
+            .value = "";
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "RESET PIN";
+
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+            "forgotMessage",
+            error.message ||
+            "PIN reset failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "RESET PIN";
+
+    }
+
+}
+
+
+
+// ========================================
+// SHOW LOGIN
+// ========================================
+
+function showLogin() {
+
+    document
+        .getElementById("createPinCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinCard")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("loginCard")
+        .style.display =
+        "block";
+
+}
+
+
+
+// ========================================
+// BACK
+// ========================================
+
+function goBack() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+// ========================================
+// MESSAGE
+// ========================================
+
+function showMessage(
+    id,
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        "message " + type;
+
+
+    element.style.display =
+        "block";
+
+}
+
+</script>
+
 
 </body>
 
