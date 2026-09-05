@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
 
+
     <style>
 
         * {
@@ -21,6 +22,7 @@
             margin: 0;
             padding: 0;
         }
+
 
         body {
 
@@ -42,12 +44,14 @@
             padding: 35px 20px;
         }
 
+
         .container {
 
             max-width: 850px;
 
             margin: 0 auto;
         }
+
 
         /* =========================
            HEADER
@@ -75,6 +79,7 @@
             margin-bottom: 22px;
         }
 
+
         .header h1 {
 
             font-size: 28px;
@@ -84,12 +89,14 @@
             margin-bottom: 5px;
         }
 
+
         .subtitle {
 
             color: #64748b;
 
             font-size: 14px;
         }
+
 
         .back-button {
 
@@ -110,16 +117,18 @@
             cursor: pointer;
         }
 
+
         .back-button:hover {
 
             background: #e5e5e5;
         }
 
+
         /* =========================
-           FILTER CARD
+           STUDENT CARD
         ========================= */
 
-        .filter-card {
+        .student-card {
 
             background: white;
 
@@ -134,86 +143,51 @@
             margin-bottom: 22px;
         }
 
-        .filter-grid {
+
+        .student-grid {
 
             display: grid;
 
             grid-template-columns:
-                1fr 1fr;
+                repeat(4, 1fr);
 
-            gap: 18px;
+            gap: 12px;
         }
 
-        label {
 
-            display: block;
+        .student-box {
+
+            background: #f8fafc;
+
+            border-radius: 12px;
+
+            padding: 14px;
+        }
+
+
+        .student-label {
+
+            font-size: 11px;
+
+            color: #64748b;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+
+        .student-value {
 
             font-size: 14px;
 
-            font-weight: 700;
-
             color: #111827;
 
-            margin-bottom: 8px;
-        }
-
-        select {
-
-            width: 100%;
-
-            height: 48px;
-
-            border:
-                1px solid #d6d6d6;
-
-            border-radius: 10px;
-
-            padding: 0 13px;
-
-            font-size: 15px;
-
-            background: white;
-
-            outline: none;
-        }
-
-        select:focus {
-
-            border-color: #8a2d72;
-        }
-
-        .view-button {
-
-            width: 100%;
-
-            height: 48px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            margin-top: 18px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #292879,
-                    #bd2d68
-                );
-
-            color: white;
-
-            font-size: 15px;
-
             font-weight: 700;
 
-            cursor: pointer;
+            word-break: break-word;
         }
 
-        .view-button:hover {
-
-            opacity: 0.95;
-        }
 
         /* =========================
            FEE CARD
@@ -234,6 +208,7 @@
             margin-bottom: 22px;
         }
 
+
         .fee-title-row {
 
             display: flex;
@@ -246,6 +221,7 @@
             margin-bottom: 22px;
         }
 
+
         .fee-title {
 
             font-size: 22px;
@@ -254,6 +230,7 @@
 
             color: #111827;
         }
+
 
         .status {
 
@@ -267,12 +244,14 @@
             font-weight: 700;
         }
 
+
         .status.paid {
 
             background: #dcfce7;
 
             color: #166534;
         }
+
 
         .status.partial {
 
@@ -281,12 +260,14 @@
             color: #92400e;
         }
 
+
         .status.pending {
 
             background: #fee2e2;
 
             color: #991b1b;
         }
+
 
         /* =========================
            AMOUNTS
@@ -302,6 +283,7 @@
             gap: 15px;
         }
 
+
         .amount-box {
 
             border:
@@ -314,6 +296,7 @@
             background: #fff;
         }
 
+
         .amount-label {
 
             color: #64748b;
@@ -322,6 +305,7 @@
 
             margin-bottom: 9px;
         }
+
 
         .amount-value {
 
@@ -332,107 +316,6 @@
             font-weight: 700;
         }
 
-        /* =========================
-           HISTORY
-        ========================= */
-
-        .history-card {
-
-            background: white;
-
-            border-radius: 20px;
-
-            padding: 30px;
-
-            box-shadow:
-                0 15px 40px
-                rgba(0,0,0,0.20);
-        }
-
-        .history-card h2 {
-
-            color: #111827;
-
-            font-size: 22px;
-
-            margin-bottom: 20px;
-        }
-
-        .payment-row {
-
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items: center;
-
-            padding:
-                15px 0;
-
-            border-bottom:
-                1px solid #eeeeee;
-        }
-
-        .payment-row:last-child {
-
-            border-bottom: none;
-        }
-
-        .payment-date {
-
-            color: #64748b;
-
-            font-size: 13px;
-        }
-
-        .payment-amount {
-
-            color: #166534;
-
-            font-size: 16px;
-
-            font-weight: 700;
-        }
-
-        .no-history {
-
-            padding: 25px;
-
-            text-align: center;
-
-            color: #64748b;
-
-            background: #f8fafc;
-
-            border-radius: 10px;
-        }
-
-        /* =========================
-           MESSAGE
-        ========================= */
-
-        .message {
-
-            display: none;
-
-            background: white;
-
-            border-radius: 12px;
-
-            padding: 15px;
-
-            margin-bottom: 20px;
-
-            font-size: 14px;
-
-            color: #991b1b;
-        }
-
-        .message.show {
-
-            display: block;
-        }
 
         /* =========================
            RECEIPT BUTTON
@@ -466,10 +349,154 @@
             cursor: pointer;
         }
 
+
         .receipt-button:hover {
 
             opacity: 0.95;
         }
+
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        .history-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.20);
+        }
+
+
+        .history-card h2 {
+
+            color: #111827;
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .payment-row {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            padding:
+                15px 0;
+
+            border-bottom:
+                1px solid #eeeeee;
+        }
+
+
+        .payment-row:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .payment-left {
+
+            display: flex;
+
+            flex-direction:
+                column;
+
+            gap: 5px;
+        }
+
+
+        .payment-title {
+
+            font-weight: 700;
+
+            color: #111827;
+
+            font-size: 14px;
+        }
+
+
+        .payment-date {
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        .payment-mode {
+
+            color: #8a2d72;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .payment-amount {
+
+            color: #166534;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .no-history {
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: #f8fafc;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+
+            display: none;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+
+            color: #991b1b;
+        }
+
+
+        .message.show {
+
+            display: block;
+        }
+
 
         /* =========================
            LOADING
@@ -490,7 +517,10 @@
             box-shadow:
                 0 15px 40px
                 rgba(0,0,0,0.20);
+
+            margin-bottom: 22px;
         }
+
 
         /* =========================
            FOOTER
@@ -508,6 +538,7 @@
             margin-top: 20px;
         }
 
+
         /* =========================
            MOBILE
         ========================= */
@@ -520,32 +551,39 @@
                     20px 12px;
             }
 
+
             .header {
 
                 padding: 22px;
             }
+
 
             .header h1 {
 
                 font-size: 24px;
             }
 
-            .filter-card,
+
+            .student-card,
             .fee-card,
             .history-card {
 
                 padding: 22px;
             }
 
-            .filter-grid {
 
-                grid-template-columns: 1fr;
+            .student-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
+
 
             .amount-grid {
 
                 grid-template-columns: 1fr;
             }
+
 
             .fee-title-row {
 
@@ -555,9 +593,20 @@
                 gap: 12px;
             }
 
+
             .payment-row {
 
                 gap: 15px;
+            }
+
+        }
+
+
+        @media (max-width: 420px) {
+
+            .student-grid {
+
+                grid-template-columns: 1fr;
             }
 
         }
@@ -608,7 +657,7 @@
 
 
     <!-- =========================
-         ERROR MESSAGE
+         MESSAGE
     ========================== -->
 
     <div
@@ -618,100 +667,84 @@
 
 
     <!-- =========================
-         MONTH / YEAR
+         STUDENT INFORMATION
     ========================== -->
 
-    <div class="filter-card">
+    <div class="student-card">
 
 
-        <div class="filter-grid">
+        <div class="student-grid">
 
 
-            <div>
+            <div class="student-box">
 
-                <label>
-                    Month
-                </label>
+                <div class="student-label">
+                    STUDENT NAME
+                </div>
 
-                <select
-                    id="monthSelect">
+                <div
+                    class="student-value"
+                    id="studentFullName">
 
-                    <option value="1">
-                        January
-                    </option>
+                    -
 
-                    <option value="2">
-                        February
-                    </option>
-
-                    <option value="3">
-                        March
-                    </option>
-
-                    <option value="4">
-                        April
-                    </option>
-
-                    <option value="5">
-                        May
-                    </option>
-
-                    <option value="6">
-                        June
-                    </option>
-
-                    <option value="7">
-                        July
-                    </option>
-
-                    <option value="8">
-                        August
-                    </option>
-
-                    <option value="9">
-                        September
-                    </option>
-
-                    <option value="10">
-                        October
-                    </option>
-
-                    <option value="11">
-                        November
-                    </option>
-
-                    <option value="12">
-                        December
-                    </option>
-
-                </select>
+                </div>
 
             </div>
 
 
-            <div>
+            <div class="student-box">
 
-                <label>
-                    Year
-                </label>
+                <div class="student-label">
+                    MOBILE
+                </div>
 
-                <select
-                    id="yearSelect">
-                </select>
+                <div
+                    class="student-value"
+                    id="studentMobile">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div class="student-box">
+
+                <div class="student-label">
+                    INSTRUMENT
+                </div>
+
+                <div
+                    class="student-value"
+                    id="studentInstrument">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div class="student-box">
+
+                <div class="student-label">
+                    BATCH
+                </div>
+
+                <div
+                    class="student-value"
+                    id="studentBatch">
+
+                    -
+
+                </div>
 
             </div>
 
 
         </div>
-
-
-        <button
-            class="view-button"
-            onclick="loadFees()">
-
-            View Fees
-
-        </button>
 
     </div>
 
@@ -741,11 +774,11 @@
 
         <div class="fee-title-row">
 
-            <div
-                class="fee-title"
-                id="feeMonthTitle">
 
-                Monthly Fees
+            <div
+                class="fee-title">
+
+                My Fees
 
             </div>
 
@@ -758,11 +791,14 @@
 
             </div>
 
+
         </div>
 
 
         <div class="amount-grid">
 
+
+            <!-- MONTHLY -->
 
             <div class="amount-box">
 
@@ -783,6 +819,8 @@
             </div>
 
 
+            <!-- RECEIVED -->
+
             <div class="amount-box">
 
                 <div class="amount-label">
@@ -801,6 +839,8 @@
 
             </div>
 
+
+            <!-- BALANCE -->
 
             <div class="amount-box">
 
@@ -851,7 +891,8 @@
         </h2>
 
 
-        <div id="paymentHistory">
+        <div
+            id="paymentHistory">
 
         </div>
 
@@ -872,24 +913,20 @@
 <script>
 
 
-// ============================================
-// GLOBAL
-// ============================================
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 let studentData = null;
 
-let sessionToken = null;
 
-
-// ============================================
-// PAGE LOAD
-// ============================================
+/* =====================================================
+   PAGE LOAD
+===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
-        loadYears();
 
         loadStudent();
 
@@ -897,81 +934,16 @@ document.addEventListener(
 );
 
 
-// ============================================
-// LOAD YEARS
-// ============================================
-
-function loadYears() {
-
-    const select =
-        document.getElementById(
-            "yearSelect"
-        );
-
-
-    const currentYear =
-        new Date().getFullYear();
-
-
-    for (
-        let year =
-            currentYear - 2;
-
-        year <= currentYear + 1;
-
-        year++
-    ) {
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-
-        option.value = year;
-
-        option.innerText = year;
-
-
-        if (
-            year === currentYear
-        ) {
-
-            option.selected = true;
-
-        }
-
-
-        select.appendChild(
-            option
-        );
-
-    }
-
-
-    document.getElementById(
-        "monthSelect"
-    ).value =
-        new Date().getMonth() + 1;
-
-}
-
-
-// ============================================
-// LOAD STUDENT
-// ============================================
+/* =====================================================
+   LOAD STUDENT FROM LOCAL STORAGE
+===================================================== */
 
 function loadStudent() {
+
 
     const savedStudent =
         localStorage.getItem(
             "studentLogin"
-        );
-
-
-    sessionToken =
-        localStorage.getItem(
-            "studentSessionToken"
         );
 
 
@@ -993,331 +965,412 @@ function loadStudent() {
             );
 
 
-        if (
-            !studentData ||
-            !studentData.id
-        ) {
+        if (!studentData) {
 
             throw new Error(
-                "Invalid student"
+                "Student information not found."
             );
 
         }
 
+
+        const mobile =
+            studentData.mobile ||
+            studentData.mobile_number ||
+            studentData.mobileNumber ||
+            "";
+
+
+        if (!mobile) {
+
+            throw new Error(
+                "Student mobile number not found."
+            );
+
+        }
+
+
+        /* =========================
+           SHOW STUDENT
+        ========================== */
 
         document.getElementById(
             "studentName"
         ).innerText =
             studentData.full_name ||
+            studentData.name ||
             "Student";
 
 
-        /*
-         * Student session token is required.
-         */
-
-        if (!sessionToken) {
-
-            hideLoading();
-
-            showMessage(
-                "Student session is not available. Please login again."
-            );
-
-            return;
-
-        }
+        document.getElementById(
+            "studentFullName"
+        ).innerText =
+            studentData.full_name ||
+            studentData.name ||
+            "-";
 
 
-        loadFees();
+        document.getElementById(
+            "studentMobile"
+        ).innerText =
+            mobile;
+
+
+        document.getElementById(
+            "studentInstrument"
+        ).innerText =
+            studentData.instrument ||
+            "-";
+
+
+        document.getElementById(
+            "studentBatch"
+        ).innerText =
+            studentData.batch ||
+            "-";
+
+
+        /* =========================
+           LOAD SUPABASE DATA
+        ========================== */
+
+        loadFees(mobile);
 
     }
+
+
     catch (error) {
 
-        console.error(error);
-
-        localStorage.removeItem(
-            "studentLogin"
+        console.error(
+            "Student load error:",
+            error
         );
 
-        localStorage.removeItem(
-            "studentSessionToken"
+        showMessage(
+            error.message
         );
-
-        window.location.href =
-            "student-login.html";
 
     }
 
 }
 
 
-// ============================================
-// LOAD FEES
-// ============================================
+/* =====================================================
+   LOAD FEES FROM SUPABASE
+===================================================== */
 
-async function loadFees() {
+async function loadFees(
+    mobile
+) {
 
-    if (!sessionToken) {
-
-        showMessage(
-            "Please login again."
-        );
-
-        return;
-
-    }
-
-
-    hideMessage();
 
     showLoading();
 
-
-    const month =
-        Number(
-            document.getElementById(
-                "monthSelect"
-            ).value
-        );
-
-
-    const year =
-        Number(
-            document.getElementById(
-                "yearSelect"
-            ).value
-        );
+    hideMessage();
 
 
     try {
 
-        const { data, error } =
-            await supabaseClient.rpc(
-                "student_get_fees",
-                {
-                    p_token:
-                        sessionToken,
 
-                    p_month:
-                        month,
+        console.log(
+            "Loading fees for:",
+            mobile
+        );
 
-                    p_year:
-                        year
-                }
-            );
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "student_get_fees_by_mobile",
+            {
+                p_mobile:
+                    mobile
+            }
+        );
+
+
+        console.log(
+            "Fees response:",
+            data
+        );
 
 
         if (error) {
 
-            console.error(error);
-
-            hideLoading();
-
-            showMessage(
-                error.message
+            console.error(
+                "Supabase error:",
+                error
             );
 
-            return;
+            throw new Error(
+                error.message
+            );
 
         }
 
 
         if (
             !data ||
-            !data.success
+            data.success !== true
         ) {
 
-            hideLoading();
-
-
-            if (
-                data?.message &&
-                data.message.toLowerCase().includes(
-                    "expired"
-                )
-            ) {
-
-                localStorage.removeItem(
-                    "studentLogin"
-                );
-
-                localStorage.removeItem(
-                    "studentSessionToken"
-                );
-
-                window.location.href =
-                    "student-login.html";
-
-                return;
-
-            }
-
-
-            showMessage(
+            throw new Error(
                 data?.message ||
-                "Unable to load fees."
+                "Unable to load student fees."
             );
-
-            return;
 
         }
 
 
-        showFeeData(
-            data
+        /* =========================
+           STUDENT
+        ========================== */
+
+        const student =
+            data.student || {};
+
+
+        studentData = {
+
+            ...studentData,
+
+            ...student,
+
+            mobile:
+                student.mobile_number ||
+                mobile,
+
+            full_name:
+                student.full_name
+
+        };
+
+
+        localStorage.setItem(
+            "studentLogin",
+            JSON.stringify(
+                studentData
+            )
         );
 
 
-        await loadPaymentHistory(
-            month,
-            year
-        );
+        /* =========================
+           SHOW STUDENT
+        ========================== */
+
+        document.getElementById(
+            "studentName"
+        ).innerText =
+            student.full_name ||
+            "Student";
 
 
-    }
-    catch (error) {
+        document.getElementById(
+            "studentFullName"
+        ).innerText =
+            student.full_name ||
+            "-";
 
-        console.error(error);
+
+        document.getElementById(
+            "studentMobile"
+        ).innerText =
+            student.mobile_number ||
+            mobile;
+
+
+        document.getElementById(
+            "studentInstrument"
+        ).innerText =
+            student.instrument ||
+            "-";
+
+
+        document.getElementById(
+            "studentBatch"
+        ).innerText =
+            student.batch ||
+            "-";
+
+
+        /* =========================
+           FEE
+        ========================== */
+
+        const fee =
+            data.fee || {};
+
+
+        const monthly =
+            Number(
+                fee.monthly_amount ||
+                student.fees_amount ||
+                0
+            );
+
+
+        const paid =
+            Number(
+                fee.paid_amount ||
+                0
+            );
+
+
+        const balance =
+            Number(
+                fee.balance_due ??
+                Math.max(
+                    monthly - paid,
+                    0
+                )
+            );
+
+
+        document.getElementById(
+            "monthlyAmount"
+        ).innerText =
+            formatMoney(
+                monthly
+            );
+
+
+        document.getElementById(
+            "paidAmount"
+        ).innerText =
+            formatMoney(
+                paid
+            );
+
+
+        document.getElementById(
+            "balanceAmount"
+        ).innerText =
+            formatMoney(
+                balance
+            );
+
+
+        /* =========================
+           STATUS
+        ========================== */
+
+        let statusValue =
+            String(
+                fee.status ||
+                "unpaid"
+            ).toLowerCase();
+
+
+        const statusElement =
+            document.getElementById(
+                "status"
+            );
+
+
+        statusElement.className =
+            "status";
+
+
+        if (
+            statusValue === "paid"
+        ) {
+
+            statusElement.classList.add(
+                "paid"
+            );
+
+            statusElement.innerText =
+                "PAID";
+
+        }
+
+        else if (
+            statusValue === "partial"
+        ) {
+
+            statusElement.classList.add(
+                "partial"
+            );
+
+            statusElement.innerText =
+                "PARTIAL";
+
+        }
+
+        else {
+
+            statusElement.classList.add(
+                "pending"
+            );
+
+            statusElement.innerText =
+                "PENDING";
+
+        }
+
+
+        /* =========================
+           SHOW CARD
+        ========================== */
 
         hideLoading();
 
-        showMessage(
-            "Something went wrong. Please try again."
-        );
 
-    }
-
-}
-
-
-// ============================================
-// SHOW FEE DATA
-// ============================================
-
-function showFeeData(data) {
-
-    hideLoading();
-
-
-    const fee =
-        data.fee;
-
-
-    const monthly =
-        Number(
-            fee?.monthly_amount || 0
-        );
-
-
-    const paid =
-        Number(
-            fee?.paid_amount || 0
-        );
-
-
-    const balance =
-        Number(
-            fee?.balance_due || 0
-        );
-
-
-    document.getElementById(
-        "monthlyAmount"
-    ).innerText =
-        formatMoney(
-            monthly
-        );
-
-
-    document.getElementById(
-        "paidAmount"
-    ).innerText =
-        formatMoney(
-            paid
-        );
-
-
-    document.getElementById(
-        "balanceAmount"
-    ).innerText =
-        formatMoney(
-            balance
-        );
-
-
-    document.getElementById(
-        "feeMonthTitle"
-    ).innerText =
-        getMonthName(
-            fee?.fees_month
-        ) +
-        " " +
-        fee?.fees_year;
-
-
-    const status =
         document.getElementById(
-            "status"
+            "feeCard"
+        ).style.display =
+            "block";
+
+
+        /* =========================
+           PAYMENT HISTORY
+        ========================== */
+
+        await loadPaymentHistory(
+            mobile
         );
 
-
-    status.className =
-        "status";
-
-
-    if (
-        fee?.status === "paid"
-    ) {
-
-        status.classList.add(
-            "paid"
-        );
-
-        status.innerText =
-            "PAID";
-
-    }
-    else if (
-        fee?.status === "partial"
-    ) {
-
-        status.classList.add(
-            "partial"
-        );
-
-        status.innerText =
-            "PARTIAL";
-
-    }
-    else {
-
-        status.classList.add(
-            "pending"
-        );
-
-        status.innerText =
-            "PENDING";
 
     }
 
 
-    document.getElementById(
-        "feeCard"
-    ).style.display =
-        "block";
+    catch (error) {
+
+        console.error(
+            "Load fees error:",
+            error
+        );
+
+
+        hideLoading();
+
+
+        showMessage(
+            "Unable to load student fees: " +
+            error.message
+        );
+
+    }
 
 }
 
 
-// ============================================
-// PAYMENT HISTORY
-// ============================================
+/* =====================================================
+   PAYMENT HISTORY
+===================================================== */
 
 async function loadPaymentHistory(
-    month,
-    year
+    mobile
 ) {
+
+
+    const historyCard =
+        document.getElementById(
+            "historyCard"
+        );
+
 
     const historyContainer =
         document.getElementById(
@@ -1325,37 +1378,35 @@ async function loadPaymentHistory(
         );
 
 
-    historyContainer.innerHTML =
-        "Loading...";
-
-
-    document.getElementById(
-        "historyCard"
-    ).style.display =
+    historyCard.style.display =
         "block";
+
+
+    historyContainer.innerHTML =
+        '<div class="no-history">Loading payment history...</div>';
 
 
     try {
 
-        const { data, error } =
-            await supabaseClient.rpc(
-                "student_get_payment_history",
-                {
-                    p_token:
-                        sessionToken,
 
-                    p_month:
-                        month,
-
-                    p_year:
-                        year
-                }
-            );
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "student_get_payment_history_by_mobile",
+            {
+                p_mobile:
+                    mobile
+            }
+        );
 
 
         if (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
             historyContainer.innerHTML =
                 '<div class="no-history">Unable to load payment history.</div>';
@@ -1367,7 +1418,7 @@ async function loadPaymentHistory(
 
         if (
             !data ||
-            !data.success
+            data.success !== true
         ) {
 
             historyContainer.innerHTML =
@@ -1387,7 +1438,7 @@ async function loadPaymentHistory(
         ) {
 
             historyContainer.innerHTML =
-                '<div class="no-history">No payment received for this month.</div>';
+                '<div class="no-history">No payment history available.</div>';
 
             return;
 
@@ -1399,7 +1450,8 @@ async function loadPaymentHistory(
 
 
         payments.forEach(
-            function (payment) {
+            function(payment) {
+
 
                 const row =
                     document.createElement(
@@ -1411,47 +1463,104 @@ async function loadPaymentHistory(
                     "payment-row";
 
 
+                const left =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                left.className =
+                    "payment-left";
+
+
+                const title =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                title.className =
+                    "payment-title";
+
+
+                title.innerText =
+                    "Payment Received";
+
+
                 const date =
-                    formatDateTime(
+                    document.createElement(
+                        "div"
+                    );
+
+
+                date.className =
+                    "payment-date";
+
+
+                date.innerText =
+                    formatDate(
                         payment.payment_date
                     );
 
 
-                row.innerHTML = `
-
-                    <div>
-
-                        <div
-                            style="
-                            font-weight:700;
-                            color:#111827;
-                            margin-bottom:5px;
-                            ">
-
-                            Payment Received
-
-                        </div>
-
-                        <div
-                            class="payment-date">
-
-                            ${date}
-
-                        </div>
-
-                    </div>
+                const mode =
+                    document.createElement(
+                        "div"
+                    );
 
 
-                    <div
-                        class="payment-amount">
+                mode.className =
+                    "payment-mode";
 
-                        + ${formatMoney(
-                            payment.amount
-                        )}
 
-                    </div>
+                mode.innerText =
+                    "Mode: " +
+                    (
+                        payment.payment_mode ||
+                        "-"
+                    );
 
-                `;
+
+                left.appendChild(
+                    title
+                );
+
+
+                left.appendChild(
+                    date
+                );
+
+
+                left.appendChild(
+                    mode
+                );
+
+
+                const amount =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                amount.className =
+                    "payment-amount";
+
+
+                amount.innerText =
+                    "+ " +
+                    formatMoney(
+                        payment.amount
+                    );
+
+
+                row.appendChild(
+                    left
+                );
+
+
+                row.appendChild(
+                    amount
+                );
 
 
                 historyContainer.appendChild(
@@ -1461,11 +1570,15 @@ async function loadPaymentHistory(
             }
         );
 
-
     }
+
+
     catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         historyContainer.innerHTML =
             '<div class="no-history">Unable to load payment history.</div>';
@@ -1475,15 +1588,15 @@ async function loadPaymentHistory(
 }
 
 
-// ============================================
-// RECEIPT
-// ============================================
+/* =====================================================
+   RECEIPT
+===================================================== */
 
 function openReceipt() {
 
+
     if (
-        !studentData ||
-        !studentData.id
+        !studentData
     ) {
 
         showMessage(
@@ -1495,43 +1608,34 @@ function openReceipt() {
     }
 
 
-    const month =
-        document.getElementById(
-            "monthSelect"
-        ).value;
+    const studentId =
+        studentData.id;
 
 
-    const year =
-        document.getElementById(
-            "yearSelect"
-        ).value;
+    if (!studentId) {
 
+        showMessage(
+            "Student ID is not available."
+        );
 
-    /*
-     * Send student ID + month + year only once.
-     */
+        return;
+
+    }
+
 
     window.location.href =
         "fee-receipt.html" +
         "?student=" +
         encodeURIComponent(
-            studentData.id
-        ) +
-        "&month=" +
-        encodeURIComponent(
-            month
-        ) +
-        "&year=" +
-        encodeURIComponent(
-            year
+            studentId
         );
 
 }
 
 
-// ============================================
-// BACK
-// ============================================
+/* =====================================================
+   BACK
+===================================================== */
 
 function goBack() {
 
@@ -1541,9 +1645,9 @@ function goBack() {
 }
 
 
-// ============================================
-// MONEY
-// ============================================
+/* =====================================================
+   MONEY
+===================================================== */
 
 function formatMoney(
     amount
@@ -1563,46 +1667,14 @@ function formatMoney(
 }
 
 
-// ============================================
-// MONTH NAME
-// ============================================
+/* =====================================================
+   DATE
+===================================================== */
 
-function getMonthName(
-    month
-) {
-
-    const months = [
-
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-
-    ];
-
-
-    return months[
-        Number(month) - 1
-    ] || "";
-
-}
-
-
-// ============================================
-// DATE
-// ============================================
-
-function formatDateTime(
+function formatDate(
     dateString
 ) {
+
 
     if (!dateString) {
 
@@ -1623,7 +1695,7 @@ function formatDateTime(
         )
     ) {
 
-        return dateString;
+        return "-";
 
     }
 
@@ -1640,9 +1712,9 @@ function formatDateTime(
 }
 
 
-// ============================================
-// LOADING
-// ============================================
+/* =====================================================
+   LOADING
+===================================================== */
 
 function showLoading() {
 
@@ -1650,18 +1722,6 @@ function showLoading() {
         "loading"
     ).style.display =
         "block";
-
-
-    document.getElementById(
-        "feeCard"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "historyCard"
-    ).style.display =
-        "none";
 
 }
 
@@ -1676,25 +1736,25 @@ function hideLoading() {
 }
 
 
-// ============================================
-// MESSAGE
-// ============================================
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 function showMessage(
-    message
+    text
 ) {
 
-    const element =
+    const message =
         document.getElementById(
             "message"
         );
 
 
-    element.innerText =
-        message;
+    message.innerText =
+        text;
 
 
-    element.classList.add(
+    message.classList.add(
         "show"
     );
 
