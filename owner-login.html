@@ -3,406 +3,398 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Owner Login</title>
+<title>Owner Login</title>
 
-    <!-- SUPABASE -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
+body {
 
-            margin: 0;
+    margin: 0;
 
-            min-height: 100vh;
+    min-height: 100vh;
 
-            font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+    background:
+        linear-gradient(
+            135deg,
+            #1d2671,
+            #c33764
+        );
 
-            display: flex;
+    display: flex;
 
-            align-items: center;
+    align-items: center;
 
-            justify-content: center;
+    justify-content: center;
 
-            padding: 25px;
+    padding: 25px;
+}
 
-        }
+.container {
 
-        .container {
+    width: 100%;
 
-            width: 100%;
+    max-width: 430px;
+}
 
-            max-width: 430px;
+.card {
 
-        }
+    background: white;
 
-        .card {
+    border-radius: 25px;
 
-            background: white;
+    padding: 35px;
 
-            border-radius: 25px;
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.25);
+}
 
-            padding: 35px;
+.header {
 
-            box-shadow:
-                0 20px 60px
-                rgba(0,0,0,0.25);
+    text-align: center;
 
-        }
+    margin-bottom: 30px;
+}
 
-        .header {
+.logo {
 
-            text-align: center;
+    width: 90px;
 
-            margin-bottom: 30px;
+    height: 90px;
 
-        }
+    margin: auto;
 
-        .logo {
+    border-radius: 50%;
 
-            width: 90px;
+    display: flex;
 
-            height: 90px;
+    align-items: center;
 
-            margin: auto;
+    justify-content: center;
 
-            border-radius: 50%;
+    font-size: 42px;
 
-            display: flex;
+    background:
+        linear-gradient(
+            135deg,
+            #1d2671,
+            #c33764
+        );
 
-            align-items: center;
+    color: white;
 
-            justify-content: center;
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,0.18);
 
-            font-size: 42px;
+    overflow: hidden;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+.logo img {
 
-            color: white;
+    width: 100%;
 
-            box-shadow:
-                0 10px 25px
-                rgba(0,0,0,0.18);
+    height: 100%;
 
-        }
+    object-fit: cover;
+}
 
-        .academy-name {
+.academy-name {
 
-            margin-top: 18px;
+    margin-top: 18px;
 
-            margin-bottom: 6px;
+    margin-bottom: 6px;
 
-            color: #222;
+    color: #222;
 
-            font-size: 28px;
+    font-size: 28px;
 
-            font-weight: bold;
+    font-weight: bold;
+}
 
-        }
+.subtitle {
 
-        .subtitle {
+    color: #777;
 
-            color: #777;
+    font-size: 15px;
+}
 
-            font-size: 15px;
+h2 {
 
-        }
+    text-align: center;
 
-        h2 {
+    color: #222;
 
-            text-align: center;
+    margin-top: 25px;
 
-            color: #222;
+    margin-bottom: 25px;
 
-            margin-top: 25px;
+    font-size: 24px;
+}
 
-            margin-bottom: 25px;
+label {
 
-            font-size: 24px;
+    display: block;
 
-        }
+    margin-top: 15px;
 
-        label {
+    margin-bottom: 7px;
 
-            display: block;
+    color: #222;
 
-            margin-top: 15px;
+    font-size: 14px;
 
-            margin-bottom: 7px;
+    font-weight: bold;
+}
 
-            color: #222;
+input {
 
-            font-size: 14px;
+    width: 100%;
 
-            font-weight: bold;
+    padding: 14px;
 
-        }
+    border: 1px solid #ddd;
 
-        input {
+    border-radius: 10px;
 
-            width: 100%;
+    font-size: 15px;
 
-            padding: 14px;
+    outline: none;
+}
 
-            border: 1px solid #ddd;
+input:focus {
 
-            border-radius: 10px;
+    border-color: #1d2671;
 
-            font-size: 15px;
+    box-shadow:
+        0 0 0 2px
+        rgba(29,38,113,0.08);
+}
 
-            outline: none;
+.pin-input {
 
-        }
+    text-align: center;
 
-        input:focus {
+    letter-spacing: 8px;
 
-            border-color: #1d2671;
+    font-size: 20px;
+}
 
-            box-shadow:
-                0 0 0 2px
-                rgba(29,38,113,0.08);
+.remember {
 
-        }
+    display: flex;
 
-        .pin-input {
+    align-items: center;
 
-            text-align: center;
+    gap: 8px;
 
-            letter-spacing: 8px;
+    margin-top: 15px;
 
-            font-size: 20px;
+    color: #555;
 
-        }
+    font-size: 14px;
+}
 
-        .remember {
+.remember input {
 
-            display: flex;
+    width: auto;
+}
 
-            align-items: center;
+button {
 
-            gap: 8px;
+    width: 100%;
 
-            margin-top: 15px;
+    border: none;
 
-            color: #555;
+    padding: 14px;
 
-            font-size: 14px;
+    border-radius: 10px;
 
-        }
+    margin-top: 20px;
 
-        .remember input {
+    font-size: 15px;
 
-            width: auto;
+    font-weight: bold;
 
-        }
+    cursor: pointer;
 
-        button {
+    color: white;
 
-            width: 100%;
+    background:
+        linear-gradient(
+            135deg,
+            #1d2671,
+            #c33764
+        );
 
-            border: none;
+    transition: 0.2s;
+}
 
-            padding: 14px;
+button:hover {
 
-            border-radius: 10px;
+    opacity: 0.9;
 
-            margin-top: 20px;
+    transform: scale(1.02);
+}
 
-            font-size: 15px;
+button:active {
 
-            font-weight: bold;
+    transform: scale(0.98);
+}
 
-            cursor: pointer;
+button:disabled {
 
-            color: white;
+    opacity: 0.6;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d2671,
-                    #c33764
-                );
+    cursor: not-allowed;
+}
 
-            transition: 0.2s;
+.links {
 
-        }
+    text-align: center;
 
-        button:hover {
+    margin-top: 20px;
+}
 
-            opacity: 0.9;
+.links a {
 
-            transform: scale(1.02);
+    display: block;
 
-        }
+    margin-top: 9px;
 
-        button:active {
+    color: #1d2671;
 
-            transform: scale(0.98);
+    text-decoration: none;
 
-        }
+    font-size: 14px;
 
-        button:disabled {
+    cursor: pointer;
+}
 
-            opacity: 0.6;
+.links a:hover {
 
-            cursor: not-allowed;
+    color: #c33764;
+}
 
-        }
+.back-button {
 
-        .links {
+    background: #eeeeee;
 
-            text-align: center;
+    color: #222;
+}
 
-            margin-top: 20px;
+.back-button:hover {
 
-        }
+    background: #e5e5e5;
 
-        .links a {
+    color: #222;
+}
 
-            display: block;
+.message {
 
-            margin-top: 9px;
+    display: none;
 
-            color: #1d2671;
+    margin-top: 15px;
 
-            text-decoration: none;
+    padding: 12px;
 
-            font-size: 14px;
+    border-radius: 8px;
 
-            cursor: pointer;
+    text-align: center;
 
-        }
+    font-size: 14px;
+}
 
-        .links a:hover {
+.success {
 
-            color: #c33764;
+    background: #e8f5e9;
 
-        }
+    color: #2e7d32;
+}
 
-        .back-button {
+.error {
 
-            background: #eeeeee;
+    background: #ffebee;
 
-            color: #222;
+    color: #c62828;
+}
 
-        }
+.section {
 
-        .back-button:hover {
+    display: none;
+}
 
-            background: #e5e5e5;
+.verified-box {
 
-            color: #222;
+    text-align: center;
 
-        }
+    padding: 12px;
 
-        .message {
+    margin-bottom: 10px;
 
-            display: none;
+    border-radius: 10px;
 
-            margin-top: 15px;
+    background: #e8f5e9;
 
-            padding: 12px;
+    color: #2e7d32;
 
-            border-radius: 8px;
+    font-weight: bold;
+}
 
-            text-align: center;
+@media(max-width: 500px) {
 
-            font-size: 14px;
+    body {
 
-        }
+        padding: 15px;
 
-        .success {
+        align-items: flex-start;
 
-            background: #e8f5e9;
+        padding-top: 25px;
+    }
 
-            color: #2e7d32;
+    .card {
 
-        }
+        padding: 28px 20px;
 
-        .error {
+        border-radius: 20px;
+    }
 
-            background: #ffebee;
+    .logo {
 
-            color: #c62828;
+        width: 75px;
 
-        }
+        height: 75px;
 
-        .section {
+        font-size: 35px;
+    }
 
-            display: none;
+    .academy-name {
 
-        }
+        font-size: 24px;
+    }
 
+    h2 {
 
-        /* MOBILE */
+        font-size: 22px;
+    }
+}
 
-        @media(max-width: 500px) {
-
-            body {
-
-                padding: 15px;
-
-                align-items: flex-start;
-
-                padding-top: 25px;
-
-            }
-
-            .card {
-
-                padding: 28px 20px;
-
-                border-radius: 20px;
-
-            }
-
-            .logo {
-
-                width: 75px;
-
-                height: 75px;
-
-                font-size: 35px;
-
-            }
-
-            .academy-name {
-
-                font-size: 24px;
-
-            }
-
-            h2 {
-
-                font-size: 22px;
-
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
@@ -413,188 +405,188 @@
 <div class="container">
 
 
-    <!-- ================= LOGIN ================= -->
+<!-- ================================================= -->
+<!-- LOGIN -->
+<!-- ================================================= -->
 
-    <div class="card" id="loginSection">
+<div class="card" id="loginSection">
 
+    <div class="header">
 
-        <div class="header">
+        <div class="logo" id="logoBox">
 
-
-            <div class="logo" id="logoBox">
-
-                🎵
-
-            </div>
-
-
-            <div
-                class="academy-name"
-                id="academyName"
-            >
-
-                Music Academy
-
-            </div>
-
-
-            <div class="subtitle">
-
-                Owner Login
-
-            </div>
-
+            🎵
 
         </div>
-
-
-        <h2>
-
-            🔐 Owner Login
-
-        </h2>
-
-
-        <label>
-
-            Email Address
-
-        </label>
-
-
-        <input
-            type="email"
-            id="loginEmail"
-            placeholder="Enter owner email"
-            autocomplete="email"
-        >
-
-
-        <label>
-
-            Password
-
-        </label>
-
-
-        <input
-            type="password"
-            id="loginPassword"
-            placeholder="Enter password"
-            autocomplete="current-password"
-        >
-
-
-        <label>
-
-            4-Digit PIN
-
-        </label>
-
-
-        <input
-            type="password"
-            id="loginPin"
-            class="pin-input"
-            placeholder="••••"
-            maxlength="4"
-            inputmode="numeric"
-            autocomplete="off"
-        >
-
-
-        <div class="remember">
-
-            <input
-                type="checkbox"
-                id="rememberMe"
-                checked
-            >
-
-            <span>
-                Remember me on this device
-            </span>
-
-        </div>
-
-
-        <button
-            id="loginButton"
-            onclick="ownerLogin()"
-        >
-
-            LOGIN
-
-        </button>
-
 
         <div
-            id="loginMessage"
-            class="message"
-        ></div>
+            class="academy-name"
+            id="academyName"
+        >
 
-
-        <div class="links">
-
-            <a onclick="showForgotPassword()">
-
-                Forgot Password?
-
-            </a>
-
-
-            <a onclick="showForgotPin()">
-
-                Forgot PIN?
-
-            </a>
+            Music Academy
 
         </div>
 
+        <div class="subtitle">
 
-        <button
-            class="back-button"
-            onclick="goBack()"
-        >
+            Owner Login
 
-            ← Back
-
-        </button>
-
+        </div>
 
     </div>
 
 
+    <h2>
 
-    <!-- ================= FORGOT PASSWORD ================= -->
+        🔐 Owner Login
 
-    <div
-        class="card section"
-        id="forgotPasswordSection"
+    </h2>
+
+
+    <label>
+
+        Email Address
+
+    </label>
+
+    <input
+        type="email"
+        id="loginEmail"
+        placeholder="Enter owner email"
+        autocomplete="email"
     >
 
 
-        <div class="header">
+    <label>
 
-            <div class="logo">
+        Password
 
-                🔑
+    </label>
 
-            </div>
+    <input
+        type="password"
+        id="loginPassword"
+        placeholder="Enter password"
+        autocomplete="current-password"
+    >
 
-            <div class="academy-name">
 
-                Forgot Password
+    <label>
 
-            </div>
+        4-Digit PIN
 
-            <div class="subtitle">
+    </label>
 
-                Owner Account Recovery
+    <input
+        type="password"
+        id="loginPin"
+        class="pin-input"
+        placeholder="••••"
+        maxlength="4"
+        inputmode="numeric"
+        autocomplete="off"
+    >
 
-            </div>
+
+    <div class="remember">
+
+        <input
+            type="checkbox"
+            id="rememberMe"
+            checked
+        >
+
+        <span>
+            Remember me on this device
+        </span>
+
+    </div>
+
+
+    <button
+        id="loginButton"
+        onclick="ownerLogin()"
+    >
+
+        LOGIN
+
+    </button>
+
+
+    <div
+        id="loginMessage"
+        class="message"
+    ></div>
+
+
+    <div class="links">
+
+        <a onclick="showForgotPassword()">
+            Forgot Password?
+        </a>
+
+        <a onclick="showForgotPin()">
+            Forgot PIN?
+        </a>
+
+    </div>
+
+
+    <button
+        class="back-button"
+        onclick="goBack()"
+    >
+
+        ← Back
+
+    </button>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- FORGOT PASSWORD -->
+<!-- ================================================= -->
+
+<div
+    class="card section"
+    id="forgotPasswordSection"
+>
+
+    <div class="header">
+
+        <div class="logo">
+
+            🔑
 
         </div>
+
+        <div class="academy-name">
+
+            Forgot Password
+
+        </div>
+
+        <div class="subtitle">
+
+            Owner Account Recovery
+
+        </div>
+
+    </div>
+
+
+    <!-- VERIFICATION STEP -->
+
+    <div id="passwordVerificationStep">
+
+        <h2>
+
+            🔐 Verify Account
+
+        </h2>
 
 
         <label>
@@ -603,7 +595,6 @@
 
         </label>
 
-
         <input
             type="email"
             id="forgotPasswordEmail"
@@ -611,12 +602,11 @@
         >
 
 
-        <label>
+        <label id="forgotPasswordBirthDateLabel">
 
             Owner Birth Date
 
         </label>
-
 
         <input
             type="date"
@@ -624,7 +614,10 @@
         >
 
 
-        <button onclick="verifyPasswordRecovery()">
+        <button
+            id="verifyPasswordButton"
+            onclick="verifyPasswordRecovery()"
+        >
 
             VERIFY
 
@@ -636,94 +629,130 @@
             class="message"
         ></div>
 
-
-        <div
-            id="newPasswordBox"
-            style="display:none;"
-        >
+    </div>
 
 
-            <label>
+    <!-- PASSWORD CHANGE STEP -->
 
-                New Password
+    <div
+        id="newPasswordBox"
+        style="display:none;"
+    >
 
-            </label>
+        <div class="verified-box">
 
-
-            <input
-                type="password"
-                id="newPassword"
-                placeholder="Enter new password"
-            >
-
-
-            <label>
-
-                Confirm Password
-
-            </label>
-
-
-            <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm new password"
-            >
-
-
-            <button onclick="resetPassword()">
-
-                SAVE PASSWORD
-
-            </button>
-
+            ✅ Account Verified
 
         </div>
 
 
-        <button
-            class="back-button"
-            onclick="showLogin()"
+        <h2>
+
+            🔑 Change Password
+
+        </h2>
+
+
+        <label>
+
+            New Password
+
+        </label>
+
+        <input
+            type="password"
+            id="newPassword"
+            placeholder="Enter new password"
+            autocomplete="new-password"
         >
 
-            ← Back to Login
+
+        <label>
+
+            Confirm Password
+
+        </label>
+
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm new password"
+            autocomplete="new-password"
+        >
+
+
+        <button
+            id="savePasswordButton"
+            onclick="resetPassword()"
+        >
+
+            SAVE PASSWORD
 
         </button>
 
 
+        <div
+            id="passwordResetMessage"
+            class="message"
+        ></div>
+
     </div>
 
 
-
-    <!-- ================= FORGOT PIN ================= -->
-
-    <div
-        class="card section"
-        id="forgotPinSection"
+    <button
+        class="back-button"
+        onclick="showLogin()"
     >
 
+        ← Back to Login
 
-        <div class="header">
+    </button>
 
-            <div class="logo">
+</div>
 
-                🔢
 
-            </div>
 
-            <div class="academy-name">
+<!-- ================================================= -->
+<!-- FORGOT PIN -->
+<!-- ================================================= -->
 
-                Forgot PIN
+<div
+    class="card section"
+    id="forgotPinSection"
+>
 
-            </div>
+    <div class="header">
 
-            <div class="subtitle">
+        <div class="logo">
 
-                Owner PIN Recovery
-
-            </div>
+            🔢
 
         </div>
+
+        <div class="academy-name">
+
+            Forgot PIN
+
+        </div>
+
+        <div class="subtitle">
+
+            Owner PIN Recovery
+
+        </div>
+
+    </div>
+
+
+    <!-- PIN VERIFICATION -->
+
+    <div id="pinVerificationStep">
+
+        <h2>
+
+            🔐 Verify Account
+
+        </h2>
 
 
         <label>
@@ -732,7 +761,6 @@
 
         </label>
 
-
         <input
             type="email"
             id="forgotPinEmail"
@@ -740,12 +768,11 @@
         >
 
 
-        <label>
+        <label id="forgotPinBirthDateLabel">
 
             Owner Birth Date
 
         </label>
-
 
         <input
             type="date"
@@ -753,7 +780,10 @@
         >
 
 
-        <button onclick="verifyPinRecovery()">
+        <button
+            id="verifyPinButton"
+            onclick="verifyPinRecovery()"
+        >
 
             VERIFY
 
@@ -765,68 +795,90 @@
             class="message"
         ></div>
 
-
-        <div
-            id="newPinBox"
-            style="display:none;"
-        >
+    </div>
 
 
-            <label>
+    <!-- PIN CHANGE -->
 
-                New 4-Digit PIN
+    <div
+        id="newPinBox"
+        style="display:none;"
+    >
 
-            </label>
+        <div class="verified-box">
 
-
-            <input
-                type="password"
-                id="newPin"
-                class="pin-input"
-                maxlength="4"
-                inputmode="numeric"
-                placeholder="••••"
-            >
-
-
-            <label>
-
-                Confirm PIN
-
-            </label>
-
-
-            <input
-                type="password"
-                id="confirmPin"
-                class="pin-input"
-                maxlength="4"
-                inputmode="numeric"
-                placeholder="••••"
-            >
-
-
-            <button onclick="resetPin()">
-
-                SAVE PIN
-
-            </button>
-
+            ✅ Account Verified
 
         </div>
 
 
-        <button
-            class="back-button"
-            onclick="showLogin()"
+        <h2>
+
+            🔢 Change PIN
+
+        </h2>
+
+
+        <label>
+
+            New 4-Digit PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="newPin"
+            class="pin-input"
+            maxlength="4"
+            inputmode="numeric"
+            placeholder="••••"
         >
 
-            ← Back to Login
+
+        <label>
+
+            Confirm PIN
+
+        </label>
+
+        <input
+            type="password"
+            id="confirmPin"
+            class="pin-input"
+            maxlength="4"
+            inputmode="numeric"
+            placeholder="••••"
+        >
+
+
+        <button
+            id="savePinButton"
+            onclick="resetPin()"
+        >
+
+            SAVE PIN
 
         </button>
 
 
+        <div
+            id="pinResetMessage"
+            class="message"
+        ></div>
+
     </div>
+
+
+    <button
+        class="back-button"
+        onclick="showLogin()"
+    >
+
+        ← Back to Login
+
+    </button>
+
+</div>
 
 
 </div>
@@ -836,16 +888,17 @@
 <script>
 
 
-// ========================================
+// =================================================
 // VARIABLES
-// ========================================
+// =================================================
 
 let recoveryVerifiedEmail = "";
 
 
-// ========================================
+
+// =================================================
 // PAGE LOAD
-// ========================================
+// =================================================
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -861,9 +914,10 @@ document.addEventListener(
 );
 
 
-// ========================================
+
+// =================================================
 // BRANDING
-// ========================================
+// =================================================
 
 async function loadBranding() {
 
@@ -872,6 +926,7 @@ async function loadBranding() {
             .getElementById("loginEmail")
             .value
             .trim();
+
 
     if (!email) {
 
@@ -918,15 +973,10 @@ async function loadBranding() {
                     .getElementById("logoBox")
                     .innerHTML =
                     `
-                        <img
-                            src="${data.logo_url}"
-                            style="
-                                width:100%;
-                                height:100%;
-                                border-radius:50%;
-                                object-fit:cover;
-                            "
-                        >
+                    <img
+                        src="${data.logo_url}"
+                        alt="Logo"
+                    >
                     `;
 
             }
@@ -951,9 +1001,10 @@ document
     );
 
 
-// ========================================
+
+// =================================================
 // REMEMBERED LOGIN
-// ========================================
+// =================================================
 
 async function checkRememberedLogin() {
 
@@ -983,12 +1034,10 @@ async function checkRememberedLogin() {
         }
 
 
-        const {
-            data
-        } =
-        await supabaseClient
-            .auth
-            .getSession();
+        const { data } =
+            await supabaseClient
+                .auth
+                .getSession();
 
 
         if (data.session) {
@@ -1010,12 +1059,12 @@ async function checkRememberedLogin() {
 }
 
 
-// ========================================
+
+// =================================================
 // OWNER LOGIN
-// ========================================
+// =================================================
 
 async function ownerLogin() {
-
 
     const email =
         document
@@ -1095,9 +1144,6 @@ async function ownerLogin() {
 
     try {
 
-
-        // SUPABASE AUTH
-
         const {
             data,
             error
@@ -1144,8 +1190,6 @@ async function ownerLogin() {
         }
 
 
-        // CHECK PROFILE
-
         const {
             data: profile,
             error: profileError
@@ -1163,7 +1207,6 @@ async function ownerLogin() {
             String(profile.role)
                 .toLowerCase() !== "owner"
         ) {
-
 
             await supabaseClient
                 .auth
@@ -1187,8 +1230,6 @@ async function ownerLogin() {
         }
 
 
-        // CHECK PIN
-
         const {
             data: pinResult,
             error: pinError
@@ -1202,9 +1243,6 @@ async function ownerLogin() {
 
 
         if (pinError) {
-
-            console.log(pinError);
-
 
             await supabaseClient
                 .auth
@@ -1276,19 +1314,20 @@ async function ownerLogin() {
         }
 
 
-        // SAVE LOGIN
-
         if (remember) {
 
             localStorage.setItem(
                 "ownerLogin",
                 JSON.stringify({
 
-                    id: user.id,
+                    id:
+                        user.id,
 
-                    email: email,
+                    email:
+                        email,
 
-                    role: "owner"
+                    role:
+                        "owner"
 
                 })
             );
@@ -1320,10 +1359,8 @@ async function ownerLogin() {
             500
         );
 
-
     }
     catch (error) {
-
 
         console.error(error);
 
@@ -1346,22 +1383,14 @@ async function ownerLogin() {
 }
 
 
-// ========================================
-// FORGOT PASSWORD
-// ========================================
+
+// =================================================
+// SHOW FORGOT PASSWORD
+// =================================================
 
 function showForgotPassword() {
 
-    document
-        .getElementById("loginSection")
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById("forgotPinSection")
-        .style.display =
-        "none";
+    hideAllSections();
 
 
     document
@@ -1369,12 +1398,16 @@ function showForgotPassword() {
         .style.display =
         "block";
 
+
+    resetPasswordRecoveryUI();
+
 }
 
 
-// ========================================
-// PASSWORD RECOVERY VERIFY
-// ========================================
+
+// =================================================
+// VERIFY PASSWORD RECOVERY
+// =================================================
 
 async function verifyPasswordRecovery() {
 
@@ -1404,6 +1437,19 @@ async function verifyPasswordRecovery() {
     }
 
 
+    const button =
+        document
+            .getElementById(
+                "verifyPasswordButton"
+            );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "VERIFYING...";
+
+
     try {
 
         const {
@@ -1413,7 +1459,8 @@ async function verifyPasswordRecovery() {
         await supabaseClient.rpc(
             "verify_owner_recovery",
             {
-                p_email: email,
+                p_email:
+                    email,
 
                 p_birth_date:
                     birthDate
@@ -1423,13 +1470,7 @@ async function verifyPasswordRecovery() {
 
         if (error) {
 
-            showMessage(
-                "passwordVerifyMessage",
-                error.message,
-                "error"
-            );
-
-            return;
+            throw error;
 
         }
 
@@ -1441,7 +1482,8 @@ async function verifyPasswordRecovery() {
             typeof data === "boolean"
         ) {
 
-            verified = data;
+            verified =
+                data;
 
         }
         else if (data) {
@@ -1461,17 +1503,39 @@ async function verifyPasswordRecovery() {
                 "error"
             );
 
+
+            button.disabled = false;
+
+            button.textContent =
+                "VERIFY";
+
             return;
 
         }
 
 
+        // SAVE VERIFIED EMAIL
+
         recoveryVerifiedEmail =
             email;
 
 
+        // HIDE VERIFICATION STEP
+
         document
-            .getElementById("newPasswordBox")
+            .getElementById(
+                "passwordVerificationStep"
+            )
+            .style.display =
+            "none";
+
+
+        // SHOW PASSWORD CHANGE
+
+        document
+            .getElementById(
+                "newPasswordBox"
+            )
             .style.display =
             "block";
 
@@ -1487,20 +1551,29 @@ async function verifyPasswordRecovery() {
 
         console.error(error);
 
+
         showMessage(
             "passwordVerifyMessage",
+            error.message ||
             "Verification failed.",
             "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "VERIFY";
 
     }
 
 }
 
 
-// ========================================
+
+// =================================================
 // RESET PASSWORD
-// ========================================
+// =================================================
 
 async function resetPassword() {
 
@@ -1516,10 +1589,25 @@ async function resetPassword() {
             .value;
 
 
+    if (!recoveryVerifiedEmail) {
+
+        showMessage(
+            "passwordResetMessage",
+            "Please verify your account first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
     if (!password || !confirm) {
 
-        alert(
-            "Please enter both passwords."
+        showMessage(
+            "passwordResetMessage",
+            "Please enter both passwords.",
+            "error"
         );
 
         return;
@@ -1529,8 +1617,10 @@ async function resetPassword() {
 
     if (password !== confirm) {
 
-        alert(
-            "Passwords do not match."
+        showMessage(
+            "passwordResetMessage",
+            "Passwords do not match.",
+            "error"
         );
 
         return;
@@ -1540,8 +1630,10 @@ async function resetPassword() {
 
     if (password.length < 6) {
 
-        alert(
-            "Password must be at least 6 characters."
+        showMessage(
+            "passwordResetMessage",
+            "Password must be at least 6 characters.",
+            "error"
         );
 
         return;
@@ -1549,7 +1641,36 @@ async function resetPassword() {
     }
 
 
+    const button =
+        document
+            .getElementById(
+                "savePasswordButton"
+            );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "SAVING...";
+
+
     try {
+
+        /*
+         * Password reset is handled
+         * by the existing Edge Function.
+         *
+         * We use the same Supabase
+         * project URL from supabase.js.
+         */
+
+        const SUPABASE_URL =
+            "https://ehchhgqjohsdkxmouozm.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_41E2ivZKj4l5YfIpoCzwHA_MjyQAHfq";
+
 
         const response =
             await fetch(
@@ -1568,15 +1689,16 @@ async function resetPassword() {
 
                     },
 
-                    body: JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        email:
-                            recoveryVerifiedEmail,
+                            email:
+                                recoveryVerifiedEmail,
 
-                        new_password:
-                            password
+                            new_password:
+                                password
 
-                    })
+                        })
 
                 }
             );
@@ -1596,42 +1718,58 @@ async function resetPassword() {
         }
 
 
-        alert(
-            "Password changed successfully."
+        showMessage(
+            "passwordResetMessage",
+            "Password changed successfully.",
+            "success"
         );
 
 
-        showLogin();
+        button.textContent =
+            "PASSWORD SAVED";
+
+
+        setTimeout(
+            function () {
+
+                showLogin();
+
+            },
+            1200
+        );
 
     }
     catch (error) {
 
-        alert(
+        console.error(error);
+
+
+        showMessage(
+            "passwordResetMessage",
             error.message ||
-            "Password reset failed."
+            "Password reset failed.",
+            "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "SAVE PASSWORD";
 
     }
 
 }
 
 
-// ========================================
-// FORGOT PIN
-// ========================================
+
+// =================================================
+// SHOW FORGOT PIN
+// =================================================
 
 function showForgotPin() {
 
-    document
-        .getElementById("loginSection")
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById("forgotPasswordSection")
-        .style.display =
-        "none";
+    hideAllSections();
 
 
     document
@@ -1639,12 +1777,16 @@ function showForgotPin() {
         .style.display =
         "block";
 
+
+    resetPinRecoveryUI();
+
 }
 
 
-// ========================================
-// PIN RECOVERY VERIFY
-// ========================================
+
+// =================================================
+// VERIFY PIN RECOVERY
+// =================================================
 
 async function verifyPinRecovery() {
 
@@ -1674,6 +1816,19 @@ async function verifyPinRecovery() {
     }
 
 
+    const button =
+        document
+            .getElementById(
+                "verifyPinButton"
+            );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "VERIFYING...";
+
+
     try {
 
         const {
@@ -1684,7 +1839,8 @@ async function verifyPinRecovery() {
             "verify_owner_recovery",
             {
 
-                p_email: email,
+                p_email:
+                    email,
 
                 p_birth_date:
                     birthDate
@@ -1695,13 +1851,7 @@ async function verifyPinRecovery() {
 
         if (error) {
 
-            showMessage(
-                "pinVerifyMessage",
-                error.message,
-                "error"
-            );
-
-            return;
+            throw error;
 
         }
 
@@ -1713,7 +1863,8 @@ async function verifyPinRecovery() {
             typeof data === "boolean"
         ) {
 
-            verified = data;
+            verified =
+                data;
 
         }
         else if (data) {
@@ -1733,6 +1884,12 @@ async function verifyPinRecovery() {
                 "error"
             );
 
+
+            button.disabled = false;
+
+            button.textContent =
+                "VERIFY";
+
             return;
 
         }
@@ -1742,8 +1899,22 @@ async function verifyPinRecovery() {
             email;
 
 
+        // HIDE ENTIRE VERIFICATION STEP
+
         document
-            .getElementById("newPinBox")
+            .getElementById(
+                "pinVerificationStep"
+            )
+            .style.display =
+            "none";
+
+
+        // SHOW NEW PIN
+
+        document
+            .getElementById(
+                "newPinBox"
+            )
             .style.display =
             "block";
 
@@ -1759,20 +1930,29 @@ async function verifyPinRecovery() {
 
         console.error(error);
 
+
         showMessage(
             "pinVerifyMessage",
+            error.message ||
             "Verification failed.",
             "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "VERIFY";
 
     }
 
 }
 
 
-// ========================================
+
+// =================================================
 // RESET PIN
-// ========================================
+// =================================================
 
 async function resetPin() {
 
@@ -1790,10 +1970,25 @@ async function resetPin() {
             .trim();
 
 
+    if (!recoveryVerifiedEmail) {
+
+        showMessage(
+            "pinResetMessage",
+            "Please verify your account first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
     if (!/^\d{4}$/.test(newPin)) {
 
-        alert(
-            "PIN must be exactly 4 digits."
+        showMessage(
+            "pinResetMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
         );
 
         return;
@@ -1803,13 +1998,28 @@ async function resetPin() {
 
     if (newPin !== confirmPin) {
 
-        alert(
-            "PINs do not match."
+        showMessage(
+            "pinResetMessage",
+            "PINs do not match.",
+            "error"
         );
 
         return;
 
     }
+
+
+    const button =
+        document
+            .getElementById(
+                "savePinButton"
+            );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "SAVING...";
 
 
     try {
@@ -1834,12 +2044,7 @@ async function resetPin() {
 
         if (error) {
 
-            alert(
-                error.message ||
-                "PIN reset failed."
-            );
-
-            return;
+            throw error;
 
         }
 
@@ -1851,7 +2056,8 @@ async function resetPin() {
             typeof data === "boolean"
         ) {
 
-            success = data;
+            success =
+                data;
 
         }
         else if (data) {
@@ -1865,21 +2071,32 @@ async function resetPin() {
 
         if (!success) {
 
-            alert(
+            throw new Error(
                 "PIN reset failed."
             );
-
-            return;
 
         }
 
 
-        alert(
-            "PIN changed successfully."
+        showMessage(
+            "pinResetMessage",
+            "PIN changed successfully.",
+            "success"
         );
 
 
-        showLogin();
+        button.textContent =
+            "PIN SAVED";
+
+
+        setTimeout(
+            function () {
+
+                showLogin();
+
+            },
+            1200
+        );
 
     }
     catch (error) {
@@ -1887,45 +2104,207 @@ async function resetPin() {
         console.error(error);
 
 
-        alert(
+        showMessage(
+            "pinResetMessage",
             error.message ||
-            "PIN reset failed."
+            "PIN reset failed.",
+            "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "SAVE PIN";
 
     }
 
 }
 
 
-// ========================================
-// SHOW LOGIN
-// ========================================
 
-function showLogin() {
+// =================================================
+// RESET PASSWORD UI
+// =================================================
 
-    document
-        .getElementById("forgotPasswordSection")
-        .style.display =
-        "none";
+function resetPasswordRecoveryUI() {
 
-
-    document
-        .getElementById("forgotPinSection")
-        .style.display =
-        "none";
+    recoveryVerifiedEmail =
+        "";
 
 
     document
-        .getElementById("loginSection")
+        .getElementById(
+            "passwordVerificationStep"
+        )
         .style.display =
         "block";
+
+
+    document
+        .getElementById(
+            "newPasswordBox"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "passwordVerifyMessage"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "passwordResetMessage"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "verifyPasswordButton"
+        )
+        .disabled =
+        false;
+
+
+    document
+        .getElementById(
+            "verifyPasswordButton"
+        )
+        .textContent =
+        "VERIFY";
 
 }
 
 
-// ========================================
+
+// =================================================
+// RESET PIN UI
+// =================================================
+
+function resetPinRecoveryUI() {
+
+    recoveryVerifiedEmail =
+        "";
+
+
+    document
+        .getElementById(
+            "pinVerificationStep"
+        )
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById(
+            "newPinBox"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "pinVerifyMessage"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "pinResetMessage"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "verifyPinButton"
+        )
+        .disabled =
+        false;
+
+
+    document
+        .getElementById(
+            "verifyPinButton"
+        )
+        .textContent =
+        "VERIFY";
+
+}
+
+
+
+// =================================================
+// HIDE ALL
+// =================================================
+
+function hideAllSections() {
+
+    document
+        .getElementById(
+            "loginSection"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "forgotPasswordSection"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "forgotPinSection"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+
+// =================================================
+// SHOW LOGIN
+// =================================================
+
+function showLogin() {
+
+    hideAllSections();
+
+
+    document
+        .getElementById(
+            "loginSection"
+        )
+        .style.display =
+        "block";
+
+
+    recoveryVerifiedEmail =
+        "";
+
+}
+
+
+
+// =================================================
 // BACK
-// ========================================
+// =================================================
 
 function goBack() {
 
@@ -1935,9 +2314,10 @@ function goBack() {
 }
 
 
-// ========================================
+
+// =================================================
 // MESSAGE
-// ========================================
+// =================================================
 
 function showMessage(
     elementId,
@@ -1965,9 +2345,10 @@ function showMessage(
 }
 
 
-// ========================================
+
+// =================================================
 // PIN INPUT
-// ========================================
+// =================================================
 
 function setupPinInputs() {
 
@@ -1978,11 +2359,11 @@ function setupPinInputs() {
 
 
     inputs.forEach(
-        function (input) {
+        function(input) {
 
             input.addEventListener(
                 "input",
-                function () {
+                function() {
 
                     this.value =
                         this.value
@@ -1998,7 +2379,6 @@ function setupPinInputs() {
 }
 
 </script>
-
 
 </body>
 
