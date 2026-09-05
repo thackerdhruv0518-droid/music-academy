@@ -6,430 +6,342 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
 <title>Owner Login</title>
 
-
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
-
 
 <style>
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
+body{
 
-body {
+    margin:0;
 
-    margin: 0;
+    min-height:100vh;
 
-    min-height: 100vh;
-
-    font-family: Arial, sans-serif;
+    font-family:Arial,sans-serif;
 
     background:
-        linear-gradient(
-            135deg,
-            #1d2671,
-            #c33764
-        );
+    linear-gradient(
+        135deg,
+        #1d2671,
+        #c33764
+    );
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+    justify-content:center;
 
-    padding: 25px;
+    padding:20px;
 }
 
+.container{
 
-.container {
+    width:100%;
 
-    width: 100%;
-
-    max-width: 430px;
+    max-width:430px;
 }
 
+.card{
 
-.card {
+    background:white;
 
-    background: white;
+    border-radius:25px;
 
-    border-radius: 25px;
-
-    padding: 35px;
+    padding:35px;
 
     box-shadow:
-        0 20px 60px
-        rgba(0,0,0,0.25);
+    0 20px 60px
+    rgba(0,0,0,0.25);
 }
 
+.header{
 
-.header {
+    text-align:center;
 
-    text-align: center;
-
-    margin-bottom: 30px;
+    margin-bottom:30px;
 }
 
+.logo{
 
-.logo {
+    width:90px;
 
-    width: 90px;
+    height:90px;
 
-    height: 90px;
+    margin:auto;
 
-    margin: auto;
+    border-radius:50%;
 
-    border-radius: 50%;
+    overflow:hidden;
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+    justify-content:center;
 
-    font-size: 42px;
+    font-size:42px;
+
+    color:white;
 
     background:
-        linear-gradient(
-            135deg,
-            #1d2671,
-            #c33764
-        );
-
-    color: white;
-
-    box-shadow:
-        0 10px 25px
-        rgba(0,0,0,0.18);
-
-    overflow: hidden;
+    linear-gradient(
+        135deg,
+        #1d2671,
+        #c33764
+    );
 }
 
+.logo img{
 
-.logo img {
+    width:100%;
 
-    width: 100%;
+    height:100%;
 
-    height: 100%;
-
-    object-fit: cover;
+    object-fit:cover;
 }
 
+.academy-name{
 
-.academy-name {
+    margin-top:18px;
 
-    margin-top: 18px;
+    font-size:28px;
 
-    margin-bottom: 6px;
+    font-weight:bold;
 
-    color: #222;
-
-    font-size: 28px;
-
-    font-weight: bold;
+    color:#222;
 }
 
+.subtitle{
 
-.subtitle {
+    margin-top:6px;
 
-    color: #777;
+    color:#777;
 
-    font-size: 15px;
+    font-size:15px;
 }
 
+h2{
 
-h2 {
+    text-align:center;
 
-    text-align: center;
+    color:#222;
 
-    color: #222;
-
-    margin-top: 25px;
-
-    margin-bottom: 25px;
-
-    font-size: 24px;
+    margin:25px 0;
 }
 
+label{
 
-label {
+    display:block;
 
-    display: block;
+    margin-top:15px;
 
-    margin-top: 15px;
+    margin-bottom:7px;
 
-    margin-bottom: 7px;
+    font-size:14px;
 
-    color: #222;
+    font-weight:bold;
 
-    font-size: 14px;
-
-    font-weight: bold;
+    color:#222;
 }
 
+input{
 
-input {
+    width:100%;
 
-    width: 100%;
+    padding:14px;
 
-    padding: 14px;
+    border:1px solid #ddd;
 
-    border: 1px solid #ddd;
+    border-radius:10px;
 
-    border-radius: 10px;
+    font-size:15px;
 
-    font-size: 15px;
-
-    outline: none;
+    outline:none;
 }
 
+input:focus{
 
-input:focus {
-
-    border-color: #1d2671;
-
-    box-shadow:
-        0 0 0 2px
-        rgba(29,38,113,0.08);
+    border-color:#1d2671;
 }
 
+.pin-input{
 
-.pin-input {
+    text-align:center;
 
-    text-align: center;
+    letter-spacing:8px;
 
-    letter-spacing: 8px;
-
-    font-size: 20px;
+    font-size:20px;
 }
 
+.remember{
 
-.remember {
+    display:flex;
 
-    display: flex;
+    align-items:center;
 
-    align-items: center;
+    gap:8px;
 
-    gap: 8px;
+    margin-top:15px;
 
-    margin-top: 15px;
+    color:#555;
 
-    color: #555;
-
-    font-size: 14px;
+    font-size:14px;
 }
 
+.remember input{
 
-.remember input {
-
-    width: auto;
+    width:auto;
 }
 
+button{
 
-button {
+    width:100%;
 
-    width: 100%;
+    padding:14px;
 
-    border: none;
+    margin-top:20px;
 
-    padding: 14px;
+    border:none;
 
-    border-radius: 10px;
+    border-radius:10px;
 
-    margin-top: 20px;
+    cursor:pointer;
 
-    font-size: 15px;
+    color:white;
 
-    font-weight: bold;
+    font-size:15px;
 
-    cursor: pointer;
-
-    color: white;
+    font-weight:bold;
 
     background:
-        linear-gradient(
-            135deg,
-            #1d2671,
-            #c33764
-        );
-
-    transition: 0.2s;
+    linear-gradient(
+        135deg,
+        #1d2671,
+        #c33764
+    );
 }
 
+button:disabled{
 
-button:hover {
+    opacity:.6;
 
-    opacity: 0.9;
-
-    transform: scale(1.02);
+    cursor:not-allowed;
 }
 
+.back-button{
 
-button:active {
+    background:#eeeeee;
 
-    transform: scale(0.98);
+    color:#222;
 }
 
+.links{
 
-button:disabled {
+    text-align:center;
 
-    opacity: 0.6;
-
-    cursor: not-allowed;
+    margin-top:20px;
 }
 
+.links a{
 
-.links {
+    display:block;
 
-    text-align: center;
+    margin-top:10px;
 
-    margin-top: 20px;
+    color:#1d2671;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    text-decoration:none;
 }
 
+.message{
 
-.links a {
+    display:none;
 
-    display: block;
+    margin-top:15px;
 
-    margin-top: 9px;
+    padding:12px;
 
-    color: #1d2671;
+    border-radius:8px;
 
-    text-decoration: none;
+    text-align:center;
 
-    font-size: 14px;
-
-    cursor: pointer;
+    font-size:14px;
 }
 
+.success{
 
-.links a:hover {
+    background:#e8f5e9;
 
-    color: #c33764;
+    color:#2e7d32;
 }
 
+.error{
 
-.back-button {
+    background:#ffebee;
 
-    background: #eeeeee;
-
-    color: #222;
+    color:#c62828;
 }
 
+.section{
 
-.back-button:hover {
-
-    background: #e5e5e5;
-
-    color: #222;
+    display:none;
 }
 
+.verified-box{
 
-.message {
+    text-align:center;
 
-    display: none;
+    padding:12px;
 
-    margin-top: 15px;
+    border-radius:10px;
 
-    padding: 12px;
+    background:#e8f5e9;
 
-    border-radius: 8px;
+    color:#2e7d32;
 
-    text-align: center;
-
-    font-size: 14px;
+    font-weight:bold;
 }
 
+@media(max-width:500px){
 
-.success {
+    body{
 
-    background: #e8f5e9;
+        padding:15px;
 
-    color: #2e7d32;
-}
+        align-items:flex-start;
 
-
-.error {
-
-    background: #ffebee;
-
-    color: #c62828;
-}
-
-
-.section {
-
-    display: none;
-}
-
-
-.verified-box {
-
-    text-align: center;
-
-    padding: 12px;
-
-    margin-bottom: 10px;
-
-    border-radius: 10px;
-
-    background: #e8f5e9;
-
-    color: #2e7d32;
-
-    font-weight: bold;
-}
-
-
-@media(max-width: 500px) {
-
-    body {
-
-        padding: 15px;
-
-        align-items: flex-start;
-
-        padding-top: 25px;
+        padding-top:25px;
     }
 
+    .card{
 
-    .card {
-
-        padding: 28px 20px;
-
-        border-radius: 20px;
+        padding:28px 20px;
     }
 
+    .logo{
 
-    .logo {
+        width:75px;
 
-        width: 75px;
-
-        height: 75px;
-
-        font-size: 35px;
+        height:75px;
     }
 
+    .academy-name{
 
-    .academy-name {
-
-        font-size: 24px;
+        font-size:24px;
     }
-
-
-    h2 {
-
-        font-size: 22px;
-    }
-
 }
 
 </style>
@@ -444,161 +356,153 @@ button:disabled {
 
 
 <!-- ================================================= -->
-<!-- OWNER LOGIN -->
+<!-- LOGIN -->
 <!-- ================================================= -->
 
 <div class="card" id="loginSection">
 
 
-    <div class="header">
+<div class="header">
 
 
-        <div class="logo" id="logoBox">
+<div class="logo" id="logoBox">
 
-            🎵
+🎵
 
-        </div>
+</div>
 
 
-        <div
-            class="academy-name"
-            id="academyName"
-        >
+<div
+class="academy-name"
+id="academyName">
 
-            Music Academy
+Music Academy
 
-        </div>
+</div>
 
 
-        <div class="subtitle">
+<div class="subtitle">
 
-            Owner Login
+Owner Login
 
-        </div>
+</div>
 
 
-    </div>
+</div>
 
 
-    <h2>
+<h2>
 
-        🔐 Owner Login
+🔐 Owner Login
 
-    </h2>
+</h2>
 
 
-    <label>
+<label>
 
-        Email Address
+Email Address
 
-    </label>
+</label>
 
 
-    <input
-        type="email"
-        id="loginEmail"
-        placeholder="Enter owner email"
-        autocomplete="email"
-    >
+<input
+type="email"
+id="loginEmail"
+placeholder="Enter owner email"
+autocomplete="email">
 
 
-    <label>
+<label>
 
-        Password
+Password
 
-    </label>
+</label>
 
 
-    <input
-        type="password"
-        id="loginPassword"
-        placeholder="Enter password"
-        autocomplete="current-password"
-    >
+<input
+type="password"
+id="loginPassword"
+placeholder="Enter password"
+autocomplete="current-password">
 
 
-    <label>
+<label>
 
-        4-Digit PIN
+4-Digit PIN
 
-    </label>
+</label>
 
 
-    <input
-        type="password"
-        id="loginPin"
-        class="pin-input"
-        placeholder="••••"
-        maxlength="4"
-        inputmode="numeric"
-        autocomplete="off"
-    >
+<input
+type="password"
+id="loginPin"
+class="pin-input"
+maxlength="4"
+inputmode="numeric"
+placeholder="••••">
 
 
-    <div class="remember">
+<div class="remember">
 
 
-        <input
-            type="checkbox"
-            id="rememberMe"
-            checked
-        >
+<input
+type="checkbox"
+id="rememberMe"
+checked>
 
 
-        <span>
+<span>
 
-            Remember me on this device
+Remember me on this device
 
-        </span>
+</span>
 
 
-    </div>
+</div>
 
 
-    <button
-        id="loginButton"
-        onclick="ownerLogin()"
-    >
+<button
+id="loginButton"
+onclick="ownerLogin()">
 
-        LOGIN
+LOGIN
 
-    </button>
+</button>
 
 
-    <div
-        id="loginMessage"
-        class="message"
-    ></div>
+<div
+id="loginMessage"
+class="message">
+</div>
 
 
-    <div class="links">
+<div class="links">
 
 
-        <a onclick="showForgotPassword()">
+<a onclick="showForgotPassword()">
 
-            Forgot Password?
+Forgot Password?
 
-        </a>
+</a>
 
 
-        <a onclick="showForgotPin()">
+<a onclick="showForgotPin()">
 
-            Forgot PIN?
+Forgot PIN?
 
-        </a>
+</a>
 
 
-    </div>
+</div>
 
 
-    <button
-        class="back-button"
-        onclick="goBack()"
-    >
+<button
+class="back-button"
+onclick="goBack()">
 
-        ← Back
+← Back
 
-    </button>
+</button>
 
 
 </div>
@@ -610,177 +514,160 @@ button:disabled {
 <!-- ================================================= -->
 
 <div
-    class="card section"
-    id="forgotPasswordSection"
->
+class="card section"
+id="forgotPasswordSection">
 
 
-    <div class="header">
+<div class="header">
 
 
-        <div class="logo">
+<div class="logo">
 
-            🔑
+🔑
 
-        </div>
+</div>
 
 
-        <div class="academy-name">
+<div class="academy-name">
 
-            Forgot Password
+Forgot Password
 
-        </div>
+</div>
 
 
-        <div class="subtitle">
+<div class="subtitle">
 
-            Owner Account Recovery
+Owner Account Recovery
 
-        </div>
+</div>
 
 
-    </div>
+</div>
 
 
+<div id="passwordVerificationStep">
 
-    <!-- PASSWORD VERIFICATION -->
 
-    <div id="passwordVerificationStep">
+<h2>
 
+🔐 Verify Account
 
-        <h2>
+</h2>
 
-            🔐 Verify Account
 
-        </h2>
+<label>
 
+Owner Email
 
-        <label>
+</label>
 
-            Owner Email
 
-        </label>
+<input
+type="email"
+id="forgotPasswordEmail"
+placeholder="Enter owner email">
 
 
-        <input
-            type="email"
-            id="forgotPasswordEmail"
-            placeholder="Enter owner email"
-        >
+<label>
 
+Owner Birth Date
 
-        <label>
+</label>
 
-            Owner Birth Date
 
-        </label>
+<input
+type="date"
+id="forgotPasswordBirthDate">
 
 
-        <input
-            type="date"
-            id="forgotPasswordBirthDate"
-        >
+<button
+id="verifyPasswordButton"
+onclick="verifyPasswordRecovery()">
 
+VERIFY
 
-        <button
-            id="verifyPasswordButton"
-            onclick="verifyPasswordRecovery()"
-        >
+</button>
 
-            VERIFY
 
-        </button>
+<div
+id="passwordVerifyMessage"
+class="message">
+</div>
 
 
-        <div
-            id="passwordVerifyMessage"
-            class="message"
-        ></div>
+</div>
 
 
-    </div>
+<div
+id="newPasswordBox"
+style="display:none;">
 
 
+<div class="verified-box">
 
-    <!-- NEW PASSWORD -->
+✅ Account Verified
 
-    <div
-        id="newPasswordBox"
-        style="display:none;"
-    >
+</div>
 
 
-        <div class="verified-box">
+<h2>
 
-            ✅ Account Verified
+🔑 Change Password
 
-        </div>
+</h2>
 
 
-        <h2>
+<label>
 
-            🔑 Change Password
+New Password
 
-        </h2>
+</label>
 
 
-        <label>
+<input
+type="password"
+id="newPassword"
+placeholder="Enter new password">
 
-            New Password
 
-        </label>
+<label>
 
+Confirm Password
 
-        <input
-            type="password"
-            id="newPassword"
-            placeholder="Enter new password"
-            autocomplete="new-password"
-        >
+</label>
 
 
-        <label>
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm new password">
 
-            Confirm Password
 
-        </label>
+<button
+id="savePasswordButton"
+onclick="resetPassword()">
 
+SAVE PASSWORD
 
-        <input
-            type="password"
-            id="confirmPassword"
-            placeholder="Confirm new password"
-            autocomplete="new-password"
-        >
+</button>
 
 
-        <button
-            id="savePasswordButton"
-            onclick="resetPassword()"
-        >
+<div
+id="passwordResetMessage"
+class="message">
+</div>
 
-            SAVE PASSWORD
 
-        </button>
+</div>
 
 
-        <div
-            id="passwordResetMessage"
-            class="message"
-        ></div>
+<button
+class="back-button"
+onclick="showLogin()">
 
+← Back to Login
 
-    </div>
-
-
-    <button
-        class="back-button"
-        onclick="showLogin()"
-    >
-
-        ← Back to Login
-
-    </button>
+</button>
 
 
 </div>
@@ -792,181 +679,166 @@ button:disabled {
 <!-- ================================================= -->
 
 <div
-    class="card section"
-    id="forgotPinSection"
->
+class="card section"
+id="forgotPinSection">
 
 
-    <div class="header">
+<div class="header">
 
 
-        <div class="logo">
+<div class="logo">
 
-            🔢
+🔢
 
-        </div>
+</div>
 
 
-        <div class="academy-name">
+<div class="academy-name">
 
-            Forgot PIN
+Forgot PIN
 
-        </div>
+</div>
 
 
-        <div class="subtitle">
+<div class="subtitle">
 
-            Owner PIN Recovery
+Owner PIN Recovery
 
-        </div>
+</div>
 
 
-    </div>
+</div>
 
 
+<div id="pinVerificationStep">
 
-    <!-- PIN VERIFICATION -->
 
-    <div id="pinVerificationStep">
+<h2>
 
+🔐 Verify Account
 
-        <h2>
+</h2>
 
-            🔐 Verify Account
 
-        </h2>
+<label>
 
+Owner Email
 
-        <label>
+</label>
 
-            Owner Email
 
-        </label>
+<input
+type="email"
+id="forgotPinEmail"
+placeholder="Enter owner email">
 
 
-        <input
-            type="email"
-            id="forgotPinEmail"
-            placeholder="Enter owner email"
-        >
+<label>
 
+Owner Birth Date
 
-        <label>
+</label>
 
-            Owner Birth Date
 
-        </label>
+<input
+type="date"
+id="forgotPinBirthDate">
 
 
-        <input
-            type="date"
-            id="forgotPinBirthDate"
-        >
+<button
+id="verifyPinButton"
+onclick="verifyPinRecovery()">
 
+VERIFY
 
-        <button
-            id="verifyPinButton"
-            onclick="verifyPinRecovery()"
-        >
+</button>
 
-            VERIFY
 
-        </button>
+<div
+id="pinVerifyMessage"
+class="message">
+</div>
 
 
-        <div
-            id="pinVerifyMessage"
-            class="message"
-        ></div>
+</div>
 
 
-    </div>
+<div
+id="newPinBox"
+style="display:none;">
 
 
+<div class="verified-box">
 
-    <!-- NEW PIN -->
+✅ Account Verified
 
-    <div
-        id="newPinBox"
-        style="display:none;"
-    >
+</div>
 
 
-        <div class="verified-box">
+<h2>
 
-            ✅ Account Verified
+🔢 Change PIN
 
-        </div>
+</h2>
 
 
-        <h2>
+<label>
 
-            🔢 Change PIN
+New 4-Digit PIN
 
-        </h2>
+</label>
 
 
-        <label>
+<input
+type="password"
+id="newPin"
+class="pin-input"
+maxlength="4"
+inputmode="numeric"
+placeholder="••••">
 
-            New 4-Digit PIN
 
-        </label>
+<label>
 
+Confirm PIN
 
-        <input
-            type="password"
-            id="newPin"
-            class="pin-input"
-            maxlength="4"
-            inputmode="numeric"
-            placeholder="••••"
-        >
+</label>
 
 
-        <label>
+<input
+type="password"
+id="confirmPin"
+class="pin-input"
+maxlength="4"
+inputmode="numeric"
+placeholder="••••">
 
-            Confirm PIN
 
-        </label>
+<button
+id="savePinButton"
+onclick="resetPin()">
 
+SAVE PIN
 
-        <input
-            type="password"
-            id="confirmPin"
-            class="pin-input"
-            maxlength="4"
-            inputmode="numeric"
-            placeholder="••••"
-        >
+</button>
 
 
-        <button
-            id="savePinButton"
-            onclick="resetPin()"
-        >
+<div
+id="pinResetMessage"
+class="message">
+</div>
 
-            SAVE PIN
 
-        </button>
+</div>
 
 
-        <div
-            id="pinResetMessage"
-            class="message"
-        ></div>
+<button
+class="back-button"
+onclick="showLogin()">
 
+← Back to Login
 
-    </div>
-
-
-    <button
-        class="back-button"
-        onclick="showLogin()"
-    >
-
-        ← Back to Login
-
-    </button>
+</button>
 
 
 </div>
@@ -980,7 +852,7 @@ button:disabled {
 
 
 // =================================================
-// RECOVERY VARIABLES
+// VARIABLES
 // =================================================
 
 let recoveryVerifiedEmail = "";
@@ -994,17 +866,16 @@ let recoveryVerifiedBirthDate = "";
 // =================================================
 
 document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+"DOMContentLoaded",
+function(){
 
-        setupPinInputs();
+setupPinInputs();
 
-        loadBranding();
+loadBranding();
 
-        checkRememberedLogin();
+checkRememberedLogin();
 
-    }
-);
+});
 
 
 
@@ -1012,149 +883,124 @@ document.addEventListener(
 // BRANDING
 // =================================================
 
-async function loadBranding() {
+async function loadBranding(){
 
-    const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+const email =
+document
+.getElementById("loginEmail")
+.value
+.trim();
 
+if(!email){
 
-    if (!email) {
+return;
 
-        return;
+}
 
-    }
+try{
 
+const {
+data,
+error
+} =
+await supabaseClient.rpc(
+"get_owner_branding",
+{
+p_email:email
+}
+);
 
-    try {
+if(error){
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.rpc(
-            "get_owner_branding",
-            {
-                p_email: email
-            }
-        );
+console.log(error);
 
+return;
 
-        if (error) {
+}
 
-            console.log(
-                "Branding error:",
-                error
-            );
+if(data && data.success){
 
-            return;
+document
+.getElementById("academyName")
+.textContent =
+data.class_name ||
+"Music Academy";
 
-        }
+if(data.logo_url){
 
+document
+.getElementById("logoBox")
+.innerHTML =
+`
+<img
+src="${data.logo_url}"
+alt="Logo">
+`;
 
-        if (data && data.success) {
+}
 
+}
 
-            document
-                .getElementById("academyName")
-                .textContent =
-                    data.class_name ||
-                    "Music Academy";
+}
+catch(error){
 
+console.log(error);
 
-            if (data.logo_url) {
-
-                document
-                    .getElementById("logoBox")
-                    .innerHTML =
-                    `
-                    <img
-                        src="${data.logo_url}"
-                        alt="Logo"
-                    >
-                    `;
-
-            }
-
-        }
-
-    }
-    catch (error) {
-
-        console.log(error);
-
-    }
+}
 
 }
 
 
-
 document
-    .getElementById("loginEmail")
-    .addEventListener(
-        "blur",
-        loadBranding
-    );
+.getElementById("loginEmail")
+.addEventListener(
+"blur",
+loadBranding
+);
 
 
 
 // =================================================
-// REMEMBERED LOGIN
+// REMEMBER LOGIN
 // =================================================
 
-async function checkRememberedLogin() {
+async function checkRememberedLogin(){
 
-    const saved =
-        localStorage.getItem(
-            "ownerLogin"
-        );
+const saved =
+localStorage.getItem(
+"ownerLogin"
+);
 
+if(!saved){
 
-    if (!saved) {
+return;
 
-        return;
+}
 
-    }
+try{
 
+const {
+data
+} =
+await supabaseClient
+.auth
+.getSession();
 
-    try {
+if(data.session){
 
-        const owner =
-            JSON.parse(saved);
+window.location.href =
+"dashboard.html";
 
+}
 
-        if (!owner.email) {
+}
+catch(error){
 
-            return;
+localStorage.removeItem(
+"ownerLogin"
+);
 
-        }
-
-
-        const {
-            data
-        } =
-        await supabaseClient
-            .auth
-            .getSession();
-
-
-        if (data.session) {
-
-            window.location.href =
-                "owner-dashboard.html";
-
-        }
-
-    }
-    catch (error) {
-
-        localStorage.removeItem(
-            "ownerLogin"
-        );
-
-    }
+}
 
 }
 
@@ -1164,514 +1010,441 @@ async function checkRememberedLogin() {
 // OWNER LOGIN
 // =================================================
 
-async function ownerLogin() {
+async function ownerLogin(){
 
-    const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+const email =
+document
+.getElementById("loginEmail")
+.value
+.trim();
 
+const password =
+document
+.getElementById("loginPassword")
+.value;
 
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+const pin =
+document
+.getElementById("loginPin")
+.value
+.trim();
 
+const remember =
+document
+.getElementById("rememberMe")
+.checked;
 
-    const pin =
-        document
-            .getElementById("loginPin")
-            .value
-            .trim();
 
+if(!email){
 
-    const remember =
-        document
-            .getElementById("rememberMe")
-            .checked;
+showMessage(
+"loginMessage",
+"Please enter email.",
+"error"
+);
 
+return;
 
-    if (!email) {
+}
 
-        showMessage(
-            "loginMessage",
-            "Please enter email.",
-            "error"
-        );
 
-        return;
+if(!password){
 
-    }
+showMessage(
+"loginMessage",
+"Please enter password.",
+"error"
+);
 
+return;
 
-    if (!password) {
+}
 
-        showMessage(
-            "loginMessage",
-            "Please enter password.",
-            "error"
-        );
 
-        return;
+if(!/^\d{4}$/.test(pin)){
 
-    }
+showMessage(
+"loginMessage",
+"PIN must be exactly 4 digits.",
+"error"
+);
 
+return;
 
-    if (!/^\d{4}$/.test(pin)) {
+}
 
-        showMessage(
-            "loginMessage",
-            "PIN must be exactly 4 digits.",
-            "error"
-        );
 
-        return;
+const button =
+document
+.getElementById("loginButton");
 
-    }
+button.disabled = true;
 
+button.textContent =
+"LOGGING IN...";
 
-    const button =
-        document
-            .getElementById(
-                "loginButton"
-            );
 
+try{
 
-    button.disabled = true;
 
-    button.textContent =
-        "LOGGING IN...";
+const {
+data,
+error
+} =
+await supabaseClient
+.auth
+.signInWithPassword({
 
+email:email,
 
-    try {
+password:password
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient
-            .auth
-            .signInWithPassword({
+});
 
-                email: email,
 
-                password: password
+if(error){
 
-            });
+throw error;
 
+}
 
-        if (error) {
 
-            showMessage(
-                "loginMessage",
-                error.message,
-                "error"
-            );
+const user =
+data.user;
 
 
-            button.disabled = false;
+if(!user){
 
-            button.textContent =
-                "LOGIN";
+throw new Error(
+"Owner account not found."
+);
 
-            return;
+}
 
-        }
 
+const {
+data:profile,
+error:profileError
+} =
+await supabaseClient
+.from("profiles")
+.select("id,role")
+.eq("id",user.id)
+.maybeSingle();
 
-        const user =
-            data.user;
 
+if(
+profileError ||
+!profile ||
+String(profile.role)
+.toLowerCase() !== "owner"
+){
 
-        if (!user) {
+await supabaseClient
+.auth
+.signOut();
 
-            throw new Error(
-                "Owner account not found."
-            );
+throw new Error(
+"This account is not an Owner account."
+);
 
-        }
+}
 
 
-        const {
-            data: profile,
-            error: profileError
-        } =
-        await supabaseClient
-            .from("profiles")
-            .select("id, role")
-            .eq("id", user.id)
-            .maybeSingle();
+const {
+data:pinResult,
+error:pinError
+} =
+await supabaseClient.rpc(
+"check_owner_pin",
+{
+p_pin:pin
+}
+);
 
 
-        if (
-            profileError ||
-            !profile ||
-            String(profile.role)
-                .toLowerCase() !== "owner"
-        ) {
+if(pinError){
 
-            await supabaseClient
-                .auth
-                .signOut();
+throw pinError;
 
+}
 
-            showMessage(
-                "loginMessage",
-                "This account is not an Owner account.",
-                "error"
-            );
 
+let pinCorrect = false;
 
-            button.disabled = false;
 
-            button.textContent =
-                "LOGIN";
+if(typeof pinResult === "boolean"){
 
-            return;
+pinCorrect =
+pinResult;
 
-        }
+}
+else if(pinResult){
 
+pinCorrect =
+pinResult.success === true ||
+pinResult.valid === true ||
+pinResult.correct === true;
 
-        const {
-            data: pinResult,
-            error: pinError
-        } =
-        await supabaseClient.rpc(
-            "check_owner_pin",
-            {
-                p_pin: pin
-            }
-        );
+}
 
 
-        if (pinError) {
+if(!pinCorrect){
 
-            await supabaseClient
-                .auth
-                .signOut();
+await supabaseClient
+.auth
+.signOut();
 
+throw new Error(
+"Incorrect 4-digit PIN."
+);
 
-            showMessage(
-                "loginMessage",
-                "PIN verification failed.",
-                "error"
-            );
+}
 
 
-            button.disabled = false;
+if(remember){
 
-            button.textContent =
-                "LOGIN";
+localStorage.setItem(
+"ownerLogin",
+JSON.stringify({
 
-            return;
+id:user.id,
 
-        }
+email:email,
 
+role:"owner"
 
-        let pinCorrect = false;
+})
+);
 
+}
+else{
 
-        if (
-            typeof pinResult === "boolean"
-        ) {
+localStorage.removeItem(
+"ownerLogin"
+);
 
-            pinCorrect =
-                pinResult;
+}
 
-        }
-        else if (
-            pinResult &&
-            typeof pinResult === "object"
-        ) {
 
-            pinCorrect =
-                pinResult.success === true ||
-                pinResult.valid === true ||
-                pinResult.correct === true;
+showMessage(
+"loginMessage",
+"Login successful.",
+"success"
+);
 
-        }
 
+setTimeout(
+function(){
 
-        if (!pinCorrect) {
+/*
+ * IMPORTANT:
+ * Dashboard file name is
+ * dashboard.html
+ */
 
-            await supabaseClient
-                .auth
-                .signOut();
+window.location.href =
+"dashboard.html";
 
+},
+500
+);
 
-            showMessage(
-                "loginMessage",
-                "Incorrect 4-digit PIN.",
-                "error"
-            );
 
+}
+catch(error){
 
-            button.disabled = false;
+console.error(error);
 
-            button.textContent =
-                "LOGIN";
 
-            return;
+showMessage(
+"loginMessage",
+error.message ||
+"Login failed.",
+"error"
+);
 
-        }
 
+button.disabled = false;
 
-        if (remember) {
+button.textContent =
+"LOGIN";
 
-            localStorage.setItem(
-                "ownerLogin",
-                JSON.stringify({
-
-                    id:
-                        user.id,
-
-                    email:
-                        email,
-
-                    role:
-                        "owner"
-
-                })
-            );
-
-        }
-        else {
-
-            localStorage.removeItem(
-                "ownerLogin"
-            );
-
-        }
-
-
-        showMessage(
-            "loginMessage",
-            "Login successful.",
-            "success"
-        );
-
-
-        setTimeout(
-            function () {
-
-                window.location.href =
-                    "owner-dashboard.html";
-
-            },
-            500
-        );
-
-    }
-    catch (error) {
-
-        console.error(error);
-
-
-        showMessage(
-            "loginMessage",
-            error.message ||
-            "Login failed.",
-            "error"
-        );
-
-
-        button.disabled = false;
-
-        button.textContent =
-            "LOGIN";
-
-    }
+}
 
 }
 
 
 
 // =================================================
-// SHOW FORGOT PASSWORD
+// FORGOT PASSWORD
 // =================================================
 
-function showForgotPassword() {
+function showForgotPassword(){
 
-    hideAllSections();
+hideAllSections();
 
-    document
-        .getElementById(
-            "forgotPasswordSection"
-        )
-        .style.display =
-        "block";
+document
+.getElementById(
+"forgotPasswordSection"
+)
+.style.display =
+"block";
 
-    resetPasswordRecoveryUI();
+resetPasswordRecoveryUI();
 
 }
 
 
 
 // =================================================
-// VERIFY PASSWORD RECOVERY
+// VERIFY PASSWORD
 // =================================================
 
-async function verifyPasswordRecovery() {
+async function verifyPasswordRecovery(){
 
-    const email =
-        document
-            .getElementById(
-                "forgotPasswordEmail"
-            )
-            .value
-            .trim();
+const email =
+document
+.getElementById(
+"forgotPasswordEmail"
+)
+.value
+.trim();
 
-
-    const birthDate =
-        document
-            .getElementById(
-                "forgotPasswordBirthDate"
-            )
-            .value;
-
-
-    if (!email || !birthDate) {
-
-        showMessage(
-            "passwordVerifyMessage",
-            "Please enter email and birth date.",
-            "error"
-        );
-
-        return;
-
-    }
+const birthDate =
+document
+.getElementById(
+"forgotPasswordBirthDate"
+)
+.value;
 
 
-    const button =
-        document
-            .getElementById(
-                "verifyPasswordButton"
-            );
+if(!email || !birthDate){
+
+showMessage(
+"passwordVerifyMessage",
+"Please enter email and birth date.",
+"error"
+);
+
+return;
+
+}
 
 
-    button.disabled = true;
+const button =
+document
+.getElementById(
+"verifyPasswordButton"
+);
 
-    button.textContent =
-        "VERIFYING...";
+button.disabled = true;
 
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.rpc(
-            "verify_owner_recovery",
-            {
-
-                p_email:
-                    email,
-
-                p_birth_date:
-                    birthDate
-
-            }
-        );
+button.textContent =
+"VERIFYING...";
 
 
-        if (error) {
+try{
 
-            throw error;
+const {
+data,
+error
+} =
+await supabaseClient.rpc(
+"verify_owner_recovery",
+{
 
-        }
+p_email:email,
 
+p_birth_date:birthDate
 
-        let verified = false;
-
-
-        if (
-            typeof data === "boolean"
-        ) {
-
-            verified =
-                data;
-
-        }
-        else if (data) {
-
-            verified =
-                data.success === true ||
-                data.verified === true;
-
-        }
+}
+);
 
 
-        if (!verified) {
+if(error){
 
-            showMessage(
-                "passwordVerifyMessage",
-                "Email or birth date is incorrect.",
-                "error"
-            );
+throw error;
+
+}
 
 
-            button.disabled = false;
-
-            button.textContent =
-                "VERIFY";
-
-            return;
-
-        }
+let verified = false;
 
 
-        // SAVE VERIFIED DATA
+if(typeof data === "boolean"){
 
-        recoveryVerifiedEmail =
-            email;
+verified =
+data;
 
-        recoveryVerifiedBirthDate =
-            birthDate;
+}
+else if(data){
 
+verified =
+data.success === true ||
+data.verified === true;
 
-        // HIDE VERIFICATION SECTION
-
-        document
-            .getElementById(
-                "passwordVerificationStep"
-            )
-            .style.display =
-            "none";
+}
 
 
-        // SHOW NEW PASSWORD
+if(!verified){
 
-        document
-            .getElementById(
-                "newPasswordBox"
-            )
-            .style.display =
-            "block";
+throw new Error(
+"Email or birth date is incorrect."
+);
 
-
-    }
-    catch (error) {
-
-        console.error(error);
+}
 
 
-        showMessage(
-            "passwordVerifyMessage",
-            error.message ||
-            "Verification failed.",
-            "error"
-        );
+recoveryVerifiedEmail =
+email;
+
+recoveryVerifiedBirthDate =
+birthDate;
 
 
-        button.disabled = false;
+/*
+ * IMPORTANT:
+ * Hide the complete verification
+ * section after successful verification.
+ */
 
-        button.textContent =
-            "VERIFY";
+document
+.getElementById(
+"passwordVerificationStep"
+)
+.style.display =
+"none";
 
-    }
+
+document
+.getElementById(
+"newPasswordBox"
+)
+.style.display =
+"block";
+
+
+}
+catch(error){
+
+console.error(error);
+
+
+showMessage(
+"passwordVerifyMessage",
+error.message ||
+"Verification failed.",
+"error"
+);
+
+
+button.disabled = false;
+
+button.textContent =
+"VERIFY";
+
+}
 
 }
 
@@ -1681,400 +1454,379 @@ async function verifyPasswordRecovery() {
 // RESET PASSWORD
 // =================================================
 
-async function resetPassword() {
+async function resetPassword(){
 
-    const password =
-        document
-            .getElementById(
-                "newPassword"
-            )
-            .value;
+const password =
+document
+.getElementById(
+"newPassword"
+)
+.value;
 
+const confirm =
+document
+.getElementById(
+"confirmPassword"
+)
+.value;
 
-    const confirm =
-        document
-            .getElementById(
-                "confirmPassword"
-            )
-            .value;
 
+if(!recoveryVerifiedEmail){
 
-    if (!recoveryVerifiedEmail) {
+showMessage(
+"passwordResetMessage",
+"Please verify your account first.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            "Please verify your account first.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(!recoveryVerifiedBirthDate){
 
-    if (!recoveryVerifiedBirthDate) {
+showMessage(
+"passwordResetMessage",
+"Birth Date verification is missing.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            "Birth Date verification is missing.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(!password || !confirm){
 
-    if (!password || !confirm) {
+showMessage(
+"passwordResetMessage",
+"Please enter both passwords.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            "Please enter both passwords.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(password !== confirm){
 
-    if (password !== confirm) {
+showMessage(
+"passwordResetMessage",
+"Passwords do not match.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            "Passwords do not match.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(password.length < 6){
 
-    if (password.length < 6) {
+showMessage(
+"passwordResetMessage",
+"Password must be at least 6 characters.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            "Password must be at least 6 characters.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+const button =
+document
+.getElementById(
+"savePasswordButton"
+);
 
-    const button =
-        document
-            .getElementById(
-                "savePasswordButton"
-            );
+button.disabled = true;
 
+button.textContent =
+"SAVING...";
 
-    button.disabled = true;
 
-    button.textContent =
-        "SAVING...";
+try{
 
 
-    try {
+const SUPABASE_URL =
+"https://ehchhgqjohsdkxmouozm.supabase.co";
 
 
-        const SUPABASE_URL =
-            "https://ehchhgqjohsdkxmouozm.supabase.co";
+const SUPABASE_KEY =
+"sb_publishable_41E2ivZKj4l5YfIpoCzwHA_MjyQAHfq";
 
 
-        const SUPABASE_KEY =
-            "sb_publishable_41E2ivZKj4l5YfIpoCzwHA_MjyQAHfq";
+const response =
+await fetch(
+`${SUPABASE_URL}/functions/v1/owner-reset-password`,
+{
 
+method:"POST",
 
-        const response =
-            await fetch(
-                `${SUPABASE_URL}/functions/v1/owner-reset-password`,
-                {
+headers:{
 
-                    method: "POST",
+"Content-Type":
+"application/json",
 
-                    headers: {
+"apikey":
+SUPABASE_KEY
 
-                        "Content-Type":
-                            "application/json",
+},
 
-                        "apikey":
-                            SUPABASE_KEY
+body:
+JSON.stringify({
 
-                    },
+email:
+recoveryVerifiedEmail,
 
-                    body:
-                        JSON.stringify({
+birth_date:
+recoveryVerifiedBirthDate,
 
-                            email:
-                                recoveryVerifiedEmail,
+new_password:
+password
 
-                            birth_date:
-                                recoveryVerifiedBirthDate,
+})
 
-                            new_password:
-                                password
+}
+);
 
-                        })
 
-                }
-            );
+const result =
+await response.json();
 
 
-        const result =
-            await response.json();
+if(!response.ok){
 
+throw new Error(
+result.message ||
+"Password reset failed."
+);
 
-        if (!response.ok) {
+}
 
-            throw new Error(
-                result.message ||
-                "Password reset failed."
-            );
 
-        }
+if(result.success === false){
 
+throw new Error(
+result.message ||
+"Password reset failed."
+);
 
-        if (result.success === false) {
+}
 
-            throw new Error(
-                result.message ||
-                "Password reset failed."
-            );
 
-        }
+showMessage(
+"passwordResetMessage",
+"Password changed successfully.",
+"success"
+);
 
 
-        showMessage(
-            "passwordResetMessage",
-            "Password changed successfully.",
-            "success"
-        );
+button.textContent =
+"PASSWORD SAVED";
 
 
-        button.textContent =
-            "PASSWORD SAVED";
+setTimeout(
+function(){
 
+showLogin();
 
-        setTimeout(
-            function () {
+},
+1200
+);
 
-                showLogin();
 
-            },
-            1200
-        );
+}
+catch(error){
 
-    }
-    catch (error) {
+console.error(error);
 
-        console.error(error);
 
+showMessage(
+"passwordResetMessage",
+error.message ||
+"Password reset failed.",
+"error"
+);
 
-        showMessage(
-            "passwordResetMessage",
-            error.message ||
-            "Password reset failed.",
-            "error"
-        );
 
+button.disabled = false;
 
-        button.disabled = false;
+button.textContent =
+"SAVE PASSWORD";
 
-        button.textContent =
-            "SAVE PASSWORD";
-
-    }
+}
 
 }
 
 
 
 // =================================================
-// SHOW FORGOT PIN
+// FORGOT PIN
 // =================================================
 
-function showForgotPin() {
+function showForgotPin(){
 
-    hideAllSections();
+hideAllSections();
 
-    document
-        .getElementById(
-            "forgotPinSection"
-        )
-        .style.display =
-        "block";
+document
+.getElementById(
+"forgotPinSection"
+)
+.style.display =
+"block";
 
-    resetPinRecoveryUI();
+resetPinRecoveryUI();
 
 }
 
 
 
 // =================================================
-// VERIFY PIN RECOVERY
+// VERIFY PIN
 // =================================================
 
-async function verifyPinRecovery() {
+async function verifyPinRecovery(){
 
-    const email =
-        document
-            .getElementById(
-                "forgotPinEmail"
-            )
-            .value
-            .trim();
+const email =
+document
+.getElementById(
+"forgotPinEmail"
+)
+.value
+.trim();
 
-
-    const birthDate =
-        document
-            .getElementById(
-                "forgotPinBirthDate"
-            )
-            .value;
-
-
-    if (!email || !birthDate) {
-
-        showMessage(
-            "pinVerifyMessage",
-            "Please enter email and birth date.",
-            "error"
-        );
-
-        return;
-
-    }
+const birthDate =
+document
+.getElementById(
+"forgotPinBirthDate"
+)
+.value;
 
 
-    const button =
-        document
-            .getElementById(
-                "verifyPinButton"
-            );
+if(!email || !birthDate){
+
+showMessage(
+"pinVerifyMessage",
+"Please enter email and birth date.",
+"error"
+);
+
+return;
+
+}
 
 
-    button.disabled = true;
+const button =
+document
+.getElementById(
+"verifyPinButton"
+);
 
-    button.textContent =
-        "VERIFYING...";
+button.disabled = true;
 
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.rpc(
-            "verify_owner_recovery",
-            {
-
-                p_email:
-                    email,
-
-                p_birth_date:
-                    birthDate
-
-            }
-        );
+button.textContent =
+"VERIFYING...";
 
 
-        if (error) {
+try{
 
-            throw error;
+const {
+data,
+error
+} =
+await supabaseClient.rpc(
+"verify_owner_recovery",
+{
 
-        }
+p_email:email,
 
+p_birth_date:birthDate
 
-        let verified = false;
-
-
-        if (
-            typeof data === "boolean"
-        ) {
-
-            verified =
-                data;
-
-        }
-        else if (data) {
-
-            verified =
-                data.success === true ||
-                data.verified === true;
-
-        }
+}
+);
 
 
-        if (!verified) {
+if(error){
 
-            showMessage(
-                "pinVerifyMessage",
-                "Email or birth date is incorrect.",
-                "error"
-            );
+throw error;
+
+}
 
 
-            button.disabled = false;
-
-            button.textContent =
-                "VERIFY";
-
-            return;
-
-        }
+let verified = false;
 
 
-        recoveryVerifiedEmail =
-            email;
+if(typeof data === "boolean"){
+
+verified =
+data;
+
+}
+else if(data){
+
+verified =
+data.success === true ||
+data.verified === true;
+
+}
 
 
-        recoveryVerifiedBirthDate =
-            birthDate;
+if(!verified){
+
+throw new Error(
+"Email or birth date is incorrect."
+);
+
+}
 
 
-        // HIDE VERIFICATION SECTION
+recoveryVerifiedEmail =
+email;
 
-        document
-            .getElementById(
-                "pinVerificationStep"
-            )
-            .style.display =
-            "none";
+recoveryVerifiedBirthDate =
+birthDate;
 
 
-        // SHOW NEW PIN
-
-        document
-            .getElementById(
-                "newPinBox"
-            )
-            .style.display =
-            "block";
-
-    }
-    catch (error) {
-
-        console.error(error);
+document
+.getElementById(
+"pinVerificationStep"
+)
+.style.display =
+"none";
 
 
-        showMessage(
-            "pinVerifyMessage",
-            error.message ||
-            "Verification failed.",
-            "error"
-        );
+document
+.getElementById(
+"newPinBox"
+)
+.style.display =
+"block";
 
 
-        button.disabled = false;
+}
+catch(error){
 
-        button.textContent =
-            "VERIFY";
+console.error(error);
 
-    }
+
+showMessage(
+"pinVerifyMessage",
+error.message ||
+"Verification failed.",
+"error"
+);
+
+
+button.disabled = false;
+
+button.textContent =
+"VERIFY";
+
+}
 
 }
 
@@ -2084,187 +1836,171 @@ async function verifyPinRecovery() {
 // RESET PIN
 // =================================================
 
-async function resetPin() {
+async function resetPin(){
 
-    const newPin =
-        document
-            .getElementById(
-                "newPin"
-            )
-            .value
-            .trim();
+const newPin =
+document
+.getElementById(
+"newPin"
+)
+.value
+.trim();
 
+const confirmPin =
+document
+.getElementById(
+"confirmPin"
+)
+.value
+.trim();
 
-    const confirmPin =
-        document
-            .getElementById(
-                "confirmPin"
-            )
-            .value
-            .trim();
 
+if(!recoveryVerifiedEmail){
 
-    if (!recoveryVerifiedEmail) {
+showMessage(
+"pinResetMessage",
+"Please verify your account first.",
+"error"
+);
 
-        showMessage(
-            "pinResetMessage",
-            "Please verify your account first.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(!/^\d{4}$/.test(newPin)){
 
-    if (!recoveryVerifiedBirthDate) {
+showMessage(
+"pinResetMessage",
+"PIN must be exactly 4 digits.",
+"error"
+);
 
-        showMessage(
-            "pinResetMessage",
-            "Birth Date verification is missing.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+if(newPin !== confirmPin){
 
-    if (!/^\d{4}$/.test(newPin)) {
+showMessage(
+"pinResetMessage",
+"PINs do not match.",
+"error"
+);
 
-        showMessage(
-            "pinResetMessage",
-            "PIN must be exactly 4 digits.",
-            "error"
-        );
+return;
 
-        return;
+}
 
-    }
 
+const button =
+document
+.getElementById(
+"savePinButton"
+);
 
-    if (newPin !== confirmPin) {
+button.disabled = true;
 
-        showMessage(
-            "pinResetMessage",
-            "PINs do not match.",
-            "error"
-        );
+button.textContent =
+"SAVING...";
 
-        return;
 
-    }
+try{
 
+const {
+data,
+error
+} =
+await supabaseClient.rpc(
+"reset_owner_pin",
+{
 
-    const button =
-        document
-            .getElementById(
-                "savePinButton"
-            );
+p_email:
+recoveryVerifiedEmail,
 
+p_pin:
+newPin
 
-    button.disabled = true;
+}
+);
 
-    button.textContent =
-        "SAVING...";
 
+if(error){
 
-    try {
+throw error;
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.rpc(
-            "reset_owner_pin",
-            {
+}
 
-                p_email:
-                    recoveryVerifiedEmail,
 
-                p_pin:
-                    newPin
+let success = false;
 
-            }
-        );
 
+if(typeof data === "boolean"){
 
-        if (error) {
+success =
+data;
 
-            throw error;
+}
+else if(data){
 
-        }
+success =
+data.success === true ||
+data.updated === true;
 
+}
 
-        let success = false;
 
+if(!success){
 
-        if (
-            typeof data === "boolean"
-        ) {
+throw new Error(
+"PIN reset failed."
+);
 
-            success =
-                data;
+}
 
-        }
-        else if (data) {
 
-            success =
-                data.success === true ||
-                data.updated === true;
+showMessage(
+"pinResetMessage",
+"PIN changed successfully.",
+"success"
+);
 
-        }
 
+button.textContent =
+"PIN SAVED";
 
-        if (!success) {
 
-            throw new Error(
-                "PIN reset failed."
-            );
+setTimeout(
+function(){
 
-        }
+showLogin();
 
+},
+1200
+);
 
-        showMessage(
-            "pinResetMessage",
-            "PIN changed successfully.",
-            "success"
-        );
 
+}
+catch(error){
 
-        button.textContent =
-            "PIN SAVED";
+console.error(error);
 
 
-        setTimeout(
-            function () {
+showMessage(
+"pinResetMessage",
+error.message ||
+"PIN reset failed.",
+"error"
+);
 
-                showLogin();
 
-            },
-            1200
-        );
+button.disabled = false;
 
-    }
-    catch (error) {
+button.textContent =
+"SAVE PIN";
 
-        console.error(error);
-
-
-        showMessage(
-            "pinResetMessage",
-            error.message ||
-            "PIN reset failed.",
-            "error"
-        );
-
-
-        button.disabled = false;
-
-        button.textContent =
-            "SAVE PIN";
-
-    }
+}
 
 }
 
@@ -2274,58 +2010,41 @@ async function resetPin() {
 // RESET PASSWORD UI
 // =================================================
 
-function resetPasswordRecoveryUI() {
+function resetPasswordRecoveryUI(){
 
-    recoveryVerifiedEmail =
-        "";
+recoveryVerifiedEmail =
+"";
 
-    recoveryVerifiedBirthDate =
-        "";
-
-
-    document
-        .getElementById(
-            "passwordVerificationStep"
-        )
-        .style.display =
-        "block";
+recoveryVerifiedBirthDate =
+"";
 
 
-    document
-        .getElementById(
-            "newPasswordBox"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"passwordVerificationStep"
+)
+.style.display =
+"block";
 
 
-    document
-        .getElementById(
-            "passwordVerifyMessage"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"newPasswordBox"
+)
+.style.display =
+"none";
 
 
-    document
-        .getElementById(
-            "passwordResetMessage"
-        )
-        .style.display =
-        "none";
+const button =
+document
+.getElementById(
+"verifyPasswordButton"
+);
 
+button.disabled = false;
 
-    const button =
-        document
-            .getElementById(
-                "verifyPasswordButton"
-            );
-
-
-    button.disabled = false;
-
-    button.textContent =
-        "VERIFY";
+button.textContent =
+"VERIFY";
 
 }
 
@@ -2335,91 +2054,74 @@ function resetPasswordRecoveryUI() {
 // RESET PIN UI
 // =================================================
 
-function resetPinRecoveryUI() {
+function resetPinRecoveryUI(){
 
-    recoveryVerifiedEmail =
-        "";
+recoveryVerifiedEmail =
+"";
 
-    recoveryVerifiedBirthDate =
-        "";
-
-
-    document
-        .getElementById(
-            "pinVerificationStep"
-        )
-        .style.display =
-        "block";
+recoveryVerifiedBirthDate =
+"";
 
 
-    document
-        .getElementById(
-            "newPinBox"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"pinVerificationStep"
+)
+.style.display =
+"block";
 
 
-    document
-        .getElementById(
-            "pinVerifyMessage"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"newPinBox"
+)
+.style.display =
+"none";
 
 
-    document
-        .getElementById(
-            "pinResetMessage"
-        )
-        .style.display =
-        "none";
+const button =
+document
+.getElementById(
+"verifyPinButton"
+);
 
+button.disabled = false;
 
-    const button =
-        document
-            .getElementById(
-                "verifyPinButton"
-            );
-
-
-    button.disabled = false;
-
-    button.textContent =
-        "VERIFY";
+button.textContent =
+"VERIFY";
 
 }
 
 
 
 // =================================================
-// HIDE ALL SECTIONS
+// HIDE ALL
 // =================================================
 
-function hideAllSections() {
+function hideAllSections(){
 
-    document
-        .getElementById(
-            "loginSection"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "forgotPasswordSection"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"loginSection"
+)
+.style.display =
+"none";
 
 
-    document
-        .getElementById(
-            "forgotPinSection"
-        )
-        .style.display =
-        "none";
+document
+.getElementById(
+"forgotPasswordSection"
+)
+.style.display =
+"none";
+
+
+document
+.getElementById(
+"forgotPinSection"
+)
+.style.display =
+"none";
 
 }
 
@@ -2429,24 +2131,24 @@ function hideAllSections() {
 // SHOW LOGIN
 // =================================================
 
-function showLogin() {
+function showLogin(){
 
-    hideAllSections();
-
-
-    document
-        .getElementById(
-            "loginSection"
-        )
-        .style.display =
-        "block";
+hideAllSections();
 
 
-    recoveryVerifiedEmail =
-        "";
+document
+.getElementById(
+"loginSection"
+)
+.style.display =
+"block";
 
-    recoveryVerifiedBirthDate =
-        "";
+
+recoveryVerifiedEmail =
+"";
+
+recoveryVerifiedBirthDate =
+"";
 
 }
 
@@ -2456,10 +2158,10 @@ function showLogin() {
 // BACK
 // =================================================
 
-function goBack() {
+function goBack(){
 
-    window.location.href =
-        "index.html";
+window.location.href =
+"index.html";
 
 }
 
@@ -2470,27 +2172,24 @@ function goBack() {
 // =================================================
 
 function showMessage(
-    elementId,
-    message,
-    type
-) {
+elementId,
+message,
+type
+){
 
-    const element =
-        document.getElementById(
-            elementId
-        );
+const element =
+document.getElementById(
+elementId
+);
 
+element.textContent =
+message;
 
-    element.textContent =
-        message;
+element.className =
+"message " + type;
 
-
-    element.className =
-        "message " + type;
-
-
-    element.style.display =
-        "block";
+element.style.display =
+"block";
 
 }
 
@@ -2500,31 +2199,31 @@ function showMessage(
 // PIN INPUT
 // =================================================
 
-function setupPinInputs() {
+function setupPinInputs(){
 
-    const inputs =
-        document.querySelectorAll(
-            ".pin-input"
-        );
+const inputs =
+document.querySelectorAll(
+".pin-input"
+);
 
 
-    inputs.forEach(
-        function(input) {
+inputs.forEach(
+function(input){
 
-            input.addEventListener(
-                "input",
-                function() {
+input.addEventListener(
+"input",
+function(){
 
-                    this.value =
-                        this.value
-                            .replace(/\D/g, "")
-                            .slice(0, 4);
+this.value =
+this.value
+.replace(/\D/g,"")
+.slice(0,4);
 
-                }
-            );
+}
+);
 
-        }
-    );
+}
+);
 
 }
 
