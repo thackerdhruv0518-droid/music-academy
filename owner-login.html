@@ -1,181 +1,2005 @@
-create or replace function public.get_owner_branding(
-    p_email text
-)
-returns json
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-    v_owner_id uuid;
-    v_class_name text;
-    v_logo_url text;
-begin
+<!DOCTYPE html>
+<html lang="en">
 
-    select id
-    into v_owner_id
-    from auth.users
-    where lower(trim(email)) = lower(trim(p_email))
-    limit 1;
+<head>
 
-    if v_owner_id is null then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
-        );
-    end if;
+    <meta charset="UTF-8">
 
-    select
-        class_name,
-        logo_url
-    into
-        v_class_name,
-        v_logo_url
-    from public.academy_settings
-    where owner_id = v_owner_id
-    limit 1;
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    return json_build_object(
-        'success', true,
-        'class_name',
-        coalesce(v_class_name, 'Music Academy'),
-        'logo_url',
-        v_logo_url
+    <title>Owner Login</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 25px;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 430px;
+
+        }
+
+        .card {
+
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.25);
+
+        }
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+        .logo {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 42px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            color: white;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.18);
+
+        }
+
+        .academy-name {
+
+            margin-top: 18px;
+
+            margin-bottom: 6px;
+
+            color: #222;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+        }
+
+        .subtitle {
+
+            color: #777;
+
+            font-size: 15px;
+
+        }
+
+        h2 {
+
+            text-align: center;
+
+            color: #222;
+
+            margin-top: 25px;
+
+            margin-bottom: 25px;
+
+            font-size: 24px;
+
+        }
+
+        label {
+
+            display: block;
+
+            margin-top: 15px;
+
+            margin-bottom: 7px;
+
+            color: #222;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            outline: none;
+
+        }
+
+        input:focus {
+
+            border-color: #1d2671;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(29,38,113,0.08);
+
+        }
+
+        .pin-input {
+
+            text-align: center;
+
+            letter-spacing: 8px;
+
+            font-size: 20px;
+
+        }
+
+        .remember {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 15px;
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+        .remember input {
+
+            width: auto;
+
+        }
+
+        button {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
+
+            transition: 0.2s;
+
+        }
+
+        button:hover {
+
+            opacity: 0.9;
+
+            transform: scale(1.02);
+
+        }
+
+        button:active {
+
+            transform: scale(0.98);
+
+        }
+
+        button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+        }
+
+        .links {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+        }
+
+        .links a {
+
+            display: block;
+
+            margin-top: 9px;
+
+            color: #1d2671;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+        }
+
+        .links a:hover {
+
+            color: #c33764;
+
+        }
+
+        .back-button {
+
+            background: #eeeeee;
+
+            color: #222;
+
+        }
+
+        .back-button:hover {
+
+            background: #e5e5e5;
+
+            color: #222;
+
+        }
+
+        .message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+        }
+
+        .success {
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+        }
+
+        .error {
+
+            background: #ffebee;
+
+            color: #c62828;
+
+        }
+
+        .section {
+
+            display: none;
+
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 500px) {
+
+            body {
+
+                padding: 15px;
+
+                align-items: flex-start;
+
+                padding-top: 25px;
+
+            }
+
+            .card {
+
+                padding: 28px 20px;
+
+                border-radius: 20px;
+
+            }
+
+            .logo {
+
+                width: 75px;
+
+                height: 75px;
+
+                font-size: 35px;
+
+            }
+
+            .academy-name {
+
+                font-size: 24px;
+
+            }
+
+            h2 {
+
+                font-size: 22px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ================= LOGIN ================= -->
+
+    <div class="card" id="loginSection">
+
+
+        <div class="header">
+
+
+            <div class="logo" id="logoBox">
+
+                🎵
+
+            </div>
+
+
+            <div
+                class="academy-name"
+                id="academyName"
+            >
+
+                Music Academy
+
+            </div>
+
+
+            <div class="subtitle">
+
+                Owner Login
+
+            </div>
+
+
+        </div>
+
+
+        <h2>
+
+            🔐 Owner Login
+
+        </h2>
+
+
+        <label>
+
+            Email Address
+
+        </label>
+
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Enter owner email"
+            autocomplete="email"
+        >
+
+
+        <label>
+
+            Password
+
+        </label>
+
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Enter password"
+            autocomplete="current-password"
+        >
+
+
+        <label>
+
+            4-Digit PIN
+
+        </label>
+
+
+        <input
+            type="password"
+            id="loginPin"
+            class="pin-input"
+            placeholder="••••"
+            maxlength="4"
+            inputmode="numeric"
+            autocomplete="off"
+        >
+
+
+        <div class="remember">
+
+            <input
+                type="checkbox"
+                id="rememberMe"
+                checked
+            >
+
+            <span>
+                Remember me on this device
+            </span>
+
+        </div>
+
+
+        <button
+            id="loginButton"
+            onclick="ownerLogin()"
+        >
+
+            LOGIN
+
+        </button>
+
+
+        <div
+            id="loginMessage"
+            class="message"
+        ></div>
+
+
+        <div class="links">
+
+            <a onclick="showForgotPassword()">
+
+                Forgot Password?
+
+            </a>
+
+
+            <a onclick="showForgotPin()">
+
+                Forgot PIN?
+
+            </a>
+
+        </div>
+
+
+        <button
+            class="back-button"
+            onclick="goBack()"
+        >
+
+            ← Back
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================= FORGOT PASSWORD ================= -->
+
+    <div
+        class="card section"
+        id="forgotPasswordSection"
+    >
+
+
+        <div class="header">
+
+            <div class="logo">
+
+                🔑
+
+            </div>
+
+            <div class="academy-name">
+
+                Forgot Password
+
+            </div>
+
+            <div class="subtitle">
+
+                Owner Account Recovery
+
+            </div>
+
+        </div>
+
+
+        <label>
+
+            Owner Email
+
+        </label>
+
+
+        <input
+            type="email"
+            id="forgotPasswordEmail"
+            placeholder="Enter owner email"
+        >
+
+
+        <label>
+
+            Owner Birth Date
+
+        </label>
+
+
+        <input
+            type="date"
+            id="forgotPasswordBirthDate"
+        >
+
+
+        <button onclick="verifyPasswordRecovery()">
+
+            VERIFY
+
+        </button>
+
+
+        <div
+            id="passwordVerifyMessage"
+            class="message"
+        ></div>
+
+
+        <div
+            id="newPasswordBox"
+            style="display:none;"
+        >
+
+
+            <label>
+
+                New Password
+
+            </label>
+
+
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="Enter new password"
+            >
+
+
+            <label>
+
+                Confirm Password
+
+            </label>
+
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+            >
+
+
+            <button onclick="resetPassword()">
+
+                SAVE PASSWORD
+
+            </button>
+
+
+        </div>
+
+
+        <button
+            class="back-button"
+            onclick="showLogin()"
+        >
+
+            ← Back to Login
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================= FORGOT PIN ================= -->
+
+    <div
+        class="card section"
+        id="forgotPinSection"
+    >
+
+
+        <div class="header">
+
+            <div class="logo">
+
+                🔢
+
+            </div>
+
+            <div class="academy-name">
+
+                Forgot PIN
+
+            </div>
+
+            <div class="subtitle">
+
+                Owner PIN Recovery
+
+            </div>
+
+        </div>
+
+
+        <label>
+
+            Owner Email
+
+        </label>
+
+
+        <input
+            type="email"
+            id="forgotPinEmail"
+            placeholder="Enter owner email"
+        >
+
+
+        <label>
+
+            Owner Birth Date
+
+        </label>
+
+
+        <input
+            type="date"
+            id="forgotPinBirthDate"
+        >
+
+
+        <button onclick="verifyPinRecovery()">
+
+            VERIFY
+
+        </button>
+
+
+        <div
+            id="pinVerifyMessage"
+            class="message"
+        ></div>
+
+
+        <div
+            id="newPinBox"
+            style="display:none;"
+        >
+
+
+            <label>
+
+                New 4-Digit PIN
+
+            </label>
+
+
+            <input
+                type="password"
+                id="newPin"
+                class="pin-input"
+                maxlength="4"
+                inputmode="numeric"
+                placeholder="••••"
+            >
+
+
+            <label>
+
+                Confirm PIN
+
+            </label>
+
+
+            <input
+                type="password"
+                id="confirmPin"
+                class="pin-input"
+                maxlength="4"
+                inputmode="numeric"
+                placeholder="••••"
+            >
+
+
+            <button onclick="resetPin()">
+
+                SAVE PIN
+
+            </button>
+
+
+        </div>
+
+
+        <button
+            class="back-button"
+            onclick="showLogin()"
+        >
+
+            ← Back to Login
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// ========================================
+// VARIABLES
+// ========================================
+
+let recoveryVerifiedEmail = "";
+
+
+// ========================================
+// PAGE LOAD
+// ========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setupPinInputs();
+
+        loadBranding();
+
+        checkRememberedLogin();
+
+    }
+);
+
+
+// ========================================
+// BRANDING
+// ========================================
+
+async function loadBranding() {
+
+    const email =
+        document
+            .getElementById("loginEmail")
+            .value
+            .trim();
+
+    if (!email) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "get_owner_branding",
+                {
+                    p_email: email
+                }
+            );
+
+
+        if (error) {
+
+            console.log(
+                "Branding error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if (data && data.success) {
+
+            document
+                .getElementById("academyName")
+                .textContent =
+                    data.class_name ||
+                    "Music Academy";
+
+
+            if (data.logo_url) {
+
+                document
+                    .getElementById("logoBox")
+                    .innerHTML =
+                    `
+                        <img
+                            src="${data.logo_url}"
+                            style="
+                                width:100%;
+                                height:100%;
+                                border-radius:50%;
+                                object-fit:cover;
+                            "
+                        >
+                    `;
+
+            }
+
+        }
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+
+document
+    .getElementById("loginEmail")
+    .addEventListener(
+        "blur",
+        loadBranding
     );
 
-exception
-    when others then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
+
+// ========================================
+// REMEMBERED LOGIN
+// ========================================
+
+async function checkRememberedLogin() {
+
+    const saved =
+        localStorage.getItem(
+            "ownerLogin"
         );
-end;
-$$;
-
-grant execute on function public.get_owner_branding(text)
-to anon, authenticated;
 
 
-create or replace function public.get_staff_branding(
-    p_email text,
-    p_mobile text
-)
-returns json
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-    v_owner_id uuid;
-    v_class_name text;
-    v_logo_url text;
-begin
+    if (!saved) {
 
-    select owner_id
-    into v_owner_id
-    from public.staff_requests
-    where lower(trim(email)) = lower(trim(p_email))
-      and trim(mobile_number) = trim(p_mobile)
-    order by created_at desc
-    limit 1;
+        return;
 
-    if v_owner_id is null then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
+    }
+
+
+    try {
+
+        const owner =
+            JSON.parse(saved);
+
+
+        if (!owner.email) {
+
+            return;
+
+        }
+
+
+        const {
+            data
+        } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+        if (data.session) {
+
+            window.location.href =
+                "owner-dashboard.html";
+
+        }
+
+    }
+    catch (error) {
+
+        localStorage.removeItem(
+            "ownerLogin"
         );
-    end if;
 
-    select
-        class_name,
-        logo_url
-    into
-        v_class_name,
-        v_logo_url
-    from public.academy_settings
-    where owner_id = v_owner_id
-    limit 1;
+    }
 
-    return json_build_object(
-        'success', true,
-        'class_name',
-        coalesce(v_class_name, 'Music Academy'),
-        'logo_url',
-        v_logo_url
+}
+
+
+// ========================================
+// OWNER LOGIN
+// ========================================
+
+async function ownerLogin() {
+
+
+    const email =
+        document
+            .getElementById("loginEmail")
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById("loginPassword")
+            .value;
+
+
+    const pin =
+        document
+            .getElementById("loginPin")
+            .value
+            .trim();
+
+
+    const remember =
+        document
+            .getElementById("rememberMe")
+            .checked;
+
+
+    if (!email) {
+
+        showMessage(
+            "loginMessage",
+            "Please enter email.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!password) {
+
+        showMessage(
+            "loginMessage",
+            "Please enter password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!/^\d{4}$/.test(pin)) {
+
+        showMessage(
+            "loginMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById("loginButton");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "LOGGING IN...";
+
+
+    try {
+
+
+        // SUPABASE AUTH
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .signInWithPassword({
+
+                email: email,
+
+                password: password
+
+            });
+
+
+        if (error) {
+
+            showMessage(
+                "loginMessage",
+                error.message,
+                "error"
+            );
+
+            button.disabled = false;
+
+            button.textContent =
+                "LOGIN";
+
+            return;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        if (!user) {
+
+            throw new Error(
+                "Owner account not found."
+            );
+
+        }
+
+
+        // CHECK PROFILE
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+        await supabaseClient
+            .from("profiles")
+            .select("id, role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+        if (
+            profileError ||
+            !profile ||
+            String(profile.role)
+                .toLowerCase() !== "owner"
+        ) {
+
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            showMessage(
+                "loginMessage",
+                "This account is not an Owner account.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "LOGIN";
+
+            return;
+
+        }
+
+
+        // CHECK PIN
+
+        const {
+            data: pinResult,
+            error: pinError
+        } =
+        await supabaseClient.rpc(
+            "check_owner_pin",
+            {
+                p_pin: pin
+            }
+        );
+
+
+        if (pinError) {
+
+            console.log(pinError);
+
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            showMessage(
+                "loginMessage",
+                "PIN verification failed.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "LOGIN";
+
+            return;
+
+        }
+
+
+        let pinCorrect = false;
+
+
+        if (
+            typeof pinResult === "boolean"
+        ) {
+
+            pinCorrect =
+                pinResult;
+
+        }
+        else if (
+            pinResult &&
+            typeof pinResult === "object"
+        ) {
+
+            pinCorrect =
+                pinResult.success === true ||
+                pinResult.valid === true ||
+                pinResult.correct === true;
+
+        }
+
+
+        if (!pinCorrect) {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            showMessage(
+                "loginMessage",
+                "Incorrect 4-digit PIN.",
+                "error"
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "LOGIN";
+
+            return;
+
+        }
+
+
+        // SAVE LOGIN
+
+        if (remember) {
+
+            localStorage.setItem(
+                "ownerLogin",
+                JSON.stringify({
+
+                    id: user.id,
+
+                    email: email,
+
+                    role: "owner"
+
+                })
+            );
+
+        }
+        else {
+
+            localStorage.removeItem(
+                "ownerLogin"
+            );
+
+        }
+
+
+        showMessage(
+            "loginMessage",
+            "Login successful.",
+            "success"
+        );
+
+
+        setTimeout(
+            function () {
+
+                window.location.href =
+                    "owner-dashboard.html";
+
+            },
+            500
+        );
+
+
+    }
+    catch (error) {
+
+
+        console.error(error);
+
+
+        showMessage(
+            "loginMessage",
+            error.message ||
+            "Login failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "LOGIN";
+
+    }
+
+}
+
+
+// ========================================
+// FORGOT PASSWORD
+// ========================================
+
+function showForgotPassword() {
+
+    document
+        .getElementById("loginSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPasswordSection")
+        .style.display =
+        "block";
+
+}
+
+
+// ========================================
+// PASSWORD RECOVERY VERIFY
+// ========================================
+
+async function verifyPasswordRecovery() {
+
+    const email =
+        document
+            .getElementById("forgotPasswordEmail")
+            .value
+            .trim();
+
+
+    const birthDate =
+        document
+            .getElementById("forgotPasswordBirthDate")
+            .value;
+
+
+    if (!email || !birthDate) {
+
+        showMessage(
+            "passwordVerifyMessage",
+            "Please enter email and birth date.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "verify_owner_recovery",
+            {
+                p_email: email,
+
+                p_birth_date:
+                    birthDate
+            }
+        );
+
+
+        if (error) {
+
+            showMessage(
+                "passwordVerifyMessage",
+                error.message,
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        let verified = false;
+
+
+        if (
+            typeof data === "boolean"
+        ) {
+
+            verified = data;
+
+        }
+        else if (data) {
+
+            verified =
+                data.success === true ||
+                data.verified === true;
+
+        }
+
+
+        if (!verified) {
+
+            showMessage(
+                "passwordVerifyMessage",
+                "Email or birth date is incorrect.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        recoveryVerifiedEmail =
+            email;
+
+
+        document
+            .getElementById("newPasswordBox")
+            .style.display =
+            "block";
+
+
+        showMessage(
+            "passwordVerifyMessage",
+            "Verified successfully.",
+            "success"
+        );
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "passwordVerifyMessage",
+            "Verification failed.",
+            "error"
+        );
+
+    }
+
+}
+
+
+// ========================================
+// RESET PASSWORD
+// ========================================
+
+async function resetPassword() {
+
+    const password =
+        document
+            .getElementById("newPassword")
+            .value;
+
+
+    const confirm =
+        document
+            .getElementById("confirmPassword")
+            .value;
+
+
+    if (!password || !confirm) {
+
+        alert(
+            "Please enter both passwords."
+        );
+
+        return;
+
+    }
+
+
+    if (password !== confirm) {
+
+        alert(
+            "Passwords do not match."
+        );
+
+        return;
+
+    }
+
+
+    if (password.length < 6) {
+
+        alert(
+            "Password must be at least 6 characters."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${SUPABASE_URL}/functions/v1/owner-reset-password`,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_KEY
+
+                    },
+
+                    body: JSON.stringify({
+
+                        email:
+                            recoveryVerifiedEmail,
+
+                        new_password:
+                            password
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Password reset failed."
+            );
+
+        }
+
+
+        alert(
+            "Password changed successfully."
+        );
+
+
+        showLogin();
+
+    }
+    catch (error) {
+
+        alert(
+            error.message ||
+            "Password reset failed."
+        );
+
+    }
+
+}
+
+
+// ========================================
+// FORGOT PIN
+// ========================================
+
+function showForgotPin() {
+
+    document
+        .getElementById("loginSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPasswordSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinSection")
+        .style.display =
+        "block";
+
+}
+
+
+// ========================================
+// PIN RECOVERY VERIFY
+// ========================================
+
+async function verifyPinRecovery() {
+
+    const email =
+        document
+            .getElementById("forgotPinEmail")
+            .value
+            .trim();
+
+
+    const birthDate =
+        document
+            .getElementById("forgotPinBirthDate")
+            .value;
+
+
+    if (!email || !birthDate) {
+
+        showMessage(
+            "pinVerifyMessage",
+            "Please enter email and birth date.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "verify_owner_recovery",
+            {
+
+                p_email: email,
+
+                p_birth_date:
+                    birthDate
+
+            }
+        );
+
+
+        if (error) {
+
+            showMessage(
+                "pinVerifyMessage",
+                error.message,
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        let verified = false;
+
+
+        if (
+            typeof data === "boolean"
+        ) {
+
+            verified = data;
+
+        }
+        else if (data) {
+
+            verified =
+                data.success === true ||
+                data.verified === true;
+
+        }
+
+
+        if (!verified) {
+
+            showMessage(
+                "pinVerifyMessage",
+                "Email or birth date is incorrect.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        recoveryVerifiedEmail =
+            email;
+
+
+        document
+            .getElementById("newPinBox")
+            .style.display =
+            "block";
+
+
+        showMessage(
+            "pinVerifyMessage",
+            "Verified successfully.",
+            "success"
+        );
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "pinVerifyMessage",
+            "Verification failed.",
+            "error"
+        );
+
+    }
+
+}
+
+
+// ========================================
+// RESET PIN
+// ========================================
+
+async function resetPin() {
+
+    const newPin =
+        document
+            .getElementById("newPin")
+            .value
+            .trim();
+
+
+    const confirmPin =
+        document
+            .getElementById("confirmPin")
+            .value
+            .trim();
+
+
+    if (!/^\d{4}$/.test(newPin)) {
+
+        alert(
+            "PIN must be exactly 4 digits."
+        );
+
+        return;
+
+    }
+
+
+    if (newPin !== confirmPin) {
+
+        alert(
+            "PINs do not match."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "reset_owner_pin",
+            {
+
+                p_email:
+                    recoveryVerifiedEmail,
+
+                p_pin:
+                    newPin
+
+            }
+        );
+
+
+        if (error) {
+
+            alert(
+                error.message ||
+                "PIN reset failed."
+            );
+
+            return;
+
+        }
+
+
+        let success = false;
+
+
+        if (
+            typeof data === "boolean"
+        ) {
+
+            success = data;
+
+        }
+        else if (data) {
+
+            success =
+                data.success === true ||
+                data.updated === true;
+
+        }
+
+
+        if (!success) {
+
+            alert(
+                "PIN reset failed."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "PIN changed successfully."
+        );
+
+
+        showLogin();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+
+        alert(
+            error.message ||
+            "PIN reset failed."
+        );
+
+    }
+
+}
+
+
+// ========================================
+// SHOW LOGIN
+// ========================================
+
+function showLogin() {
+
+    document
+        .getElementById("forgotPasswordSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("forgotPinSection")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("loginSection")
+        .style.display =
+        "block";
+
+}
+
+
+// ========================================
+// BACK
+// ========================================
+
+function goBack() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+// ========================================
+// MESSAGE
+// ========================================
+
+function showMessage(
+    elementId,
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        "message " + type;
+
+
+    element.style.display =
+        "block";
+
+}
+
+
+// ========================================
+// PIN INPUT
+// ========================================
+
+function setupPinInputs() {
+
+    const inputs =
+        document.querySelectorAll(
+            ".pin-input"
+        );
+
+
+    inputs.forEach(
+        function (input) {
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .replace(/\D/g, "")
+                            .slice(0, 4);
+
+                }
+            );
+
+        }
     );
 
-exception
-    when others then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
-        );
-end;
-$$;
+}
 
-grant execute on function public.get_staff_branding(text, text)
-to anon, authenticated;
+</script>
 
 
-create or replace function public.get_student_branding(
-    p_mobile text
-)
-returns json
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-    v_owner_id uuid;
-    v_class_name text;
-    v_logo_url text;
-begin
+</body>
 
-    select owner_id
-    into v_owner_id
-    from public.students
-    where trim(mobile_number) = trim(p_mobile)
-    limit 1;
-
-    if v_owner_id is null then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
-        );
-    end if;
-
-    select
-        class_name,
-        logo_url
-    into
-        v_class_name,
-        v_logo_url
-    from public.academy_settings
-    where owner_id = v_owner_id
-    limit 1;
-
-    return json_build_object(
-        'success', true,
-        'class_name',
-        coalesce(v_class_name, 'Music Academy'),
-        'logo_url',
-        v_logo_url
-    );
-
-exception
-    when others then
-        return json_build_object(
-            'success', false,
-            'class_name', 'Music Academy',
-            'logo_url', null
-        );
-end;
-$$;
-
-grant execute on function public.get_student_branding(text)
-to anon, authenticated;
+</html>
