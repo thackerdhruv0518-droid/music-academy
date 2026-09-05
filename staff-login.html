@@ -3,330 +3,381 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Student Login</title>
+    <title>Staff Login</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 
-<style>
+    <style>
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,sans-serif;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-body{
+        body {
 
-    min-height:100vh;
+            margin: 0;
 
-    background:
-    linear-gradient(135deg,#6a11cb,#2575fc);
+            min-height: 100vh;
 
-    display:flex;
+            font-family: Arial, sans-serif;
 
-    justify-content:center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
 
-    align-items:center;
+            display: flex;
 
-    padding:20px;
-}
+            align-items: center;
 
-.box{
+            justify-content: center;
 
-    width:100%;
+            padding: 25px;
 
-    max-width:430px;
+        }
 
-    background:white;
+        .container {
 
-    border-radius:25px;
+            width: 100%;
 
-    padding:30px;
+            max-width: 430px;
 
-    box-shadow:
-    0 20px 50px rgba(0,0,0,.25);
-}
+        }
 
-.logo{
+        .card {
 
-    width:85px;
-    height:85px;
+            background: white;
 
-    margin:0 auto 15px;
+            border-radius: 25px;
 
-    border-radius:20px;
+            padding: 35px;
 
-    background:
-    linear-gradient(135deg,#6a11cb,#2575fc);
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.25);
 
-    display:flex;
+        }
 
-    align-items:center;
+        .header {
 
-    justify-content:center;
+            text-align: center;
 
-    font-size:48px;
+            margin-bottom: 30px;
 
-    overflow:hidden;
-}
+        }
 
-.logo img{
+        .logo {
 
-    width:100%;
-    height:100%;
+            width: 90px;
 
-    object-fit:cover;
-}
+            height: 90px;
 
-.academy-name{
+            margin: auto;
 
-    text-align:center;
+            border-radius: 50%;
 
-    font-size:25px;
+            display: flex;
 
-    font-weight:800;
+            align-items: center;
 
-    color:#222;
+            justify-content: center;
 
-    margin-bottom:5px;
-}
+            font-size: 42px;
 
-.subtitle{
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
 
-    text-align:center;
+            color: white;
 
-    color:#777;
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.18);
 
-    margin-bottom:25px;
-}
+            overflow: hidden;
 
-.section{
+        }
 
-    display:none;
-}
+        .logo img {
 
-.section.active{
+            width: 100%;
 
-    display:block;
-}
+            height: 100%;
 
-h2{
+            object-fit: cover;
 
-    text-align:center;
+        }
 
-    color:#333;
+        .academy-name {
 
-    margin-bottom:20px;
-}
+            margin-top: 18px;
 
-.info{
+            margin-bottom: 6px;
 
-    background:#f5f6ff;
+            color: #222;
 
-    border-radius:10px;
+            font-size: 28px;
 
-    padding:12px;
+            font-weight: bold;
 
-    margin-bottom:18px;
+        }
 
-    color:#555;
+        .subtitle {
 
-    font-size:13px;
+            color: #777;
 
-    line-height:1.5;
+            font-size: 15px;
 
-    text-align:center;
-}
+        }
 
-label{
+        h2 {
 
-    display:block;
+            text-align: center;
 
-    font-weight:bold;
+            color: #222;
 
-    margin-bottom:7px;
+            margin-top: 25px;
 
-    color:#333;
-}
+            margin-bottom: 25px;
 
-input{
+            font-size: 24px;
 
-    width:100%;
+        }
 
-    padding:14px;
+        label {
 
-    border:1px solid #ddd;
+            display: block;
 
-    border-radius:12px;
+            margin-top: 15px;
 
-    margin-bottom:16px;
+            margin-bottom: 7px;
 
-    font-size:15px;
+            color: #222;
 
-    outline:none;
-}
+            font-size: 14px;
 
-input:focus{
+            font-weight: bold;
 
-    border-color:#6a11cb;
+        }
 
-    box-shadow:
-    0 0 0 3px rgba(106,17,203,.10);
-}
+        input {
 
-button{
+            width: 100%;
 
-    width:100%;
+            padding: 14px;
 
-    padding:14px;
+            border: 1px solid #ddd;
 
-    border:none;
+            border-radius: 10px;
 
-    border-radius:12px;
+            font-size: 15px;
 
-    background:
-    linear-gradient(135deg,#6a11cb,#2575fc);
+            outline: none;
 
-    color:white;
+        }
 
-    font-size:16px;
+        input:focus {
 
-    font-weight:bold;
+            border-color: #1d2671;
 
-    cursor:pointer;
-}
+            box-shadow:
+                0 0 0 2px
+                rgba(29,38,113,0.08);
 
-button:disabled{
+        }
 
-    opacity:.6;
-}
+        button {
 
-.secondary{
+            width: 100%;
 
-    margin-top:10px;
+            border: none;
 
-    background:#f1f3f5;
+            padding: 14px;
 
-    color:#333;
-}
+            border-radius: 10px;
 
-.outline{
+            margin-top: 20px;
 
-    margin-top:15px;
+            font-size: 15px;
 
-    background:white;
+            font-weight: bold;
 
-    color:#1d2671;
+            cursor: pointer;
 
-    border:1px solid #1d2671;
-}
+            color: white;
 
-.links{
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d2671,
+                    #c33764
+                );
 
-    text-align:center;
+            transition: 0.2s;
 
-    margin-top:18px;
-}
+        }
 
-.links button{
+        button:hover {
 
-    background:none;
+            opacity: 0.9;
 
-    color:#2575fc;
+            transform: scale(1.02);
 
-    font-size:14px;
+        }
 
-    padding:5px;
+        button:active {
 
-}
+            transform: scale(0.98);
 
-.message{
+        }
 
-    display:none;
+        button:disabled {
 
-    margin-top:15px;
+            opacity: 0.6;
 
-    padding:12px;
+            cursor: not-allowed;
 
-    border-radius:10px;
+        }
 
-    text-align:center;
+        .back-button {
 
-    font-size:14px;
-}
+            background: #eeeeee;
 
-.message.success{
+            color: #222;
 
-    display:block;
+        }
 
-    background:#e8f8ee;
+        .back-button:hover {
 
-    color:#18743b;
-}
+            background: #e5e5e5;
 
-.message.error{
+            color: #222;
 
-    display:block;
+        }
 
-    background:#fdecec;
+        .message {
 
-    color:#b42318;
-}
+            display: none;
 
-.back{
+            margin-top: 15px;
 
-    margin-top:18px;
+            padding: 12px;
 
-    text-align:center;
-}
+            border-radius: 8px;
 
-.back a{
+            text-align: center;
 
-    color:#1d2671;
+            font-size: 14px;
 
-    text-decoration:none;
+        }
 
-    font-weight:bold;
-}
+        .success {
 
-.small{
+            background: #e8f5e9;
 
-    text-align:center;
+            color: #2e7d32;
 
-    color:#777;
+        }
 
-    font-size:13px;
+        .error {
 
-    line-height:1.5;
+            background: #ffebee;
 
-    margin-bottom:15px;
-}
+            color: #c62828;
 
-@media(max-width:480px){
+        }
 
-    body{
+        .request-button {
 
-        padding:15px;
+            margin-top: 25px;
 
-        align-items:flex-start;
+        }
 
-        padding-top:25px;
-    }
+        .request-heading {
 
-    .box{
+            text-align: center;
 
-        padding:28px 20px;
-    }
-}
+            color: #222;
 
-</style>
+            margin-top: 0;
+
+            margin-bottom: 25px;
+
+            font-size: 24px;
+
+        }
+
+        .small-text {
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+
+        }
+
+        @media(max-width: 500px) {
+
+            body {
+
+                padding: 15px;
+
+                align-items: flex-start;
+
+                padding-top: 25px;
+
+            }
+
+            .card {
+
+                padding: 28px 20px;
+
+                border-radius: 20px;
+
+            }
+
+            .logo {
+
+                width: 75px;
+
+                height: 75px;
+
+                font-size: 35px;
+
+            }
+
+            .academy-name {
+
+                font-size: 24px;
+
+            }
+
+            h2 {
+
+                font-size: 22px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -334,827 +385,751 @@ button:disabled{
 <body>
 
 
-<div class="box">
+<div class="container">
 
 
-<div class="logo"
-     id="academyLogo">
+    <!-- ========================= -->
+    <!-- STAFF LOGIN CARD -->
+    <!-- ========================= -->
 
-🎵
+    <div class="card" id="loginCard">
+
+
+        <div class="header">
+
+            <div
+                class="logo"
+                id="logoBox"
+            >
+
+                🎵
+
+            </div>
+
+            <div
+                class="academy-name"
+                id="academyName"
+            >
+
+                Music Academy
+
+            </div>
+
+            <div class="subtitle">
+
+                Staff Login
+
+            </div>
+
+        </div>
+
+
+        <h2>
+
+            👨‍💼 Staff Login
+
+        </h2>
+
+
+        <label>
+
+            Staff Name
+
+        </label>
+
+        <input
+            type="text"
+            id="loginName"
+            placeholder="Enter your name"
+        >
+
+
+        <label>
+
+            Email Address
+
+        </label>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Enter your email"
+        >
+
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="tel"
+            id="loginMobile"
+            placeholder="Enter mobile number"
+            maxlength="15"
+        >
+
+
+        <button
+            id="loginButton"
+            onclick="staffLogin()"
+        >
+
+            STAFF LOGIN
+
+        </button>
+
+
+        <div
+            id="loginMessage"
+            class="message"
+        ></div>
+
+
+        <!-- ONLY BUTTON -->
+
+        <button
+            class="request-button"
+            onclick="showRequest()"
+        >
+
+            REQUEST STAFF ACCESS
+
+        </button>
+
+
+        <button
+            class="back-button"
+            onclick="goBack()"
+        >
+
+            ← Back
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ========================= -->
+    <!-- REQUEST STAFF ACCESS CARD -->
+    <!-- ========================= -->
+
+    <div
+        class="card"
+        id="requestCard"
+        style="display:none;"
+    >
+
+
+        <div class="header">
+
+            <div class="logo">
+
+                🎵
+
+            </div>
+
+            <div
+                class="academy-name"
+                id="requestAcademyName"
+            >
+
+                Music Academy
+
+            </div>
+
+            <div class="subtitle">
+
+                Staff Access Request
+
+            </div>
+
+        </div>
+
+
+        <h2 class="request-heading">
+
+            📝 Request Staff Access
+
+        </h2>
+
+
+        <p class="small-text">
+
+            Please enter your details below.
+            The owner will review your request.
+
+        </p>
+
+
+        <label>
+
+            Staff Name
+
+        </label>
+
+        <input
+            type="text"
+            id="requestName"
+            placeholder="Enter your full name"
+        >
+
+
+        <label>
+
+            Email Address
+
+        </label>
+
+        <input
+            type="email"
+            id="requestEmail"
+            placeholder="Enter your email"
+        >
+
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="tel"
+            id="requestMobile"
+            placeholder="Enter mobile number"
+            maxlength="15"
+        >
+
+
+        <button
+            id="requestButton"
+            onclick="sendAccessRequest()"
+        >
+
+            SEND REQUEST
+
+        </button>
+
+
+        <div
+            id="requestMessage"
+            class="message"
+        ></div>
+
+
+        <button
+            class="back-button"
+            onclick="showLogin()"
+        >
+
+            ← Back to Staff Login
+
+        </button>
+
+
+    </div>
+
 
 </div>
 
-
-<div id="academyName"
-     class="academy-name">
-
-Music Academy
-
-</div>
-
-
-<div class="subtitle">
-
-Student Portal
-
-</div>
-
-
-<!-- LOGIN -->
-
-<div id="loginSection"
-     class="section active">
-
-<h2>Student Login</h2>
-
-
-<div class="info">
-
-Login using your Mobile Number
-and 4-Digit PIN.
-
-</div>
-
-
-<form id="loginForm">
-
-
-<label>Mobile Number</label>
-
-<input type="tel"
-       id="loginMobile"
-       placeholder="Enter mobile number"
-       maxlength="15"
-       required>
-
-
-<label>4-Digit PIN</label>
-
-<input type="password"
-       id="loginPin"
-       placeholder="Enter 4-Digit PIN"
-       maxlength="4"
-       inputmode="numeric"
-       required>
-
-
-<button type="submit"
-        id="loginBtn">
-
-Login
-
-</button>
-
-</form>
-
-
-<div class="links">
-
-<button onclick="showCreatePin()">
-
-First Login? Create PIN
-
-</button>
-
-
-<br>
-
-
-<button onclick="showForgotPin()">
-
-Forgot PIN
-
-</button>
-
-</div>
-
-</div>
-
-
-<!-- CREATE PIN -->
-
-<div id="createPinSection"
-     class="section">
-
-<h2>Create PIN</h2>
-
-
-<p class="small">
-
-For first login, enter your registered
-mobile number and create your own
-4-digit PIN.
-
-</p>
-
-
-<input type="tel"
-       id="createMobile"
-       placeholder="Mobile Number"
-       maxlength="15">
-
-
-<input type="password"
-       id="createPin"
-       placeholder="Create 4-Digit PIN"
-       maxlength="4"
-       inputmode="numeric">
-
-
-<input type="password"
-       id="confirmCreatePin"
-       placeholder="Confirm 4-Digit PIN"
-       maxlength="4"
-       inputmode="numeric">
-
-
-<div id="createMessage"
-     class="message">
-</div>
-
-
-<button onclick="createPin()">
-
-CREATE PIN
-
-</button>
-
-
-<button
-    class="secondary"
-    onclick="showLogin()">
-
-← Back to Login
-
-</button>
-
-</div>
-
-
-<!-- FORGOT PIN -->
-
-<div id="forgotPinSection"
-     class="section">
-
-<h2>Forgot PIN</h2>
-
-
-<p class="small">
-
-Verify your Mobile Number and
-Date of Joining.
-
-</p>
-
-
-<input type="tel"
-       id="forgotMobile"
-       placeholder="Mobile Number"
-       maxlength="15">
-
-
-<input type="date"
-       id="forgotJoiningDate">
-
-
-<input type="password"
-       id="forgotNewPin"
-       placeholder="New 4-Digit PIN"
-       maxlength="4"
-       inputmode="numeric">
-
-
-<input type="password"
-       id="forgotConfirmPin"
-       placeholder="Confirm New PIN"
-       maxlength="4"
-       inputmode="numeric">
-
-
-<div id="forgotMessage"
-     class="message">
-</div>
-
-
-<button onclick="resetPin()">
-
-RESET PIN
-
-</button>
-
-
-<button
-    class="secondary"
-    onclick="showLogin()">
-
-← Back to Login
-
-</button>
-
-</div>
-
-
-<div class="back">
-
-<a href="index.html">
-
-← Back to Main Login
-
-</a>
-
-</div>
-
-
-</div>
 
 
 <script>
 
 
-const loginForm=
-    document.getElementById(
-        "loginForm"
-    );
+// ========================================
+// LOAD STAFF BRANDING
+// ========================================
+
+async function loadBranding() {
+
+    const email =
+        document
+            .getElementById("loginEmail")
+            .value
+            .trim();
 
 
-const loginBtn=
-    document.getElementById(
-        "loginBtn"
-    );
+    const mobile =
+        document
+            .getElementById("loginMobile")
+            .value
+            .trim();
 
 
-/* BRANDING */
+    if (!email || !mobile) {
 
-async function loadStudentBranding(){
-
-    const mobile=
-        document.getElementById(
-            "loginMobile"
-        ).value.trim();
-
-    if(!mobile)
         return;
 
-
-    try{
-
-        const {data,error}=
-        await supabaseClient.rpc(
-            "get_student_branding",
-            {
-
-                p_mobile:mobile
-
-            }
-        );
+    }
 
 
-        if(error){
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "get_staff_branding",
+                {
+                    p_email: email,
+                    p_mobile: mobile
+                }
+            );
+
+
+        if (error) {
 
             console.log(error);
 
             return;
+
         }
 
 
-        if(data){
+        if (data && data.success) {
 
-            document.getElementById(
-                "academyName"
-            ).textContent=
-                data.class_name ||
-                "Music Academy";
+            document
+                .getElementById("academyName")
+                .textContent =
+                    data.class_name ||
+                    "Music Academy";
 
 
-            if(data.logo_url){
+            document
+                .getElementById("requestAcademyName")
+                .textContent =
+                    data.class_name ||
+                    "Music Academy";
 
-                document.getElementById(
-                    "academyLogo"
-                ).innerHTML=
-                `<img src="${data.logo_url}"
-                      alt="Academy Logo">`;
+
+            if (data.logo_url) {
+
+                document
+                    .getElementById("logoBox")
+                    .innerHTML =
+                    `<img src="${data.logo_url}" alt="Logo">`;
+
             }
+
         }
-
-    }catch(err){
-
-        console.log(err);
 
     }
-}
+    catch (error) {
 
+        console.log(error);
 
-document.getElementById(
-    "loginMobile"
-).addEventListener(
-    "blur",
-    loadStudentBranding
-);
-
-
-/* SECTIONS */
-
-function hideSections(){
-
-    document.querySelectorAll(
-        ".section"
-    ).forEach(el=>{
-
-        el.classList.remove("active");
-
-    });
-}
-
-
-function showLogin(){
-
-    hideSections();
-
-    document.getElementById(
-        "loginSection"
-    ).classList.add("active");
-}
-
-
-function showCreatePin(){
-
-    hideSections();
-
-    document.getElementById(
-        "createPinSection"
-    ).classList.add("active");
+    }
 
 }
 
 
-function showForgotPin(){
-
-    hideSections();
-
-    document.getElementById(
-        "forgotPinSection"
-    ).classList.add("active");
-
-}
+document
+    .getElementById("loginEmail")
+    .addEventListener(
+        "blur",
+        loadBranding
+    );
 
 
-/* MESSAGE */
-
-function showMessage(
-    id,
-    text,
-    type
-){
-
-    const el=
-        document.getElementById(id);
-
-    el.textContent=text;
-
-    el.className=
-        "message "+type;
-}
+document
+    .getElementById("loginMobile")
+    .addEventListener(
+        "blur",
+        loadBranding
+    );
 
 
-/* LOGIN */
 
-loginForm.addEventListener(
-"submit",
-async function(e){
+// ========================================
+// STAFF LOGIN
+// ========================================
 
-    e.preventDefault();
-
-
-    const mobile=
-        document.getElementById(
-            "loginMobile"
-        ).value.trim();
+async function staffLogin() {
 
 
-    const pin=
-        document.getElementById(
-            "loginPin"
-        ).value.trim();
+    const name =
+        document
+            .getElementById("loginName")
+            .value
+            .trim();
 
 
-    if(
-        !mobile ||
-        !pin
-    ){
+    const email =
+        document
+            .getElementById("loginEmail")
+            .value
+            .trim();
+
+
+    const mobile =
+        document
+            .getElementById("loginMobile")
+            .value
+            .trim();
+
+
+    if (!name || !email || !mobile) {
 
         showMessage(
             "loginMessage",
-            "Please enter Mobile Number and PIN.",
+            "Please fill all login details.",
             "error"
         );
 
         return;
+
     }
 
 
-    if(!/^\d{4}$/.test(pin)){
-
-        alert(
-            "PIN must be exactly 4 digits."
-        );
-
-        return;
-    }
+    const button =
+        document
+            .getElementById("loginButton");
 
 
-    loginBtn.disabled=true;
+    button.disabled = true;
 
-    loginBtn.textContent=
-        "Checking...";
-
-
-    try{
-
-        const {data,error}=
-        await supabaseClient.rpc(
-            "verify_student_login",
-            {
-
-                p_mobile:mobile,
-
-                p_pin:pin
-
-            }
-        );
+    button.textContent =
+        "LOGGING IN...";
 
 
-        if(error)
-            throw error;
+    try {
 
-
-        if(
-            !data ||
-            data.success!==true
-        ){
-
-            alert(
-                data?.message ||
-                "Login failed."
+        const { data, error } =
+            await supabaseClient.rpc(
+                "verify_staff_login",
+                {
+                    p_name: name,
+                    p_email: email,
+                    p_mobile: mobile
+                }
             );
 
-            loginBtn.disabled=false;
 
-            loginBtn.textContent=
-                "Login";
+        if (error) {
 
-            return;
+            throw error;
+
         }
 
 
-        /* SESSION */
-
-        const student=
-            data.student;
-
-
-        const {
-            data:sessionData,
-            error:sessionError
-        }=
-        await supabaseClient.rpc(
-            "create_student_session",
-            {
-
-                p_student_id:
-                    student.id
-
-            }
-        );
-
-
-        if(sessionError)
-            throw sessionError;
-
-
-        if(
-            !sessionData ||
-            !sessionData.success
-        ){
-
-            throw new Error(
-                sessionData?.message ||
-                "Student session could not be created."
-            );
-        }
-
-
-        localStorage.setItem(
-            "studentLogin",
-            "true"
-        );
-
-
-        localStorage.setItem(
-            "studentSessionToken",
-            sessionData.token
-        );
-
-
-        localStorage.setItem(
-            "studentData",
-            JSON.stringify(student)
-        );
-
-
-        window.location.href=
-            "student-dashboard.html";
-
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-            error.message ||
-            "Login failed."
-        );
-
-        loginBtn.disabled=false;
-
-        loginBtn.textContent=
-            "Login";
-    }
-
-});
-
-
-/* CREATE PIN */
-
-async function createPin(){
-
-    const mobile=
-        document.getElementById(
-            "createMobile"
-        ).value.trim();
-
-
-    const pin=
-        document.getElementById(
-            "createPin"
-        ).value.trim();
-
-
-    const confirmPin=
-        document.getElementById(
-            "confirmCreatePin"
-        ).value.trim();
-
-
-    if(
-        !mobile ||
-        !pin ||
-        !confirmPin
-    ){
-
-        showMessage(
-            "createMessage",
-            "Please fill all fields.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    if(!/^\d{4}$/.test(pin)){
-
-        showMessage(
-            "createMessage",
-            "PIN must be exactly 4 digits.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    if(pin!==confirmPin){
-
-        showMessage(
-            "createMessage",
-            "PINs do not match.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    try{
-
-        const {data,error}=
-        await supabaseClient.rpc(
-            "create_student_pin",
-            {
-
-                p_mobile:mobile,
-
-                p_pin:pin
-
-            }
-        );
-
-
-        if(error)
-            throw error;
-
-
-        if(
-            !data ||
-            data.success!==true
-        ){
+        if (!data || data.success === false) {
 
             showMessage(
-                "createMessage",
+                "loginMessage",
                 data?.message ||
-                "PIN could not be created.",
+                "Staff access is not approved.",
                 "error"
             );
 
+
+            button.disabled = false;
+
+            button.textContent =
+                "STAFF LOGIN";
+
             return;
+
         }
 
 
+        localStorage.setItem(
+            "staffLogin",
+            JSON.stringify({
+
+                id:
+                    data.id,
+
+                owner_id:
+                    data.owner_id,
+
+                name:
+                    data.name,
+
+                email:
+                    data.email,
+
+                mobile:
+                    data.mobile
+
+            })
+        );
+
+
         showMessage(
-            "createMessage",
-            "PIN created successfully. Please login.",
+            "loginMessage",
+            "Login successful.",
             "success"
         );
 
 
-        document.getElementById(
-            "loginMobile"
-        ).value=mobile;
+        setTimeout(
+            function () {
+
+                window.location.href =
+                    "staff-dashboard.html";
+
+            },
+            500
+        );
 
 
-        setTimeout(()=>{
-
-            showLogin();
-
-        },1500);
-
-
-    }catch(error){
+    }
+    catch (error) {
 
         console.error(error);
 
+
         showMessage(
-            "createMessage",
+            "loginMessage",
             error.message ||
-            "PIN creation failed.",
+            "Staff login failed.",
             "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "STAFF LOGIN";
+
     }
+
 }
 
 
-/* FORGOT PIN */
 
-async function resetPin(){
+// ========================================
+// SHOW REQUEST FORM
+// ========================================
 
-    const mobile=
-        document.getElementById(
-            "forgotMobile"
-        ).value.trim();
+function showRequest() {
 
-
-    const joiningDate=
-        document.getElementById(
-            "forgotJoiningDate"
-        ).value;
+    document
+        .getElementById("loginCard")
+        .style.display =
+        "none";
 
 
-    const newPin=
-        document.getElementById(
-            "forgotNewPin"
-        ).value.trim();
+    document
+        .getElementById("requestCard")
+        .style.display =
+        "block";
+
+}
 
 
-    const confirmPin=
-        document.getElementById(
-            "forgotConfirmPin"
-        ).value.trim();
+
+// ========================================
+// SHOW LOGIN
+// ========================================
+
+function showLogin() {
+
+    document
+        .getElementById("requestCard")
+        .style.display =
+        "none";
 
 
-    if(
-        !mobile ||
-        !joiningDate ||
-        !newPin ||
-        !confirmPin
-    ){
+    document
+        .getElementById("loginCard")
+        .style.display =
+        "block";
+
+}
+
+
+
+// ========================================
+// SEND ACCESS REQUEST
+// ========================================
+
+async function sendAccessRequest() {
+
+
+    const name =
+        document
+            .getElementById("requestName")
+            .value
+            .trim();
+
+
+    const email =
+        document
+            .getElementById("requestEmail")
+            .value
+            .trim();
+
+
+    const mobile =
+        document
+            .getElementById("requestMobile")
+            .value
+            .trim();
+
+
+    if (!name || !email || !mobile) {
 
         showMessage(
-            "forgotMessage",
-            "Please fill all fields.",
+            "requestMessage",
+            "Please fill all details.",
             "error"
         );
 
         return;
+
     }
 
 
-    if(!/^\d{4}$/.test(newPin)){
-
-        showMessage(
-            "forgotMessage",
-            "PIN must be exactly 4 digits.",
-            "error"
-        );
-
-        return;
-    }
+    const button =
+        document
+            .getElementById("requestButton");
 
 
-    if(newPin!==confirmPin){
+    button.disabled = true;
 
-        showMessage(
-            "forgotMessage",
-            "PINs do not match.",
-            "error"
-        );
-
-        return;
-    }
+    button.textContent =
+        "SENDING...";
 
 
-    try{
+    try {
 
-        const {data,error}=
-        await supabaseClient.rpc(
-            "reset_student_pin",
-            {
-
-                p_mobile:mobile,
-
-                p_joining_date:
-                    joiningDate,
-
-                p_new_pin:
-                    newPin
-
-            }
-        );
+        const { data, error } =
+            await supabaseClient.rpc(
+                "create_staff_access_request",
+                {
+                    p_name: name,
+                    p_email: email,
+                    p_mobile: mobile
+                }
+            );
 
 
-        if(error)
+        if (error) {
+
             throw error;
 
+        }
 
-        if(
-            !data ||
-            data.success!==true
-        ){
+
+        if (!data || data.success === false) {
 
             showMessage(
-                "forgotMessage",
+                "requestMessage",
                 data?.message ||
-                "PIN could not be reset.",
+                "Request failed.",
                 "error"
             );
 
+
+            button.disabled = false;
+
+            button.textContent =
+                "SEND REQUEST";
+
             return;
+
         }
 
 
         showMessage(
-            "forgotMessage",
-            "PIN changed successfully. Please login.",
+            "requestMessage",
+            "Staff access request sent successfully.",
             "success"
         );
 
 
-        document.getElementById(
-            "loginMobile"
-        ).value=mobile;
+        document
+            .getElementById("requestName")
+            .value = "";
 
 
-        setTimeout(()=>{
-
-            showLogin();
-
-        },1500);
+        document
+            .getElementById("requestEmail")
+            .value = "";
 
 
-    }catch(error){
+        document
+            .getElementById("requestMobile")
+            .value = "";
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "SEND REQUEST";
+
+
+    }
+    catch (error) {
 
         console.error(error);
 
+
         showMessage(
-            "forgotMessage",
+            "requestMessage",
             error.message ||
-            "PIN reset failed.",
+            "Request failed.",
             "error"
         );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "SEND REQUEST";
+
     }
+
 }
 
+
+
+// ========================================
+// MESSAGE
+// ========================================
+
+function showMessage(
+    id,
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        "message " + type;
+
+
+    element.style.display =
+        "block";
+
+}
+
+
+
+// ========================================
+// BACK TO MAIN PAGE
+// ========================================
+
+function goBack() {
+
+    window.location.href =
+        "index.html";
+
+}
 
 </script>
+
 
 </body>
 
