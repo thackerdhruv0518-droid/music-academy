@@ -189,6 +189,16 @@
             color: white;
         }
 
+        .edit-payment-btn {
+            background: #29245f;
+            color: white;
+        }
+
+        .delete-payment-btn {
+            background: #d32f2f;
+            color: white;
+        }
+
         .btn:hover {
             opacity: .85;
         }
@@ -257,6 +267,13 @@
 
         .history-item strong {
             color: #29245f;
+        }
+
+        .history-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .empty,
@@ -628,12 +645,124 @@
 
 
 
+<!-- ================= EDIT PAYMENT MODAL ================= -->
+
+<div
+    id="editPaymentModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <h2>
+            Edit Payment
+        </h2>
+
+        <p
+            id="editPaymentStudent"
+            class="student-name">
+        </p>
+
+
+        <label>
+            Payment Amount
+        </label>
+
+        <input
+            id="editPaymentAmount"
+            type="number"
+            min="1"
+            placeholder="Enter amount">
+
+
+        <br><br>
+
+
+        <label>
+            Payment Date
+        </label>
+
+        <input
+            id="editPaymentDate"
+            type="date">
+
+
+        <br><br>
+
+
+        <label>
+            Payment Mode
+        </label>
+
+        <select id="editPaymentMode">
+
+            <option value="">
+                Select Payment Mode
+            </option>
+
+            <option value="Cash">
+                Cash
+            </option>
+
+            <option value="UPI">
+                UPI
+            </option>
+
+            <option value="Bank Transfer">
+                Bank Transfer
+            </option>
+
+            <option value="Card">
+                Card
+            </option>
+
+            <option value="Cheque">
+                Cheque
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel"
+                onclick="closeEditPayment()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="save"
+                onclick="saveEditedPayment()">
+
+                Update Payment
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
 <script>
 
 
 let allStudents = [];
 
 let selectedStudent = null;
+
+let selectedPayment = null;
+
+let selectedHistoryStudent = null;
 
 let user = null;
 
@@ -1044,11 +1173,6 @@ async function loadStudents() {
                                 student.batch ||
                                 "",
 
-                            /*
-                             IMPORTANT:
-                             Actual student fee column
-                             */
-
                             monthly_fee:
                                 Number(
                                     student.fees_amount ||
@@ -1264,7 +1388,14 @@ async function loadFeeRecords() {
                     "staff_get_fees",
                     {
                         p_staff_id:
-                            staffInfo.id
+                            staffInfo.id,
+
+                        p_month:
+                            new Date().getMonth() + 1,
+
+                        p_year:
+                            new Date().getFullYear()
+
                     }
                 );
 
@@ -1273,10 +1404,27 @@ async function loadFeeRecords() {
                 throw error;
 
 
-            fees =
-                Array.isArray(data)
-                    ? data
+            if (
+                data &&
+                data.success === true
+            ) {
+
+                fees =
+                    Array.isArray(
+                        data.fees
+                    )
+                    ? data.fees
                     : [];
+
+            }
+            else {
+
+                fees =
+                    Array.isArray(data)
+                        ? data
+                        : [];
+
+            }
 
         }
 
@@ -1295,14 +1443,15 @@ async function loadFeeRecords() {
 
                 const studentId =
                     String(
-                        fee.student_id
+                        fee.student_id ||
+                        fee.studentId ||
+                        ""
                     );
 
 
-                /*
-                 If multiple fee records exist,
-                 keep the latest one.
-                 */
+                if (!studentId)
+                    return;
+
 
                 if (
                     !feeMap[studentId]
@@ -1315,6 +1464,7 @@ async function loadFeeRecords() {
 
             }
         );
+
 
 
         // =================================================
@@ -1330,163 +1480,163 @@ async function loadFeeRecords() {
                 );
 
 
-            const {
-                data:
-                    payments,
-                error:
-                    paymentError
-            } =
-                await supabaseClient
-                    .from("fee_payments")
-                    .select(
-                        "fee_id, student_id, amount"
-                    )
-                    .in(
-                        "student_id",
-                        studentIds
-                    );
+            if (studentIds.length) {
 
-
-            if (paymentError)
-                throw paymentError;
-
-
-            console.log(
-                "ACTUAL PAYMENTS:",
-                payments
-            );
-
-
-            const paymentTotals = {};
-
-
-            (payments || []).forEach(
-                payment => {
-
-                    const studentId =
-                        String(
-                            payment.student_id
+                const {
+                    data:
+                        payments,
+                    error:
+                        paymentError
+                } =
+                    await supabaseClient
+                        .from("fee_payments")
+                        .select(
+                            "fee_id, student_id, amount"
+                        )
+                        .in(
+                            "student_id",
+                            studentIds
                         );
 
 
-                    if (
-                        !paymentTotals[
-                            studentId
-                        ]
-                    ) {
+                if (paymentError)
+                    throw paymentError;
+
+
+                console.log(
+                    "ACTUAL PAYMENTS:",
+                    payments
+                );
+
+
+                const paymentTotals = {};
+
+
+                (payments || []).forEach(
+                    payment => {
+
+                        const studentId =
+                            String(
+                                payment.student_id
+                            );
+
+
+                        if (
+                            !paymentTotals[
+                                studentId
+                            ]
+                        ) {
+
+                            paymentTotals[
+                                studentId
+                            ] = 0;
+
+                        }
+
 
                         paymentTotals[
                             studentId
-                        ] = 0;
-
-                    }
-
-
-                    paymentTotals[
-                        studentId
-                    ] +=
-                        Number(
-                            payment.amount || 0
-                        );
-
-                }
-            );
-
-
-            allStudents =
-                allStudents.map(
-                    student => {
-
-                        const fee =
-                            feeMap[
-                                String(
-                                    student.id
-                                )
-                            ];
-
-
-                        const actualPaid =
+                        ] +=
                             Number(
-                                paymentTotals[
-                                    String(
-                                        student.id
-                                    )
-                                ] || 0
+                                payment.amount || 0
                             );
-
-
-                        let monthlyFee =
-                            Number(
-                                student.monthly_fee ||
-                                0
-                            );
-
-
-                        /*
-                         If fee record exists and has amount,
-                         use it only if student fee is empty.
-                         */
-
-                        if (
-                            monthlyFee <= 0 &&
-                            fee
-                        ) {
-
-                            monthlyFee =
-                                Number(
-                                    fee.amount || 0
-                                );
-
-                        }
-
-
-                        let status =
-                            "unpaid";
-
-
-                        if (
-                            monthlyFee > 0 &&
-                            actualPaid >= monthlyFee
-                        ) {
-
-                            status =
-                                "paid";
-
-                        }
-                        else if (
-                            actualPaid > 0
-                        ) {
-
-                            status =
-                                "partial";
-
-                        }
-
-
-                        return {
-
-                            ...student,
-
-                            fee_id:
-                                fee
-                                    ? fee.id
-                                    : null,
-
-                            monthly_fee:
-                                monthlyFee,
-
-                            paid_amount:
-                                actualPaid,
-
-                            status:
-                                status
-
-                        };
 
                     }
                 );
 
+
+                allStudents =
+                    allStudents.map(
+                        student => {
+
+                            const fee =
+                                feeMap[
+                                    String(
+                                        student.id
+                                    )
+                                ];
+
+
+                            const actualPaid =
+                                Number(
+                                    paymentTotals[
+                                        String(
+                                            student.id
+                                        )
+                                    ] || 0
+                                );
+
+
+                            let monthlyFee =
+                                Number(
+                                    student.monthly_fee ||
+                                    0
+                                );
+
+
+                            if (
+                                monthlyFee <= 0 &&
+                                fee
+                            ) {
+
+                                monthlyFee =
+                                    Number(
+                                        fee.amount || 0
+                                    );
+
+                            }
+
+
+                            let status =
+                                "unpaid";
+
+
+                            if (
+                                monthlyFee > 0 &&
+                                actualPaid >= monthlyFee
+                            ) {
+
+                                status =
+                                    "paid";
+
+                            }
+                            else if (
+                                actualPaid > 0
+                            ) {
+
+                                status =
+                                    "partial";
+
+                            }
+
+
+                            return {
+
+                                ...student,
+
+                                fee_id:
+                                    fee
+                                        ? fee.id
+                                        : null,
+
+                                monthly_fee:
+                                    monthlyFee,
+
+                                paid_amount:
+                                    actualPaid,
+
+                                status:
+                                    status
+
+                            };
+
+                        }
+                    );
+
+            }
+
         }
+
 
 
         // =================================================
@@ -1521,7 +1671,10 @@ async function loadFeeRecords() {
 
                             monthlyFee =
                                 Number(
-                                    fee.amount || 0
+                                    fee.amount ||
+                                    fee.monthly_amount ||
+                                    fee.fees_amount ||
+                                    0
                                 );
 
                         }
@@ -1529,7 +1682,8 @@ async function loadFeeRecords() {
 
                         const paid =
                             Number(
-                                fee?.paid_amount ||
+                                fee?.paid_amount ??
+                                fee?.received_amount ??
                                 0
                             );
 
@@ -1799,10 +1953,6 @@ function renderTable() {
                     0
                 );
 
-
-            /*
-             IMPORTANT STATUS FIX
-             */
 
             let status =
                 "unpaid";
@@ -2293,11 +2443,6 @@ async function savePayment() {
         closePayment();
 
 
-        /*
-         IMPORTANT:
-         Reload everything fresh.
-         */
-
         await loadStudents();
 
     }
@@ -2354,6 +2499,10 @@ async function openHistory(
     }
 
 
+    selectedHistoryStudent =
+        student;
+
+
     document.getElementById(
         "historyStudent"
     ).textContent =
@@ -2373,9 +2522,6 @@ async function openHistory(
 
 
     try {
-
-        let payments = [];
-
 
         const {
             data,
@@ -2403,7 +2549,7 @@ async function openHistory(
             throw error;
 
 
-        payments =
+        const payments =
             data || [];
 
 
@@ -2516,6 +2662,28 @@ function renderHistory(
                         "Other"
                     )}
                 </strong>
+
+
+                <div class="history-actions">
+
+                    <button
+                        class="btn edit-payment-btn"
+                        onclick="openEditPayment('${payment.id}')">
+
+                        ✏️ Edit
+
+                    </button>
+
+
+                    <button
+                        class="btn delete-payment-btn"
+                        onclick="deletePayment('${payment.id}')">
+
+                        🗑️ Delete
+
+                    </button>
+
+                </div>
                 `;
 
 
@@ -2531,6 +2699,524 @@ function renderHistory(
 
 
 // =====================================================
+// OPEN EDIT PAYMENT
+// =====================================================
+
+async function openEditPayment(
+    paymentId
+) {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "fee_payments"
+                )
+                .select("*")
+                .eq(
+                    "id",
+                    paymentId
+                )
+                .single();
+
+
+        if (error)
+            throw error;
+
+
+        if (!data) {
+
+            alert(
+                "Payment not found."
+            );
+
+            return;
+
+        }
+
+
+        selectedPayment =
+            data;
+
+
+        document.getElementById(
+            "editPaymentStudent"
+        ).textContent =
+            selectedHistoryStudent
+                ? selectedHistoryStudent.full_name
+                : "";
+
+
+        document.getElementById(
+            "editPaymentAmount"
+        ).value =
+            Number(
+                data.amount || 0
+            );
+
+
+        document.getElementById(
+            "editPaymentDate"
+        ).value =
+            paymentDateInput(
+                data.payment_date
+            );
+
+
+        document.getElementById(
+            "editPaymentMode"
+        ).value =
+            data.payment_mode ||
+            "Other";
+
+
+        document.getElementById(
+            "editPaymentModal"
+        ).style.display =
+            "flex";
+
+    }
+    catch (error) {
+
+        console.error(
+            "Edit Payment Load Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to load payment."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// PAYMENT DATE INPUT
+// =====================================================
+
+function paymentDateInput(
+    value
+) {
+
+    if (!value)
+        return todayInput();
+
+
+    const d =
+        new Date(value);
+
+
+    if (
+        isNaN(
+            d.getTime()
+        )
+    ) {
+
+        return todayInput();
+
+    }
+
+
+    const year =
+        d.getFullYear();
+
+
+    const month =
+        String(
+            d.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+}
+
+
+
+// =====================================================
+// CLOSE EDIT PAYMENT
+// =====================================================
+
+function closeEditPayment() {
+
+    document.getElementById(
+        "editPaymentModal"
+    ).style.display =
+        "none";
+
+
+    selectedPayment =
+        null;
+
+}
+
+
+
+// =====================================================
+// SAVE EDITED PAYMENT
+// =====================================================
+
+async function saveEditedPayment() {
+
+    if (!selectedPayment) {
+
+        alert(
+            "Payment not selected."
+        );
+
+        return;
+
+    }
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "editPaymentAmount"
+            ).value
+        );
+
+
+    const date =
+        document.getElementById(
+            "editPaymentDate"
+        ).value;
+
+
+    const mode =
+        document.getElementById(
+            "editPaymentMode"
+        ).value;
+
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Please enter valid payment amount."
+        );
+
+        return;
+
+    }
+
+
+    if (!date) {
+
+        alert(
+            "Please select payment date."
+        );
+
+        return;
+
+    }
+
+
+    if (!mode) {
+
+        alert(
+            "Please select payment mode."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        // =================================================
+        // OWNER
+        // =================================================
+
+        if (
+            currentMode ===
+            "owner"
+        ) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "fee_payments"
+                    )
+                    .update({
+
+                        amount:
+                            amount,
+
+                        payment_date:
+                            date +
+                            "T12:00:00",
+
+                        payment_mode:
+                            mode
+
+                    })
+                    .eq(
+                        "id",
+                        selectedPayment.id
+                    )
+                    .eq(
+                        "owner_id",
+                        user.id
+                    );
+
+
+            if (error)
+                throw error;
+
+        }
+
+
+        // =================================================
+        // STAFF
+        // =================================================
+
+        else {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "staff_edit_fee_payment",
+                    {
+
+                        p_staff_id:
+                            staffInfo.id,
+
+                        p_payment_id:
+                            selectedPayment.id,
+
+                        p_amount:
+                            amount,
+
+                        p_payment_date:
+                            date +
+                            "T12:00:00",
+
+                        p_payment_mode:
+                            mode
+
+                    }
+                );
+
+
+            if (error)
+                throw error;
+
+
+            if (
+                data &&
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Payment update failed."
+                );
+
+            }
+
+        }
+
+
+        alert(
+            "Payment updated successfully!"
+        );
+
+
+        closeEditPayment();
+
+
+        closeHistory();
+
+
+        await loadStudents();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Update Payment Error:",
+            error
+        );
+
+
+        alert(
+            "Payment update failed:\n\n" +
+            (
+                error.message ||
+                error
+            )
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// DELETE PAYMENT
+// =====================================================
+
+async function deletePayment(
+    paymentId
+) {
+
+    const ok =
+        confirm(
+            "Are you sure you want to delete this payment?"
+        );
+
+
+    if (!ok)
+        return;
+
+
+    try {
+
+        // =================================================
+        // OWNER
+        // =================================================
+
+        if (
+            currentMode ===
+            "owner"
+        ) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "fee_payments"
+                    )
+                    .delete()
+                    .eq(
+                        "id",
+                        paymentId
+                    )
+                    .eq(
+                        "owner_id",
+                        user.id
+                    );
+
+
+            if (error)
+                throw error;
+
+        }
+
+
+        // =================================================
+        // STAFF
+        // =================================================
+
+        else {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "staff_delete_fee_payment",
+                    {
+
+                        p_staff_id:
+                            staffInfo.id,
+
+                        p_payment_id:
+                            paymentId
+
+                    }
+                );
+
+
+            if (error)
+                throw error;
+
+
+            if (
+                data &&
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Payment delete failed."
+                );
+
+            }
+
+        }
+
+
+        alert(
+            "Payment deleted successfully!"
+        );
+
+
+        closeHistory();
+
+
+        await loadStudents();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Delete Payment Error:",
+            error
+        );
+
+
+        alert(
+            "Payment delete failed:\n\n" +
+            (
+                error.message ||
+                error
+            )
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
 // CLOSE HISTORY
 // =====================================================
 
@@ -2540,6 +3226,10 @@ function closeHistory() {
         "historyModal"
     ).style.display =
         "none";
+
+
+    selectedHistoryStudent =
+        null;
 
 }
 
@@ -2738,7 +3428,7 @@ function escapeHtml(
 
 
 // =====================================================
-// CLOSE MODAL OUTSIDE CLICK
+// CLOSE MODALS OUTSIDE CLICK
 // =====================================================
 
 window.addEventListener(
@@ -2754,6 +3444,12 @@ window.addEventListener(
         const historyModal =
             document.getElementById(
                 "historyModal"
+            );
+
+
+        const editPaymentModal =
+            document.getElementById(
+                "editPaymentModal"
             );
 
 
@@ -2773,6 +3469,16 @@ window.addEventListener(
         ) {
 
             closeHistory();
+
+        }
+
+
+        if (
+            event.target ===
+            editPaymentModal
+        ) {
+
+            closeEditPayment();
 
         }
 
