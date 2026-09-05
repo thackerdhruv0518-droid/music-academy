@@ -31,7 +31,6 @@ body {
     color: white;
     min-height: 64px;
     padding: 10px 22px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -98,6 +97,8 @@ body {
     box-shadow: 0 8px 30px rgba(15, 23, 42, .10);
 }
 
+/* ================= HEADER ================= */
+
 .receipt-header {
     position: relative;
     min-height: 100px;
@@ -145,6 +146,8 @@ body {
     border-radius: 8px;
 }
 
+/* ================= TITLE ================= */
+
 .receipt-title {
     text-align: center;
     margin-top: 25px;
@@ -157,6 +160,8 @@ body {
     color: #172033;
 }
 
+/* ================= SECTIONS ================= */
+
 .section-title {
     margin-top: 22px;
     margin-bottom: 11px;
@@ -166,6 +171,8 @@ body {
 
     color: #172554;
 }
+
+/* ================= STUDENT ================= */
 
 .student-grid {
     display: grid;
@@ -192,6 +199,8 @@ body {
     font-weight: bold;
     color: #172033;
 }
+
+/* ================= PAYMENT ================= */
 
 .payment-box {
     border: 1px solid #dbe3ee;
@@ -249,6 +258,8 @@ body {
 .status-unpaid {
     color: #dc2626;
 }
+
+/* ================= FOOTER ================= */
 
 .footer {
     margin-top: 42px;
@@ -352,458 +363,317 @@ body {
     line-height: 1.6;
 }
 
-
 /* =====================================================
-   PDF ONE PAGE MODE
+   PDF MODE
 ===================================================== */
 
-.pdf-mode {
+body.pdf-generating {
+    background: white !important;
+}
 
-    width: 190mm !important;
+body.pdf-generating .page {
+    width: 794px !important;
+    max-width: 794px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
-    max-width: 190mm !important;
+body.pdf-generating #receipt {
+    width: 794px !important;
+    max-width: 794px !important;
 
-    min-height: 277mm !important;
+    min-height: 0 !important;
 
-    padding: 12mm 13mm !important;
+    padding: 25px 32px !important;
 
-    margin: 0 auto !important;
+    margin: 0 !important;
 
     border-radius: 0 !important;
 
     box-shadow: none !important;
 }
 
+/* PDF HEADER */
 
-/* Prevent page splitting */
-
-.pdf-mode .receipt-header,
-.pdf-mode .receipt-title,
-.pdf-mode .student-grid,
-.pdf-mode .info-box,
-.pdf-mode .payment-box,
-.pdf-mode .payment-row,
-.pdf-mode .footer,
-.pdf-mode .footer-content,
-.pdf-mode .signature-area {
-
-    break-inside: avoid !important;
-
-    page-break-inside: avoid !important;
-
-}
-
-
-/* PDF Header */
-
-.pdf-mode .receipt-header {
-
+body.pdf-generating .receipt-header {
     min-height: 78px !important;
 
-    padding: 5px 90px 12px 15px !important;
-
+    padding: 5px 90px 10px 15px !important;
 }
 
-.pdf-mode .academy-name h1 {
-
+body.pdf-generating .academy-name h1 {
     font-size: 24px !important;
-
 }
 
-.pdf-mode .owner-line {
-
+body.pdf-generating .owner-line {
     margin-top: 4px !important;
-
     font-size: 11px !important;
-
 }
 
-.pdf-mode .logo-area {
-
+body.pdf-generating .logo-area {
     width: 65px !important;
-
     height: 65px !important;
 
     right: 0 !important;
-
     top: 0 !important;
-
 }
 
-.pdf-mode .logo-area img {
-
+body.pdf-generating .logo-area img {
     width: 65px !important;
-
     height: 65px !important;
-
 }
 
+/* PDF TITLE */
 
-/* PDF Title */
-
-.pdf-mode .receipt-title {
-
-    margin-top: 12px !important;
-
-    margin-bottom: 12px !important;
-
+body.pdf-generating .receipt-title {
+    margin-top: 11px !important;
+    margin-bottom: 11px !important;
 }
 
-.pdf-mode .receipt-title h2 {
-
+body.pdf-generating .receipt-title h2 {
     font-size: 19px !important;
-
 }
 
+/* PDF SECTION */
 
-/* PDF Sections */
+body.pdf-generating .section-title {
+    margin-top: 9px !important;
+    margin-bottom: 5px !important;
+    font-size: 13px !important;
+}
 
-.pdf-mode .section-title {
+/* PDF STUDENT */
 
+body.pdf-generating .student-grid {
+    gap: 6px !important;
+}
+
+body.pdf-generating .info-box {
+    padding: 6px 9px !important;
+    min-height: 40px !important;
+    border-radius: 6px !important;
+}
+
+body.pdf-generating .label {
+    font-size: 8px !important;
+    margin-bottom: 2px !important;
+}
+
+body.pdf-generating .value {
+    font-size: 11px !important;
+}
+
+/* PDF PAYMENT */
+
+body.pdf-generating .payment-box {
+    margin-top: 2px !important;
+    border-radius: 7px !important;
+}
+
+body.pdf-generating .payment-row {
+    min-height: 34px !important;
+    padding: 5px 11px !important;
+}
+
+body.pdf-generating .payment-label {
+    font-size: 11px !important;
+}
+
+body.pdf-generating .payment-value {
+    font-size: 12px !important;
+}
+
+/* PDF FOOTER */
+
+body.pdf-generating .footer {
+    margin-top: 15px !important;
+    padding-top: 9px !important;
+}
+
+body.pdf-generating .thank-you {
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    padding: 0 4px !important;
+}
+
+body.pdf-generating .footer-content {
     margin-top: 10px !important;
 
-    margin-bottom: 6px !important;
-
-    font-size: 13px !important;
-
-}
-
-
-/* Student boxes */
-
-.pdf-mode .student-grid {
-
-    gap: 7px !important;
-
-}
-
-.pdf-mode .info-box {
-
-    padding: 7px 10px !important;
-
-    min-height: 42px !important;
-
-}
-
-.pdf-mode .label {
-
-    font-size: 9px !important;
-
-    margin-bottom: 3px !important;
-
-}
-
-.pdf-mode .value {
-
-    font-size: 12px !important;
-
-}
-
-
-/* Payment */
-
-.pdf-mode .payment-box {
-
-    margin-top: 2px !important;
-
-}
-
-.pdf-mode .payment-row {
-
-    min-height: 36px !important;
-
-    padding: 6px 12px !important;
-
-}
-
-.pdf-mode .payment-label {
-
-    font-size: 12px !important;
-
-}
-
-.pdf-mode .payment-value {
-
-    font-size: 13px !important;
-
-}
-
-
-/* Footer */
-
-.pdf-mode .footer {
-
-    margin-top: 17px !important;
-
-    padding-top: 11px !important;
-
-}
-
-.pdf-mode .thank-you {
-
-    font-size: 11px !important;
-
-    line-height: 1.35 !important;
-
-    padding: 0 5px !important;
-
-}
-
-.pdf-mode .footer-content {
-
-    margin-top: 13px !important;
-
-    min-height: 65px !important;
+    min-height: 58px !important;
 
     padding: 0 2px !important;
-
 }
 
-.pdf-mode .owner-details {
-
+body.pdf-generating .owner-details {
     width: 45% !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+}
 
+body.pdf-generating .owner-name {
     font-size: 11px !important;
-
-    line-height: 1.5 !important;
-
 }
 
-.pdf-mode .owner-name {
-
-    font-size: 12px !important;
-
+body.pdf-generating .owner-mobile {
+    font-size: 10px !important;
 }
 
-.pdf-mode .owner-mobile {
-
-    font-size: 11px !important;
-
+body.pdf-generating .signature-area {
+    width: 160px !important;
+    min-height: 55px !important;
 }
 
-.pdf-mode .signature-area {
-
-    width: 165px !important;
-
-    min-height: 62px !important;
-
+body.pdf-generating .signature-img {
+    width: 115px !important;
+    height: 42px !important;
+    margin: 0 auto 2px !important;
 }
 
-.pdf-mode .signature-img {
-
-    width: 125px !important;
-
-    height: 48px !important;
-
-    margin: 0 auto 3px !important;
-
+body.pdf-generating .signature-line {
+    width: 145px !important;
+    padding-top: 3px !important;
+    font-size: 10px !important;
 }
 
-.pdf-mode .signature-line {
+/* Prevent splitting */
 
-    width: 150px !important;
-
-    padding-top: 4px !important;
-
-    font-size: 11px !important;
-
+body.pdf-generating .receipt-header,
+body.pdf-generating .receipt-title,
+body.pdf-generating .student-grid,
+body.pdf-generating .info-box,
+body.pdf-generating .payment-box,
+body.pdf-generating .payment-row,
+body.pdf-generating .footer,
+body.pdf-generating .footer-content,
+body.pdf-generating .signature-area {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
 }
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
+/* ================= MOBILE ================= */
 
 @media(max-width: 600px) {
 
     .page {
-
         padding: 12px 8px 30px;
-
     }
 
     #receipt {
-
         padding: 25px 18px;
-
         border-radius: 10px;
-
     }
 
     .receipt-header {
-
         min-height: 88px;
-
         padding: 8px 75px 15px 8px;
-
     }
 
     .academy-name h1 {
-
         font-size: 21px;
-
     }
 
     .logo-area {
-
         width: 65px;
-
         height: 65px;
-
         right: 0;
-
     }
 
     .logo-area img {
-
         width: 65px;
-
         height: 65px;
-
     }
 
     .student-grid {
-
         grid-template-columns: 1fr;
-
     }
 
     .payment-row {
-
         min-height: 51px;
-
         padding: 10px 12px;
-
     }
 
     .payment-label {
-
         font-size: 13px;
-
     }
 
     .payment-value {
-
         font-size: 14px;
-
     }
 
     .footer {
-
         margin-top: 38px;
-
         padding-top: 20px;
-
     }
 
     .thank-you {
-
         font-size: 13px;
-
     }
 
     .footer-content {
-
         margin-top: 30px;
-
         min-height: 90px;
-
         padding: 0;
-
     }
 
     .owner-details {
-
         width: 45%;
-
         font-size: 12px;
-
     }
 
     .owner-name {
-
         font-size: 13px;
-
     }
 
     .signature-area {
-
         width: 155px;
-
         min-height: 80px;
-
     }
 
     .signature-img {
-
         width: 125px;
-
         height: 55px;
-
     }
 
     .signature-line {
-
         width: 140px;
-
         font-size: 12px;
-
     }
 
 }
 
-
-/* =====================================================
-   PRINT
-===================================================== */
+/* ================= PRINT ================= */
 
 @media print {
 
     @page {
-
         size: A4 portrait;
-
         margin: 5mm;
-
     }
 
     body {
-
         background: white;
-
     }
 
     .topbar,
     .actions {
-
         display: none !important;
-
     }
 
     .page {
-
         max-width: none;
-
         padding: 0;
-
     }
 
     #receipt {
-
         width: 190mm;
-
         max-width: 190mm;
-
-        min-height: 277mm;
 
         margin: 0 auto;
 
         box-shadow: none;
-
         border-radius: 0;
 
-        padding: 12mm 13mm;
-
+        padding: 10mm 12mm;
     }
 
     .receipt-header,
@@ -815,11 +685,8 @@ body {
     .footer,
     .footer-content,
     .signature-area {
-
         break-inside: avoid !important;
-
         page-break-inside: avoid !important;
-
     }
 
 }
@@ -907,23 +774,16 @@ body {
 
         <div class="receipt-header">
 
-
             <div class="academy-name">
 
-
                 <h1 id="academyName">
-
                     Music Academy
-
                 </h1>
-
 
                 <div
                     class="owner-line"
                     id="headerOwner">
-
                 </div>
-
 
             </div>
 
@@ -940,7 +800,6 @@ body {
 
             </div>
 
-
         </div>
 
 
@@ -956,9 +815,7 @@ body {
         <!-- STUDENT DETAILS -->
 
         <div class="section-title">
-
             Student Details
-
         </div>
 
 
@@ -968,17 +825,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Name
-
                 </div>
 
                 <div
                     class="value"
                     id="studentName">
-
                     -
-
                 </div>
 
             </div>
@@ -987,17 +840,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Number
-
                 </div>
 
                 <div
                     class="value"
                     id="studentNumber">
-
                     -
-
                 </div>
 
             </div>
@@ -1006,17 +855,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Instrument
-
                 </div>
 
                 <div
                     class="value"
                     id="instrument">
-
                     -
-
                 </div>
 
             </div>
@@ -1025,17 +870,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Batch
-
                 </div>
 
                 <div
                     class="value"
                     id="batch">
-
                     -
-
                 </div>
 
             </div>
@@ -1044,17 +885,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Fees Month & Year
-
                 </div>
 
                 <div
                     class="value"
                     id="feesMonthYear">
-
                     -
-
                 </div>
 
             </div>
@@ -1063,17 +900,13 @@ body {
             <div class="info-box">
 
                 <div class="label">
-
                     Payment Date
-
                 </div>
 
                 <div
                     class="value"
                     id="paymentDate">
-
                     -
-
                 </div>
 
             </div>
@@ -1085,9 +918,7 @@ body {
         <!-- PAYMENT -->
 
         <div class="section-title">
-
             Payment Details
-
         </div>
 
 
@@ -1097,17 +928,13 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
-
                     Total Fees
-
                 </span>
 
                 <span
                     class="payment-value"
                     id="totalFees">
-
                     ₹0.00
-
                 </span>
 
             </div>
@@ -1116,17 +943,13 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
-
                     Total Received
-
                 </span>
 
                 <span
                     class="payment-value received"
                     id="receivedAmount">
-
                     ₹0.00
-
                 </span>
 
             </div>
@@ -1135,17 +958,13 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
-
                     Balance
-
                 </span>
 
                 <span
                     class="payment-value balance"
                     id="balanceDue">
-
                     ₹0.00
-
                 </span>
 
             </div>
@@ -1154,17 +973,13 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
-
                     Status
-
                 </span>
 
                 <span
                     class="payment-value"
                     id="paymentStatus">
-
                     Unpaid
-
                 </span>
 
             </div>
@@ -1173,17 +988,13 @@ body {
             <div class="payment-row">
 
                 <span class="payment-label">
-
                     Payment Mode
-
                 </span>
 
                 <span
                     class="payment-value"
                     id="paymentMode">
-
                     -
-
                 </span>
 
             </div>
@@ -1212,24 +1023,17 @@ body {
 
                 <div class="owner-details">
 
-
                     <div
                         class="owner-name"
                         id="ownerName">
-
                         -
-
                     </div>
-
 
                     <div
                         class="owner-mobile"
                         id="ownerMobile">
-
                         -
-
                     </div>
-
 
                 </div>
 
@@ -1238,7 +1042,6 @@ body {
 
                 <div class="signature-area">
 
-
                     <img
                         id="signatureImage"
                         class="signature-img"
@@ -1246,13 +1049,9 @@ body {
                         src=""
                         alt="Signature">
 
-
                     <div class="signature-line">
-
                         Signature
-
                     </div>
-
 
                 </div>
 
@@ -1269,7 +1068,6 @@ body {
 
 
 <script>
-
 
 /* =====================================================
    URL PARAMETERS
@@ -1741,13 +1539,6 @@ async function loadStudentReceipt() {
         );
 
 
-    console.log(
-        "Student fee RPC:",
-        feeRpcData,
-        feeRpcError
-    );
-
-
     if (feeRpcError) {
 
         throw new Error(
@@ -1853,8 +1644,6 @@ async function loadStudentReceipt() {
     }
 
 
-    /* SORT */
-
     payments.sort(
         (
             a,
@@ -1885,8 +1674,6 @@ async function loadStudentReceipt() {
             : null;
 
 
-    /* TOTAL FEES */
-
     const totalFees =
         Number(
             student.fees_amount ??
@@ -1895,8 +1682,6 @@ async function loadStudentReceipt() {
             0
         );
 
-
-    /* TOTAL RECEIVED */
 
     const totalReceived =
         payments.reduce(
@@ -1915,8 +1700,6 @@ async function loadStudentReceipt() {
         );
 
 
-    /* BALANCE */
-
     const balance =
         Math.max(
             totalFees -
@@ -1924,8 +1707,6 @@ async function loadStudentReceipt() {
             0
         );
 
-
-    /* STATUS */
 
     let status =
         "Unpaid";
@@ -1950,8 +1731,6 @@ async function loadStudentReceipt() {
 
     }
 
-
-    /* MONTH YEAR */
 
     const dateSource =
         latestPayment?.payment_date ||
@@ -1992,8 +1771,6 @@ async function loadStudentReceipt() {
     }
 
 
-    /* SETTINGS */
-
     const settings =
         await loadStudentAcademySettings(
             student.owner_id
@@ -2003,7 +1780,6 @@ async function loadStudentReceipt() {
     return {
 
         success: true,
-
 
         student: {
 
@@ -2034,7 +1810,6 @@ async function loadStudentReceipt() {
 
         },
 
-
         academy: {
 
             class_name:
@@ -2058,7 +1833,6 @@ async function loadStudentReceipt() {
                 null
 
         },
-
 
         fee: {
 
@@ -2096,7 +1870,6 @@ async function loadStudentReceipt() {
                 "-"
 
         },
-
 
         payments:
             payments
@@ -2136,8 +1909,6 @@ async function loadOwnerReceipt() {
 
     }
 
-
-    /* STUDENT */
 
     const {
         data: studentList,
@@ -2182,8 +1953,6 @@ async function loadOwnerReceipt() {
     }
 
 
-    /* SETTINGS */
-
     const {
         data: settingsList
     } =
@@ -2202,8 +1971,6 @@ async function loadOwnerReceipt() {
             ? settingsList[0]
             : null;
 
-
-    /* FEE */
 
     const {
         data: feeData,
@@ -2244,8 +2011,6 @@ async function loadOwnerReceipt() {
             ? feeData[0]
             : null;
 
-
-    /* PAYMENTS */
 
     const {
         data: payments,
@@ -2516,8 +2281,6 @@ async function loadStaffReceipt() {
     }
 
 
-    /* STUDENTS */
-
     const {
         data: students,
         error: studentError
@@ -2566,8 +2329,6 @@ async function loadStaffReceipt() {
 
     }
 
-
-    /* FEES */
 
     const {
         data: staffFees,
@@ -2621,8 +2382,6 @@ async function loadStaffReceipt() {
                 String(urlStudentId)
         ) || null;
 
-
-    /* PAYMENT HISTORY */
 
     const {
         data: payments,
@@ -2720,8 +2479,6 @@ async function loadStaffReceipt() {
 
     }
 
-
-    /* SETTINGS */
 
     let settings = null;
 
@@ -2947,7 +2704,6 @@ async function loadReceipt() {
                 "Receipt mode: STAFF"
             );
 
-
             receiptData =
                 await loadStaffReceipt();
 
@@ -2962,7 +2718,6 @@ async function loadReceipt() {
                 "Receipt mode: STUDENT"
             );
 
-
             receiptData =
                 await loadStudentReceipt();
 
@@ -2973,7 +2728,6 @@ async function loadReceipt() {
             console.log(
                 "Receipt mode: OWNER"
             );
-
 
             receiptData =
                 await loadOwnerReceipt();
@@ -3295,7 +3049,9 @@ function renderReceipt() {
         "-";
 
 
-    /* OWNER NAME */
+    /* ===============================
+       OWNER NAME
+    =============================== */
 
     document.getElementById(
         "ownerName"
@@ -3304,7 +3060,9 @@ function renderReceipt() {
         "-";
 
 
-    /* OWNER MOBILE */
+    /* ===============================
+       OWNER MOBILE
+    =============================== */
 
     document.getElementById(
         "ownerMobile"
@@ -3313,7 +3071,9 @@ function renderReceipt() {
         "-";
 
 
-    /* SIGNATURE */
+    /* ===============================
+       SIGNATURE
+    =============================== */
 
     if (
         academy.signature_url
@@ -3380,7 +3140,80 @@ function showError(message) {
 
 
 /* =====================================================
-   DOWNLOAD PDF - ONE PAGE
+   WAIT FOR IMAGES
+===================================================== */
+
+async function waitForImages(container) {
+
+    const images =
+        container.querySelectorAll(
+            "img"
+        );
+
+
+    const promises =
+        Array.from(
+            images
+        ).map(
+            img => {
+
+                if (
+                    img.complete &&
+                    img.naturalWidth > 0
+                ) {
+
+                    return Promise.resolve();
+
+                }
+
+
+                return new Promise(
+                    resolve => {
+
+                        const done =
+                            () => resolve();
+
+
+                        img.addEventListener(
+                            "load",
+                            done,
+                            {
+                                once: true
+                            }
+                        );
+
+
+                        img.addEventListener(
+                            "error",
+                            done,
+                            {
+                                once: true
+                            }
+                        );
+
+
+                        setTimeout(
+                            resolve,
+                            3000
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    await Promise.all(
+        promises
+    );
+
+}
+
+
+/* =====================================================
+   DOWNLOAD PDF
+   FIXED ONE PAGE A4
 ===================================================== */
 
 async function downloadPDF() {
@@ -3448,104 +3281,67 @@ async function downloadPDF() {
         ".pdf";
 
 
-    /*
-     * Add PDF class
-     */
-
-    receipt.classList.add(
-        "pdf-mode"
-    );
-
-
-    /*
-     * Wait for images
-     */
-
-    const images =
-        receipt.querySelectorAll(
-            "img"
-        );
-
-
-    const imagePromises =
-        Array.from(
-            images
-        ).map(
-            img => {
-
-                if (
-                    img.complete
-                ) {
-
-                    return Promise.resolve();
-
-                }
-
-
-                return new Promise(
-                    resolve => {
-
-                        img.onload =
-                            resolve;
-
-                        img.onerror =
-                            resolve;
-
-                    }
-                );
-
-            }
-        );
-
-
     try {
 
-        await Promise.all(
-            imagePromises
+        /* ADD PDF MODE */
+
+        document.body.classList.add(
+            "pdf-generating"
         );
 
 
         /*
-         * Give browser time
-         * to render signature/logo.
+         * Wait for browser layout
+         */
+
+        await new Promise(
+            resolve =>
+                requestAnimationFrame(
+                    () =>
+                        requestAnimationFrame(
+                            resolve
+                        )
+                )
+        );
+
+
+        /*
+         * Wait for logo + signature
+         */
+
+        await waitForImages(
+            receipt
+        );
+
+
+        /*
+         * Small extra delay
          */
 
         await new Promise(
             resolve =>
                 setTimeout(
                     resolve,
-                    300
+                    200
                 )
         );
 
 
+        /*
+         * Generate PDF
+         */
+
         await html2pdf()
             .set({
 
-                /*
-                 * Small A4 margins
-                 */
+                margin: 0,
 
-                margin: [
-                    5,
-                    5,
-                    5,
-                    5
-                ],
-
-
-                filename:
-                    filename,
-
+                filename: filename,
 
                 image: {
-
                     type: "jpeg",
-
                     quality: 0.98
-
                 },
-
 
                 html2canvas: {
 
@@ -3558,12 +3354,15 @@ async function downloadPDF() {
                     backgroundColor:
                         "#ffffff",
 
+                    width: 794,
+
+                    windowWidth: 794,
+
                     scrollX: 0,
 
                     scrollY: 0
 
                 },
-
 
                 jsPDF: {
 
@@ -3574,11 +3373,9 @@ async function downloadPDF() {
                     orientation:
                         "portrait",
 
-                    compress:
-                        true
+                    compress: true
 
                 },
-
 
                 pagebreak: {
 
@@ -3593,7 +3390,6 @@ async function downloadPDF() {
             })
             .from(receipt)
             .save();
-
 
     }
     catch (error) {
@@ -3612,12 +3408,12 @@ async function downloadPDF() {
     finally {
 
         /*
-         * Remove PDF mode
-         * after generating.
+         * VERY IMPORTANT:
+         * remove PDF mode after save
          */
 
-        receipt.classList.remove(
-            "pdf-mode"
+        document.body.classList.remove(
+            "pdf-generating"
         );
 
     }
