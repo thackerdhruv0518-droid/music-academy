@@ -850,6 +850,7 @@ body {
 
 <script>
 
+
 /* =====================================================
    URL PARAMETERS
 ===================================================== */
@@ -879,6 +880,10 @@ let receiptData = null;
 
 function goBack() {
 
+    /*
+     * STAFF RECEIPT
+     */
+
     if (isStaff) {
 
         window.location.href =
@@ -888,8 +893,17 @@ function goBack() {
 
     }
 
+
+    /*
+     * STUDENT RECEIPT
+     *
+     * Student always goes back
+     * to Student My Fees.
+     */
+
     const studentLogin =
         getStudentLogin();
+
 
     if (studentLogin) {
 
@@ -899,6 +913,11 @@ function goBack() {
         return;
 
     }
+
+
+    /*
+     * OWNER RECEIPT
+     */
 
     window.location.href =
         "fees.html";
@@ -964,8 +983,10 @@ function formatDate(value) {
     if (!value)
         return "-";
 
+
     const date =
         new Date(value);
+
 
     if (
         isNaN(
@@ -976,6 +997,7 @@ function formatDate(value) {
         return "-";
 
     }
+
 
     return date.toLocaleDateString(
         "en-IN",
@@ -1002,8 +1024,10 @@ function getOwnerLogin() {
                 "ownerLogin"
             );
 
+
         if (!saved)
             return null;
+
 
         return JSON.parse(
             saved
@@ -1034,8 +1058,10 @@ function getStaffLogin() {
                 "staffLogin"
             );
 
+
         if (!saved)
             return null;
+
 
         return JSON.parse(
             saved
@@ -1061,22 +1087,54 @@ function getStudentLogin() {
 
     try {
 
-        const saved =
+        /*
+         * First check Remember Me
+         */
+
+        const localSaved =
             localStorage.getItem(
                 "studentLogin"
             );
 
-        if (!saved)
-            return null;
 
-        return JSON.parse(
-            saved
-        );
+        if (localSaved) {
+
+            return JSON.parse(
+                localSaved
+            );
+
+        }
+
+
+        /*
+         * Then check session login
+         * when Remember Me is OFF.
+         */
+
+        const sessionSaved =
+            sessionStorage.getItem(
+                "studentLogin"
+            );
+
+
+        if (sessionSaved) {
+
+            return JSON.parse(
+                sessionSaved
+            );
+
+        }
+
+
+        return null;
 
     }
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Student session error:",
+            error
+        );
 
         return null;
 
@@ -1093,6 +1151,7 @@ async function getStudentForLogin() {
 
     const login =
         getStudentLogin();
+
 
     if (!login) {
 
@@ -1111,25 +1170,27 @@ async function getStudentForLogin() {
 
 
     mobile =
-        String(mobile).trim();
+        String(
+            mobile
+        ).trim();
 
 
     let student = null;
 
 
     /*
+     * =============================================
      * FIRST TRY STUDENT ID
+     * =============================================
      */
 
-    if (
+    const loginId =
         login.student_id ||
-        login.id
-    ) {
+        login.id ||
+        "";
 
-        const id =
-            login.student_id ||
-            login.id;
 
+    if (loginId) {
 
         const {
             data,
@@ -1140,17 +1201,19 @@ async function getStudentForLogin() {
                 .select("*")
                 .eq(
                     "id",
-                    id
+                    loginId
                 )
-                .maybeSingle();
+                .limit(1);
 
 
         if (
             !error &&
-            data
+            Array.isArray(data) &&
+            data.length > 0
         ) {
 
-            student = data;
+            student =
+                data[0];
 
         }
 
@@ -1158,7 +1221,20 @@ async function getStudentForLogin() {
 
 
     /*
+     * =============================================
      * THEN MOBILE NUMBER
+     * =============================================
+     *
+     * IMPORTANT:
+     * Do NOT use maybeSingle().
+     *
+     * If same mobile exists more than once,
+     * maybeSingle() causes:
+     *
+     * "cannot coerce the result to a single
+     * JSON object"
+     *
+     * So we use limit(1).
      */
 
     if (
@@ -1177,15 +1253,17 @@ async function getStudentForLogin() {
                     "mobile_number",
                     mobile
                 )
-                .maybeSingle();
+                .limit(1);
 
 
         if (
             !error &&
-            data
+            Array.isArray(data) &&
+            data.length > 0
         ) {
 
-            student = data;
+            student =
+                data[0];
 
         }
 
@@ -1233,11 +1311,16 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * STUDENT FEE RPC
+     * =============================================
      */
 
+    let feeResponse = null;
+
+
     const {
-        data: feeResponse,
+        data: feeRpcData,
         error: feeRpcError
     } =
         await supabaseClient.rpc(
@@ -1259,6 +1342,17 @@ async function loadStudentReceipt() {
     }
 
 
+    feeResponse =
+        Array.isArray(
+            feeRpcData
+        )
+            ? (
+                feeRpcData[0] ||
+                null
+            )
+            : feeRpcData;
+
+
     if (
         !feeResponse ||
         feeResponse.success !== true
@@ -1273,11 +1367,13 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * PAYMENT HISTORY RPC
+     * =============================================
      */
 
     const {
-        data: historyResponse,
+        data: historyRpcData,
         error: historyError
     } =
         await supabaseClient.rpc(
@@ -1299,32 +1395,57 @@ async function loadStudentReceipt() {
     }
 
 
-    const payments =
+    const historyResponse =
+        Array.isArray(
+            historyRpcData
+        )
+            ? (
+                historyRpcData[0] ||
+                null
+            )
+            : historyRpcData;
+
+
+    let payments = [];
+
+
+    if (
         historyResponse &&
         historyResponse.success === true &&
         Array.isArray(
             historyResponse.payments
         )
-            ? historyResponse.payments
-            : [];
+    ) {
+
+        payments =
+            historyResponse.payments;
+
+    }
 
 
     /*
+     * =============================================
      * SORT NEWEST PAYMENT FIRST
+     * =============================================
      */
 
     payments.sort(
-        (a, b) => {
+        (
+            a,
+            b
+        ) => {
 
             const dateA =
                 new Date(
                     a.payment_date || 0
                 ).getTime();
 
+
             const dateB =
                 new Date(
                     b.payment_date || 0
                 ).getTime();
+
 
             return dateB - dateA;
 
@@ -1339,7 +1460,9 @@ async function loadStudentReceipt() {
 
 
     /*
-     * STUDENT DATA
+     * =============================================
+     * RPC STUDENT
+     * =============================================
      */
 
     const rpcStudent =
@@ -1348,7 +1471,9 @@ async function loadStudentReceipt() {
 
 
     /*
-     * FEE DATA
+     * =============================================
+     * RPC FEE
+     * =============================================
      */
 
     const rpcFee =
@@ -1357,7 +1482,9 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * MONTHLY FEES
+     * =============================================
      *
      * Student fees_amount is primary.
      */
@@ -1365,20 +1492,19 @@ async function loadStudentReceipt() {
     const monthlyAmount =
         Number(
             rpcStudent.fees_amount ??
-            rpcFee.monthly_amount ??
             rpcFee.amount ??
+            rpcFee.monthly_amount ??
+            student.fees_amount ??
             0
         );
 
 
     /*
+     * =============================================
      * TOTAL RECEIVED
+     * =============================================
      *
-     * IMPORTANT:
-     * Calculate from actual payment history.
-     *
-     * This means edit/delete payment
-     * will automatically reflect.
+     * Always calculate from payment history.
      */
 
     const totalReceived =
@@ -1399,7 +1525,9 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * BALANCE
+     * =============================================
      */
 
     const balance =
@@ -1411,7 +1539,9 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * STATUS
+     * =============================================
      */
 
     let status =
@@ -1439,17 +1569,20 @@ async function loadStudentReceipt() {
 
 
     /*
-     * DATE SOURCE
+     * =============================================
+     * DATE
+     * =============================================
      */
 
     const dateSource =
         latestPayment?.payment_date ||
-        rpcStudent.joining_date ||
+        student.joining_date ||
         null;
 
 
     let receiptMonth =
         "-";
+
 
     let receiptYear =
         "-";
@@ -1472,6 +1605,7 @@ async function loadStudentReceipt() {
             receiptMonth =
                 d.getMonth() + 1;
 
+
             receiptYear =
                 d.getFullYear();
 
@@ -1481,12 +1615,9 @@ async function loadStudentReceipt() {
 
 
     /*
+     * =============================================
      * ACADEMY SETTINGS
-     *
-     * We do NOT directly read academy_settings
-     * because Student Login may be blocked by RLS.
-     *
-     * We try owner_id only if available.
+     * =============================================
      */
 
     let settings = null;
@@ -1495,7 +1626,8 @@ async function loadStudentReceipt() {
     if (rpcStudent.owner_id) {
 
         const {
-            data
+            data,
+            error
         } =
             await supabaseClient
                 .from("academy_settings")
@@ -1504,17 +1636,23 @@ async function loadStudentReceipt() {
                     "owner_id",
                     rpcStudent.owner_id
                 )
-                .maybeSingle();
+                .limit(1);
 
 
-        settings =
-            data || null;
+        if (!error && data?.length) {
+
+            settings =
+                data[0];
+
+        }
 
     }
 
 
     /*
-     * FALLBACK LOCAL ACADEMY SETTINGS
+     * =============================================
+     * LOCAL SETTINGS FALLBACK
+     * =============================================
      */
 
     if (!settings) {
@@ -1525,6 +1663,7 @@ async function loadStudentReceipt() {
                 localStorage.getItem(
                     "academySettings"
                 );
+
 
             if (saved) {
 
@@ -1548,7 +1687,9 @@ async function loadStudentReceipt() {
 
 
     /*
-     * RETURN FINAL RECEIPT DATA
+     * =============================================
+     * FINAL RECEIPT DATA
+     * =============================================
      */
 
     return {
@@ -1559,7 +1700,8 @@ async function loadStudentReceipt() {
 
             id:
                 rpcStudent.id ||
-                student.id,
+                student.id ||
+                "",
 
             full_name:
                 rpcStudent.full_name ||
@@ -1569,7 +1711,7 @@ async function loadStudentReceipt() {
             mobile_number:
                 rpcStudent.mobile_number ||
                 student.mobile_number ||
-                "",
+                mobile,
 
             instrument:
                 rpcStudent.instrument ||
@@ -1585,6 +1727,7 @@ async function loadStudentReceipt() {
                 monthlyAmount
 
         },
+
 
         academy: {
 
@@ -1609,6 +1752,7 @@ async function loadStudentReceipt() {
                 null
 
         },
+
 
         fee: {
 
@@ -1646,6 +1790,7 @@ async function loadStudentReceipt() {
                 "-"
 
         },
+
 
         payments:
             payments
@@ -1688,10 +1833,14 @@ async function loadOwnerReceipt() {
 
     /*
      * STUDENT
+     *
+     * Use limit(1) instead of single()
+     * so duplicate records cannot create
+     * a JSON coercion error.
      */
 
     const {
-        data: student,
+        data: studentList,
         error: studentError
     } =
         await supabaseClient
@@ -1705,7 +1854,7 @@ async function loadOwnerReceipt() {
                 "owner_id",
                 owner.id
             )
-            .single();
+            .limit(1);
 
 
     if (studentError) {
@@ -1718,12 +1867,27 @@ async function loadOwnerReceipt() {
     }
 
 
+    const student =
+        studentList?.length
+            ? studentList[0]
+            : null;
+
+
+    if (!student) {
+
+        throw new Error(
+            "Student not found."
+        );
+
+    }
+
+
     /*
      * SETTINGS
      */
 
     const {
-        data: settings
+        data: settingsList
     } =
         await supabaseClient
             .from("academy_settings")
@@ -1732,7 +1896,13 @@ async function loadOwnerReceipt() {
                 "owner_id",
                 owner.id
             )
-            .maybeSingle();
+            .limit(1);
+
+
+    const settings =
+        settingsList?.length
+            ? settingsList[0]
+            : null;
 
 
     /*
@@ -1913,6 +2083,7 @@ async function loadOwnerReceipt() {
     let receiptMonth =
         "-";
 
+
     let receiptYear =
         "-";
 
@@ -1933,6 +2104,7 @@ async function loadOwnerReceipt() {
 
             receiptMonth =
                 d.getMonth() + 1;
+
 
             receiptYear =
                 d.getFullYear();
@@ -1972,6 +2144,7 @@ async function loadOwnerReceipt() {
 
         },
 
+
         academy: {
 
             class_name:
@@ -1995,6 +2168,7 @@ async function loadOwnerReceipt() {
                 null
 
         },
+
 
         fee: {
 
@@ -2032,6 +2206,7 @@ async function loadOwnerReceipt() {
                 "-"
 
         },
+
 
         payments:
             paymentList
@@ -2152,10 +2327,27 @@ async function loadStaffReceipt() {
     }
 
 
-    const feeList =
+    const feeResponse =
         Array.isArray(staffFees)
-            ? staffFees
-            : [];
+            ? (
+                staffFees[0] ||
+                {}
+            )
+            : (
+                staffFees || {}
+            );
+
+
+    const feeList =
+        Array.isArray(
+            feeResponse.fees
+        )
+            ? feeResponse.fees
+            : Array.isArray(
+                staffFees
+            )
+                ? staffFees
+                : [];
 
 
     const fee =
@@ -2288,8 +2480,6 @@ async function loadStaffReceipt() {
 
     /*
      * SETTINGS
-     *
-     * Try staff stored owner information first.
      */
 
     let settings = null;
@@ -2314,11 +2504,50 @@ async function loadStaffReceipt() {
                     "owner_id",
                     owner.id
                 )
-                .maybeSingle();
+                .limit(1);
 
 
-        settings =
-            data || null;
+        if (data?.length) {
+
+            settings =
+                data[0];
+
+        }
+
+    }
+
+
+    /*
+     * LOCAL SETTINGS FALLBACK
+     */
+
+    if (!settings) {
+
+        try {
+
+            const saved =
+                localStorage.getItem(
+                    "academySettings"
+                );
+
+
+            if (saved) {
+
+                settings =
+                    JSON.parse(
+                        saved
+                    );
+
+            }
+
+        }
+        catch (error) {
+
+            console.log(
+                "Local settings unavailable."
+            );
+
+        }
 
     }
 
@@ -2335,6 +2564,7 @@ async function loadStaffReceipt() {
 
     let receiptMonth =
         "-";
+
 
     let receiptYear =
         "-";
@@ -2356,6 +2586,7 @@ async function loadStaffReceipt() {
 
             receiptMonth =
                 d.getMonth() + 1;
+
 
             receiptYear =
                 d.getFullYear();
@@ -2399,6 +2630,7 @@ async function loadStaffReceipt() {
 
         },
 
+
         academy: {
 
             class_name:
@@ -2422,6 +2654,7 @@ async function loadStaffReceipt() {
                 null
 
         },
+
 
         fee: {
 
@@ -2460,6 +2693,7 @@ async function loadStaffReceipt() {
 
         },
 
+
         payments:
             paymentList
 
@@ -2477,46 +2711,75 @@ async function loadReceipt() {
     try {
 
         /*
-         * STUDENT LOGIN
-         *
-         * If not staff and not owner,
-         * use student login.
+         * =============================================
+         * STAFF FIRST
+         * =============================================
          */
 
         if (isStaff) {
+
+            console.log(
+                "Receipt mode: STAFF"
+            );
+
 
             receiptData =
                 await loadStaffReceipt();
 
         }
-        else {
-
-            const studentLogin =
-                getStudentLogin();
 
 
-            const ownerLogin =
-                getOwnerLogin();
+        /*
+         * =============================================
+         * STUDENT SECOND
+         * =============================================
+         *
+         * Student Login ALWAYS gets priority
+         * over Owner Login.
+         *
+         * This fixes the issue where ownerLogin
+         * was also stored in localStorage.
+         */
+
+        else if (
+            getStudentLogin()
+        ) {
+
+            console.log(
+                "Receipt mode: STUDENT"
+            );
 
 
-            if (
-                studentLogin &&
-                !ownerLogin
-            ) {
-
-                receiptData =
-                    await loadStudentReceipt();
-
-            }
-            else {
-
-                receiptData =
-                    await loadOwnerReceipt();
-
-            }
+            receiptData =
+                await loadStudentReceipt();
 
         }
 
+
+        /*
+         * =============================================
+         * OWNER
+         * =============================================
+         */
+
+        else {
+
+            console.log(
+                "Receipt mode: OWNER"
+            );
+
+
+            receiptData =
+                await loadOwnerReceipt();
+
+        }
+
+
+        /*
+         * =============================================
+         * CHECK
+         * =============================================
+         */
 
         if (!receiptData) {
 
@@ -2526,6 +2789,12 @@ async function loadReceipt() {
 
         }
 
+
+        /*
+         * =============================================
+         * RENDER
+         * =============================================
+         */
 
         renderReceipt();
 
@@ -2549,7 +2818,7 @@ async function loadReceipt() {
 
 
 /* =====================================================
-   RENDER
+   RENDER RECEIPT
 ===================================================== */
 
 function renderReceipt() {
@@ -2558,9 +2827,11 @@ function renderReceipt() {
         receiptData?.student ||
         {};
 
+
     const academy =
         receiptData?.academy ||
         {};
+
 
     const fee =
         receiptData?.fee ||
@@ -2598,13 +2869,16 @@ function renderReceipt() {
                 "academyLogo"
             );
 
+
         const logoArea =
             document.getElementById(
                 "logoArea"
             );
 
+
         logo.src =
             academy.logo_url;
+
 
         logoArea.style.display =
             "block";
@@ -2652,6 +2926,7 @@ function renderReceipt() {
         Number(
             fee.fees_month || 0
         );
+
 
     const year =
         Number(
@@ -2727,9 +3002,6 @@ function renderReceipt() {
 
     /*
      * TOTAL RECEIVED
-     *
-     * Already calculated from
-     * payment history.
      */
 
     const totalReceived =
@@ -2780,7 +3052,7 @@ function renderReceipt() {
 
 
     /*
-     * DISPLAY
+     * DISPLAY TOTAL FEES
      */
 
     document.getElementById(
@@ -2789,11 +3061,19 @@ function renderReceipt() {
         money(totalFees);
 
 
+    /*
+     * DISPLAY RECEIVED
+     */
+
     document.getElementById(
         "receivedAmount"
     ).textContent =
         money(totalReceived);
 
+
+    /*
+     * DISPLAY BALANCE
+     */
 
     document.getElementById(
         "balanceDue"
@@ -2888,8 +3168,10 @@ function renderReceipt() {
                 "signatureImage"
             );
 
+
         signature.src =
             academy.signature_url;
+
 
         signature.style.display =
             "block";
@@ -3059,6 +3341,7 @@ async function downloadPDF() {
         console.error(
             error
         );
+
 
         alert(
             "PDF could not be generated."
