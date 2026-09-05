@@ -94,9 +94,15 @@
 
             color: white;
 
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.18);
+
         }
 
         h1 {
+
+            margin-top: 20px;
 
             margin-bottom: 10px;
 
@@ -111,6 +117,8 @@
             color: #777;
 
             font-size: 17px;
+
+            margin: 0;
 
         }
 
@@ -137,6 +145,8 @@
             text-align: center;
 
             transition: 0.3s;
+
+            background: #ffffff;
 
         }
 
@@ -178,7 +188,11 @@
 
             color: #222;
 
+            margin-top: 0;
+
             margin-bottom: 12px;
+
+            font-size: 23px;
 
         }
 
@@ -188,7 +202,9 @@
 
             line-height: 1.6;
 
-            min-height: 50px;
+            min-height: 75px;
+
+            margin-bottom: 22px;
 
         }
 
@@ -217,26 +233,133 @@
                     #c33764
                 );
 
+            transition: 0.2s;
+
         }
 
         button:hover {
 
             opacity: 0.9;
 
+            transform: scale(1.02);
+
         }
+
+        button:active {
+
+            transform: scale(0.98);
+
+        }
+
+
+        /* MOBILE */
 
         @media(max-width: 800px) {
 
-            .login-grid {
+            body {
 
-                grid-template-columns:
-                    1fr;
+                padding: 15px;
+
+                align-items: flex-start;
+
+                padding-top: 25px;
 
             }
 
             .container {
 
-                padding: 30px 20px;
+                padding: 30px 18px;
+
+                border-radius: 20px;
+
+            }
+
+            .header {
+
+                margin-bottom: 30px;
+
+            }
+
+            .logo {
+
+                width: 75px;
+
+                height: 75px;
+
+                font-size: 35px;
+
+            }
+
+            h1 {
+
+                font-size: 28px;
+
+                margin-top: 15px;
+
+            }
+
+            .subtitle {
+
+                font-size: 15px;
+
+            }
+
+            .login-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+
+            }
+
+            .login-card {
+
+                padding: 28px 20px;
+
+            }
+
+            .login-card p {
+
+                min-height: auto;
+
+                margin-bottom: 20px;
+
+            }
+
+        }
+
+
+        /* SMALL MOBILE */
+
+        @media(max-width: 400px) {
+
+            body {
+
+                padding: 10px;
+
+            }
+
+            .container {
+
+                padding: 25px 15px;
+
+            }
+
+            h1 {
+
+                font-size: 24px;
+
+            }
+
+            .subtitle {
+
+                font-size: 14px;
+
+            }
+
+            .login-card h2 {
+
+                font-size: 21px;
 
             }
 
@@ -252,6 +375,8 @@
 
 <div class="container">
 
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -276,11 +401,14 @@
     </div>
 
 
+    <!-- LOGIN OPTIONS -->
 
     <div class="login-grid">
 
 
-        <!-- OWNER -->
+        <!-- ========================= -->
+        <!-- OWNER LOGIN -->
+        <!-- ========================= -->
 
         <div class="login-card">
 
@@ -305,6 +433,7 @@
             </p>
 
             <button
+                type="button"
                 onclick="window.location.href='owner-login.html'"
             >
 
@@ -315,8 +444,9 @@
         </div>
 
 
-
-        <!-- STAFF -->
+        <!-- ========================= -->
+        <!-- STAFF LOGIN -->
+        <!-- ========================= -->
 
         <div class="login-card">
 
@@ -340,8 +470,12 @@
 
             </p>
 
+            <!-- IMPORTANT:
+                 Correct Staff Login file -->
+
             <button
-                onclick="window.location.href='staff.html'"
+                type="button"
+                onclick="window.location.href='staff-login.html'"
             >
 
                 STAFF LOGIN
@@ -351,8 +485,9 @@
         </div>
 
 
-
-        <!-- STUDENT -->
+        <!-- ========================= -->
+        <!-- STUDENT LOGIN -->
+        <!-- ========================= -->
 
         <div class="login-card">
 
@@ -377,6 +512,7 @@
             </p>
 
             <button
+                type="button"
                 onclick="window.location.href='student-login.html'"
             >
 
