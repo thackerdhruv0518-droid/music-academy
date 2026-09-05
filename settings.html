@@ -53,9 +53,7 @@
         .logo-circle {
             width: 70px;
             height: 70px;
-
             border-radius: 50%;
-
             background: rgba(255,255,255,0.18);
 
             display: flex;
@@ -63,9 +61,7 @@
             justify-content: center;
 
             font-size: 32px;
-
             margin-bottom: 20px;
-
             overflow: hidden;
         }
 
@@ -93,11 +89,8 @@
         .menu-item {
             padding: 13px 14px;
             margin-bottom: 8px;
-
             border-radius: 10px;
-
             cursor: pointer;
-
             transition: 0.2s;
         }
 
@@ -127,7 +120,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             margin-bottom: 25px;
         }
 
@@ -162,11 +154,8 @@
 
         .card {
             background: white;
-
             border-radius: 16px;
-
             padding: 25px;
-
             margin-bottom: 22px;
 
             box-shadow:
@@ -176,9 +165,7 @@
 
         .card h3 {
             margin-top: 0;
-
             color: #1d2671;
-
             font-size: 20px;
         }
 
@@ -194,10 +181,8 @@
 
         .grid {
             display: grid;
-
             grid-template-columns:
                 repeat(2, 1fr);
-
             gap: 18px;
         }
 
@@ -209,23 +194,16 @@
         label {
             font-size: 13px;
             font-weight: bold;
-
             margin-bottom: 7px;
-
             color: #444;
         }
 
         input {
             width: 100%;
-
             padding: 12px 13px;
-
             border: 1px solid #ddd;
-
             border-radius: 9px;
-
             font-size: 14px;
-
             outline: none;
         }
 
@@ -243,17 +221,11 @@
 
         .button {
             border: none;
-
             padding: 12px 20px;
-
             border-radius: 9px;
-
             cursor: pointer;
-
             font-weight: bold;
-
             font-size: 14px;
-
             margin-top: 15px;
         }
 
@@ -294,45 +266,30 @@
 
         .upload-box {
             border: 2px dashed #ddd;
-
             border-radius: 12px;
-
             padding: 18px;
-
             text-align: center;
-
             background: #fafafa;
         }
 
         .preview {
             width: 100px;
             height: 100px;
-
             border-radius: 12px;
-
             object-fit: contain;
-
             display: none;
-
             margin: 10px auto;
-
             background: white;
-
             border: 1px solid #ddd;
         }
 
         .signature-preview {
             width: 180px;
             height: 80px;
-
             object-fit: contain;
-
             display: none;
-
             margin: 10px auto;
-
             background: white;
-
             border: 1px solid #ddd;
         }
 
@@ -346,19 +303,12 @@
 
         .list-item {
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             gap: 10px;
-
             padding: 12px 15px;
-
             background: #f8f8fc;
-
             border-radius: 9px;
-
             margin-bottom: 8px;
         }
 
@@ -368,19 +318,12 @@
 
         .delete-small {
             border: none;
-
             background: #ffe5e5;
-
             color: #c62828;
-
             padding: 7px 11px;
-
             border-radius: 7px;
-
             cursor: pointer;
-
             font-size: 12px;
-
             font-weight: bold;
         }
 
@@ -390,13 +333,9 @@
 
         .request {
             border: 1px solid #eee;
-
             border-radius: 12px;
-
             padding: 18px;
-
             margin-bottom: 12px;
-
             background: #fafafa;
         }
 
@@ -407,35 +346,24 @@
 
         .request-info {
             color: #666;
-
             font-size: 13px;
-
             line-height: 1.7;
-
             margin-top: 7px;
         }
 
         .request-actions {
             display: flex;
-
             gap: 8px;
-
             margin-top: 12px;
-
             flex-wrap: wrap;
         }
 
         .request-actions button {
             border: none;
-
             padding: 8px 13px;
-
             border-radius: 7px;
-
             cursor: pointer;
-
             font-weight: bold;
-
             font-size: 12px;
         }
 
@@ -460,44 +388,57 @@
 
         #message {
             display: none;
-
             padding: 13px;
-
             border-radius: 9px;
-
             margin-bottom: 18px;
-
             font-size: 14px;
-
             font-weight: bold;
         }
 
         .success {
             display: block !important;
-
             background: #e5f8ec;
-
             color: #16803c;
         }
 
         .error {
             display: block !important;
-
             background: #ffe5e5;
-
             color: #c62828;
         }
 
         .empty {
             text-align: center;
-
             padding: 25px;
-
             color: #777;
-
             background: #f8f8fc;
-
             border-radius: 10px;
+        }
+
+        /* =========================
+           DANGER
+        ========================= */
+
+        .danger-card {
+            border: 2px solid #ffd6d6;
+        }
+
+        .danger-card h3 {
+            color: #b71c1c;
+        }
+
+        .danger-button {
+            border: none;
+            background: #b71c1c;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .danger-button:hover {
+            background: #8b0000;
         }
 
         /* =========================
@@ -510,17 +451,11 @@
 
         .logout-button {
             border: none;
-
             background: #c62828;
-
             color: white;
-
             padding: 13px 30px;
-
             border-radius: 9px;
-
             cursor: pointer;
-
             font-weight: bold;
         }
 
@@ -548,7 +483,6 @@
 
             .topbar {
                 align-items: flex-start;
-
                 gap: 12px;
             }
 
@@ -585,12 +519,9 @@
 
 </head>
 
-
 <body>
 
-
 <div class="page">
-
 
     <!-- =================================
          LEFT
@@ -606,18 +537,15 @@
 
         </div>
 
-
         <h1 id="sideAcademyName">
             Music Academy
         </h1>
-
 
         <p>
             Professional academy management
             system for students, fees and
             payments.
         </p>
-
 
         <div class="academy-menu">
 
@@ -629,7 +557,6 @@
 
             </div>
 
-
             <div
                 class="menu-item"
                 onclick="go('add-student.html')">
@@ -637,7 +564,6 @@
                 ➕ Add Student
 
             </div>
-
 
             <div
                 class="menu-item"
@@ -647,7 +573,6 @@
 
             </div>
 
-
             <div
                 class="menu-item"
                 onclick="go('fees.html')">
@@ -656,7 +581,6 @@
 
             </div>
 
-
             <div
                 class="menu-item active">
 
@@ -664,9 +588,7 @@
 
             </div>
 
-
         </div>
-
 
         <div class="left-bottom">
 
@@ -677,13 +599,11 @@
     </div>
 
 
-
     <!-- =================================
          RIGHT
     ================================== -->
 
     <div class="right">
-
 
         <div class="topbar">
 
@@ -702,7 +622,6 @@
 
             </div>
 
-
             <button
                 class="back-btn"
                 onclick="go('dashboard.html')">
@@ -714,9 +633,7 @@
         </div>
 
 
-
         <div id="message"></div>
-
 
 
         <!-- =================================
@@ -735,9 +652,7 @@
 
             </div>
 
-
             <div class="grid">
-
 
                 <div class="field">
 
@@ -752,7 +667,6 @@
 
                 </div>
 
-
                 <div class="field">
 
                     <label>
@@ -765,7 +679,6 @@
                         placeholder="Enter owner name">
 
                 </div>
-
 
                 <div class="field">
 
@@ -780,11 +693,6 @@
 
                 </div>
 
-
-                <!-- =================================
-                     NEW BIRTH DATE
-                ================================== -->
-
                 <div class="field">
 
                     <label>
@@ -797,9 +705,7 @@
 
                 </div>
 
-
             </div>
-
 
             <button
                 class="button primary"
@@ -811,7 +717,6 @@
             </button>
 
         </div>
-
 
 
         <!-- =================================
@@ -830,7 +735,6 @@
 
             </div>
 
-
             <div class="upload-box">
 
                 <img
@@ -838,12 +742,10 @@
                     class="preview"
                     src="">
 
-
                 <input
                     id="logoFile"
                     type="file"
                     accept="image/*">
-
 
                 <button
                     class="button primary"
@@ -856,7 +758,6 @@
             </div>
 
         </div>
-
 
 
         <!-- =================================
@@ -875,7 +776,6 @@
 
             </div>
 
-
             <div class="upload-box">
 
                 <img
@@ -883,12 +783,10 @@
                     class="signature-preview"
                     src="">
 
-
                 <input
                     id="signatureFile"
                     type="file"
                     accept="image/*">
-
 
                 <button
                     class="button primary"
@@ -901,7 +799,6 @@
             </div>
 
         </div>
-
 
 
         <!-- =================================
@@ -920,7 +817,6 @@
 
             </div>
 
-
             <div id="staffRequests">
 
                 Loading...
@@ -928,7 +824,6 @@
             </div>
 
         </div>
-
 
 
         <!-- =================================
@@ -947,7 +842,6 @@
 
             </div>
 
-
             <div class="grid">
 
                 <div class="field">
@@ -965,7 +859,6 @@
 
             </div>
 
-
             <button
                 class="button primary"
                 onclick="addInstrument()">
@@ -973,7 +866,6 @@
                 + Add Instrument
 
             </button>
-
 
             <div
                 class="list"
@@ -984,7 +876,6 @@
             </div>
 
         </div>
-
 
 
         <!-- =================================
@@ -1003,7 +894,6 @@
 
             </div>
 
-
             <div class="grid">
 
                 <div class="field">
@@ -1021,7 +911,6 @@
 
             </div>
 
-
             <button
                 class="button primary"
                 onclick="addBatch()">
@@ -1029,7 +918,6 @@
                 + Add Batch
 
             </button>
-
 
             <div
                 class="list"
@@ -1040,7 +928,6 @@
             </div>
 
         </div>
-
 
 
         <!-- =================================
@@ -1059,9 +946,7 @@
 
             </div>
 
-
             <div class="grid">
-
 
                 <div class="field">
 
@@ -1078,7 +963,6 @@
 
                 </div>
 
-
                 <div class="field">
 
                     <label>
@@ -1094,9 +978,7 @@
 
                 </div>
 
-
             </div>
-
 
             <button
                 class="button primary"
@@ -1108,6 +990,61 @@
 
         </div>
 
+
+        <!-- =================================
+             DELETE ALL STUDENTS
+        ================================== -->
+
+        <div class="card danger-card">
+
+            <h3>
+                ⚠️ Delete All Students
+            </h3>
+
+            <div class="card-subtitle">
+
+                Permanently delete all students
+                from this academy.
+
+            </div>
+
+            <button
+                class="danger-button"
+                onclick="deleteAllStudents()">
+
+                DELETE ALL STUDENTS
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================
+             DELETE OWNER ACCOUNT
+        ================================== -->
+
+        <div class="card danger-card">
+
+            <h3>
+                ⚠️ Delete Owner Account
+            </h3>
+
+            <div class="card-subtitle">
+
+                Permanently delete Owner account
+                and academy data.
+
+            </div>
+
+            <button
+                class="danger-button"
+                onclick="deleteOwnerAccount()">
+
+                DELETE OWNER ACCOUNT
+
+            </button>
+
+        </div>
 
 
         <!-- =================================
@@ -1126,7 +1063,6 @@
 
             </p>
 
-
             <button
                 class="logout-button"
                 onclick="logout()">
@@ -1137,15 +1073,12 @@
 
         </div>
 
-
     </div>
 
 </div>
 
 
-
 <script>
-
 
 /* =========================================
    GLOBAL
@@ -1154,7 +1087,6 @@
 let currentUser = null;
 
 let settings = {};
-
 
 
 /* =========================================
@@ -1177,7 +1109,7 @@ function showMessage(text, type) {
         behavior: "smooth"
     });
 
-    setTimeout(function(){
+    setTimeout(function() {
 
         message.className = "";
 
@@ -1186,7 +1118,6 @@ function showMessage(text, type) {
     }, 4000);
 
 }
-
 
 
 /* =========================================
@@ -1198,7 +1129,6 @@ function go(page) {
     window.location.href = page;
 
 }
-
 
 
 /* =========================================
@@ -1215,7 +1145,6 @@ async function checkOwner() {
             .auth
             .getSession();
 
-
     if (
         error ||
         !data ||
@@ -1229,10 +1158,8 @@ async function checkOwner() {
 
     }
 
-
     const user =
         data.session.user;
-
 
     const {
         data: profile,
@@ -1243,7 +1170,6 @@ async function checkOwner() {
             .select("id, full_name, role")
             .eq("id", user.id)
             .single();
-
 
     if (
         profileError ||
@@ -1262,11 +1188,9 @@ async function checkOwner() {
 
     }
 
-
     return user;
 
 }
-
 
 
 /* =========================================
@@ -1288,7 +1212,6 @@ async function loadSettings() {
             )
             .maybeSingle();
 
-
     if (error) {
 
         console.error(error);
@@ -1299,46 +1222,31 @@ async function loadSettings() {
 
     }
 
-
     settings =
         data || {};
-
 
     document.getElementById(
         "className"
     ).value =
         settings.class_name || "";
 
-
     document.getElementById(
         "ownerName"
     ).value =
         settings.owner_name || "";
-
 
     document.getElementById(
         "ownerMobile"
     ).value =
         settings.owner_mobile || "";
 
-
-    /* =========================
-       BIRTH DATE
-    ========================= */
-
     const birthDateInput =
         document.getElementById(
             "ownerBirthDate"
         );
 
-
     birthDateInput.value =
         settings.birth_date || "";
-
-
-    /* =========================
-       LOGO
-    ========================= */
 
     if (settings.logo_url) {
 
@@ -1360,11 +1268,6 @@ async function loadSettings() {
 
     }
 
-
-    /* =========================
-       SIGNATURE
-    ========================= */
-
     if (settings.signature_url) {
 
         const signature =
@@ -1380,7 +1283,6 @@ async function loadSettings() {
 
     }
 
-
     document.getElementById(
         "sideAcademyName"
     ).textContent =
@@ -1388,7 +1290,6 @@ async function loadSettings() {
         "Music Academy";
 
 }
-
 
 
 /* =========================================
@@ -1402,28 +1303,20 @@ async function saveAcademyDetails() {
             "className"
         ).value.trim();
 
-
     const ownerName =
         document.getElementById(
             "ownerName"
         ).value.trim();
-
 
     const ownerMobile =
         document.getElementById(
             "ownerMobile"
         ).value.trim();
 
-
-    /* =========================
-       BIRTH DATE
-    ========================= */
-
     const birthDate =
         document.getElementById(
             "ownerBirthDate"
         ).value;
-
 
     if (!className) {
 
@@ -1436,18 +1329,15 @@ async function saveAcademyDetails() {
 
     }
 
-
     const btn =
         document.getElementById(
             "saveDetailsBtn"
         );
 
-
     btn.disabled = true;
 
     btn.textContent =
         "Saving...";
-
 
     try {
 
@@ -1480,13 +1370,11 @@ async function saveAcademyDetails() {
 
                 });
 
-
         if (error) {
 
             throw error;
 
         }
-
 
         settings.class_name =
             className;
@@ -1500,18 +1388,15 @@ async function saveAcademyDetails() {
         settings.birth_date =
             birthDate;
 
-
         document.getElementById(
             "sideAcademyName"
         ).textContent =
             className;
 
-
         showMessage(
             "Academy details saved successfully! ✅",
             "success"
         );
-
 
     }
     catch(error) {
@@ -1537,15 +1422,11 @@ async function saveAcademyDetails() {
 }
 
 
-
 /* =========================================
    STORAGE UPLOAD
 ========================================= */
 
-async function uploadFile(
-    file,
-    folder
-) {
+async function uploadFile(file, folder) {
 
     if (!file) {
 
@@ -1555,13 +1436,11 @@ async function uploadFile(
 
     }
 
-
     const extension =
         file.name
             .split(".")
             .pop()
             .toLowerCase();
-
 
     const fileName =
         currentUser.id +
@@ -1570,12 +1449,10 @@ async function uploadFile(
         "." +
         extension;
 
-
     const path =
         folder +
         "/" +
         fileName;
-
 
     const {
         error: uploadError
@@ -1591,13 +1468,11 @@ async function uploadFile(
                 }
             );
 
-
     if (uploadError) {
 
         throw uploadError;
 
     }
-
 
     const {
         data
@@ -1607,11 +1482,9 @@ async function uploadFile(
             .from("academy-assets")
             .getPublicUrl(path);
 
-
     return data.publicUrl;
 
 }
-
 
 
 /* =========================================
@@ -1625,10 +1498,8 @@ async function uploadLogo() {
             "logoFile"
         );
 
-
     const file =
         input.files[0];
-
 
     try {
 
@@ -1637,7 +1508,6 @@ async function uploadLogo() {
                 file,
                 "class-logo"
             );
-
 
         const {
             error
@@ -1659,23 +1529,19 @@ async function uploadLogo() {
 
                 });
 
-
         if (error) {
 
             throw error;
 
         }
 
-
         settings.logo_url =
             url;
-
 
         const preview =
             document.getElementById(
                 "logoPreview"
             );
-
 
         preview.src =
             url;
@@ -1683,18 +1549,15 @@ async function uploadLogo() {
         preview.style.display =
             "block";
 
-
         document.getElementById(
             "sideLogo"
         ).innerHTML =
             `<img src="${url}">`;
 
-
         showMessage(
             "Academy logo uploaded successfully! 🖼️",
             "success"
         );
-
 
     }
     catch(error) {
@@ -1712,7 +1575,6 @@ async function uploadLogo() {
 }
 
 
-
 /* =========================================
    UPLOAD SIGNATURE
 ========================================= */
@@ -1724,10 +1586,8 @@ async function uploadSignature() {
             "signatureFile"
         );
 
-
     const file =
         input.files[0];
-
 
     try {
 
@@ -1736,7 +1596,6 @@ async function uploadSignature() {
                 file,
                 "signature"
             );
-
 
         const {
             error
@@ -1758,23 +1617,19 @@ async function uploadSignature() {
 
                 });
 
-
         if (error) {
 
             throw error;
 
         }
 
-
         settings.signature_url =
             url;
-
 
         const preview =
             document.getElementById(
                 "signaturePreview"
             );
-
 
         preview.src =
             url;
@@ -1782,12 +1637,10 @@ async function uploadSignature() {
         preview.style.display =
             "block";
 
-
         showMessage(
             "Owner signature uploaded successfully! ✍️",
             "success"
         );
-
 
     }
     catch(error) {
@@ -1803,7 +1656,6 @@ async function uploadSignature() {
     }
 
 }
-
 
 
 /* =========================================
@@ -1825,12 +1677,10 @@ async function loadInstruments() {
             )
             .order("name");
 
-
     const list =
         document.getElementById(
             "instrumentList"
         );
-
 
     if (error) {
 
@@ -1845,9 +1695,7 @@ async function loadInstruments() {
 
     }
 
-
     list.innerHTML = "";
-
 
     if (
         !data ||
@@ -1863,7 +1711,6 @@ async function loadInstruments() {
 
     }
 
-
     data.forEach(function(item) {
 
         const div =
@@ -1873,7 +1720,6 @@ async function loadInstruments() {
 
         div.className =
             "list-item";
-
 
         div.innerHTML = `
 
@@ -1891,13 +1737,11 @@ async function loadInstruments() {
 
         `;
 
-
         list.appendChild(div);
 
     });
 
 }
-
 
 
 /* =========================================
@@ -1911,10 +1755,8 @@ async function addInstrument() {
             "instrumentName"
         );
 
-
     const name =
         input.value.trim();
-
 
     if (!name) {
 
@@ -1926,7 +1768,6 @@ async function addInstrument() {
         return;
 
     }
-
 
     const {
         error
@@ -1943,7 +1784,6 @@ async function addInstrument() {
 
             });
 
-
     if (error) {
 
         showMessage(
@@ -1955,20 +1795,16 @@ async function addInstrument() {
 
     }
 
-
     input.value = "";
-
 
     showMessage(
         "Instrument added successfully! 🎵",
         "success"
     );
 
-
     loadInstruments();
 
 }
-
 
 
 /* =========================================
@@ -1987,7 +1823,6 @@ async function deleteInstrument(id) {
 
     }
 
-
     const {
         error
     } =
@@ -2003,7 +1838,6 @@ async function deleteInstrument(id) {
                 currentUser.id
             );
 
-
     if (error) {
 
         showMessage(
@@ -2015,17 +1849,14 @@ async function deleteInstrument(id) {
 
     }
 
-
     showMessage(
         "Instrument deleted.",
         "success"
     );
 
-
     loadInstruments();
 
 }
-
 
 
 /* =========================================
@@ -2047,12 +1878,10 @@ async function loadBatches() {
             )
             .order("name");
 
-
     const list =
         document.getElementById(
             "batchList"
         );
-
 
     if (error) {
 
@@ -2067,9 +1896,7 @@ async function loadBatches() {
 
     }
 
-
     list.innerHTML = "";
-
 
     if (
         !data ||
@@ -2085,7 +1912,6 @@ async function loadBatches() {
 
     }
 
-
     data.forEach(function(item) {
 
         const div =
@@ -2095,7 +1921,6 @@ async function loadBatches() {
 
         div.className =
             "list-item";
-
 
         div.innerHTML = `
 
@@ -2113,13 +1938,11 @@ async function loadBatches() {
 
         `;
 
-
         list.appendChild(div);
 
     });
 
 }
-
 
 
 /* =========================================
@@ -2133,10 +1956,8 @@ async function addBatch() {
             "batchName"
         );
 
-
     const name =
         input.value.trim();
-
 
     if (!name) {
 
@@ -2148,7 +1969,6 @@ async function addBatch() {
         return;
 
     }
-
 
     const {
         error
@@ -2165,7 +1985,6 @@ async function addBatch() {
 
             });
 
-
     if (error) {
 
         showMessage(
@@ -2177,20 +1996,16 @@ async function addBatch() {
 
     }
 
-
     input.value = "";
-
 
     showMessage(
         "Batch added successfully! 👨‍🏫",
         "success"
     );
 
-
     loadBatches();
 
 }
-
 
 
 /* =========================================
@@ -2209,7 +2024,6 @@ async function deleteBatch(id) {
 
     }
 
-
     const {
         error
     } =
@@ -2225,7 +2039,6 @@ async function deleteBatch(id) {
                 currentUser.id
             );
 
-
     if (error) {
 
         showMessage(
@@ -2237,17 +2050,14 @@ async function deleteBatch(id) {
 
     }
 
-
     showMessage(
         "Batch deleted.",
         "success"
     );
 
-
     loadBatches();
 
 }
-
 
 
 /* =========================================
@@ -2260,7 +2070,6 @@ async function loadStaffRequests() {
         document.getElementById(
             "staffRequests"
         );
-
 
     const {
         data,
@@ -2280,7 +2089,6 @@ async function loadStaffRequests() {
                 }
             );
 
-
     if (error) {
 
         console.error(error);
@@ -2294,9 +2102,7 @@ async function loadStaffRequests() {
 
     }
 
-
     list.innerHTML = "";
-
 
     if (
         !data ||
@@ -2312,7 +2118,6 @@ async function loadStaffRequests() {
 
     }
 
-
     data.forEach(function(request) {
 
         const div =
@@ -2323,14 +2128,12 @@ async function loadStaffRequests() {
         div.className =
             "request";
 
-
         const date =
             new Date(
                 request.created_at
             ).toLocaleDateString(
                 "en-IN"
             );
-
 
         div.innerHTML = `
 
@@ -2341,7 +2144,6 @@ async function loadStaffRequests() {
                 )}
 
             </div>
-
 
             <div class="request-info">
 
@@ -2368,7 +2170,6 @@ async function loadStaffRequests() {
 
             </div>
 
-
             <div class="request-actions">
 
                 ${
@@ -2391,7 +2192,6 @@ async function loadStaffRequests() {
                     ""
                 }
 
-
                 ${
                     request.status !== "rejected"
                     ?
@@ -2412,7 +2212,6 @@ async function loadStaffRequests() {
                     ""
                 }
 
-
                 <button
                     class="remove"
                     onclick="deleteStaffRequest(
@@ -2427,13 +2226,11 @@ async function loadStaffRequests() {
 
         `;
 
-
         list.appendChild(div);
 
     });
 
 }
-
 
 
 /* =========================================
@@ -2465,7 +2262,6 @@ async function updateStaffRequest(
                 currentUser.id
             );
 
-
     if (error) {
 
         showMessage(
@@ -2477,17 +2273,14 @@ async function updateStaffRequest(
 
     }
 
-
     showMessage(
         "Staff request updated successfully.",
         "success"
     );
 
-
     loadStaffRequests();
 
 }
-
 
 
 /* =========================================
@@ -2506,7 +2299,6 @@ async function deleteStaffRequest(id) {
 
     }
 
-
     const {
         error
     } =
@@ -2522,7 +2314,6 @@ async function deleteStaffRequest(id) {
                 currentUser.id
             );
 
-
     if (error) {
 
         showMessage(
@@ -2534,17 +2325,14 @@ async function deleteStaffRequest(id) {
 
     }
 
-
     showMessage(
         "Staff request deleted.",
         "success"
     );
 
-
     loadStaffRequests();
 
 }
-
 
 
 /* =========================================
@@ -2558,12 +2346,10 @@ async function changeOwnerPin() {
             "newOwnerPin"
         ).value.trim();
 
-
     const confirmPin =
         document.getElementById(
             "confirmOwnerPin"
         ).value.trim();
-
 
     if (
         !/^[0-9]{4}$/.test(newPin)
@@ -2578,7 +2364,6 @@ async function changeOwnerPin() {
 
     }
 
-
     if (
         newPin !== confirmPin
     ) {
@@ -2591,7 +2376,6 @@ async function changeOwnerPin() {
         return;
 
     }
-
 
     try {
 
@@ -2608,13 +2392,11 @@ async function changeOwnerPin() {
                     }
                 );
 
-
         if (error) {
 
             throw error;
 
         }
-
 
         if (data !== true) {
 
@@ -2624,22 +2406,18 @@ async function changeOwnerPin() {
 
         }
 
-
         document.getElementById(
             "newOwnerPin"
         ).value = "";
-
 
         document.getElementById(
             "confirmOwnerPin"
         ).value = "";
 
-
         showMessage(
             "Owner PIN changed successfully! 🔐",
             "success"
         );
-
 
     }
     catch(error) {
@@ -2656,6 +2434,188 @@ async function changeOwnerPin() {
 
 }
 
+
+/* =========================================
+   DELETE ALL STUDENTS
+========================================= */
+
+async function deleteAllStudents() {
+
+    const firstConfirm =
+        confirm(
+            "⚠️ WARNING!\n\n" +
+            "This will permanently delete ALL students " +
+            "from your academy.\n\n" +
+            "Student fees and payment records connected " +
+            "to those students may also be deleted.\n\n" +
+            "This action cannot be undone.\n\n" +
+            "Do you want to continue?"
+        );
+
+    if (!firstConfirm) {
+
+        return;
+
+    }
+
+    const secondConfirm =
+        confirm(
+            "FINAL CONFIRMATION\n\n" +
+            "Are you absolutely sure you want to DELETE ALL STUDENTS?"
+        );
+
+    if (!secondConfirm) {
+
+        return;
+
+    }
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .rpc(
+                    "delete_all_students"
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        if (
+            !data ||
+            data.success !== true
+        ) {
+
+            throw new Error(
+                data?.message ||
+                "Students could not be deleted."
+            );
+
+        }
+
+        showMessage(
+            data.message ||
+            "All students deleted successfully.",
+            "success"
+        );
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Could not delete students.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE OWNER ACCOUNT
+========================================= */
+
+async function deleteOwnerAccount() {
+
+    const firstConfirm =
+        confirm(
+            "⚠️ WARNING!\n\n" +
+            "This will permanently delete the Owner account " +
+            "and academy data.\n\n" +
+            "This action cannot be undone.\n\n" +
+            "Do you want to continue?"
+        );
+
+    if (!firstConfirm) {
+
+        return;
+
+    }
+
+    const secondConfirm =
+        confirm(
+            "FINAL CONFIRMATION\n\n" +
+            "Are you absolutely sure you want to DELETE the Owner account?"
+        );
+
+    if (!secondConfirm) {
+
+        return;
+
+    }
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .rpc(
+                    "delete_owner_account"
+                );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        if (
+            !data ||
+            data.success !== true
+        ) {
+
+            throw new Error(
+                data?.message ||
+                "Owner account could not be deleted."
+            );
+
+        }
+
+        localStorage.removeItem(
+            "owner_remember_me"
+        );
+
+        sessionStorage.removeItem(
+            "owner_session_active"
+        );
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+        alert(
+            "Owner account deleted successfully."
+        );
+
+        window.location.href =
+            "owner-login.html";
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Could not delete Owner account.",
+            "error"
+        );
+
+    }
+
+}
 
 
 /* =========================================
@@ -2689,7 +2649,6 @@ function escapeHtml(value) {
 }
 
 
-
 /* =========================================
    LOGOUT
 ========================================= */
@@ -2700,7 +2659,6 @@ async function logout() {
         .auth
         .signOut();
 
-
     localStorage.removeItem(
         "owner_remember_me"
     );
@@ -2709,12 +2667,10 @@ async function logout() {
         "owner_session_active"
     );
 
-
     window.location.href =
         "owner-login.html";
 
 }
-
 
 
 /* =========================================
@@ -2726,13 +2682,11 @@ async function startPage() {
     currentUser =
         await checkOwner();
 
-
     if (!currentUser) {
 
         return;
 
     }
-
 
     await loadSettings();
 
@@ -2745,12 +2699,9 @@ async function startPage() {
 }
 
 
-
 startPage();
 
-
 </script>
-
 
 </body>
 
