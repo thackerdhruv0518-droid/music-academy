@@ -1,465 +1,564 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fees - Music Academy</title>
+    <title>Fees - Music Academy</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 
-<style>
-*{
-    box-sizing:border-box;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:linear-gradient(135deg,#29245f,#bd2863);
-    min-height:100vh;
-}
+        body {
+            background: #f4f5fb;
+            color: #222;
+        }
 
-.container{
-    width:96%;
-    max-width:1250px;
-    margin:25px auto;
-    background:white;
-    border-radius:24px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
+        header {
+            background: linear-gradient(135deg, #29245f, #bd2863);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+        }
 
-.header{
-    background:linear-gradient(135deg,#20205b,#47205b);
-    color:white;
-    padding:28px 35px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+        header h1 {
+            font-size: 24px;
+        }
 
-.header h1{
-    margin:0;
-    font-size:29px;
-}
+        header p {
+            margin-top: 5px;
+            opacity: .9;
+        }
 
-.header p{
-    margin:6px 0 0;
-    opacity:.85;
-}
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            background: white;
+            color: #29245f;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-.back-btn{
-    border:1px solid rgba(255,255,255,.5);
-    background:rgba(255,255,255,.12);
-    color:white;
-    padding:11px 20px;
-    border-radius:10px;
-    cursor:pointer;
-}
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
 
-.staff-badge{
-    display:none;
-    margin-top:8px;
-    padding:5px 10px;
-    border-radius:20px;
-    border:1px solid #ffffff55;
-    background:#ffffff18;
-    font-size:12px;
-}
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-.content{
-    padding:30px;
-}
+        .summary-card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            text-align: center;
+        }
 
-.filters{
-    display:grid;
-    grid-template-columns:150px 120px 220px 1fr;
-    gap:12px;
-    margin-bottom:25px;
-}
+        .summary-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
 
-input,select{
-    width:100%;
-    padding:13px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    font-size:15px;
-    outline:none;
-}
+        .summary-card strong {
+            font-size: 24px;
+            color: #29245f;
+        }
 
-input:focus,select:focus{
-    border-color:#6158e8;
-}
+        .filters {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
 
-.summary{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-bottom:25px;
-}
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
 
-.summary-card{
-    padding:20px;
-    border:1px solid #eee;
-    border-radius:15px;
-    background:#fafafa;
-}
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+        }
 
-.summary-title{
-    color:#777;
-    font-size:13px;
-}
+        input:focus,
+        select:focus {
+            border-color: #bd2863;
+        }
 
-.summary-value{
-    font-size:24px;
-    font-weight:bold;
-    margin-top:7px;
-}
+        .table-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            overflow-x: auto;
+        }
 
-.student-row{
-    border:1px solid #e6e6e6;
-    border-radius:15px;
-    padding:17px;
-    margin-bottom:12px;
-    display:grid;
-    grid-template-columns:1fr auto auto;
-    align-items:center;
-    gap:20px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
 
-.student-name{
-    font-size:18px;
-    font-weight:bold;
-}
+        th {
+            background: #29245f;
+            color: white;
+            padding: 13px;
+            text-align: left;
+            font-size: 14px;
+        }
 
-.student-sub{
-    color:#777;
-    font-size:13px;
-    margin-top:5px;
-}
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
 
-.amount{
-    text-align:right;
-}
+        .paid {
+            color: green;
+            font-weight: bold;
+        }
 
-.amount small{
-    display:block;
-    color:#777;
-}
+        .partial {
+            color: #e67e00;
+            font-weight: bold;
+        }
 
-.amount strong{
-    font-size:17px;
-}
+        .unpaid {
+            color: #d32f2f;
+            font-weight: bold;
+        }
 
-.status{
-    display:inline-block;
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:bold;
-    margin-top:6px;
-}
+        .btn {
+            border: none;
+            padding: 8px 11px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 2px;
+        }
 
-.pending{
-    background:#fff0d5;
-    color:#a66a00;
-}
+        .pay-btn {
+            background: #198754;
+            color: white;
+        }
 
-.partial{
-    background:#e8edff;
-    color:#4258c8;
-}
+        .history-btn {
+            background: #29245f;
+            color: white;
+        }
 
-.paid{
-    background:#ddf8e7;
-    color:#168043;
-}
+        .receipt-btn {
+            background: #bd2863;
+            color: white;
+        }
 
-.actions{
-    display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-}
+        .btn:hover {
+            opacity: .85;
+        }
 
-.btn{
-    border:0;
-    padding:9px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:13px;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            z-index: 1000;
+        }
 
-.pay{
-    background:#6158e8;
-    color:white;
-}
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 14px;
+            padding: 22px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
 
-.history{
-    background:#eeeaff;
-    color:#5148d8;
-}
+        .modal-box h2 {
+            color: #29245f;
+            margin-bottom: 8px;
+        }
 
-.receipt{
-    background:#e8f8ef;
-    color:#168043;
-}
+        .student-name {
+            color: #666;
+            margin-bottom: 18px;
+        }
 
-.empty{
-    text-align:center;
-    padding:50px;
-    color:#777;
-}
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.55);
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:10;
-}
+        .modal-buttons button {
+            flex: 1;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-.modal-box{
-    width:100%;
-    max-width:450px;
-    background:white;
-    border-radius:18px;
-    padding:25px;
-}
+        .cancel {
+            background: #ddd;
+        }
 
-.modal-box h2{
-    margin-top:0;
-}
+        .save {
+            background: #198754;
+            color: white;
+        }
 
-.modal-buttons{
-    display:flex;
-    gap:10px;
-    margin-top:20px;
-}
+        .history-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
 
-.modal-buttons button{
-    flex:1;
-}
+        .history-item strong {
+            color: #29245f;
+        }
 
-.cancel{
-    background:#eee;
-}
+        .empty,
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
 
-.save{
-    background:#6158e8;
-    color:white;
-}
+        @media(max-width: 700px) {
 
-.history-item{
-    display:flex;
-    justify-content:space-between;
-    padding:13px 0;
-    border-bottom:1px solid #eee;
-}
+            .summary {
+                grid-template-columns: 1fr;
+            }
 
-.loading{
-    text-align:center;
-    padding:40px;
-    color:#777;
-}
+            .filters {
+                grid-template-columns: 1fr;
+            }
 
-@media(max-width:850px){
+            header h1 {
+                font-size: 20px;
+            }
 
-    .filters{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .student-row{
-        grid-template-columns:1fr;
-    }
-
-    .amount{
-        text-align:left;
-    }
-
-    .actions{
-        justify-content:flex-start;
-    }
-}
-
-@media(max-width:600px){
-
-    .container{
-        width:100%;
-        margin:0;
-        border-radius:0;
-        min-height:100vh;
-    }
-
-    .header{
-        padding:22px;
-    }
-
-    .content{
-        padding:18px;
-    }
-
-    .filters{
-        grid-template-columns:1fr;
-    }
-
-    .summary{
-        grid-template-columns:1fr;
-    }
-}
-</style>
+            .back-btn {
+                position: static;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+<header>
+
+    <button class="back-btn" onclick="goBack()">
+        ← Back
+    </button>
+
+    <h1 id="className">
+        Music Academy
+    </h1>
+
+    <p>
+        Fees Management
+    </p>
+
+</header>
+
+
 <div class="container">
 
-    <div class="header">
+    <!-- FILTERS -->
+
+    <div class="filters">
 
         <div>
-            <h1>💰 Fees Management</h1>
-            <p>Student-wise monthly fees</p>
 
-            <div id="staffBadge" class="staff-badge">
-                Staff Access
-            </div>
+            <label>
+                Batch
+            </label>
+
+            <select
+                id="batchFilter"
+                onchange="renderTable()">
+
+                <option value="">
+                    All Batches
+                </option>
+
+            </select>
+
         </div>
 
-        <button class="back-btn" onclick="goBack()">
-            ← Back
-        </button>
+
+        <div>
+
+            <label>
+                Search Student
+            </label>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Student name..."
+                oninput="renderTable()">
+
+        </div>
 
     </div>
 
 
-    <div class="content">
+    <!-- SUMMARY -->
 
-        <div class="filters">
+    <div class="summary">
 
-            <select id="month">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
+        <div class="summary-card">
 
-            <select id="year"></select>
+            <h3>
+                Total Students
+            </h3>
 
-            <select id="batch">
-                <option value="">All Batches</option>
-            </select>
-
-            <input
-                id="search"
-                placeholder="🔎 Search student"
-            >
+            <strong id="totalStudents">
+                0
+            </strong>
 
         </div>
 
 
-        <div class="summary">
+        <div class="summary-card">
 
-            <div class="summary-card">
-                <div class="summary-title">
-                    Total Students
-                </div>
+            <h3>
+                Total Fees
+            </h3>
 
-                <div class="summary-value" id="totalStudents">
-                    0
-                </div>
-            </div>
-
-
-            <div class="summary-card">
-                <div class="summary-title">
-                    Total Fees
-                </div>
-
-                <div class="summary-value" id="totalFees">
-                    ₹0
-                </div>
-            </div>
-
-
-            <div class="summary-card">
-                <div class="summary-title">
-                    Received
-                </div>
-
-                <div class="summary-value" id="receivedFees">
-                    ₹0
-                </div>
-            </div>
+            <strong id="totalFees">
+                ₹0
+            </strong>
 
         </div>
 
 
-        <div id="loading" class="loading">
-            Loading fees...
+        <div class="summary-card">
+
+            <h3>
+                Received Fees
+            </h3>
+
+            <strong id="totalReceived">
+                ₹0
+            </strong>
+
         </div>
 
-        <div id="feeList"></div>
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Student
+                    </th>
+
+                    <th>
+                        Batch
+                    </th>
+
+                    <th>
+                        Instrument
+                    </th>
+
+                    <th>
+                        Monthly Fees
+                    </th>
+
+                    <th>
+                        Received
+                    </th>
+
+                    <th>
+                        Balance
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="feesTableBody">
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="loading">
+
+                        Loading...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
 
     </div>
 
 </div>
 
 
-<!-- PAYMENT MODAL -->
+<!-- ================= PAYMENT MODAL ================= -->
 
-<div id="paymentModal" class="modal">
+<div
+    id="paymentModal"
+    class="modal">
 
     <div class="modal-box">
 
-        <h2>Make Payment</h2>
+        <h2>
+            Make Payment
+        </h2>
 
-        <p id="paymentStudent"></p>
+        <p
+            id="paymentStudent"
+            class="student-name">
+        </p>
 
-        <label>Payment Amount</label>
+
+        <label>
+            Payment Amount
+        </label>
 
         <input
             id="paymentAmount"
             type="number"
             min="1"
-            placeholder="Enter amount"
-        >
+            placeholder="Enter amount">
+
 
         <br><br>
 
-        <label>Payment Date</label>
+
+        <label>
+            Payment Date
+        </label>
 
         <input
             id="paymentDate"
-            type="date"
-        >
+            type="date">
+
+
+        <br><br>
+
+
+        <label>
+            Payment Mode
+        </label>
+
+        <select id="paymentMode">
+
+            <option value="">
+                Select Payment Mode
+            </option>
+
+            <option value="Cash">
+                Cash
+            </option>
+
+            <option value="UPI">
+                UPI
+            </option>
+
+            <option value="Bank Transfer">
+                Bank Transfer
+            </option>
+
+            <option value="Card">
+                Card
+            </option>
+
+            <option value="Cheque">
+                Cheque
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
 
         <div class="modal-buttons">
 
             <button
-                class="btn cancel"
-                onclick="closePayment()"
-            >
+                class="cancel"
+                onclick="closePayment()">
+
                 Cancel
+
             </button>
 
+
             <button
-                class="btn save"
-                onclick="savePayment()"
-            >
+                class="save"
+                onclick="savePayment()">
+
                 Save Payment
+
             </button>
 
         </div>
@@ -469,27 +568,37 @@ input:focus,select:focus{
 </div>
 
 
-<!-- HISTORY MODAL -->
+<!-- ================= HISTORY MODAL ================= -->
 
-<div id="historyModal" class="modal">
+<div
+    id="historyModal"
+    class="modal">
 
     <div class="modal-box">
 
-        <h2>Payment History</h2>
+        <h2>
+            Payment History
+        </h2>
 
-        <p id="historyStudent"></p>
+        <p
+            id="historyStudent"
+            class="student-name">
+        </p>
 
-        <div id="historyList">
+
+        <div id="historyContent">
             Loading...
         </div>
+
 
         <div class="modal-buttons">
 
             <button
-                class="btn cancel"
-                onclick="closeHistory()"
-            >
+                class="cancel"
+                onclick="closeHistory()">
+
                 Close
+
             </button>
 
         </div>
@@ -501,421 +610,812 @@ input:focus,select:focus{
 
 <script>
 
-let isStaff = false;
-let staffInfo = null;
+let allStudents = [];
 
-let feesData = [];
 let selectedStudent = null;
 
+let user = null;
 
-/* =========================
-   START
-========================= */
+let staffInfo = null;
+
+let currentMode = "owner";
+
+
+// =====================================================
+// START
+// =====================================================
 
 document.addEventListener(
     "DOMContentLoaded",
-    start
+    async function () {
+
+        await detectLogin();
+
+    }
 );
 
 
-async function start(){
+// =====================================================
+// LOGIN
+// =====================================================
 
-    setupDate();
+async function detectLogin() {
 
-    checkStaff();
+    try {
 
-    await loadFees();
+        const ownerLogin =
+            localStorage.getItem("ownerLogin");
 
-}
-
-
-/* =========================
-   DATE
-========================= */
-
-function setupDate(){
-
-    const now = new Date();
-
-    document.getElementById("month").value =
-        now.getMonth() + 1;
-
-
-    const yearSelect =
-        document.getElementById("year");
-
-    const currentYear =
-        now.getFullYear();
-
-    for(let y=currentYear-2; y<=currentYear+2; y++){
-
-        const option =
-            document.createElement("option");
-
-        option.value = y;
-        option.textContent = y;
-
-        if(y === currentYear){
-            option.selected = true;
-        }
-
-        yearSelect.appendChild(option);
-
-    }
-
-}
-
-
-/* =========================
-   STAFF CHECK
-========================= */
-
-function checkStaff(){
-
-    try{
-
-        const saved =
+        const staffLogin =
             localStorage.getItem("staffLogin");
 
-        if(saved){
 
-            staffInfo =
-                JSON.parse(saved);
+        if (ownerLogin) {
 
-            if(
-                staffInfo &&
-                staffInfo.id &&
-                staffInfo.name
-            ){
+            currentMode = "owner";
 
-                isStaff = true;
+            user =
+                JSON.parse(ownerLogin);
 
-                document.getElementById(
-                    "staffBadge"
-                ).style.display = "inline-block";
 
-            }
+            await loadOwnerBranding();
+
+            await loadBatches();
+
+            await loadStudents();
+
+            return;
 
         }
 
-    }catch(e){
 
-        console.log(e);
+        if (staffLogin) {
+
+            currentMode = "staff";
+
+            staffInfo =
+                JSON.parse(staffLogin);
+
+
+            await loadStaffBranding();
+
+            await loadStaffBatches();
+
+            await loadStudents();
+
+            return;
+
+        }
+
+
+        alert(
+            "Please login first."
+        );
+
+        window.location.href =
+            "index.html";
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Login information error."
+        );
+
+        window.location.href =
+            "index.html";
 
     }
 
 }
 
 
-/* =========================
-   LOAD FEES
-========================= */
+// =====================================================
+// OWNER BRANDING
+// =====================================================
 
-async function loadFees(){
+async function loadOwnerBranding() {
 
-    document.getElementById(
-        "loading"
-    ).style.display = "block";
+    if (!user || !user.email)
+        return;
 
 
-    try{
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.rpc(
+            "get_owner_branding",
+            {
+                p_email: user.email
+            }
+        );
 
-        const month =
-            Number(
-                document.getElementById("month").value
+
+    if (!error && data) {
+
+        document.getElementById(
+            "className"
+        ).textContent =
+            data.class_name ||
+            "Music Academy";
+
+    }
+
+}
+
+
+// =====================================================
+// STAFF BRANDING
+// =====================================================
+
+async function loadStaffBranding() {
+
+    if (!staffInfo)
+        return;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.rpc(
+            "get_staff_branding",
+            {
+                p_email:
+                    staffInfo.email,
+
+                p_mobile:
+                    staffInfo.mobile
+            }
+        );
+
+
+    if (!error && data) {
+
+        document.getElementById(
+            "className"
+        ).textContent =
+            data.class_name ||
+            "Music Academy";
+
+    }
+
+}
+
+
+// =====================================================
+// OWNER BATCHES
+// =====================================================
+
+async function loadBatches() {
+
+    const select =
+        document.getElementById(
+            "batchFilter"
+        );
+
+
+    select.innerHTML =
+        `<option value="">
+            All Batches
+        </option>`;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("batches")
+            .select("*")
+            .eq(
+                "owner_id",
+                user.id
+            )
+            .order("name");
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    (data || []).forEach(
+        batch => {
+
+            const name =
+                batch.name ||
+                batch.batch_name;
+
+
+            if (!name)
+                return;
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                name;
+
+            option.textContent =
+                name;
+
+
+            select.appendChild(
+                option
             );
 
-        const year =
-            Number(
-                document.getElementById("year").value
+        }
+    );
+
+}
+
+
+// =====================================================
+// STAFF BATCHES
+// =====================================================
+
+async function loadStaffBatches() {
+
+    const select =
+        document.getElementById(
+            "batchFilter"
+        );
+
+
+    select.innerHTML =
+        `<option value="">
+            All Batches
+        </option>`;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.rpc(
+            "staff_get_batches",
+            {
+                p_staff_id:
+                    staffInfo.id
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    (data || []).forEach(
+        batch => {
+
+            const name =
+                batch.name ||
+                batch.batch_name ||
+                batch.batch;
+
+
+            if (!name)
+                return;
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                name;
+
+            option.textContent =
+                name;
+
+
+            select.appendChild(
+                option
             );
 
+        }
+    );
 
-        /* STAFF */
+}
 
-        if(isStaff){
 
-            const result =
+// =====================================================
+// LOAD STUDENTS
+// =====================================================
+
+async function loadStudents() {
+
+    try {
+
+        if (currentMode === "staff") {
+
+            /*
+             * Staff student RPC
+             */
+
+            const {
+                data,
+                error
+            } =
                 await supabaseClient.rpc(
-                    "staff_get_fees",
+                    "staff_get_students",
                     {
-                        p_staff_id: staffInfo.id,
-                        p_month: month,
-                        p_year: year
+                        p_staff_id:
+                            staffInfo.id
                     }
                 );
 
 
-            if(result.error){
+            if (error) {
 
-                console.error(result.error);
+                console.error(
+                    "Staff student error:",
+                    error
+                );
 
-                document.getElementById(
-                    "loading"
-                ).innerHTML =
-                    "❌ Error loading fees";
+                /*
+                 * If staff RPC does not exist,
+                 * stop here.
+                 */
 
-                return;
-
-            }
-
-
-            if(!result.data?.success){
-
-                document.getElementById(
-                    "loading"
-                ).innerHTML =
-                    "❌ Staff access not approved";
-
-                return;
+                throw error;
 
             }
 
 
-            feesData =
-                result.data.fees || [];
+            allStudents =
+                (data || []).map(
+                    student => {
+
+                        return {
+
+                            id:
+                                student.id ||
+                                student.student_id,
+
+                            full_name:
+                                student.full_name ||
+                                student.name ||
+                                student.student_name,
+
+                            mobile_number:
+                                student.mobile_number ||
+                                student.mobile ||
+                                "",
+
+                            instrument:
+                                student.instrument ||
+                                "",
+
+                            batch:
+                                student.batch ||
+                                "",
+
+                            monthly_fee:
+                                Number(
+                                    student.monthly_fee ||
+                                    student.fee_amount ||
+                                    student.amount ||
+                                    0
+                                ),
+
+                            paid_amount: 0
+
+                        };
+
+                    }
+                );
+
 
         }
+        else {
 
+            /*
+             * OWNER STUDENTS
+             */
 
-        /* OWNER */
-
-        else{
-
-            const userResult =
-                await supabaseClient.auth.getUser();
-
-            const user =
-                userResult.data.user;
-
-            if(!user){
-
-                window.location.href =
-                    "login.html";
-
-                return;
-
-            }
-
-
-            const studentsResult =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .from("students")
                     .select("*")
-                    .eq("owner_id", user.id)
-                    .order("full_name");
+                    .eq(
+                        "owner_id",
+                        user.id
+                    )
+                    .order(
+                        "full_name"
+                    );
 
 
-            if(studentsResult.error){
+            if (error)
+                throw error;
 
-                console.error(
-                    studentsResult.error
+
+            allStudents =
+                (data || []).map(
+                    student => {
+
+                        return {
+
+                            id:
+                                student.id,
+
+                            full_name:
+                                student.full_name ||
+                                student.name ||
+                                "",
+
+                            mobile_number:
+                                student.mobile_number ||
+                                student.mobile ||
+                                "",
+
+                            instrument:
+                                student.instrument ||
+                                "",
+
+                            batch:
+                                student.batch ||
+                                "",
+
+                            monthly_fee:
+                                Number(
+                                    student.monthly_fee ||
+                                    student.fee_amount ||
+                                    student.fees ||
+                                    student.amount ||
+                                    0
+                                ),
+
+                            paid_amount: 0
+
+                        };
+
+                    }
                 );
 
-                return;
-
-            }
+        }
 
 
-            const students =
-                studentsResult.data || [];
+        await loadFeeRecords();
+
+    }
+    catch (error) {
+
+        console.error(error);
 
 
-            feesData = [];
+        document.getElementById(
+            "feesTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="empty">
+
+                    Error loading students.
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message || ""
+                    )}
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
 
 
-            for(const student of students){
+// =====================================================
+// LOAD FEE RECORDS
+// =====================================================
 
-                const feeResult =
-                    await supabaseClient
-                        .from("fees")
-                        .select("*")
-                        .eq(
-                            "student_id",
-                            student.id
-                        )
-                        .eq(
-                            "fees_month",
-                            month
-                        )
-                        .eq(
-                            "fees_year",
-                            year
-                        )
-                        .maybeSingle();
+async function loadFeeRecords() {
+
+    if (!allStudents.length) {
+
+        renderTable();
+
+        return;
+
+    }
 
 
-                const fee =
-                    feeResult.data;
+    try {
+
+        let fees = [];
 
 
-                feesData.push({
+        if (currentMode === "owner") {
 
-                    student_id: student.id,
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("fees")
+                    .select("*")
+                    .eq(
+                        "owner_id",
+                        user.id
+                    );
 
-                    full_name:
-                        student.full_name,
 
-                    mobile_number:
-                        student.mobile_number,
+            if (error)
+                throw error;
 
-                    instrument:
-                        student.instrument,
 
-                    batch:
-                        student.batch,
+            fees = data || [];
 
-                    monthly_amount:
-                        fee?.monthly_amount ??
-                        student.fees_amount,
+        }
+        else {
 
-                    fee_id:
-                        fee?.id ?? null,
+            /*
+             * Staff uses same owner fee records
+             * through RPC if available.
+             */
 
-                    fees_month: month,
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "staff_get_fees",
+                    {
+                        p_staff_id:
+                            staffInfo.id
+                    }
+                );
 
-                    fees_year: year,
 
-                    paid_amount:
-                        fee?.paid_amount ?? 0,
+            if (!error && data) {
 
-                    status:
-                        fee?.status ?? "pending"
-
-                });
+                fees = data || [];
 
             }
 
         }
 
 
-        document.getElementById(
-            "loading"
-        ).style.display = "none";
+        const feeMap = {};
 
 
-        createBatchFilter();
+        fees.forEach(
+            fee => {
 
-        renderFees();
+                feeMap[
+                    String(
+                        fee.student_id
+                    )
+                ] = fee;
+
+            }
+        );
+
+
+        allStudents =
+            allStudents.map(
+                student => {
+
+                    const fee =
+                        feeMap[
+                            String(
+                                student.id
+                            )
+                        ];
+
+
+                    if (fee) {
+
+                        return {
+
+                            ...student,
+
+                            fee_id:
+                                fee.id,
+
+                            monthly_fee:
+                                Number(
+                                    fee.amount ||
+                                    student.monthly_fee ||
+                                    0
+                                ),
+
+                            paid_amount:
+                                Number(
+                                    fee.paid_amount ||
+                                    0
+                                ),
+
+                            status:
+                                fee.status ||
+                                "unpaid"
+
+                        };
+
+                    }
+
+
+                    return {
+
+                        ...student,
+
+                        fee_id: null,
+
+                        paid_amount: 0,
+
+                        status: "unpaid"
+
+                    };
+
+                }
+            );
+
+
+        renderTable();
 
     }
-    catch(error){
+    catch (error) {
 
         console.error(error);
 
         document.getElementById(
-            "loading"
-        ).innerHTML =
-            "❌ Something went wrong";
+            "feesTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="empty">
+
+                    Error loading fees.
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message || ""
+                    )}
+
+                </td>
+
+            </tr>
+
+        `;
 
     }
 
 }
 
 
-/* =========================
-   BATCH
-========================= */
+// =====================================================
+// RENDER TABLE
+// =====================================================
 
-function createBatchFilter(){
+function renderTable() {
 
-    const select =
-        document.getElementById("batch");
+    const tbody =
+        document.getElementById(
+            "feesTableBody"
+        );
 
-    const old =
-        select.value;
-
-    select.innerHTML =
-        `<option value="">All Batches</option>`;
-
-
-    const batches =
-        [...new Set(
-            feesData
-                .map(x => x.batch)
-                .filter(Boolean)
-        )].sort();
-
-
-    batches.forEach(batch => {
-
-        const option =
-            document.createElement("option");
-
-        option.value = batch;
-        option.textContent = batch;
-
-        select.appendChild(option);
-
-    });
-
-
-    if(batches.includes(old)){
-        select.value = old;
-    }
-
-}
-
-
-/* =========================
-   RENDER
-========================= */
-
-function renderFees(){
 
     const search =
-        document.getElementById("search")
-            .value
-            .toLowerCase()
-            .trim();
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
 
 
     const batch =
-        document.getElementById("batch").value;
+        document.getElementById(
+            "batchFilter"
+        ).value;
 
 
-    const filtered =
-        feesData.filter(item => {
+    const rows =
+        allStudents.filter(
+            student => {
 
-            const name =
-                (item.full_name || "")
-                    .toLowerCase();
-
-            const mobile =
-                (item.mobile_number || "")
-                    .toLowerCase();
-
-            return (
-                (!search ||
-                 name.includes(search) ||
-                 mobile.includes(search))
-                &&
-                (!batch ||
-                 item.batch === batch)
-            );
-
-        });
+                const name =
+                    String(
+                        student.full_name ||
+                        ""
+                    ).toLowerCase();
 
 
-    let totalFees = 0;
-    let received = 0;
+                const searchOK =
+                    !search ||
+                    name.includes(search);
 
 
-    filtered.forEach(item => {
+                const batchOK =
+                    !batch ||
+                    String(
+                        student.batch || ""
+                    ) ===
+                    String(batch);
 
-        totalFees +=
-            Number(item.monthly_amount || 0);
 
-        received +=
-            Number(item.paid_amount || 0);
+                return searchOK &&
+                       batchOK;
 
-    });
+            }
+        );
 
 
     document.getElementById(
         "totalStudents"
     ).textContent =
-        filtered.length;
+        rows.length;
+
+
+    const totalFees =
+        rows.reduce(
+            (
+                total,
+                student
+            ) => {
+
+                return total +
+                    Number(
+                        student.monthly_fee ||
+                        0
+                    );
+
+            },
+            0
+        );
+
+
+    const totalReceived =
+        rows.reduce(
+            (
+                total,
+                student
+            ) => {
+
+                return total +
+                    Number(
+                        student.paid_amount ||
+                        0
+                    );
+
+            },
+            0
+        );
 
 
     document.getElementById(
@@ -925,22 +1425,27 @@ function renderFees(){
 
 
     document.getElementById(
-        "receivedFees"
+        "totalReceived"
     ).textContent =
-        money(received);
+        money(totalReceived);
 
 
-    const list =
-        document.getElementById("feeList");
+    if (!rows.length) {
 
+        tbody.innerHTML = `
 
-    if(filtered.length === 0){
+            <tr>
 
-        list.innerHTML = `
-            <div class="empty">
-                <div style="font-size:45px;">💰</div>
-                <h3>No students found</h3>
-            </div>
+                <td
+                    colspan="8"
+                    class="empty">
+
+                    No students found.
+
+                </td>
+
+            </tr>
+
         `;
 
         return;
@@ -948,130 +1453,190 @@ function renderFees(){
     }
 
 
-    list.innerHTML =
-        filtered.map(item => {
+    tbody.innerHTML = "";
 
-            const monthly =
+
+    rows.forEach(
+        student => {
+
+            const fee =
                 Number(
-                    item.monthly_amount || 0
+                    student.monthly_fee ||
+                    0
                 );
+
 
             const paid =
                 Number(
-                    item.paid_amount || 0
+                    student.paid_amount ||
+                    0
                 );
+
 
             const balance =
                 Math.max(
-                    0,
-                    monthly - paid
+                    fee - paid,
+                    0
                 );
 
 
-            const status =
-                item.status || "pending";
+            let status =
+                "unpaid";
 
 
-            return `
+            if (
+                paid >= fee &&
+                fee > 0
+            ) {
 
-                <div class="student-row">
+                status =
+                    "paid";
 
-                    <div>
+            }
+            else if (
+                paid > 0
+            ) {
 
-                        <div class="student-name">
-                            ${escapeHtml(item.full_name)}
-                        </div>
+                status =
+                    "partial";
 
-                        <div class="student-sub">
-                            📱 ${escapeHtml(item.mobile_number || "-")}
-                            &nbsp; • &nbsp;
-                            🎵 ${escapeHtml(item.instrument || "-")}
-                            &nbsp; • &nbsp;
-                            🕐 ${escapeHtml(item.batch || "-")}
-                        </div>
-
-                        <span class="status ${status}">
-                            ${status.toUpperCase()}
-                        </span>
-
-                    </div>
+            }
 
 
-                    <div class="amount">
-
-                        <small>Monthly</small>
-
-                        <strong>
-                            ${money(monthly)}
-                        </strong>
-
-                        <small>
-                            Paid: ${money(paid)}
-                        </small>
-
-                        <small>
-                            Balance: ${money(balance)}
-                        </small>
-
-                    </div>
+            let statusText =
+                "Unpaid";
 
 
-                    <div class="actions">
-
-                        ${
-                            balance > 0
-                            ?
-                            `
-                            <button
-                                class="btn pay"
-                                onclick="openPayment('${item.student_id}')"
-                            >
-                                + Payment
-                            </button>
-                            `
-                            :
-                            ""
-                        }
+            if (status === "paid")
+                statusText = "Paid";
 
 
-                        <button
-                            class="btn history"
-                            onclick="openHistory('${item.student_id}')"
-                        >
-                            History
-                        </button>
+            if (status === "partial")
+                statusText = "Partial";
 
 
-                        <button
-                            class="btn receipt"
-                            onclick="openReceipt('${item.student_id}')"
-                        >
-                            Receipt
-                        </button>
+            const tr =
+                document.createElement(
+                    "tr"
+                );
 
-                    </div>
 
-                </div>
+            tr.innerHTML = `
+
+                <td>
+
+                    <strong>
+                        ${escapeHtml(
+                            student.full_name
+                        )}
+                    </strong>
+
+                </td>
+
+
+                <td>
+                    ${escapeHtml(
+                        student.batch
+                    )}
+                </td>
+
+
+                <td>
+                    ${escapeHtml(
+                        student.instrument
+                    )}
+                </td>
+
+
+                <td>
+                    ${money(fee)}
+                </td>
+
+
+                <td>
+                    ${money(paid)}
+                </td>
+
+
+                <td>
+                    ${money(balance)}
+                </td>
+
+
+                <td
+                    class="${status}">
+
+                    ${statusText}
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="btn pay-btn"
+                        onclick="openPayment('${student.id}')">
+
+                        Pay
+
+                    </button>
+
+
+                    <button
+                        class="btn history-btn"
+                        onclick="openHistory('${student.id}')">
+
+                        History
+
+                    </button>
+
+
+                    <button
+                        class="btn receipt-btn"
+                        onclick="openReceipt('${student.id}')">
+
+                        Receipt
+
+                    </button>
+
+                </td>
 
             `;
 
-        }).join("");
+
+            tbody.appendChild(tr);
+
+        }
+    );
 
 }
 
 
-/* =========================
-   PAYMENT
-========================= */
+// =====================================================
+// OPEN PAYMENT
+// =====================================================
 
-function openPayment(studentId){
+function openPayment(studentId) {
 
     selectedStudent =
-        feesData.find(
-            x => x.student_id === studentId
+        allStudents.find(
+            student =>
+                String(
+                    student.id
+                ) ===
+                String(studentId)
         );
 
-    if(!selectedStudent) return;
+
+    if (!selectedStudent) {
+
+        alert(
+            "Student not found."
+        );
+
+        return;
+
+    }
 
 
     document.getElementById(
@@ -1085,42 +1650,58 @@ function openPayment(studentId){
     ).value = "";
 
 
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-
     document.getElementById(
         "paymentDate"
-    ).value = today;
+    ).value =
+        todayInput();
+
+
+    document.getElementById(
+        "paymentMode"
+    ).value = "";
 
 
     document.getElementById(
         "paymentModal"
-    ).style.display = "flex";
+    ).style.display =
+        "flex";
 
 }
 
 
-function closePayment(){
+// =====================================================
+// CLOSE PAYMENT
+// =====================================================
+
+function closePayment() {
 
     document.getElementById(
         "paymentModal"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
-    selectedStudent = null;
+
+    selectedStudent =
+        null;
 
 }
 
 
-/* =========================
-   SAVE PAYMENT
-========================= */
+// =====================================================
+// SAVE PAYMENT
+// =====================================================
 
-async function savePayment(){
+async function savePayment() {
 
-    if(!selectedStudent) return;
+    if (!selectedStudent) {
+
+        alert(
+            "Student not selected."
+        );
+
+        return;
+
+    }
 
 
     const amount =
@@ -1137,33 +1718,19 @@ async function savePayment(){
         ).value;
 
 
-    if(!amount || amount <= 0){
-
-        alert("Enter valid payment amount.");
-
-        return;
-
-    }
+    const mode =
+        document.getElementById(
+            "paymentMode"
+        ).value;
 
 
-    const monthly =
-        Number(
-            selectedStudent.monthly_amount || 0
-        );
-
-    const paid =
-        Number(
-            selectedStudent.paid_amount || 0
-        );
-
-    const balance =
-        monthly - paid;
-
-
-    if(amount > balance){
+    if (
+        !amount ||
+        amount <= 0
+    ) {
 
         alert(
-            "Payment cannot be greater than balance."
+            "Please enter payment amount."
         );
 
         return;
@@ -1171,508 +1738,478 @@ async function savePayment(){
     }
 
 
-    if(!date){
+    if (!date) {
 
-        alert("Select payment date.");
+        alert(
+            "Please select payment date."
+        );
 
         return;
 
     }
 
 
-    try{
+    if (!mode) {
 
-        let result;
+        alert(
+            "Please select payment mode."
+        );
 
+        return;
 
-        if(isStaff){
-
-            result =
-                await supabaseClient.rpc(
-                    "staff_make_fee_payment",
-                    {
-                        p_staff_id:
-                            staffInfo.id,
-
-                        p_student_id:
-                            selectedStudent.student_id,
-
-                        p_month:
-                            Number(
-                                document.getElementById(
-                                    "month"
-                                ).value
-                            ),
-
-                        p_year:
-                            Number(
-                                document.getElementById(
-                                    "year"
-                                ).value
-                            ),
-
-                        p_amount:
-                            amount,
-
-                        p_payment_date:
-                            date + "T12:00:00"
-                    }
-                );
-
-        }
-        else{
-
-            const userResult =
-                await supabaseClient.auth.getUser();
-
-            const user =
-                userResult.data.user;
+    }
 
 
-            let feeId =
-                selectedStudent.fee_id;
+    try {
+
+        let feeId =
+            selectedStudent.fee_id;
 
 
-            if(!feeId){
+        // =================================================
+        // CREATE FEE RECORD IF NOT EXIST
+        // =================================================
 
-                const insertFee =
+        if (!feeId) {
+
+            if (currentMode === "owner") {
+
+                const {
+                    data,
+                    error
+                } =
                     await supabaseClient
                         .from("fees")
                         .insert({
 
-                            owner_id: user.id,
+                            owner_id:
+                                user.id,
 
                             student_id:
-                                selectedStudent.student_id,
+                                selectedStudent.id,
 
-                            fees_month:
+                            amount:
                                 Number(
-                                    document.getElementById(
-                                        "month"
-                                    ).value
+                                    selectedStudent.monthly_fee ||
+                                    0
                                 ),
 
-                            fees_year:
-                                Number(
-                                    document.getElementById(
-                                        "year"
-                                    ).value
-                                ),
+                            paid_amount:
+                                0,
 
-                            monthly_amount:
-                                monthly,
-
-                            paid_amount:0,
-
-                            status:"pending"
+                            status:
+                                "unpaid"
 
                         })
                         .select()
                         .single();
 
 
-                if(insertFee.error){
-
-                    alert(
-                        "❌ Could not create fee record."
-                    );
-
-                    return;
-
-                }
+                if (error)
+                    throw error;
 
 
                 feeId =
-                    insertFee.data.id;
+                    data.id;
+
+
+                selectedStudent.fee_id =
+                    feeId;
+
+            }
+            else {
+
+                alert(
+                    "Fee record not found for this student."
+                );
+
+                return;
 
             }
 
-
-            const newPaid =
-                paid + amount;
+        }
 
 
-            const newStatus =
-                newPaid >= monthly
-                ? "paid"
-                : "partial";
+        // =================================================
+        // OWNER PAYMENT
+        // =================================================
 
+        if (
+            currentMode ===
+            "owner"
+        ) {
 
-            const payment =
+            const {
+                error
+            } =
                 await supabaseClient
-                    .from("fee_payments")
+                    .from(
+                        "fee_payments"
+                    )
                     .insert({
 
-                        owner_id:user.id,
+                        owner_id:
+                            user.id,
 
-                        fee_id:feeId,
+                        fee_id:
+                            feeId,
 
                         student_id:
-                            selectedStudent.student_id,
+                            selectedStudent.id,
 
-                        amount:amount,
+                        amount:
+                            amount,
 
                         payment_date:
-                            date + "T12:00:00"
+                            date +
+                            "T12:00:00",
+
+                        payment_mode:
+                            mode
 
                     });
 
 
-            if(payment.error){
-
-                alert("❌ Payment failed.");
-
-                return;
-
-            }
-
-
-            const update =
-                await supabaseClient
-                    .from("fees")
-                    .update({
-
-                        paid_amount:newPaid,
-
-                        status:newStatus
-
-                    })
-                    .eq("id",feeId);
-
-
-            if(update.error){
-
-                alert(
-                    "❌ Fee update failed."
-                );
-
-                return;
-
-            }
+            if (error)
+                throw error;
 
         }
 
 
-        if(result?.error){
+        // =================================================
+        // STAFF PAYMENT
+        // =================================================
 
-            console.error(result.error);
+        else {
 
-            alert("❌ Payment failed.");
-
-            return;
-
-        }
-
-
-        if(
-            isStaff &&
-            result?.data &&
-            !result.data.success
-        ){
-
-            alert(
-                "❌ " +
-                (
-                    result.data.message ||
-                    "Payment failed"
-                )
-            );
-
-            return;
-
-        }
-
-
-        alert("✅ Payment saved successfully.");
-
-        closePayment();
-
-        await loadFees();
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert("❌ Something went wrong.");
-
-    }
-
-}
-
-
-/* =========================
-   HISTORY
-========================= */
-
-async function openHistory(studentId){
-
-    selectedStudent =
-        feesData.find(
-            x => x.student_id === studentId
-        );
-
-
-    if(!selectedStudent) return;
-
-
-    document.getElementById(
-        "historyStudent"
-    ).textContent =
-        selectedStudent.full_name;
-
-
-    document.getElementById(
-        "historyList"
-    ).innerHTML =
-        "Loading...";
-
-
-    document.getElementById(
-        "historyModal"
-    ).style.display = "flex";
-
-
-    try{
-
-        const month =
-            Number(
-                document.getElementById("month").value
-            );
-
-        const year =
-            Number(
-                document.getElementById("year").value
-            );
-
-
-        if(isStaff){
-
-            const result =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient.rpc(
-                    "staff_get_payment_history",
+                    "staff_make_fee_payment",
                     {
+
                         p_staff_id:
                             staffInfo.id,
 
                         p_student_id:
-                            studentId,
+                            selectedStudent.id,
 
-                        p_month:month,
+                        p_amount:
+                            amount,
 
-                        p_year:year
+                        p_payment_date:
+                            date +
+                            "T12:00:00",
+
+                        p_payment_mode:
+                            mode
+
                     }
                 );
 
 
-            if(result.error){
-
-                throw result.error;
-
-            }
+            if (error)
+                throw error;
 
 
-            if(!result.data.success){
+            if (
+                data &&
+                data.success === false
+            ) {
 
                 throw new Error(
-                    result.data.message
+                    data.message ||
+                    "Payment failed."
                 );
 
             }
 
-
-            renderHistory(
-                result.data.payments || []
-            );
-
         }
-        else{
-
-            const result =
-                await supabaseClient
-                    .from("fee_payments")
-                    .select("*")
-                    .eq(
-                        "student_id",
-                        studentId
-                    )
-                    .order(
-                        "payment_date",
-                        {
-                            ascending:false
-                        }
-                    );
 
 
-            if(result.error){
-
-                throw result.error;
-
-            }
+        alert(
+            "Payment saved successfully!"
+        );
 
 
-            renderHistory(
-                result.data || []
-            );
+        closePayment();
 
-        }
+
+        await loadStudents();
 
     }
-    catch(error){
+    catch (error) {
 
-        console.error(error);
+        console.error(
+            "Payment Error:",
+            error
+        );
 
-        document.getElementById(
-            "historyList"
-        ).innerHTML =
-            "❌ Could not load history.";
+
+        alert(
+            "Payment failed:\n\n" +
+            (
+                error.message ||
+                error
+            )
+        );
 
     }
 
 }
 
 
-function renderHistory(payments){
+// =====================================================
+// HISTORY
+// =====================================================
 
-    const box =
-        document.getElementById(
-            "historyList"
+async function openHistory(
+    studentId
+) {
+
+    const student =
+        allStudents.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(studentId)
         );
 
 
-    if(!payments.length){
+    if (!student) {
 
-        box.innerHTML =
-            `<div class="empty">No payments yet.</div>`;
+        alert(
+            "Student not found."
+        );
 
         return;
 
     }
 
 
-    box.innerHTML =
-        payments.map(payment => {
-
-            const date =
-                new Date(
-                    payment.payment_date
-                ).toLocaleDateString(
-                    "en-IN"
-                );
+    document.getElementById(
+        "historyStudent"
+    ).textContent =
+        student.full_name;
 
 
-            return `
+    document.getElementById(
+        "historyContent"
+    ).innerHTML =
+        "Loading...";
 
-                <div class="history-item">
-
-                    <span>
-                        📅 ${date}
-                    </span>
-
-                    <strong>
-                        ${money(payment.amount)}
-                    </strong>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-}
-
-
-function closeHistory(){
 
     document.getElementById(
         "historyModal"
-    ).style.display = "none";
+    ).style.display =
+        "flex";
+
+
+    try {
+
+        let payments = [];
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "fee_payments"
+                )
+                .select("*")
+                .eq(
+                    "student_id",
+                    student.id
+                )
+                .order(
+                    "payment_date",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (error)
+            throw error;
+
+
+        payments =
+            data || [];
+
+
+        renderHistory(
+            payments
+        );
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "historyContent"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                Unable to load payment history.
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message || ""
+                )}
+
+            </div>
+
+        `;
+
+    }
 
 }
 
 
-/* =========================
-   RECEIPT
-========================= */
+// =====================================================
+// RENDER HISTORY
+// =====================================================
 
-function openReceipt(studentId){
+function renderHistory(
+    payments
+) {
 
-    const month =
-        Number(
-            document.getElementById("month").value
-        );
-
-    const year =
-        Number(
-            document.getElementById("year").value
+    const box =
+        document.getElementById(
+            "historyContent"
         );
 
 
-    if(isStaff){
+    if (!payments.length) {
 
-        window.location.href =
-            `fee-receipt.html?student=${encodeURIComponent(studentId)}&month=${month}&year=${year}&staff=1`;
+        box.innerHTML = `
+
+            <div class="empty">
+
+                No payment history found.
+
+            </div>
+
+        `;
+
+        return;
 
     }
-    else{
 
-        window.location.href =
-            `fee-receipt.html?student=${encodeURIComponent(studentId)}&month=${month}&year=${year}`;
 
-    }
+    box.innerHTML = "";
+
+
+    payments.forEach(
+        payment => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "history-item";
+
+
+            div.innerHTML = `
+
+                <strong>
+                    ${money(
+                        payment.amount
+                    )}
+                </strong>
+
+                <br><br>
+
+                📅 Payment Date:
+                ${escapeHtml(
+                    formatDate(
+                        payment.payment_date
+                    )
+                )}
+
+                <br>
+
+                💳 Payment Mode:
+                <strong>
+                    ${escapeHtml(
+                        payment.payment_mode ||
+                        "Other"
+                    )}
+                </strong>
+
+            `;
+
+
+            box.appendChild(
+                div
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================
-   FILTER EVENTS
-========================= */
+// =====================================================
+// CLOSE HISTORY
+// =====================================================
 
-document
-    .getElementById("month")
-    .addEventListener(
-        "change",
-        loadFees
-    );
+function closeHistory() {
 
+    document.getElementById(
+        "historyModal"
+    ).style.display =
+        "none";
 
-document
-    .getElementById("year")
-    .addEventListener(
-        "change",
-        loadFees
-    );
+}
 
 
-document
-    .getElementById("batch")
-    .addEventListener(
-        "change",
-        renderFees
-    );
+// =====================================================
+// RECEIPT
+// =====================================================
+
+function openReceipt(
+    studentId
+) {
+
+    window.location.href =
+        "fee-receipt.html?student=" +
+        encodeURIComponent(
+            studentId
+        );
+
+}
 
 
-document
-    .getElementById("search")
-    .addEventListener(
-        "input",
-        renderFees
-    );
+// =====================================================
+// BACK
+// =====================================================
 
+function goBack() {
 
-/* =========================
-   BACK
-========================= */
-
-function goBack(){
-
-    if(isStaff){
+    if (
+        currentMode ===
+        "staff"
+    ) {
 
         window.location.href =
             "staff-dashboard.html";
 
     }
-    else{
+    else {
 
         window.location.href =
             "dashboard.html";
@@ -1682,32 +2219,189 @@ function goBack(){
 }
 
 
-/* =========================
-   HELPERS
-========================= */
+// =====================================================
+// TODAY
+// =====================================================
 
-function money(value){
+function todayInput() {
+
+    const d =
+        new Date();
+
+
+    const year =
+        d.getFullYear();
+
+
+    const month =
+        String(
+            d.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+}
+
+
+// =====================================================
+// MONEY
+// =====================================================
+
+function money(value) {
 
     return "₹" +
-        Number(value || 0)
-            .toLocaleString("en-IN",{
-                minimumFractionDigits:0,
-                maximumFractionDigits:2
-            });
+        Number(
+            value || 0
+        ).toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits:
+                    0,
+
+                maximumFractionDigits:
+                    2
+            }
+        );
 
 }
 
 
-function escapeHtml(value){
+// =====================================================
+// DATE
+// =====================================================
 
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+function formatDate(
+    value
+) {
+
+    if (!value)
+        return "-";
+
+
+    const d =
+        new Date(value);
+
+
+    if (
+        isNaN(
+            d.getTime()
+        )
+    )
+        return "-";
+
+
+    return d.toLocaleDateString(
+        "en-IN",
+        {
+            day:
+                "2-digit",
+
+            month:
+                "2-digit",
+
+            year:
+                "numeric"
+        }
+    );
 
 }
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+// =====================================================
+// CLOSE MODAL BY CLICKING OUTSIDE
+// =====================================================
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        const paymentModal =
+            document.getElementById(
+                "paymentModal"
+            );
+
+
+        const historyModal =
+            document.getElementById(
+                "historyModal"
+            );
+
+
+        if (
+            event.target ===
+            paymentModal
+        ) {
+
+            closePayment();
+
+        }
+
+
+        if (
+            event.target ===
+            historyModal
+        ) {
+
+            closeHistory();
+
+        }
+
+    }
+);
 
 </script>
 
