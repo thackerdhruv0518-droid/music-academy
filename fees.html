@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Fees - Music Academy</title>
@@ -11,6 +13,7 @@
     <script src="supabase.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -263,6 +266,11 @@
             color: #777;
         }
 
+        .error-box {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
         @media(max-width: 700px) {
 
             .summary {
@@ -281,11 +289,16 @@
                 position: static;
                 margin-bottom: 10px;
             }
+
         }
+
     </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -304,7 +317,9 @@
 </header>
 
 
+
 <div class="container">
+
 
     <!-- FILTERS -->
 
@@ -344,6 +359,7 @@
         </div>
 
     </div>
+
 
 
     <!-- SUMMARY -->
@@ -389,6 +405,7 @@
         </div>
 
     </div>
+
 
 
     <!-- TABLE -->
@@ -459,6 +476,7 @@
     </div>
 
 </div>
+
 
 
 <!-- ================= PAYMENT MODAL ================= -->
@@ -568,6 +586,7 @@
 </div>
 
 
+
 <!-- ================= HISTORY MODAL ================= -->
 
 <div
@@ -608,7 +627,9 @@
 </div>
 
 
+
 <script>
+
 
 let allStudents = [];
 
@@ -619,6 +640,7 @@ let user = null;
 let staffInfo = null;
 
 let currentMode = "owner";
+
 
 
 // =====================================================
@@ -633,6 +655,7 @@ document.addEventListener(
 
     }
 );
+
 
 
 // =====================================================
@@ -698,7 +721,10 @@ async function detectLogin() {
     }
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Login Error:",
+            error
+        );
 
         alert(
             "Login information error."
@@ -710,6 +736,7 @@ async function detectLogin() {
     }
 
 }
+
 
 
 // =====================================================
@@ -729,7 +756,8 @@ async function loadOwnerBranding() {
         await supabaseClient.rpc(
             "get_owner_branding",
             {
-                p_email: user.email
+                p_email:
+                    user.email
             }
         );
 
@@ -745,6 +773,7 @@ async function loadOwnerBranding() {
     }
 
 }
+
 
 
 // =====================================================
@@ -786,6 +815,7 @@ async function loadStaffBranding() {
 }
 
 
+
 // =====================================================
 // OWNER BATCHES
 // =====================================================
@@ -799,9 +829,11 @@ async function loadBatches() {
 
 
     select.innerHTML =
-        `<option value="">
+        `
+        <option value="">
             All Batches
-        </option>`;
+        </option>
+        `;
 
 
     const {
@@ -820,82 +852,10 @@ async function loadBatches() {
 
     if (error) {
 
-        console.error(error);
-
-        return;
-
-    }
-
-
-    (data || []).forEach(
-        batch => {
-
-            const name =
-                batch.name ||
-                batch.batch_name;
-
-
-            if (!name)
-                return;
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                name;
-
-            option.textContent =
-                name;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// STAFF BATCHES
-// =====================================================
-
-async function loadStaffBatches() {
-
-    const select =
-        document.getElementById(
-            "batchFilter"
+        console.error(
+            "Batch Error:",
+            error
         );
-
-
-    select.innerHTML =
-        `<option value="">
-            All Batches
-        </option>`;
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.rpc(
-            "staff_get_batches",
-            {
-                p_staff_id:
-                    staffInfo.id
-            }
-        );
-
-
-    if (error) {
-
-        console.error(error);
 
         return;
 
@@ -938,6 +898,89 @@ async function loadStaffBatches() {
 }
 
 
+
+// =====================================================
+// STAFF BATCHES
+// =====================================================
+
+async function loadStaffBatches() {
+
+    const select =
+        document.getElementById(
+            "batchFilter"
+        );
+
+
+    select.innerHTML =
+        `
+        <option value="">
+            All Batches
+        </option>
+        `;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.rpc(
+            "staff_get_batches",
+            {
+                p_staff_id:
+                    staffInfo.id
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Staff Batch Error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    (data || []).forEach(
+        batch => {
+
+            const name =
+                batch.name ||
+                batch.batch_name ||
+                batch.batch;
+
+
+            if (!name)
+                return;
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                name;
+
+            option.textContent =
+                name;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+
 // =====================================================
 // LOAD STUDENTS
 // =====================================================
@@ -946,92 +989,7 @@ async function loadStudents() {
 
     try {
 
-        if (currentMode === "staff") {
-
-            /*
-             * Staff student RPC
-             */
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.rpc(
-                    "staff_get_students",
-                    {
-                        p_staff_id:
-                            staffInfo.id
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "Staff student error:",
-                    error
-                );
-
-                /*
-                 * If staff RPC does not exist,
-                 * stop here.
-                 */
-
-                throw error;
-
-            }
-
-
-            allStudents =
-                (data || []).map(
-                    student => {
-
-                        return {
-
-                            id:
-                                student.id ||
-                                student.student_id,
-
-                            full_name:
-                                student.full_name ||
-                                student.name ||
-                                student.student_name,
-
-                            mobile_number:
-                                student.mobile_number ||
-                                student.mobile ||
-                                "",
-
-                            instrument:
-                                student.instrument ||
-                                "",
-
-                            batch:
-                                student.batch ||
-                                "",
-
-                            monthly_fee:
-                                Number(
-                                    student.monthly_fee ||
-                                    student.fee_amount ||
-                                    student.amount ||
-                                    0
-                                ),
-
-                            paid_amount: 0
-
-                        };
-
-                    }
-                );
-
-
-        }
-        else {
-
-            /*
-             * OWNER STUDENTS
-             */
+        if (currentMode === "owner") {
 
             const {
                 data,
@@ -1051,6 +1009,12 @@ async function loadStudents() {
 
             if (error)
                 throw error;
+
+
+            console.log(
+                "OWNER STUDENTS:",
+                data
+            );
 
 
             allStudents =
@@ -1080,8 +1044,14 @@ async function loadStudents() {
                                 student.batch ||
                                 "",
 
+                            /*
+                             IMPORTANT:
+                             Actual student fee column
+                             */
+
                             monthly_fee:
                                 Number(
+                                    student.fees_amount ||
                                     student.monthly_fee ||
                                     student.fee_amount ||
                                     student.fees ||
@@ -1089,7 +1059,93 @@ async function loadStudents() {
                                     0
                                 ),
 
-                            paid_amount: 0
+                            paid_amount:
+                                0,
+
+                            fee_id:
+                                null,
+
+                            status:
+                                "unpaid"
+
+                        };
+
+                    }
+                );
+
+        }
+        else {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "staff_get_students",
+                    {
+                        p_staff_id:
+                            staffInfo.id
+                    }
+                );
+
+
+            if (error)
+                throw error;
+
+
+            console.log(
+                "STAFF STUDENTS:",
+                data
+            );
+
+
+            allStudents =
+                (data || []).map(
+                    student => {
+
+                        return {
+
+                            id:
+                                student.id ||
+                                student.student_id,
+
+                            full_name:
+                                student.full_name ||
+                                student.name ||
+                                student.student_name ||
+                                "",
+
+                            mobile_number:
+                                student.mobile_number ||
+                                student.mobile ||
+                                "",
+
+                            instrument:
+                                student.instrument ||
+                                "",
+
+                            batch:
+                                student.batch ||
+                                "",
+
+                            monthly_fee:
+                                Number(
+                                    student.fees_amount ||
+                                    student.monthly_fee ||
+                                    student.fee_amount ||
+                                    student.amount ||
+                                    student.fees ||
+                                    0
+                                ),
+
+                            paid_amount:
+                                0,
+
+                            fee_id:
+                                null,
+
+                            status:
+                                "unpaid"
 
                         };
 
@@ -1099,23 +1155,32 @@ async function loadStudents() {
         }
 
 
+        console.log(
+            "FINAL STUDENTS:",
+            allStudents
+        );
+
+
         await loadFeeRecords();
 
     }
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Student Loading Error:",
+            error
+        );
 
 
         document.getElementById(
             "feesTableBody"
-        ).innerHTML = `
-
+        ).innerHTML =
+            `
             <tr>
 
                 <td
                     colspan="8"
-                    class="empty">
+                    class="empty error-box">
 
                     Error loading students.
 
@@ -1128,12 +1193,12 @@ async function loadStudents() {
                 </td>
 
             </tr>
-
-        `;
+            `;
 
     }
 
 }
+
 
 
 // =====================================================
@@ -1156,6 +1221,10 @@ async function loadFeeRecords() {
         let fees = [];
 
 
+        // =================================================
+        // OWNER
+        // =================================================
+
         if (currentMode === "owner") {
 
             const {
@@ -1175,15 +1244,17 @@ async function loadFeeRecords() {
                 throw error;
 
 
-            fees = data || [];
+            fees =
+                data || [];
 
         }
-        else {
 
-            /*
-             * Staff uses same owner fee records
-             * through RPC if available.
-             */
+
+        // =================================================
+        // STAFF
+        // =================================================
+
+        else {
 
             const {
                 data,
@@ -1198,13 +1269,22 @@ async function loadFeeRecords() {
                 );
 
 
-            if (!error && data) {
+            if (error)
+                throw error;
 
-                fees = data || [];
 
-            }
+            fees =
+                Array.isArray(data)
+                    ? data
+                    : [];
 
         }
+
+
+        console.log(
+            "FEE RECORDS:",
+            fees
+        );
 
 
         const feeMap = {};
@@ -1213,73 +1293,300 @@ async function loadFeeRecords() {
         fees.forEach(
             fee => {
 
-                feeMap[
+                const studentId =
                     String(
                         fee.student_id
-                    )
-                ] = fee;
+                    );
+
+
+                /*
+                 If multiple fee records exist,
+                 keep the latest one.
+                 */
+
+                if (
+                    !feeMap[studentId]
+                ) {
+
+                    feeMap[studentId] =
+                        fee;
+
+                }
 
             }
         );
 
 
-        allStudents =
-            allStudents.map(
-                student => {
+        // =================================================
+        // OWNER ACTUAL PAYMENT TOTAL
+        // =================================================
 
-                    const fee =
-                        feeMap[
-                            String(
-                                student.id
-                            )
-                        ];
+        if (currentMode === "owner") {
+
+            const studentIds =
+                allStudents.map(
+                    student =>
+                        student.id
+                );
 
 
-                    if (fee) {
+            const {
+                data:
+                    payments,
+                error:
+                    paymentError
+            } =
+                await supabaseClient
+                    .from("fee_payments")
+                    .select(
+                        "fee_id, student_id, amount"
+                    )
+                    .in(
+                        "student_id",
+                        studentIds
+                    );
+
+
+            if (paymentError)
+                throw paymentError;
+
+
+            console.log(
+                "ACTUAL PAYMENTS:",
+                payments
+            );
+
+
+            const paymentTotals = {};
+
+
+            (payments || []).forEach(
+                payment => {
+
+                    const studentId =
+                        String(
+                            payment.student_id
+                        );
+
+
+                    if (
+                        !paymentTotals[
+                            studentId
+                        ]
+                    ) {
+
+                        paymentTotals[
+                            studentId
+                        ] = 0;
+
+                    }
+
+
+                    paymentTotals[
+                        studentId
+                    ] +=
+                        Number(
+                            payment.amount || 0
+                        );
+
+                }
+            );
+
+
+            allStudents =
+                allStudents.map(
+                    student => {
+
+                        const fee =
+                            feeMap[
+                                String(
+                                    student.id
+                                )
+                            ];
+
+
+                        const actualPaid =
+                            Number(
+                                paymentTotals[
+                                    String(
+                                        student.id
+                                    )
+                                ] || 0
+                            );
+
+
+                        let monthlyFee =
+                            Number(
+                                student.monthly_fee ||
+                                0
+                            );
+
+
+                        /*
+                         If fee record exists and has amount,
+                         use it only if student fee is empty.
+                         */
+
+                        if (
+                            monthlyFee <= 0 &&
+                            fee
+                        ) {
+
+                            monthlyFee =
+                                Number(
+                                    fee.amount || 0
+                                );
+
+                        }
+
+
+                        let status =
+                            "unpaid";
+
+
+                        if (
+                            monthlyFee > 0 &&
+                            actualPaid >= monthlyFee
+                        ) {
+
+                            status =
+                                "paid";
+
+                        }
+                        else if (
+                            actualPaid > 0
+                        ) {
+
+                            status =
+                                "partial";
+
+                        }
+
 
                         return {
 
                             ...student,
 
                             fee_id:
-                                fee.id,
+                                fee
+                                    ? fee.id
+                                    : null,
 
                             monthly_fee:
-                                Number(
-                                    fee.amount ||
-                                    student.monthly_fee ||
-                                    0
-                                ),
+                                monthlyFee,
 
                             paid_amount:
-                                Number(
-                                    fee.paid_amount ||
-                                    0
-                                ),
+                                actualPaid,
 
                             status:
-                                fee.status ||
-                                "unpaid"
+                                status
 
                         };
 
                     }
+                );
+
+        }
 
 
-                    return {
+        // =================================================
+        // STAFF
+        // =================================================
 
-                        ...student,
+        else {
 
-                        fee_id: null,
+            allStudents =
+                allStudents.map(
+                    student => {
 
-                        paid_amount: 0,
+                        const fee =
+                            feeMap[
+                                String(
+                                    student.id
+                                )
+                            ];
 
-                        status: "unpaid"
 
-                    };
+                        let monthlyFee =
+                            Number(
+                                student.monthly_fee ||
+                                0
+                            );
 
-                }
-            );
+
+                        if (
+                            monthlyFee <= 0 &&
+                            fee
+                        ) {
+
+                            monthlyFee =
+                                Number(
+                                    fee.amount || 0
+                                );
+
+                        }
+
+
+                        const paid =
+                            Number(
+                                fee?.paid_amount ||
+                                0
+                            );
+
+
+                        let status =
+                            "unpaid";
+
+
+                        if (
+                            monthlyFee > 0 &&
+                            paid >= monthlyFee
+                        ) {
+
+                            status =
+                                "paid";
+
+                        }
+                        else if (
+                            paid > 0
+                        ) {
+
+                            status =
+                                "partial";
+
+                        }
+
+
+                        return {
+
+                            ...student,
+
+                            fee_id:
+                                fee
+                                    ? fee.id
+                                    : null,
+
+                            monthly_fee:
+                                monthlyFee,
+
+                            paid_amount:
+                                paid,
+
+                            status:
+                                status
+
+                        };
+
+                    }
+                );
+
+        }
+
+
+        console.log(
+            "FINAL FEE STUDENTS:",
+            allStudents
+        );
 
 
         renderTable();
@@ -1287,17 +1594,21 @@ async function loadFeeRecords() {
     }
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Fee Loading Error:",
+            error
+        );
+
 
         document.getElementById(
             "feesTableBody"
-        ).innerHTML = `
-
+        ).innerHTML =
+            `
             <tr>
 
                 <td
                     colspan="8"
-                    class="empty">
+                    class="empty error-box">
 
                     Error loading fees.
 
@@ -1310,12 +1621,12 @@ async function loadFeeRecords() {
                 </td>
 
             </tr>
-
-        `;
+            `;
 
     }
 
 }
+
 
 
 // =====================================================
@@ -1369,8 +1680,10 @@ function renderTable() {
                     String(batch);
 
 
-                return searchOK &&
-                       batchOK;
+                return (
+                    searchOK &&
+                    batchOK
+                );
 
             }
         );
@@ -1389,11 +1702,13 @@ function renderTable() {
                 student
             ) => {
 
-                return total +
+                return (
+                    total +
                     Number(
                         student.monthly_fee ||
                         0
-                    );
+                    )
+                );
 
             },
             0
@@ -1407,11 +1722,13 @@ function renderTable() {
                 student
             ) => {
 
-                return total +
+                return (
+                    total +
                     Number(
                         student.paid_amount ||
                         0
-                    );
+                    )
+                );
 
             },
             0
@@ -1421,19 +1738,23 @@ function renderTable() {
     document.getElementById(
         "totalFees"
     ).textContent =
-        money(totalFees);
+        money(
+            totalFees
+        );
 
 
     document.getElementById(
         "totalReceived"
     ).textContent =
-        money(totalReceived);
+        money(
+            totalReceived
+        );
 
 
     if (!rows.length) {
 
-        tbody.innerHTML = `
-
+        tbody.innerHTML =
+            `
             <tr>
 
                 <td
@@ -1445,8 +1766,7 @@ function renderTable() {
                 </td>
 
             </tr>
-
-        `;
+            `;
 
         return;
 
@@ -1480,13 +1800,17 @@ function renderTable() {
                 );
 
 
+            /*
+             IMPORTANT STATUS FIX
+             */
+
             let status =
                 "unpaid";
 
 
             if (
-                paid >= fee &&
-                fee > 0
+                fee > 0 &&
+                paid >= fee
             ) {
 
                 status =
@@ -1507,12 +1831,26 @@ function renderTable() {
                 "Unpaid";
 
 
-            if (status === "paid")
-                statusText = "Paid";
+            if (
+                status ===
+                "paid"
+            ) {
+
+                statusText =
+                    "Paid";
+
+            }
 
 
-            if (status === "partial")
-                statusText = "Partial";
+            if (
+                status ===
+                "partial"
+            ) {
+
+                statusText =
+                    "Partial";
+
+            }
 
 
             const tr =
@@ -1521,8 +1859,8 @@ function renderTable() {
                 );
 
 
-            tr.innerHTML = `
-
+            tr.innerHTML =
+                `
                 <td>
 
                     <strong>
@@ -1600,11 +1938,12 @@ function renderTable() {
                     </button>
 
                 </td>
+                `;
 
-            `;
 
-
-            tbody.appendChild(tr);
+            tbody.appendChild(
+                tr
+            );
 
         }
     );
@@ -1612,11 +1951,14 @@ function renderTable() {
 }
 
 
+
 // =====================================================
 // OPEN PAYMENT
 // =====================================================
 
-function openPayment(studentId) {
+function openPayment(
+    studentId
+) {
 
     selectedStudent =
         allStudents.find(
@@ -1624,7 +1966,9 @@ function openPayment(studentId) {
                 String(
                     student.id
                 ) ===
-                String(studentId)
+                String(
+                    studentId
+                )
         );
 
 
@@ -1669,6 +2013,7 @@ function openPayment(studentId) {
 }
 
 
+
 // =====================================================
 // CLOSE PAYMENT
 // =====================================================
@@ -1685,6 +2030,7 @@ function closePayment() {
         null;
 
 }
+
 
 
 // =====================================================
@@ -1767,65 +2113,75 @@ async function savePayment() {
 
 
         // =================================================
-        // CREATE FEE RECORD IF NOT EXIST
+        // OWNER CREATE FEE RECORD
         // =================================================
 
-        if (!feeId) {
+        if (
+            !feeId &&
+            currentMode ===
+            "owner"
+        ) {
 
-            if (currentMode === "owner") {
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("fees")
+                    .insert({
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("fees")
-                        .insert({
+                        owner_id:
+                            user.id,
 
-                            owner_id:
-                                user.id,
+                        student_id:
+                            selectedStudent.id,
 
-                            student_id:
-                                selectedStudent.id,
+                        amount:
+                            Number(
+                                selectedStudent.monthly_fee ||
+                                0
+                            ),
 
-                            amount:
-                                Number(
-                                    selectedStudent.monthly_fee ||
-                                    0
-                                ),
+                        paid_amount:
+                            0,
 
-                            paid_amount:
-                                0,
+                        status:
+                            "unpaid"
 
-                            status:
-                                "unpaid"
-
-                        })
-                        .select()
-                        .single();
-
-
-                if (error)
-                    throw error;
+                    })
+                    .select()
+                    .single();
 
 
-                feeId =
-                    data.id;
+            if (error)
+                throw error;
 
 
-                selectedStudent.fee_id =
-                    feeId;
+            feeId =
+                data.id;
 
-            }
-            else {
 
-                alert(
-                    "Fee record not found for this student."
-                );
+            selectedStudent.fee_id =
+                feeId;
 
-                return;
+        }
 
-            }
+
+        // =================================================
+        // STAFF MUST HAVE FEE RECORD
+        // =================================================
+
+        if (
+            !feeId &&
+            currentMode ===
+            "staff"
+        ) {
+
+            alert(
+                "Fee record not found for this student."
+            );
+
+            return;
 
         }
 
@@ -1937,6 +2293,11 @@ async function savePayment() {
         closePayment();
 
 
+        /*
+         IMPORTANT:
+         Reload everything fresh.
+         */
+
         await loadStudents();
 
     }
@@ -1961,8 +2322,9 @@ async function savePayment() {
 }
 
 
+
 // =====================================================
-// HISTORY
+// PAYMENT HISTORY
 // =====================================================
 
 async function openHistory(
@@ -1975,7 +2337,9 @@ async function openHistory(
                 String(
                     item.id
                 ) ===
-                String(studentId)
+                String(
+                    studentId
+                )
         );
 
 
@@ -2050,14 +2414,17 @@ async function openHistory(
     }
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "History Error:",
+            error
+        );
 
 
         document.getElementById(
             "historyContent"
-        ).innerHTML = `
-
-            <div class="empty">
+        ).innerHTML =
+            `
+            <div class="empty error-box">
 
                 Unable to load payment history.
 
@@ -2068,12 +2435,12 @@ async function openHistory(
                 )}
 
             </div>
-
-        `;
+            `;
 
     }
 
 }
+
 
 
 // =====================================================
@@ -2092,15 +2459,14 @@ function renderHistory(
 
     if (!payments.length) {
 
-        box.innerHTML = `
-
+        box.innerHTML =
+            `
             <div class="empty">
 
                 No payment history found.
 
             </div>
-
-        `;
+            `;
 
         return;
 
@@ -2123,8 +2489,8 @@ function renderHistory(
                 "history-item";
 
 
-            div.innerHTML = `
-
+            div.innerHTML =
+                `
                 <strong>
                     ${money(
                         payment.amount
@@ -2143,14 +2509,14 @@ function renderHistory(
                 <br>
 
                 💳 Payment Mode:
+
                 <strong>
                     ${escapeHtml(
                         payment.payment_mode ||
                         "Other"
                     )}
                 </strong>
-
-            `;
+                `;
 
 
             box.appendChild(
@@ -2161,6 +2527,7 @@ function renderHistory(
     );
 
 }
+
 
 
 // =====================================================
@@ -2175,6 +2542,7 @@ function closeHistory() {
         "none";
 
 }
+
 
 
 // =====================================================
@@ -2192,6 +2560,7 @@ function openReceipt(
         );
 
 }
+
 
 
 // =====================================================
@@ -2217,6 +2586,7 @@ function goBack() {
     }
 
 }
+
 
 
 // =====================================================
@@ -2262,11 +2632,14 @@ function todayInput() {
 }
 
 
+
 // =====================================================
 // MONEY
 // =====================================================
 
-function money(value) {
+function money(
+    value
+) {
 
     return "₹" +
         Number(
@@ -2283,6 +2656,7 @@ function money(value) {
         );
 
 }
+
 
 
 // =====================================================
@@ -2326,6 +2700,7 @@ function formatDate(
 }
 
 
+
 // =====================================================
 // ESCAPE HTML
 // =====================================================
@@ -2361,8 +2736,9 @@ function escapeHtml(
 }
 
 
+
 // =====================================================
-// CLOSE MODAL BY CLICKING OUTSIDE
+// CLOSE MODAL OUTSIDE CLICK
 // =====================================================
 
 window.addEventListener(
@@ -2403,7 +2779,9 @@ window.addEventListener(
     }
 );
 
+
 </script>
 
 </body>
+
 </html>
