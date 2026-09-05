@@ -756,8 +756,6 @@
 
             </div>
 
-            <!-- REPORTS -->
-
             <div
                 class="menu-item"
                 onclick="openPage('reports.html')">
@@ -1311,6 +1309,7 @@ async function loadAcademySettings() {
 
     }
 
+
     /* ACADEMY NAME */
 
     if (data.class_name) {
@@ -1322,6 +1321,7 @@ async function loadAcademySettings() {
 
     }
 
+
     /* OWNER NAME */
 
     if (data.owner_name) {
@@ -1332,6 +1332,7 @@ async function loadAcademySettings() {
                 data.owner_name;
 
     }
+
 
     /* LOGO */
 
@@ -1374,6 +1375,7 @@ async function loadDashboard() {
 
     }
 
+
     /* LOADING */
 
     document
@@ -1409,6 +1411,7 @@ async function loadDashboard() {
             year
         );
 
+
     document
         .getElementById("currentMonth")
         .textContent =
@@ -1416,12 +1419,14 @@ async function loadDashboard() {
             " " +
             year;
 
+
     document
         .getElementById("receivedLabel")
         .textContent =
             monthName +
             " " +
             year;
+
 
     document
         .getElementById("balanceLabel")
@@ -1449,8 +1454,10 @@ async function loadDashboard() {
             currentUser.id
         );
 
+
     let studentList =
         students || [];
+
 
     if (studentError) {
 
@@ -1486,6 +1493,7 @@ async function loadDashboard() {
         let totalMonthlyFees =
             0;
 
+
         studentList.forEach(
             function(student) {
 
@@ -1496,6 +1504,7 @@ async function loadDashboard() {
 
             }
         );
+
 
         document
             .getElementById("totalFees")
@@ -1508,39 +1517,93 @@ async function loadDashboard() {
 
 
     /* =====================================
-       GET CURRENT MONTH FEES
+       GET CURRENT MONTH PAYMENTS
+       
+       IMPORTANT:
+       Received amount comes from
+       fee_payments.amount
     ====================================== */
 
+
+    /*
+       First day of current month
+    */
+
+    const startDate =
+        new Date(
+            year,
+            month - 1,
+            1,
+            0,
+            0,
+            0,
+            0
+        );
+
+
+    /*
+       First day of next month
+    */
+
+    const endDate =
+        new Date(
+            year,
+            month,
+            1,
+            0,
+            0,
+            0,
+            0
+        );
+
+
+    const startISO =
+        startDate.toISOString();
+
+
+    const endISO =
+        endDate.toISOString();
+
+
+    console.log(
+        "Payment date range:",
+        startISO,
+        endISO
+    );
+
+
     const {
-        data: fees,
-        error: feeError
+        data: payments,
+        error: paymentError
     } =
     await supabaseClient
-        .from("fees")
+        .from("fee_payments")
         .select(
-            "monthly_amount,paid_amount"
+            "id,amount,payment_date,owner_id"
         )
         .eq(
             "owner_id",
             currentUser.id
         )
-        .eq(
-            "fees_month",
-            month
+        .gte(
+            "payment_date",
+            startISO
         )
-        .eq(
-            "fees_year",
-            year
+        .lt(
+            "payment_date",
+            endISO
         );
 
-    let feeList =
-        fees || [];
 
-    if (feeError) {
+    let paymentList =
+        payments || [];
+
+
+    if (paymentError) {
 
         console.error(
-            "Fees error:",
-            feeError
+            "Payments error:",
+            paymentError
         );
 
         document
@@ -1548,39 +1611,29 @@ async function loadDashboard() {
             .textContent =
                 "₹0";
 
-        document
-            .getElementById("balanceFees")
-            .textContent =
-                "₹0";
-
     }
 
     else {
 
-        let monthlyTotal =
-            0;
-
         let receivedTotal =
             0;
 
-        feeList.forEach(
-            function(fee) {
 
-                monthlyTotal +=
-                    Number(
-                        fee.monthly_amount
-                    ) || 0;
+        paymentList.forEach(
+            function(payment) {
 
                 receivedTotal +=
                     Number(
-                        fee.paid_amount
+                        payment.amount
                     ) || 0;
 
             }
         );
 
 
-        /* RECEIVED */
+        /* =================================
+           RECEIVED FEES
+        ================================= */
 
         document
             .getElementById("receivedFees")
@@ -1590,14 +1643,36 @@ async function loadDashboard() {
                 );
 
 
-        /* BALANCE */
+        /* =================================
+           BALANCE
+           
+           Total Monthly Fees
+           minus current month received
+        ================================= */
+
+        let totalMonthlyFees =
+            0;
+
+
+        studentList.forEach(
+            function(student) {
+
+                totalMonthlyFees +=
+                    Number(
+                        student.fees_amount
+                    ) || 0;
+
+            }
+        );
+
 
         const balanceTotal =
             Math.max(
-                monthlyTotal -
+                totalMonthlyFees -
                 receivedTotal,
                 0
             );
+
 
         document
             .getElementById("balanceFees")
@@ -1605,24 +1680,6 @@ async function loadDashboard() {
                 formatMoney(
                     balanceTotal
                 );
-
-
-        /*
-         * If current month fee records
-         * exist, Total Monthly Fees
-         * will use them.
-         */
-
-        if (monthlyTotal > 0) {
-
-            document
-                .getElementById("totalFees")
-                .textContent =
-                    formatMoney(
-                        monthlyTotal
-                    );
-
-        }
 
     }
 
