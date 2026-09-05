@@ -14,13 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
 
-
     <style>
 
         * {
             box-sizing: border-box;
         }
-
 
         body {
 
@@ -40,7 +38,6 @@
             padding: 20px;
 
         }
-
 
         .page {
 
@@ -62,10 +59,7 @@
 
         }
 
-
-        /* =================================
-           HEADER
-        ================================= */
+        /* HEADER */
 
         .header {
 
@@ -90,7 +84,6 @@
 
         }
 
-
         .header-left {
 
             display: flex;
@@ -100,7 +93,6 @@
             gap: 15px;
 
         }
-
 
         .header-icon {
 
@@ -123,7 +115,6 @@
 
         }
 
-
         .header h1 {
 
             margin: 0;
@@ -131,7 +122,6 @@
             font-size: 25px;
 
         }
-
 
         .header p {
 
@@ -142,7 +132,6 @@
             opacity: .8;
 
         }
-
 
         .back-btn {
 
@@ -163,7 +152,6 @@
 
         }
 
-
         .back-btn:hover {
 
             background:
@@ -171,10 +159,7 @@
 
         }
 
-
-        /* =================================
-           CONTENT
-        ================================= */
+        /* CONTENT */
 
         .content {
 
@@ -182,10 +167,7 @@
 
         }
 
-
-        /* =================================
-           REPORT CARDS
-        ================================= */
+        /* REPORT CARDS */
 
         .report-grid {
 
@@ -199,7 +181,6 @@
             margin-bottom: 25px;
 
         }
-
 
         .report-card {
 
@@ -217,7 +198,6 @@
 
         }
 
-
         .report-card:hover {
 
             transform:
@@ -228,7 +208,6 @@
                 rgba(0,0,0,.08);
 
         }
-
 
         .report-card.active {
 
@@ -243,7 +222,6 @@
 
         }
 
-
         .report-icon {
 
             font-size: 30px;
@@ -251,7 +229,6 @@
             margin-bottom: 12px;
 
         }
-
 
         .report-card h3 {
 
@@ -262,7 +239,6 @@
             font-size: 17px;
 
         }
-
 
         .report-card p {
 
@@ -276,10 +252,7 @@
 
         }
 
-
-        /* =================================
-           FILTER AREA
-        ================================= */
+        /* FILTER */
 
         .filter-box {
 
@@ -294,7 +267,6 @@
 
         }
 
-
         .filter-title {
 
             font-size: 16px;
@@ -306,7 +278,6 @@
             margin-bottom: 15px;
 
         }
-
 
         .filters {
 
@@ -321,7 +292,6 @@
 
         }
 
-
         .field label {
 
             display: block;
@@ -335,7 +305,6 @@
             margin-bottom: 6px;
 
         }
-
 
         .field input,
         .field select {
@@ -359,14 +328,12 @@
 
         }
 
-
         .field input:focus,
         .field select:focus {
 
             border-color: #7b2355;
 
         }
-
 
         .apply-btn {
 
@@ -393,10 +360,7 @@
 
         }
 
-
-        /* =================================
-           SUMMARY
-        ================================= */
+        /* SUMMARY */
 
         .summary {
 
@@ -411,7 +375,6 @@
 
         }
 
-
         .summary-card {
 
             padding: 18px;
@@ -420,13 +383,11 @@
 
         }
 
-
         .summary-card.students {
 
             background: #ede9fe;
 
         }
-
 
         .summary-card.amount {
 
@@ -434,13 +395,11 @@
 
         }
 
-
         .summary-card.balance {
 
             background: #fee2e2;
 
         }
-
 
         .summary-title {
 
@@ -454,7 +413,6 @@
 
         }
 
-
         .summary-value {
 
             font-size: 24px;
@@ -467,10 +425,7 @@
 
         }
 
-
-        /* =================================
-           TABLE
-        ================================= */
+        /* TABLE */
 
         .table-box {
 
@@ -484,7 +439,6 @@
             background: white;
 
         }
-
 
         .table-header {
 
@@ -503,7 +457,6 @@
 
         }
 
-
         .table-title {
 
             font-size: 17px;
@@ -513,7 +466,6 @@
             color: #222;
 
         }
-
 
         .print-btn {
 
@@ -535,13 +487,11 @@
 
         }
 
-
         .table-scroll {
 
             overflow-x: auto;
 
         }
-
 
         table {
 
@@ -552,7 +502,6 @@
             min-width: 650px;
 
         }
-
 
         th {
 
@@ -573,7 +522,6 @@
 
         }
 
-
         td {
 
             padding: 14px 15px;
@@ -587,14 +535,12 @@
 
         }
 
-
         tbody tr:hover {
 
             background:
                 #fcf9fd;
 
         }
-
 
         .student-name {
 
@@ -604,13 +550,11 @@
 
         }
 
-
         .amount {
 
             font-weight: bold;
 
         }
-
 
         .green {
 
@@ -618,13 +562,11 @@
 
         }
 
-
         .red {
 
             color: #c62828;
 
         }
-
 
         .status {
 
@@ -640,7 +582,6 @@
 
         }
 
-
         .status-paid {
 
             background: #dcfce7;
@@ -648,7 +589,6 @@
             color: #16803b;
 
         }
-
 
         .status-partial {
 
@@ -658,7 +598,6 @@
 
         }
 
-
         .status-unpaid {
 
             background: #fee2e2;
@@ -667,10 +606,7 @@
 
         }
 
-
-        /* =================================
-           EMPTY
-        ================================= */
+        /* EMPTY */
 
         .empty {
 
@@ -682,7 +618,6 @@
 
         }
 
-
         .empty-icon {
 
             font-size: 40px;
@@ -691,10 +626,7 @@
 
         }
 
-
-        /* =================================
-           LOADING
-        ================================= */
+        /* LOADING */
 
         .loading {
 
@@ -706,10 +638,7 @@
 
         }
 
-
-        /* =================================
-           MOBILE
-        ================================= */
+        /* MOBILE */
 
         @media(max-width: 900px) {
 
@@ -719,14 +648,12 @@
 
             }
 
-
             .filters {
 
                 grid-template-columns:
                     1fr 1fr;
 
             }
-
 
             .apply-btn {
 
@@ -736,7 +663,6 @@
 
         }
 
-
         @media(max-width: 600px) {
 
             body {
@@ -744,7 +670,6 @@
                 padding: 0;
 
             }
-
 
             .page {
 
@@ -754,13 +679,11 @@
 
             }
 
-
             .header {
 
                 padding: 20px;
 
             }
-
 
             .content {
 
@@ -768,13 +691,11 @@
 
             }
 
-
             .header h1 {
 
                 font-size: 21px;
 
             }
-
 
             .header-icon {
 
@@ -786,13 +707,11 @@
 
             }
 
-
             .filters {
 
                 grid-template-columns: 1fr;
 
             }
-
 
             .summary {
 
@@ -802,10 +721,7 @@
 
         }
 
-
-        /* =================================
-           PRINT
-        ================================= */
+        /* PRINT */
 
         @media print {
 
@@ -817,7 +733,6 @@
 
             }
 
-
             .page {
 
                 box-shadow: none;
@@ -825,7 +740,6 @@
                 border-radius: 0;
 
             }
-
 
             .header {
 
@@ -838,7 +752,6 @@
 
             }
 
-
             .header-icon,
             .back-btn,
             .report-grid,
@@ -849,20 +762,17 @@
 
             }
 
-
             .content {
 
                 padding: 10px;
 
             }
 
-
             .table-box {
 
                 border: none;
 
             }
-
 
             table {
 
@@ -883,12 +793,9 @@
 <div class="page">
 
 
-    <!-- =================================
-         HEADER
-    ================================== -->
+    <!-- HEADER -->
 
     <div class="header">
-
 
         <div class="header-left">
 
@@ -897,7 +804,6 @@
                 📊
 
             </div>
-
 
             <div>
 
@@ -913,7 +819,6 @@
 
         </div>
 
-
         <button
             class="back-btn"
             onclick="goBack()">
@@ -922,17 +827,13 @@
 
         </button>
 
-
     </div>
-
 
 
     <div class="content">
 
 
-        <!-- =================================
-             REPORT SELECTOR
-        ================================== -->
+        <!-- REPORT SELECTOR -->
 
         <div class="report-grid">
 
@@ -942,25 +843,20 @@
                 id="todayCard"
                 onclick="selectReport('today')">
 
-
                 <div class="report-icon">
                     💰
                 </div>
 
-
                 <h3>
                     Today's Amount
                 </h3>
-
 
                 <p>
                     View today's received
                     payment amount student-wise.
                 </p>
 
-
             </div>
-
 
 
             <div
@@ -968,25 +864,20 @@
                 id="monthlyCard"
                 onclick="selectReport('monthly')">
 
-
                 <div class="report-icon">
                     📅
                 </div>
 
-
                 <h3>
                     Monthly Received Amount
                 </h3>
-
 
                 <p>
                     View monthly received amount
                     student-wise.
                 </p>
 
-
             </div>
-
 
 
             <div
@@ -994,38 +885,29 @@
                 id="unpaidCard"
                 onclick="selectReport('unpaid')">
 
-
                 <div class="report-icon">
                     🔴
                 </div>
 
-
                 <h3>
                     Monthly Unpaid Fees
                 </h3>
-
 
                 <p>
                     View unpaid and balance fees
                     student-wise.
                 </p>
 
-
             </div>
-
 
         </div>
 
 
-
-        <!-- =================================
-             FILTER
-        ================================== -->
+        <!-- FILTER -->
 
         <div
             class="filter-box"
             id="filterBox">
-
 
             <div class="filter-title">
 
@@ -1033,11 +915,8 @@
 
             </div>
 
-
             <div class="filters">
 
-
-                <!-- MONTH -->
 
                 <div
                     class="field"
@@ -1046,7 +925,6 @@
                     <label>
                         Month
                     </label>
-
 
                     <select
                         id="monthSelect">
@@ -1104,9 +982,6 @@
                 </div>
 
 
-
-                <!-- YEAR -->
-
                 <div
                     class="field"
                     id="yearField">
@@ -1115,7 +990,6 @@
                         Year
                     </label>
 
-
                     <select
                         id="yearSelect">
                     </select>
@@ -1123,15 +997,11 @@
                 </div>
 
 
-
-                <!-- SEARCH -->
-
                 <div class="field">
 
                     <label>
                         Search Student
                     </label>
-
 
                     <input
                         type="text"
@@ -1142,9 +1012,6 @@
                 </div>
 
 
-
-                <!-- APPLY -->
-
                 <button
                     class="apply-btn"
                     onclick="loadReport()">
@@ -1153,17 +1020,12 @@
 
                 </button>
 
-
             </div>
-
 
         </div>
 
 
-
-        <!-- =================================
-             SUMMARY
-        ================================== -->
+        <!-- SUMMARY -->
 
         <div class="summary">
 
@@ -1177,7 +1039,6 @@
 
                 </div>
 
-
                 <div
                     class="summary-value"
                     id="summaryStudents">
@@ -1189,7 +1050,6 @@
             </div>
 
 
-
             <div class="summary-card amount">
 
                 <div class="summary-title"
@@ -1198,7 +1058,6 @@
                     Total Amount
 
                 </div>
-
 
                 <div
                     class="summary-value"
@@ -1211,7 +1070,6 @@
             </div>
 
 
-
             <div class="summary-card balance">
 
                 <div class="summary-title"
@@ -1220,7 +1078,6 @@
                     Balance
 
                 </div>
-
 
                 <div
                     class="summary-value"
@@ -1232,20 +1089,14 @@
 
             </div>
 
-
         </div>
 
 
-
-        <!-- =================================
-             TABLE
-        ================================== -->
+        <!-- TABLE -->
 
         <div class="table-box">
 
-
             <div class="table-header">
-
 
                 <div
                     class="table-title"
@@ -1255,7 +1106,6 @@
 
                 </div>
 
-
                 <button
                     class="print-btn"
                     onclick="window.print()">
@@ -1264,9 +1114,7 @@
 
                 </button>
 
-
             </div>
-
 
             <div
                 class="table-scroll"
@@ -1280,14 +1128,12 @@
 
             </div>
 
-
         </div>
 
 
     </div>
 
 </div>
-
 
 
 <script>
@@ -1302,7 +1148,6 @@ let currentUser = null;
 let currentReport = "today";
 
 let reportRows = [];
-
 
 
 /* =========================================
@@ -1324,7 +1169,6 @@ function money(value) {
 }
 
 
-
 /* =========================================
    DATE
 ========================================= */
@@ -1337,17 +1181,14 @@ function formatDate(dateValue) {
 
     }
 
-
     const date =
         new Date(dateValue);
-
 
     if (isNaN(date.getTime())) {
 
         return "-";
 
     }
-
 
     return date.toLocaleDateString(
         "en-IN",
@@ -1359,7 +1200,6 @@ function formatDate(dateValue) {
     );
 
 }
-
 
 
 /* =========================================
@@ -1382,7 +1222,6 @@ function monthName(month) {
 }
 
 
-
 /* =========================================
    YEAR DROPDOWN
 ========================================= */
@@ -1394,10 +1233,8 @@ function createYears() {
             "yearSelect"
         );
 
-
     const currentYear =
         new Date().getFullYear();
-
 
     for (
         let year = currentYear - 2;
@@ -1410,14 +1247,11 @@ function createYears() {
                 "option"
             );
 
-
         option.value =
             year;
 
-
         option.textContent =
             year;
-
 
         select.appendChild(
             option
@@ -1425,12 +1259,10 @@ function createYears() {
 
     }
 
-
     select.value =
         currentYear;
 
 }
-
 
 
 /* =========================================
@@ -1447,13 +1279,11 @@ function setCurrentMonth() {
 }
 
 
-
 /* =========================================
    OWNER LOGIN CHECK
 ========================================= */
 
 async function checkOwner() {
-
 
     const {
         data,
@@ -1462,7 +1292,6 @@ async function checkOwner() {
     await supabaseClient
         .auth
         .getSession();
-
 
     if (
         error ||
@@ -1477,10 +1306,8 @@ async function checkOwner() {
 
     }
 
-
     const user =
         data.session.user;
-
 
     const {
         data: profile,
@@ -1488,26 +1315,19 @@ async function checkOwner() {
     } =
     await supabaseClient
         .from("profiles")
-        .select(
-            "id,role"
-        )
-        .eq(
-            "id",
-            user.id
-        )
+        .select("id,role")
+        .eq("id", user.id)
         .maybeSingle();
-
 
     if (
         profileError ||
         !profile ||
-        profile.role !== "owner"
+        String(profile.role).toLowerCase() !== "owner"
     ) {
 
         await supabaseClient
             .auth
             .signOut();
-
 
         window.location.href =
             "owner-login.html";
@@ -1516,15 +1336,12 @@ async function checkOwner() {
 
     }
 
-
     currentUser =
         user;
-
 
     return true;
 
 }
-
 
 
 /* =========================================
@@ -1533,20 +1350,16 @@ async function checkOwner() {
 
 function selectReport(type) {
 
-
     currentReport =
         type;
-
 
     document
         .getElementById("todayCard")
         .classList.remove("active");
 
-
     document
         .getElementById("monthlyCard")
         .classList.remove("active");
-
 
     document
         .getElementById("unpaidCard")
@@ -1561,7 +1374,6 @@ function selectReport(type) {
 
     }
 
-
     if (type === "monthly") {
 
         document
@@ -1569,7 +1381,6 @@ function selectReport(type) {
             .classList.add("active");
 
     }
-
 
     if (type === "unpaid") {
 
@@ -1584,7 +1395,6 @@ function selectReport(type) {
         document.getElementById(
             "monthField"
         );
-
 
     const yearField =
         document.getElementById(
@@ -1622,7 +1432,6 @@ function selectReport(type) {
 
     }
 
-
     if (type === "monthly") {
 
         document
@@ -1631,7 +1440,6 @@ function selectReport(type) {
                 "Monthly Received Amount — Student Wise";
 
     }
-
 
     if (type === "unpaid") {
 
@@ -1643,10 +1451,13 @@ function selectReport(type) {
     }
 
 
+    document
+        .getElementById("searchInput")
+        .value = "";
+
     loadReport();
 
 }
-
 
 
 /* =========================================
@@ -1655,10 +1466,8 @@ function selectReport(type) {
 
 async function loadTodayReport() {
 
-
     const today =
         new Date();
-
 
     const start =
         new Date(
@@ -1667,18 +1476,19 @@ async function loadTodayReport() {
             today.getDate(),
             0,
             0,
+            0,
             0
         );
-
 
     const end =
         new Date(
             today.getFullYear(),
             today.getMonth(),
-            today.getDate(),
-            23,
-            59,
-            59
+            today.getDate() + 1,
+            0,
+            0,
+            0,
+            0
         );
 
 
@@ -1706,7 +1516,7 @@ async function loadTodayReport() {
             "payment_date",
             start.toISOString()
         )
-        .lte(
+        .lt(
             "payment_date",
             end.toISOString()
         )
@@ -1720,7 +1530,10 @@ async function loadTodayReport() {
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Today's report error:",
+            error
+        );
 
         showError(
             "Unable to load today's report."
@@ -1792,18 +1605,40 @@ async function loadTodayReport() {
 }
 
 
-
 /* =========================================
    TODAY TABLE
 ========================================= */
 
 function renderTodayTable() {
 
-
     if (!reportRows.length) {
 
         showEmpty(
             "No payments received today."
+        );
+
+        return;
+
+    }
+
+
+    renderTodayRows(
+        reportRows
+    );
+
+}
+
+
+/* =========================================
+   TODAY ROWS
+========================================= */
+
+function renderTodayRows(rows) {
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
         );
 
         return;
@@ -1836,9 +1671,8 @@ function renderTodayTable() {
     `;
 
 
-    reportRows.forEach(
+    rows.forEach(
         row => {
-
 
             const student =
                 row.students || {};
@@ -1861,7 +1695,9 @@ function renderTodayTable() {
                     </td>
 
                     <td class="amount green">
-                        ${money(row.amount)}
+                        ${money(
+                            row.amount
+                        )}
                     </td>
 
                     <td>
@@ -1897,13 +1733,47 @@ function renderTodayTable() {
 }
 
 
+/* =========================================
+   MONTH DATE RANGE
+========================================= */
+
+function getMonthRange(month, year) {
+
+    const start =
+        new Date(
+            year,
+            month - 1,
+            1,
+            0,
+            0,
+            0,
+            0
+        );
+
+    const end =
+        new Date(
+            year,
+            month,
+            1,
+            0,
+            0,
+            0,
+            0
+        );
+
+    return {
+        start,
+        end
+    };
+
+}
+
 
 /* =========================================
    MONTHLY RECEIVED
 ========================================= */
 
 async function loadMonthlyReceived() {
-
 
     const month =
         Number(
@@ -1912,13 +1782,36 @@ async function loadMonthlyReceived() {
             ).value
         );
 
-
     const year =
         Number(
             document.getElementById(
                 "yearSelect"
             ).value
         );
+
+
+    const {
+        start,
+        end
+    } =
+        getMonthRange(
+            month,
+            year
+        );
+
+
+    /*
+       IMPORTANT:
+
+       Current database uses:
+       fee_payments.amount
+       fee_payments.payment_date
+
+       We do NOT use:
+       monthly_amount
+       fees_month
+       fees_year
+    */
 
 
     const {
@@ -1936,16 +1829,19 @@ async function loadMonthlyReceived() {
                 full_name,
                 batch,
                 fees_amount
-            ),
-            fees (
-                monthly_amount,
-                fees_month,
-                fees_year
             )
         `)
         .eq(
             "owner_id",
             currentUser.id
+        )
+        .gte(
+            "payment_date",
+            start.toISOString()
+        )
+        .lt(
+            "payment_date",
+            end.toISOString()
         )
         .order(
             "payment_date",
@@ -1957,7 +1853,10 @@ async function loadMonthlyReceived() {
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Monthly received error:",
+            error
+        );
 
         showError(
             "Unable to load monthly received report."
@@ -1968,37 +1867,12 @@ async function loadMonthlyReceived() {
     }
 
 
-    const payments =
-        (data || []).filter(
-            row => {
-
-                const fee =
-                    row.fees;
-
-
-                return fee &&
-                    Number(
-                        fee.fees_month
-                    ) === month &&
-                    Number(
-                        fee.fees_year
-                    ) === year;
-
-            }
-        );
-
-
-    /*
-       Group by student.
-    */
-
     const grouped =
         {};
 
 
-    payments.forEach(
+    (data || []).forEach(
         row => {
-
 
             const studentId =
                 row.student_id;
@@ -2013,12 +1887,8 @@ async function loadMonthlyReceived() {
 
                     monthlyAmount:
                         Number(
-                            row.fees?.monthly_amount
-                        ) ||
-                        Number(
                             row.students?.fees_amount
-                        ) ||
-                        0,
+                        ) || 0,
 
                     received:
                         0,
@@ -2072,7 +1942,9 @@ async function loadMonthlyReceived() {
         row => {
 
             totalReceived +=
-                row.received;
+                Number(
+                    row.received
+                ) || 0;
 
         }
     );
@@ -2121,18 +1993,40 @@ async function loadMonthlyReceived() {
 }
 
 
-
 /* =========================================
    MONTHLY RECEIVED TABLE
 ========================================= */
 
 function renderMonthlyReceivedTable() {
 
-
     if (!reportRows.length) {
 
         showEmpty(
             "No received payments found for this month."
+        );
+
+        return;
+
+    }
+
+
+    renderMonthlyRows(
+        reportRows
+    );
+
+}
+
+
+/* =========================================
+   MONTHLY RECEIVED ROWS
+========================================= */
+
+function renderMonthlyRows(rows) {
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
         );
 
         return;
@@ -2167,9 +2061,8 @@ function renderMonthlyReceivedTable() {
     `;
 
 
-    reportRows.forEach(
+    rows.forEach(
         row => {
-
 
             html += `
 
@@ -2232,13 +2125,11 @@ function renderMonthlyReceivedTable() {
 }
 
 
-
 /* =========================================
    MONTHLY UNPAID
 ========================================= */
 
 async function loadMonthlyUnpaid() {
-
 
     const month =
         Number(
@@ -2246,7 +2137,6 @@ async function loadMonthlyUnpaid() {
                 "monthSelect"
             ).value
         );
-
 
     const year =
         Number(
@@ -2256,8 +2146,18 @@ async function loadMonthlyUnpaid() {
         );
 
 
+    const {
+        start,
+        end
+    } =
+        getMonthRange(
+            month,
+            year
+        );
+
+
     /*
-       Get all students
+       GET ALL STUDENTS
     */
 
     const {
@@ -2278,6 +2178,7 @@ async function loadMonthlyUnpaid() {
     if (studentError) {
 
         console.error(
+            "Students error:",
             studentError
         );
 
@@ -2291,40 +2192,44 @@ async function loadMonthlyUnpaid() {
 
 
     /*
-       Get monthly fee records
+       GET PAYMENTS FOR SELECTED MONTH
+
+       We calculate monthly received
+       from fee_payments.payment_date.
     */
 
     const {
-        data: fees,
-        error: feeError
+        data: payments,
+        error: paymentError
     } =
     await supabaseClient
-        .from("fees")
+        .from("fee_payments")
         .select(
-            "student_id,monthly_amount,paid_amount,status"
+            "student_id,amount,payment_date"
         )
         .eq(
             "owner_id",
             currentUser.id
         )
-        .eq(
-            "fees_month",
-            month
+        .gte(
+            "payment_date",
+            start.toISOString()
         )
-        .eq(
-            "fees_year",
-            year
+        .lt(
+            "payment_date",
+            end.toISOString()
         );
 
 
-    if (feeError) {
+    if (paymentError) {
 
         console.error(
-            feeError
+            "Payment error:",
+            paymentError
         );
 
         showError(
-            "Unable to load fees."
+            "Unable to load payment data."
         );
 
         return;
@@ -2332,29 +2237,39 @@ async function loadMonthlyUnpaid() {
     }
 
 
-    const feeMap =
+    /*
+       GROUP MONTHLY PAYMENTS
+    */
+
+    const paymentMap =
         {};
 
 
-    (fees || []).forEach(
-        fee => {
+    (payments || []).forEach(
+        payment => {
 
-            feeMap[
-                fee.student_id
-            ] =
-                fee;
+            const studentId =
+                payment.student_id;
+
+
+            if (!paymentMap[studentId]) {
+
+                paymentMap[studentId] = 0;
+
+            }
+
+
+            paymentMap[studentId] +=
+                Number(
+                    payment.amount
+                ) || 0;
 
         }
     );
 
 
     /*
-       Include students who have
-       balance due.
-
-       If no fee record exists,
-       student's monthly fee is
-       treated as unpaid.
+       BUILD UNPAID REPORT
     */
 
     reportRows = [];
@@ -2363,26 +2278,15 @@ async function loadMonthlyUnpaid() {
     (students || []).forEach(
         student => {
 
-
-            const fee =
-                feeMap[
-                    student.id
-                ];
-
-
             const monthlyAmount =
                 Number(
-                    fee?.monthly_amount
-                ) ||
-                Number(
                     student.fees_amount
-                ) ||
-                0;
+                ) || 0;
 
 
             const paidAmount =
                 Number(
-                    fee?.paid_amount
+                    paymentMap[student.id]
                 ) || 0;
 
 
@@ -2431,7 +2335,9 @@ async function loadMonthlyUnpaid() {
         row => {
 
             totalBalance +=
-                row.balance;
+                Number(
+                    row.balance
+                ) || 0;
 
         }
     );
@@ -2470,13 +2376,14 @@ async function loadMonthlyUnpaid() {
     document
         .getElementById("balanceSummaryTitle")
         .textContent =
-            "Balance Due";
+            monthName(month) +
+            " " +
+            year;
 
 
     renderUnpaidTable();
 
 }
-
 
 
 /* =========================================
@@ -2485,11 +2392,34 @@ async function loadMonthlyUnpaid() {
 
 function renderUnpaidTable() {
 
-
     if (!reportRows.length) {
 
         showEmpty(
             "🎉 No unpaid fees for this month."
+        );
+
+        return;
+
+    }
+
+
+    renderUnpaidRows(
+        reportRows
+    );
+
+}
+
+
+/* =========================================
+   UNPAID ROWS
+========================================= */
+
+function renderUnpaidRows(rows) {
+
+    if (!rows.length) {
+
+        showEmpty(
+            "No matching student found."
         );
 
         return;
@@ -2526,9 +2456,8 @@ function renderUnpaidTable() {
     `;
 
 
-    reportRows.forEach(
+    rows.forEach(
         row => {
-
 
             const statusClass =
                 row.status === "partial"
@@ -2548,7 +2477,7 @@ function renderUnpaidTable() {
 
                     <td class="student-name">
                         ${escapeHtml(
-                            row.student.full_name
+                            row.student.full_name || "-"
                         )}
                     </td>
 
@@ -2564,7 +2493,7 @@ function renderUnpaidTable() {
                         )}
                     </td>
 
-                    <td class="amount">
+                    <td>
                         ${money(
                             row.paidAmount
                         )}
@@ -2614,13 +2543,11 @@ function renderUnpaidTable() {
 }
 
 
-
 /* =========================================
    LOAD REPORT
 ========================================= */
 
 async function loadReport() {
-
 
     document
         .getElementById(
@@ -2646,7 +2573,6 @@ async function loadReport() {
 
     }
 
-
     else if (
         currentReport ===
         "monthly"
@@ -2655,7 +2581,6 @@ async function loadReport() {
         await loadMonthlyReceived();
 
     }
-
 
     else if (
         currentReport ===
@@ -2669,13 +2594,11 @@ async function loadReport() {
 }
 
 
-
 /* =========================================
    SEARCH / FILTER
 ========================================= */
 
 function filterTable() {
-
 
     const search =
         document
@@ -2723,7 +2646,6 @@ function filterTable() {
         "today"
     ) {
 
-
         const filtered =
             reportRows.filter(
                 row => {
@@ -2755,9 +2677,7 @@ function filterTable() {
 
     }
 
-
     else {
-
 
         const filtered =
             reportRows.filter(
@@ -2804,356 +2724,11 @@ function filterTable() {
 }
 
 
-
-/* =========================================
-   FILTERED TODAY ROWS
-========================================= */
-
-function renderTodayRows(rows) {
-
-
-    if (!rows.length) {
-
-        showEmpty(
-            "No matching student found."
-        );
-
-        return;
-
-    }
-
-
-    let html = `
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Student Name</th>
-
-                    <th>Batch</th>
-
-                    <th>Payment Amount</th>
-
-                    <th>Payment Date</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-    `;
-
-
-    rows.forEach(
-        row => {
-
-
-            const student =
-                row.students || {};
-
-
-            html += `
-
-                <tr>
-
-                    <td class="student-name">
-                        ${escapeHtml(
-                            student.full_name || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            student.batch || "-"
-                        )}
-                    </td>
-
-                    <td class="amount green">
-                        ${money(row.amount)}
-                    </td>
-
-                    <td>
-                        ${formatDate(
-                            row.payment_date
-                        )}
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-
-    html += `
-            </tbody>
-        </table>
-    `;
-
-
-    document
-        .getElementById(
-            "tableContainer"
-        )
-        .innerHTML =
-            html;
-
-}
-
-
-
-/* =========================================
-   FILTERED MONTHLY ROWS
-========================================= */
-
-function renderMonthlyRows(rows) {
-
-
-    if (!rows.length) {
-
-        showEmpty(
-            "No matching student found."
-        );
-
-        return;
-
-    }
-
-
-    let html = `
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Student Name</th>
-
-                    <th>Batch</th>
-
-                    <th>Monthly Fees</th>
-
-                    <th>Received Amount</th>
-
-                    <th>Last Payment</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-    `;
-
-
-    rows.forEach(
-        row => {
-
-
-            html += `
-
-                <tr>
-
-                    <td class="student-name">
-                        ${escapeHtml(
-                            row.student.full_name || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            row.student.batch || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${money(
-                            row.monthlyAmount
-                        )}
-                    </td>
-
-                    <td class="amount green">
-                        ${money(
-                            row.received
-                        )}
-                    </td>
-
-                    <td>
-                        ${formatDate(
-                            row.latestDate
-                        )}
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-
-    html += `
-            </tbody>
-        </table>
-    `;
-
-
-    document
-        .getElementById(
-            "tableContainer"
-        )
-        .innerHTML =
-            html;
-
-}
-
-
-
-/* =========================================
-   FILTERED UNPAID ROWS
-========================================= */
-
-function renderUnpaidRows(rows) {
-
-
-    if (!rows.length) {
-
-        showEmpty(
-            "No matching student found."
-        );
-
-        return;
-
-    }
-
-
-    let html = `
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Student Name</th>
-
-                    <th>Batch</th>
-
-                    <th>Monthly Fees</th>
-
-                    <th>Paid Amount</th>
-
-                    <th>Balance Due</th>
-
-                    <th>Status</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-    `;
-
-
-    rows.forEach(
-        row => {
-
-
-            const statusClass =
-                row.status === "partial"
-                    ? "status-partial"
-                    : "status-unpaid";
-
-
-            const statusText =
-                row.status === "partial"
-                    ? "PARTIAL"
-                    : "UNPAID";
-
-
-            html += `
-
-                <tr>
-
-                    <td class="student-name">
-                        ${escapeHtml(
-                            row.student.full_name
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            row.student.batch || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${money(
-                            row.monthlyAmount
-                        )}
-                    </td>
-
-                    <td>
-                        ${money(
-                            row.paidAmount
-                        )}
-                    </td>
-
-                    <td class="amount red">
-                        ${money(
-                            row.balance
-                        )}
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="status ${statusClass}">
-
-                            ${statusText}
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-
-    html += `
-            </tbody>
-        </table>
-    `;
-
-
-    document
-        .getElementById(
-            "tableContainer"
-        )
-        .innerHTML =
-            html;
-
-}
-
-
-
 /* =========================================
    EMPTY
 ========================================= */
 
 function showEmpty(message) {
-
 
     document
         .getElementById(
@@ -3176,13 +2751,11 @@ function showEmpty(message) {
 }
 
 
-
 /* =========================================
    ERROR
 ========================================= */
 
 function showError(message) {
-
 
     document
         .getElementById(
@@ -3205,13 +2778,11 @@ function showError(message) {
 }
 
 
-
 /* =========================================
    ESCAPE HTML
 ========================================= */
 
 function escapeHtml(value) {
-
 
     return String(value ?? "")
         .replace(
@@ -3238,7 +2809,6 @@ function escapeHtml(value) {
 }
 
 
-
 /* =========================================
    BACK
 ========================================= */
@@ -3251,13 +2821,11 @@ function goBack() {
 }
 
 
-
 /* =========================================
    START
 ========================================= */
 
 async function start() {
-
 
     createYears();
 
@@ -3274,10 +2842,6 @@ async function start() {
 
     }
 
-
-    /*
-       Today's report is default.
-    */
 
     selectReport(
         "today"
