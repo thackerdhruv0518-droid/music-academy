@@ -13,20 +13,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
 
-
     <style>
 
         * {
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
             min-height: 100vh;
-
             font-family: Arial, sans-serif;
 
             background:
@@ -37,9 +32,7 @@
                 );
 
             padding: 20px;
-
         }
-
 
         /* =========================================
            MAIN PAGE
@@ -48,11 +41,8 @@
         .page {
 
             width: 100%;
-
             max-width: 1200px;
-
             min-height: 650px;
-
             margin: auto;
 
             background: white;
@@ -68,9 +58,7 @@
             box-shadow:
                 0 20px 60px
                 rgba(0,0,0,.25);
-
         }
-
 
         /* =========================================
            LEFT SIDE
@@ -92,9 +80,7 @@
             display: flex;
 
             flex-direction: column;
-
         }
-
 
         .logo-circle {
 
@@ -123,9 +109,7 @@
             box-shadow:
                 0 8px 20px
                 rgba(0,0,0,.15);
-
         }
-
 
         .logo-circle img {
 
@@ -134,9 +118,7 @@
             height: 100%;
 
             object-fit: cover;
-
         }
-
 
         .left h1 {
 
@@ -145,9 +127,7 @@
             margin: 0 0 9px;
 
             line-height: 1.2;
-
         }
-
 
         .left p {
 
@@ -158,9 +138,7 @@
             opacity: .88;
 
             margin: 0;
-
         }
-
 
         /* =========================================
            MENU
@@ -169,9 +147,7 @@
         .academy-menu {
 
             margin-top: 34px;
-
         }
-
 
         .menu-item {
 
@@ -186,9 +162,7 @@
             font-size: 14px;
 
             transition: .2s;
-
         }
-
 
         .menu-item:hover {
 
@@ -197,17 +171,13 @@
 
             transform:
                 translateX(2px);
-
         }
-
 
         .menu-item.active {
 
             background:
                 rgba(255,255,255,.18);
-
         }
-
 
         .left-bottom {
 
@@ -216,9 +186,7 @@
             font-size: 12px;
 
             opacity: .65;
-
         }
-
 
         /* =========================================
            RIGHT SIDE
@@ -229,9 +197,7 @@
             padding: 38px;
 
             overflow-y: auto;
-
         }
-
 
         /* =========================================
            TOP BAR
@@ -248,9 +214,7 @@
             margin-bottom: 28px;
 
             gap: 15px;
-
         }
-
 
         .topbar h2 {
 
@@ -259,9 +223,7 @@
             font-size: 29px;
 
             color: #222;
-
         }
-
 
         .owner {
 
@@ -270,9 +232,7 @@
             font-size: 14px;
 
             margin-top: 6px;
-
         }
-
 
         .logout {
 
@@ -291,16 +251,12 @@
             font-weight: bold;
 
             font-size: 12px;
-
         }
-
 
         .logout:hover {
 
             background: #ece8ec;
-
         }
-
 
         /* =========================================
            MONTH BAR
@@ -331,9 +287,7 @@
             justify-content: space-between;
 
             gap: 10px;
-
         }
-
 
         .month-title {
 
@@ -342,9 +296,7 @@
             font-size: 13px;
 
             font-weight: 600;
-
         }
-
 
         .month-value {
 
@@ -353,9 +305,7 @@
             font-size: 14px;
 
             font-weight: bold;
-
         }
-
 
         /* =========================================
            STATISTICS
@@ -371,9 +321,7 @@
             gap: 15px;
 
             margin-bottom: 30px;
-
         }
-
 
         .stat-card {
 
@@ -388,9 +336,7 @@
             overflow: hidden;
 
             transition: .2s;
-
         }
-
 
         .stat-card:hover {
 
@@ -400,9 +346,7 @@
             box-shadow:
                 0 10px 25px
                 rgba(0,0,0,.10);
-
         }
-
 
         .stat-card::after {
 
@@ -422,9 +366,7 @@
 
             background:
                 rgba(255,255,255,.28);
-
         }
-
 
         .students-card {
 
@@ -437,9 +379,7 @@
 
             border:
                 1px solid #d8cef9;
-
         }
-
 
         .total-card {
 
@@ -452,9 +392,7 @@
 
             border:
                 1px solid #f4c5dc;
-
         }
-
 
         .received-card {
 
@@ -467,9 +405,7 @@
 
             border:
                 1px solid #bce6c9;
-
         }
-
 
         .balance-card {
 
@@ -482,9 +418,7 @@
 
             border:
                 1px solid #f3c1c1;
-
         }
-
 
         .stat-icon {
 
@@ -495,9 +429,7 @@
             position: relative;
 
             z-index: 2;
-
         }
-
 
         .stat-title {
 
@@ -516,9 +448,7 @@
             position: relative;
 
             z-index: 2;
-
         }
-
 
         .stat-value {
 
@@ -531,9 +461,7 @@
             position: relative;
 
             z-index: 2;
-
         }
-
 
         .stat-sub {
 
@@ -546,9 +474,7 @@
             position: relative;
 
             z-index: 2;
-
         }
-
 
         /* =========================================
            MANAGEMENT
@@ -563,9 +489,7 @@
             margin-bottom: 15px;
 
             font-weight: bold;
-
         }
-
 
         .management {
 
@@ -575,9 +499,7 @@
                 repeat(2, 1fr);
 
             gap: 15px;
-
         }
-
 
         .action-card {
 
@@ -597,9 +519,7 @@
             position: relative;
 
             overflow: hidden;
-
         }
-
 
         .action-card:hover {
 
@@ -612,9 +532,7 @@
 
             border-color:
                 #7b2355;
-
         }
-
 
         .action-icon {
 
@@ -636,9 +554,7 @@
             font-size: 24px;
 
             margin-bottom: 12px;
-
         }
-
 
         .action-card h3 {
 
@@ -647,9 +563,7 @@
             color: #222;
 
             font-size: 17px;
-
         }
-
 
         .action-card p {
 
@@ -660,9 +574,7 @@
             font-size: 13px;
 
             line-height: 1.5;
-
         }
-
 
         .action-arrow {
 
@@ -675,9 +587,7 @@
             color: #aaa;
 
             font-size: 20px;
-
         }
-
 
         /* =========================================
            LOADING
@@ -686,9 +596,7 @@
         .loading {
 
             opacity: .45;
-
         }
-
 
         /* =========================================
            MOBILE
@@ -700,131 +608,97 @@
 
                 grid-template-columns:
                     repeat(2, 1fr);
-
             }
-
         }
-
 
         @media(max-width: 850px) {
 
             .page {
 
                 grid-template-columns: 1fr;
-
             }
-
 
             .left {
 
                 padding: 30px;
-
             }
-
 
             .academy-menu {
 
                 display: none;
-
             }
-
 
             .left-bottom {
 
                 margin-top: 20px;
-
             }
-
 
             .right {
 
                 padding: 30px;
-
             }
-
         }
-
 
         @media(max-width: 600px) {
 
             body {
 
                 padding: 0;
-
             }
-
 
             .page {
 
                 border-radius: 0;
 
                 min-height: 100vh;
-
             }
-
 
             .right {
 
                 padding: 22px;
-
             }
-
 
             .stats {
 
                 grid-template-columns: 1fr;
-
             }
-
 
             .management {
 
                 grid-template-columns: 1fr;
-
             }
-
 
             .topbar {
 
                 align-items: flex-start;
-
             }
-
 
             .topbar h2 {
 
                 font-size: 24px;
-
             }
-
 
             .month-bar {
 
                 align-items: flex-start;
 
                 flex-direction: column;
-
             }
-
         }
 
     </style>
 
 </head>
 
-
 <body>
 
-
 <div class="page">
-
 
     <!-- =========================================
          LEFT
     ========================================== -->
 
     <div class="left">
-
 
         <div
             class="logo-circle"
@@ -834,13 +708,11 @@
 
         </div>
 
-
         <h1 id="academyName">
 
             Music Academy
 
         </h1>
-
 
         <p>
 
@@ -850,9 +722,7 @@
 
         </p>
 
-
         <div class="academy-menu">
-
 
             <div
                 class="menu-item active"
@@ -862,7 +732,6 @@
 
             </div>
 
-
             <div
                 class="menu-item"
                 onclick="openPage('add-student.html')">
@@ -870,7 +739,6 @@
                 ➕ Add Student
 
             </div>
-
 
             <div
                 class="menu-item"
@@ -880,7 +748,6 @@
 
             </div>
 
-
             <div
                 class="menu-item"
                 onclick="openPage('fees.html')">
@@ -889,6 +756,15 @@
 
             </div>
 
+            <!-- REPORTS -->
+
+            <div
+                class="menu-item"
+                onclick="openPage('reports.html')">
+
+                📊 Reports
+
+            </div>
 
             <div
                 class="menu-item"
@@ -898,9 +774,7 @@
 
             </div>
 
-
         </div>
-
 
         <div class="left-bottom">
 
@@ -908,9 +782,7 @@
 
         </div>
 
-
     </div>
-
 
 
     <!-- =========================================
@@ -919,18 +791,15 @@
 
     <div class="right">
 
-
         <!-- TOP BAR -->
 
         <div class="topbar">
-
 
             <div>
 
                 <h2>
                     Dashboard
                 </h2>
-
 
                 <div class="owner">
 
@@ -943,7 +812,6 @@
 
             </div>
 
-
             <button
                 class="logout"
                 onclick="logout()">
@@ -952,9 +820,7 @@
 
             </button>
 
-
         </div>
-
 
 
         <!-- CURRENT MONTH -->
@@ -967,7 +833,6 @@
 
             </div>
 
-
             <div
                 class="month-value"
                 id="currentMonth">
@@ -979,13 +844,11 @@
         </div>
 
 
-
         <!-- =====================================
              STATISTICS
         ====================================== -->
 
         <div class="stats">
-
 
             <!-- TOTAL STUDENTS -->
 
@@ -995,11 +858,9 @@
                     👨‍🎓
                 </div>
 
-
                 <div class="stat-title">
                     Total Students
                 </div>
-
 
                 <div
                     class="stat-value"
@@ -1009,13 +870,11 @@
 
                 </div>
 
-
                 <div class="stat-sub">
                     Active students
                 </div>
 
             </div>
-
 
 
             <!-- TOTAL MONTHLY FEES -->
@@ -1026,11 +885,9 @@
                     💰
                 </div>
 
-
                 <div class="stat-title">
                     Total Monthly Fees
                 </div>
-
 
                 <div
                     class="stat-value"
@@ -1040,13 +897,11 @@
 
                 </div>
 
-
                 <div class="stat-sub">
                     All students
                 </div>
 
             </div>
-
 
 
             <!-- RECEIVED -->
@@ -1057,11 +912,9 @@
                     ✅
                 </div>
 
-
                 <div class="stat-title">
                     Received Fees
                 </div>
-
 
                 <div
                     class="stat-value"
@@ -1070,7 +923,6 @@
                     ₹0
 
                 </div>
-
 
                 <div
                     class="stat-sub"
@@ -1083,7 +935,6 @@
             </div>
 
 
-
             <!-- BALANCE -->
 
             <div class="stat-card balance-card">
@@ -1092,11 +943,9 @@
                     🔴
                 </div>
 
-
                 <div class="stat-title">
                     Balance Due
                 </div>
-
 
                 <div
                     class="stat-value"
@@ -1105,7 +954,6 @@
                     ₹0
 
                 </div>
-
 
                 <div
                     class="stat-sub"
@@ -1117,9 +965,7 @@
 
             </div>
 
-
         </div>
-
 
 
         <!-- =====================================
@@ -1132,9 +978,7 @@
 
         </div>
 
-
         <div class="management">
-
 
             <!-- ADD STUDENT -->
 
@@ -1142,30 +986,24 @@
                 class="action-card"
                 onclick="openPage('add-student.html')">
 
-
                 <div class="action-icon">
                     ➕
                 </div>
-
 
                 <div class="action-arrow">
                     →
                 </div>
 
-
                 <h3>
                     Add Student
                 </h3>
-
 
                 <p>
                     Add a new student with
                     complete details.
                 </p>
 
-
             </div>
-
 
 
             <!-- STUDENT DETAILS -->
@@ -1174,30 +1012,24 @@
                 class="action-card"
                 onclick="openPage('student-details.html')">
 
-
                 <div class="action-icon">
                     👨‍🎓
                 </div>
-
 
                 <div class="action-arrow">
                     →
                 </div>
 
-
                 <h3>
                     Student Details
                 </h3>
-
 
                 <p>
                     View students batch-wise
                     and manage student details.
                 </p>
 
-
             </div>
-
 
 
             <!-- FEES -->
@@ -1206,30 +1038,50 @@
                 class="action-card"
                 onclick="openPage('fees.html')">
 
-
                 <div class="action-icon">
                     🧾
                 </div>
-
 
                 <div class="action-arrow">
                     →
                 </div>
 
-
                 <h3>
                     Fees Receipts
                 </h3>
-
 
                 <p>
                     Manage fees, payments and
                     generate student receipts.
                 </p>
 
-
             </div>
 
+
+            <!-- REPORTS -->
+
+            <div
+                class="action-card"
+                onclick="openPage('reports.html')">
+
+                <div class="action-icon">
+                    📊
+                </div>
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+                <h3>
+                    Reports
+                </h3>
+
+                <p>
+                    View today's amount, monthly
+                    received and unpaid fee reports.
+                </p>
+
+            </div>
 
 
             <!-- SETTINGS -->
@@ -1238,49 +1090,39 @@
                 class="action-card"
                 onclick="openPage('settings.html')">
 
-
                 <div class="action-icon">
                     ⚙️
                 </div>
-
 
                 <div class="action-arrow">
                     →
                 </div>
 
-
                 <h3>
                     Settings
                 </h3>
-
 
                 <p>
                     Manage academy and owner
                     information.
                 </p>
 
-
             </div>
 
-
         </div>
-
 
     </div>
 
 </div>
 
 
-
 <script>
-
 
 /* =========================================
    GLOBAL USER
 ========================================= */
 
 let currentUser = null;
-
 
 
 /* =========================================
@@ -1291,7 +1133,6 @@ function formatMoney(amount) {
 
     const number =
         Number(amount) || 0;
-
 
     return "₹" +
         number.toLocaleString(
@@ -1305,7 +1146,6 @@ function formatMoney(amount) {
 }
 
 
-
 /* =========================================
    CURRENT MONTH
 ========================================= */
@@ -1316,13 +1156,11 @@ function getCurrentMonth() {
 
 }
 
-
 function getCurrentYear() {
 
     return new Date().getFullYear();
 
 }
-
 
 
 /* =========================================
@@ -1345,13 +1183,11 @@ function getMonthName(month, year) {
 }
 
 
-
 /* =========================================
    CHECK OWNER LOGIN
 ========================================= */
 
 async function checkLogin() {
-
 
     const {
         data,
@@ -1360,7 +1196,6 @@ async function checkLogin() {
     await supabaseClient
         .auth
         .getSession();
-
 
     if (
         error ||
@@ -1375,10 +1210,8 @@ async function checkLogin() {
 
     }
 
-
     const session =
         data.session;
-
 
     const {
         data: profile,
@@ -1395,7 +1228,6 @@ async function checkLogin() {
         )
         .maybeSingle();
 
-
     if (profileError) {
 
         console.error(
@@ -1411,7 +1243,6 @@ async function checkLogin() {
 
     }
 
-
     if (
         !profile ||
         profile.role !== "owner"
@@ -1421,7 +1252,6 @@ async function checkLogin() {
             .auth
             .signOut();
 
-
         window.location.href =
             "owner-login.html";
 
@@ -1429,10 +1259,8 @@ async function checkLogin() {
 
     }
 
-
     currentUser =
         session.user;
-
 
     document
         .getElementById("ownerName")
@@ -1440,11 +1268,9 @@ async function checkLogin() {
             profile.full_name ||
             "Owner";
 
-
     return session;
 
 }
-
 
 
 /* =========================================
@@ -1452,7 +1278,6 @@ async function checkLogin() {
 ========================================= */
 
 async function loadAcademySettings() {
-
 
     const {
         data,
@@ -1469,7 +1294,6 @@ async function loadAcademySettings() {
         )
         .maybeSingle();
 
-
     if (error) {
 
         console.error(
@@ -1481,13 +1305,11 @@ async function loadAcademySettings() {
 
     }
 
-
     if (!data) {
 
         return;
 
     }
-
 
     /* ACADEMY NAME */
 
@@ -1500,7 +1322,6 @@ async function loadAcademySettings() {
 
     }
 
-
     /* OWNER NAME */
 
     if (data.owner_name) {
@@ -1512,7 +1333,6 @@ async function loadAcademySettings() {
 
     }
 
-
     /* LOGO */
 
     if (data.logo_url) {
@@ -1522,23 +1342,18 @@ async function loadAcademySettings() {
                 "academyLogo"
             );
 
-
         logo.innerHTML = "";
-
 
         const img =
             document.createElement(
                 "img"
             );
 
-
         img.src =
             data.logo_url;
 
-
         img.alt =
             "Academy Logo";
-
 
         logo.appendChild(img);
 
@@ -1547,13 +1362,11 @@ async function loadAcademySettings() {
 }
 
 
-
 /* =========================================
    LOAD DASHBOARD DATA
 ========================================= */
 
 async function loadDashboard() {
-
 
     if (!currentUser) {
 
@@ -1561,28 +1374,23 @@ async function loadDashboard() {
 
     }
 
-
     /* LOADING */
 
     document
         .getElementById("totalStudents")
         .classList.add("loading");
 
-
     document
         .getElementById("totalFees")
         .classList.add("loading");
-
 
     document
         .getElementById("receivedFees")
         .classList.add("loading");
 
-
     document
         .getElementById("balanceFees")
         .classList.add("loading");
-
 
 
     /* =====================================
@@ -1592,17 +1400,14 @@ async function loadDashboard() {
     const month =
         getCurrentMonth();
 
-
     const year =
         getCurrentYear();
-
 
     const monthName =
         getMonthName(
             month,
             year
         );
-
 
     document
         .getElementById("currentMonth")
@@ -1611,7 +1416,6 @@ async function loadDashboard() {
             " " +
             year;
 
-
     document
         .getElementById("receivedLabel")
         .textContent =
@@ -1619,14 +1423,12 @@ async function loadDashboard() {
             " " +
             year;
 
-
     document
         .getElementById("balanceLabel")
         .textContent =
             monthName +
             " " +
             year;
-
 
 
     /* =====================================
@@ -1647,10 +1449,8 @@ async function loadDashboard() {
             currentUser.id
         );
 
-
     let studentList =
         students || [];
-
 
     if (studentError) {
 
@@ -1664,7 +1464,6 @@ async function loadDashboard() {
             .textContent =
                 "0";
 
-
         document
             .getElementById("totalFees")
             .textContent =
@@ -1674,7 +1473,6 @@ async function loadDashboard() {
 
     else {
 
-
         /* TOTAL STUDENTS */
 
         document
@@ -1683,12 +1481,10 @@ async function loadDashboard() {
                 studentList.length;
 
 
-
         /* TOTAL MONTHLY FEES */
 
         let totalMonthlyFees =
             0;
-
 
         studentList.forEach(
             function(student) {
@@ -1701,7 +1497,6 @@ async function loadDashboard() {
             }
         );
 
-
         document
             .getElementById("totalFees")
             .textContent =
@@ -1710,7 +1505,6 @@ async function loadDashboard() {
                 );
 
     }
-
 
 
     /* =====================================
@@ -1739,10 +1533,8 @@ async function loadDashboard() {
             year
         );
 
-
     let feeList =
         fees || [];
-
 
     if (feeError) {
 
@@ -1751,12 +1543,10 @@ async function loadDashboard() {
             feeError
         );
 
-
         document
             .getElementById("receivedFees")
             .textContent =
                 "₹0";
-
 
         document
             .getElementById("balanceFees")
@@ -1767,24 +1557,19 @@ async function loadDashboard() {
 
     else {
 
-
         let monthlyTotal =
             0;
-
 
         let receivedTotal =
             0;
 
-
         feeList.forEach(
             function(fee) {
-
 
                 monthlyTotal +=
                     Number(
                         fee.monthly_amount
                     ) || 0;
-
 
                 receivedTotal +=
                     Number(
@@ -1814,14 +1599,12 @@ async function loadDashboard() {
                 0
             );
 
-
         document
             .getElementById("balanceFees")
             .textContent =
                 formatMoney(
                     balanceTotal
                 );
-
 
 
         /*
@@ -1844,7 +1627,6 @@ async function loadDashboard() {
     }
 
 
-
     /* =====================================
        REMOVE LOADING
     ====================================== */
@@ -1853,23 +1635,19 @@ async function loadDashboard() {
         .getElementById("totalStudents")
         .classList.remove("loading");
 
-
     document
         .getElementById("totalFees")
         .classList.remove("loading");
 
-
     document
         .getElementById("receivedFees")
         .classList.remove("loading");
-
 
     document
         .getElementById("balanceFees")
         .classList.remove("loading");
 
 }
-
 
 
 /* =========================================
@@ -1884,19 +1662,16 @@ function openPage(page) {
 }
 
 
-
 /* =========================================
    LOGOUT
 ========================================= */
 
 async function logout() {
 
-
     const ok =
         confirm(
             "Are you sure you want to logout?"
         );
-
 
     if (!ok) {
 
@@ -1904,17 +1679,14 @@ async function logout() {
 
     }
 
-
     await supabaseClient
         .auth
         .signOut();
-
 
     window.location.href =
         "owner-login.html";
 
 }
-
 
 
 /* =========================================
@@ -1923,10 +1695,8 @@ async function logout() {
 
 async function startDashboard() {
 
-
     const session =
         await checkLogin();
-
 
     if (!session) {
 
@@ -1934,14 +1704,11 @@ async function startDashboard() {
 
     }
 
-
     await loadAcademySettings();
-
 
     await loadDashboard();
 
 }
-
 
 
 /* =========================================
@@ -1950,9 +1717,7 @@ async function startDashboard() {
 
 startDashboard();
 
-
 </script>
-
 
 </body>
 
