@@ -22,10 +22,6 @@
 
 <style>
 
-/* =========================
-   BASIC
-========================= */
-
 *{
     box-sizing:border-box;
 }
@@ -53,10 +49,6 @@ body{
 }
 
 
-/* =========================
-   MAIN PAGE
-========================= */
-
 .page{
 
     width:100%;
@@ -83,10 +75,6 @@ body{
 
 }
 
-
-/* =========================
-   LEFT SIDE
-========================= */
 
 .left{
 
@@ -217,10 +205,6 @@ body{
 }
 
 
-/* =========================
-   RIGHT SIDE
-========================= */
-
 .right{
 
     padding:40px;
@@ -291,10 +275,6 @@ body{
 }
 
 
-/* =========================
-   WELCOME BOX
-========================= */
-
 .welcome-box{
 
     background:
@@ -338,10 +318,6 @@ body{
 
 }
 
-
-/* =========================
-   STATISTICS
-========================= */
 
 .stats{
 
@@ -415,10 +391,6 @@ body{
 
 }
 
-
-/* =========================
-   MANAGEMENT
-========================= */
 
 .section-title{
 
@@ -505,45 +477,6 @@ body{
 
 }
 
-
-/* =========================
-   DISABLED
-========================= */
-
-.disabled-card{
-
-    opacity:.5;
-
-    cursor:not-allowed;
-
-}
-
-
-.disabled-card:hover{
-
-    transform:none;
-
-    box-shadow:none;
-
-    border-color:#eeeeee;
-
-}
-
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-
-    opacity:.5;
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:850px){
 
@@ -675,9 +608,7 @@ body{
 <div class="page">
 
 
-<!-- =========================
-     LEFT
-========================= -->
+<!-- LEFT -->
 
 <div class="left">
 
@@ -742,7 +673,7 @@ body{
 
         <div
             class="menu-item"
-            onclick="openPage('fees.html')"
+            onclick="openStaffFees()"
         >
 
             💰 Fees
@@ -752,7 +683,7 @@ body{
 
         <div
             class="menu-item"
-            onclick="openPage('fees.html')"
+            onclick="openStaffFees()"
         >
 
             🧾 Fee Receipts
@@ -774,9 +705,7 @@ body{
 
 
 
-<!-- =========================
-     RIGHT
-========================= -->
+<!-- RIGHT -->
 
 <div class="right">
 
@@ -819,9 +748,7 @@ body{
 
 
 
-    <!-- =========================
-         WELCOME
-    ========================== -->
+    <!-- WELCOME -->
 
     <div class="welcome-box">
 
@@ -846,14 +773,10 @@ body{
 
 
 
-    <!-- =========================
-         STATISTICS
-    ========================== -->
+    <!-- STATISTICS -->
 
     <div class="stats">
 
-
-        <!-- TOTAL STUDENTS -->
 
         <div class="stat-card">
 
@@ -892,8 +815,6 @@ body{
         </div>
 
 
-
-        <!-- MONTHLY FEES -->
 
         <div class="stat-card">
 
@@ -935,8 +856,6 @@ body{
         </div>
 
 
-
-        <!-- RECEIVED -->
 
         <div class="stat-card">
 
@@ -982,9 +901,7 @@ body{
 
 
 
-    <!-- =========================
-         MANAGEMENT
-    ========================== -->
+    <!-- MANAGEMENT -->
 
     <div class="section-title">
 
@@ -995,8 +912,6 @@ body{
 
     <div class="management">
 
-
-        <!-- ADD STUDENT -->
 
         <div
             class="action-card"
@@ -1028,8 +943,6 @@ body{
 
 
 
-        <!-- STUDENT DETAILS -->
-
         <div
             class="action-card"
             onclick="openPage('student-details.html')"
@@ -1060,11 +973,9 @@ body{
 
 
 
-        <!-- FEES -->
-
         <div
             class="action-card"
-            onclick="openPage('fees.html')"
+            onclick="openStaffFees()"
         >
 
             <div class="action-icon">
@@ -1092,11 +1003,9 @@ body{
 
 
 
-        <!-- RECEIPTS -->
-
         <div
             class="action-card"
-            onclick="openPage('fees.html')"
+            onclick="openStaffFees()"
         >
 
             <div class="action-icon">
@@ -1121,7 +1030,6 @@ body{
             </p>
 
         </div>
-
 
 
     </div>
@@ -1152,27 +1060,73 @@ function getStaffLogin(){
 
     try{
 
-        const saved =
+        /*
+         * FIRST:
+         * Remember Me ON
+         */
+
+        const localData =
             localStorage.getItem(
                 "staffLogin"
             );
 
 
-        if(!saved){
+        if(localData){
 
-            return null;
+            const data =
+                JSON.parse(localData);
+
+
+            if(
+                data &&
+                data.id
+            ){
+
+                return data;
+
+            }
 
         }
 
 
-        return JSON.parse(
-            saved
-        );
+        /*
+         * SECOND:
+         * Remember Me OFF
+         */
+
+        const sessionData =
+            sessionStorage.getItem(
+                "staffLogin"
+            );
+
+
+        if(sessionData){
+
+            const data =
+                JSON.parse(sessionData);
+
+
+            if(
+                data &&
+                data.id
+            ){
+
+                return data;
+
+            }
+
+        }
+
+
+        return null;
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Staff login read error:",
+            error
+        );
 
         return null;
 
@@ -1323,7 +1277,8 @@ async function loadAcademySettings(){
         if(error){
 
             console.log(
-                "Academy settings RPC not available."
+                "Academy settings RPC not available.",
+                error
             );
 
             return;
@@ -1464,7 +1419,6 @@ async function loadStudentCount(){
         ).textContent =
             students.length;
 
-
     }
     catch(error){
 
@@ -1558,19 +1512,6 @@ async function loadFees(){
         fees.forEach(
             function(fee){
 
-                /*
-                 * CURRENT FEES AMOUNT
-                 *
-                 * New table:
-                 * fees.amount
-                 *
-                 * Old RPC may return:
-                 * monthly_amount
-                 *
-                 * Student fallback:
-                 * fees_amount
-                 */
-
                 const feeAmount =
                     Number(
                         fee.amount ??
@@ -1583,16 +1524,6 @@ async function loadFees(){
                 monthlyTotal +=
                     feeAmount;
 
-
-                /*
-                 * RECEIVED FEES
-                 *
-                 * Current staff_get_fees RPC
-                 * should return paid_amount.
-                 *
-                 * We also support other
-                 * possible field names.
-                 */
 
                 const paidAmount =
                     Number(
@@ -1657,13 +1588,32 @@ async function loadFees(){
 
 
 /* =========================
-   OPEN PAGE
+   OPEN NORMAL PAGE
 ========================= */
 
 function openPage(page){
 
     window.location.href =
         page;
+
+}
+
+
+/* =========================
+   OPEN STAFF FEES
+========================= */
+
+function openStaffFees(){
+
+    /*
+     * Important:
+     * Keep staff identity in URL
+     * so fees page knows this is
+     * Staff login.
+     */
+
+    window.location.href =
+        "fees.html?staff=1";
 
 }
 
@@ -1687,13 +1637,28 @@ function logout(){
     }
 
 
+    /*
+     * Clear BOTH storages.
+     */
+
     localStorage.removeItem(
         "staffLogin"
     );
 
 
-    window.location.href =
-        "staff-login.html";
+    sessionStorage.removeItem(
+        "staffLogin"
+    );
+
+
+    /*
+     * Always return to
+     * STAFF LOGIN.
+     */
+
+    window.location.replace(
+        "staff-login.html"
+    );
 
 }
 
