@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,6 +12,7 @@
 <script src="supabase.js"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -88,7 +91,8 @@ body{
     margin-bottom:28px;
 }
 
-input,select{
+input,
+select{
     width:100%;
     padding:15px;
     border:1px solid #ddd;
@@ -97,7 +101,8 @@ input,select{
     outline:none;
 }
 
-input:focus,select:focus{
+input:focus,
+select:focus{
     border-color:#6c63ff;
 }
 
@@ -200,10 +205,6 @@ input:focus,select:focus{
     color:#555;
 }
 
-.details-box{
-    display:none;
-}
-
 .details-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -298,42 +299,71 @@ input:focus,select:focus{
     .details-grid{
         grid-template-columns:1fr;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
+
+    <!-- HEADER -->
 
     <div class="header">
 
         <div class="header-left">
 
-            <div class="logo-circle">🎓</div>
+            <div class="logo-circle">
+                🎓
+            </div>
 
             <div>
-                <h1>Student Details</h1>
-                <p>Music Academy Student Management</p>
-                <div id="staffBadge" class="staff-badge" style="display:none;">
+
+                <h1>
+                    Student Details
+                </h1>
+
+                <p>
+                    Music Academy Student Management
+                </p>
+
+                <div
+                    id="staffBadge"
+                    class="staff-badge"
+                    style="display:none;"
+                >
                     Staff Access
                 </div>
+
             </div>
 
         </div>
 
-        <button class="back-btn" onclick="goBack()">
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+        >
             ← Back
         </button>
 
     </div>
 
 
+
     <div class="content">
 
-        <!-- LIST SECTION -->
+
+        <!-- ================= LIST ================= -->
 
         <div id="listSection">
+
 
             <div class="filters">
 
@@ -343,42 +373,74 @@ input:focus,select:focus{
                     placeholder="🔎 Search student name or mobile"
                 >
 
+
                 <select id="batchFilter">
-                    <option value="">All Batches</option>
+
+                    <option value="">
+                        All Batches
+                    </option>
+
                 </select>
 
             </div>
 
 
+
             <div class="section-title">
 
-                <h2>Students</h2>
+                <h2>
+                    Students
+                </h2>
 
-                <div class="count" id="studentCount">
+                <div
+                    class="count"
+                    id="studentCount"
+                >
                     0 Students
                 </div>
 
             </div>
 
 
-            <div id="loading" class="loading">
+
+            <div
+                id="loading"
+                class="loading"
+            >
                 Loading students...
             </div>
 
-            <div id="studentList" class="student-list"></div>
+
+            <div
+                id="studentList"
+                class="student-list"
+            ></div>
+
 
         </div>
 
 
-        <!-- DETAILS SECTION -->
 
-        <div id="detailsSection" style="display:none;">
+        <!-- ================= DETAILS ================= -->
+
+        <div
+            id="detailsSection"
+            style="display:none;"
+        >
+
 
             <div class="section-title">
-                <h2>Edit Student</h2>
+
+                <h2>
+                    Edit Student
+                </h2>
+
             </div>
 
+
+
             <div class="details-grid">
+
 
                 <div class="detail-item">
 
@@ -386,9 +448,13 @@ input:focus,select:focus{
                         Student Full Name
                     </div>
 
-                    <input id="editName">
+                    <input
+                        id="editName"
+                        type="text"
+                    >
 
                 </div>
+
 
 
                 <div class="detail-item">
@@ -397,9 +463,13 @@ input:focus,select:focus{
                         Mobile Number
                     </div>
 
-                    <input id="editMobile">
+                    <input
+                        id="editMobile"
+                        type="text"
+                    >
 
                 </div>
+
 
 
                 <div class="detail-item">
@@ -413,6 +483,7 @@ input:focus,select:focus{
                 </div>
 
 
+
                 <div class="detail-item">
 
                     <div class="detail-label">
@@ -422,6 +493,7 @@ input:focus,select:focus{
                     <select id="editBatch"></select>
 
                 </div>
+
 
 
                 <div class="detail-item">
@@ -439,6 +511,7 @@ input:focus,select:focus{
                 </div>
 
 
+
                 <div class="detail-item">
 
                     <div class="detail-label">
@@ -452,7 +525,9 @@ input:focus,select:focus{
 
                 </div>
 
+
             </div>
+
 
 
             <div class="form-buttons">
@@ -464,6 +539,7 @@ input:focus,select:focus{
                     💾 Save Changes
                 </button>
 
+
                 <button
                     class="btn cancel-btn"
                     onclick="showList()"
@@ -473,49 +549,90 @@ input:focus,select:focus{
 
             </div>
 
+
         </div>
+
 
     </div>
 
 </div>
 
 
+
 <script>
 
+
 let students = [];
+
 let selectedStudent = null;
 
 let isStaff = false;
+
 let staffInfo = null;
 
-
-/* =========================
-   START
-========================= */
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    checkStaff();
-
-});
+let ownerInfo = null;
 
 
-/* =========================
-   CHECK STAFF
-========================= */
 
-function checkStaff(){
+// =====================================================
+// START
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        await detectLogin();
+
+    }
+);
+
+
+
+// =====================================================
+// DETECT LOGIN
+// =====================================================
+
+async function detectLogin(){
 
     try{
 
-        const saved = localStorage.getItem("staffLogin");
 
-        if(saved){
+        // =================================================
+        // STAFF - CHECK LOCAL STORAGE
+        // =================================================
 
-            staffInfo = JSON.parse(saved);
+        let staffSaved =
+            localStorage.getItem(
+                "staffLogin"
+            );
+
+
+        // =================================================
+        // STAFF - CHECK SESSION STORAGE
+        // =================================================
+
+        if(!staffSaved){
+
+            staffSaved =
+                sessionStorage.getItem(
+                    "staffLogin"
+                );
+
+        }
+
+
+        if(staffSaved){
+
+            staffInfo =
+                JSON.parse(
+                    staffSaved
+                );
+
 
             if(
                 staffInfo &&
+                staffInfo.id &&
                 staffInfo.name &&
                 staffInfo.email &&
                 staffInfo.mobile
@@ -523,41 +640,123 @@ function checkStaff(){
 
                 isStaff = true;
 
-                document.getElementById("staffBadge").style.display =
+
+                document.getElementById(
+                    "staffBadge"
+                ).style.display =
                     "inline-block";
+
+
+                await loadStudents();
+
+                return;
 
             }
 
         }
 
-    }catch(error){
 
-        console.log(error);
+
+        // =================================================
+        // OWNER
+        // =================================================
+
+        const ownerSaved =
+            localStorage.getItem(
+                "ownerLogin"
+            );
+
+
+        if(ownerSaved){
+
+            ownerInfo =
+                JSON.parse(
+                    ownerSaved
+                );
+
+
+            if(
+                ownerInfo &&
+                ownerInfo.id
+            ){
+
+                isStaff = false;
+
+                await loadStudents();
+
+                return;
+
+            }
+
+        }
+
+
+
+        // =================================================
+        // NO LOGIN
+        // =================================================
+
+        alert(
+            "Please login first."
+        );
+
+
+        window.location.href =
+            "index.html";
+
 
     }
+    catch(error){
 
-    loadStudents();
+        console.error(
+            "Login Error:",
+            error
+        );
+
+
+        alert(
+            "Login information error."
+        );
+
+
+        window.location.href =
+            "index.html";
+
+    }
 
 }
 
 
-/* =========================
-   LOAD STUDENTS
-========================= */
+
+// =====================================================
+// LOAD STUDENTS
+// =====================================================
 
 async function loadStudents(){
 
-    document.getElementById("loading").style.display = "block";
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "block";
 
-    document.getElementById("studentList").innerHTML = "";
+
+    document.getElementById(
+        "studentList"
+    ).innerHTML =
+        "";
+
 
     try{
 
-        let data;
-        let error;
+        let data = null;
+
+        let error = null;
 
 
-        /* STAFF */
+
+        // =================================================
+        // STAFF
+        // =================================================
 
         if(isStaff){
 
@@ -565,448 +764,836 @@ async function loadStudents(){
                 await supabaseClient.rpc(
                     "staff_get_students_by_login",
                     {
-                        p_name: staffInfo.name,
-                        p_email: staffInfo.email,
-                        p_mobile: staffInfo.mobile
+                        p_name:
+                            staffInfo.name,
+
+                        p_email:
+                            staffInfo.email,
+
+                        p_mobile:
+                            staffInfo.mobile
                     }
                 );
 
-            data = result.data;
-            error = result.error;
+
+            data =
+                result.data;
+
+            error =
+                result.error;
 
         }
 
 
-        /* OWNER */
+
+        // =================================================
+        // OWNER
+        // =================================================
 
         else{
 
-            const userResult =
-                await supabaseClient.auth.getUser();
+            if(
+                !ownerInfo ||
+                !ownerInfo.id
+            ){
 
-            const user = userResult.data.user;
-
-            if(!user){
-
-                alert("Please login again.");
-
-                window.location.href = "login.html";
-
-                return;
+                throw new Error(
+                    "Owner login information not found."
+                );
 
             }
+
 
             const result =
                 await supabaseClient
                     .from("students")
                     .select("*")
-                    .eq("owner_id", user.id)
-                    .order("full_name");
+                    .eq(
+                        "owner_id",
+                        ownerInfo.id
+                    )
+                    .order(
+                        "full_name"
+                    );
 
-            data = result.data;
-            error = result.error;
 
-        }
+            data =
+                result.data;
 
-
-        if(error){
-
-            console.error(error);
-
-            document.getElementById("loading").innerHTML =
-                "❌ Error loading students";
-
-            return;
+            error =
+                result.error;
 
         }
 
 
-        /* STAFF RPC */
+
+        if(error)
+            throw error;
+
+
+
+        // =================================================
+        // STAFF RESULT
+        // =================================================
 
         if(isStaff){
 
-            if(!data || !data.success){
+            if(
+                !data ||
+                data.success !== true
+            ){
 
-                document.getElementById("loading").innerHTML =
-                    "❌ Staff access not approved";
-
-                return;
+                throw new Error(
+                    data?.message ||
+                    "Staff access not approved."
+                );
 
             }
 
-            students = data.students || [];
+
+            students =
+                Array.isArray(
+                    data.students
+                )
+                ? data.students
+                : [];
 
         }
 
 
-        /* OWNER */
+
+        // =================================================
+        // OWNER RESULT
+        // =================================================
 
         else{
 
-            students = data || [];
+            students =
+                Array.isArray(data)
+                ? data
+                : [];
 
         }
 
 
-        document.getElementById("loading").style.display = "none";
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
 
         createBatchFilter();
 
         renderStudents();
 
+
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Student Loading Error:",
+            error
+        );
 
-        document.getElementById("loading").innerHTML =
-            "❌ Something went wrong";
+
+        document.getElementById(
+            "loading"
+        ).innerHTML =
+            `
+            ❌ Error loading students
+
+            <br><br>
+
+            ${escapeHtml(
+                error.message || ""
+            )}
+            `;
 
     }
 
 }
 
 
-/* =========================
-   BATCH FILTER
-========================= */
+
+// =====================================================
+// BATCH FILTER
+// =====================================================
 
 function createBatchFilter(){
 
     const select =
-        document.getElementById("batchFilter");
+        document.getElementById(
+            "batchFilter"
+        );
+
 
     select.innerHTML =
-        `<option value="">All Batches</option>`;
+        `
+        <option value="">
+            All Batches
+        </option>
+        `;
 
-    const batches = [...new Set(
-        students
-            .map(s => s.batch)
-            .filter(Boolean)
-    )].sort();
 
-    batches.forEach(batch => {
+    const batches =
+        [
+            ...new Set(
+                students
+                    .map(
+                        s =>
+                            s.batch
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
 
-        const option =
-            document.createElement("option");
 
-        option.value = batch;
-        option.textContent = batch;
+    batches.forEach(
+        batch => {
 
-        select.appendChild(option);
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-    });
+
+            option.value =
+                batch;
+
+            option.textContent =
+                batch;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================
-   RENDER
-========================= */
+
+// =====================================================
+// RENDER STUDENTS
+// =====================================================
 
 function renderStudents(){
 
     const list =
-        document.getElementById("studentList");
+        document.getElementById(
+            "studentList"
+        );
+
 
     const search =
-        document.getElementById("searchInput")
-            .value
-            .toLowerCase()
-            .trim();
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
 
     const batch =
-        document.getElementById("batchFilter").value;
+        document.getElementById(
+            "batchFilter"
+        ).value;
+
 
 
     const filtered =
-        students.filter(student => {
+        students.filter(
+            student => {
 
-            const name =
-                (student.full_name || "").toLowerCase();
-
-            const mobile =
-                (student.mobile_number || "").toLowerCase();
-
-            const studentBatch =
-                student.batch || "";
-
-            const matchSearch =
-                !search ||
-                name.includes(search) ||
-                mobile.includes(search);
-
-            const matchBatch =
-                !batch ||
-                studentBatch === batch;
-
-            return matchSearch && matchBatch;
-
-        });
+                const name =
+                    String(
+                        student.full_name ||
+                        ""
+                    ).toLowerCase();
 
 
-    document.getElementById("studentCount").textContent =
-        `${filtered.length} Students`;
+                const mobile =
+                    String(
+                        student.mobile_number ||
+                        ""
+                    ).toLowerCase();
+
+
+                const studentBatch =
+                    String(
+                        student.batch ||
+                        ""
+                    );
+
+
+                const matchSearch =
+                    !search ||
+                    name.includes(search) ||
+                    mobile.includes(search);
+
+
+                const matchBatch =
+                    !batch ||
+                    studentBatch ===
+                    batch;
+
+
+                return (
+                    matchSearch &&
+                    matchBatch
+                );
+
+            }
+        );
+
+
+
+    document.getElementById(
+        "studentCount"
+    ).textContent =
+        filtered.length +
+        " Students";
+
 
 
     if(filtered.length === 0){
 
-        list.innerHTML = `
+        list.innerHTML =
+            `
             <div class="empty">
-                <div style="font-size:45px;">👨‍🎓</div>
-                <h3>No students found</h3>
-                <p>Students added by the owner will appear here.</p>
+
+                <div style="font-size:45px;">
+                    👨‍🎓
+                </div>
+
+                <h3>
+                    No students found
+                </h3>
+
+                <p>
+                    Students added by the owner
+                    will appear here.
+                </p>
+
             </div>
-        `;
+            `;
 
         return;
 
     }
 
 
-    list.innerHTML = filtered.map(student => `
 
-        <div class="student-card">
+    list.innerHTML =
+        filtered
+        .map(
+            student => `
 
-            <div class="student-main">
+            <div class="student-card">
 
-                <div class="student-icon">
-                    👤
+                <div class="student-main">
+
+                    <div class="student-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <div class="student-name">
+
+                            ${escapeHtml(
+                                student.full_name ||
+                                "No Name"
+                            )}
+
+                        </div>
+
+                        <div class="student-info">
+
+                            📱
+                            ${escapeHtml(
+                                student.mobile_number ||
+                                "-"
+                            )}
+
+                            &nbsp; | &nbsp;
+
+                            🎵
+                            ${escapeHtml(
+                                student.instrument ||
+                                "-"
+                            )}
+
+                            &nbsp; | &nbsp;
+
+                            🕐
+                            ${escapeHtml(
+                                student.batch ||
+                                "-"
+                            )}
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div>
 
-                    <div class="student-name">
-                        ${escapeHtml(student.full_name || "No Name")}
-                    </div>
+                <div class="student-actions">
 
-                    <div class="student-info">
-                        📱 ${escapeHtml(student.mobile_number || "-")}
-                        &nbsp; | &nbsp;
-                        🎵 ${escapeHtml(student.instrument || "-")}
-                        &nbsp; | &nbsp;
-                        🕐 ${escapeHtml(student.batch || "-")}
-                    </div>
+                    <button
+                        class="btn edit-btn"
+                        onclick="editStudent('${student.id}')"
+                    >
+                        ✏️ Edit
+                    </button>
+
+
+                    <button
+                        class="btn delete-btn"
+                        onclick="deleteStudent('${student.id}')"
+                    >
+                        🗑️ Delete
+                    </button>
 
                 </div>
 
             </div>
 
-
-            <div class="student-actions">
-
-                <button
-                    class="btn edit-btn"
-                    onclick="editStudent('${student.id}')"
-                >
-                    ✏️ Edit
-                </button>
-
-                <button
-                    class="btn delete-btn"
-                    onclick="deleteStudent('${student.id}')"
-                >
-                    🗑️ Delete
-                </button>
-
-            </div>
-
-        </div>
-
-    `).join("");
+            `
+        )
+        .join("");
 
 }
 
 
-/* =========================
-   EDIT
-========================= */
 
-function editStudent(id){
+// =====================================================
+// EDIT STUDENT
+// =====================================================
+
+async function editStudent(id){
 
     selectedStudent =
-        students.find(s => s.id === id);
+        students.find(
+            student =>
+                String(student.id) ===
+                String(id)
+        );
 
-    if(!selectedStudent) return;
+
+    if(!selectedStudent){
+
+        alert(
+            "Student not found."
+        );
+
+        return;
+
+    }
 
 
-    document.getElementById("listSection").style.display =
+
+    document.getElementById(
+        "listSection"
+    ).style.display =
         "none";
 
-    document.getElementById("detailsSection").style.display =
+
+    document.getElementById(
+        "detailsSection"
+    ).style.display =
         "block";
 
 
-    document.getElementById("editName").value =
-        selectedStudent.full_name || "";
 
-    document.getElementById("editMobile").value =
-        selectedStudent.mobile_number || "";
-
-    document.getElementById("editFees").value =
-        selectedStudent.fees_amount || "";
-
-    document.getElementById("editJoiningDate").value =
-        selectedStudent.joining_date || "";
+    document.getElementById(
+        "editName"
+    ).value =
+        selectedStudent.full_name ||
+        "";
 
 
-    loadEditDropdowns();
+    document.getElementById(
+        "editMobile"
+    ).value =
+        selectedStudent.mobile_number ||
+        "";
+
+
+    document.getElementById(
+        "editFees"
+    ).value =
+        selectedStudent.fees_amount ??
+        selectedStudent.monthly_fee ??
+        "";
+
+
+    document.getElementById(
+        "editJoiningDate"
+    ).value =
+        selectedStudent.joining_date ||
+        "";
+
+
+
+    await loadEditDropdowns();
 
 }
 
 
-/* =========================
-   DROPDOWNS
-========================= */
+
+// =====================================================
+// LOAD EDIT DROPDOWNS
+// =====================================================
 
 async function loadEditDropdowns(){
 
     const instrumentSelect =
-        document.getElementById("editInstrument");
+        document.getElementById(
+            "editInstrument"
+        );
+
 
     const batchSelect =
-        document.getElementById("editBatch");
+        document.getElementById(
+            "editBatch"
+        );
 
 
     let instruments = [];
+
     let batches = [];
 
 
-    if(isStaff){
 
-        const result =
-            await supabaseClient.rpc(
-                "staff_get_dropdowns",
-                {
-                    p_staff_id: staffInfo.id
-                }
-            );
+    try{
 
-        if(result.data && result.data.success){
 
-            instruments =
-                result.data.instruments || [];
+        // =================================================
+        // STAFF
+        // =================================================
 
-            batches =
-                result.data.batches || [];
+        if(isStaff){
+
+            const result =
+                await supabaseClient.rpc(
+                    "staff_get_dropdowns",
+                    {
+                        p_staff_id:
+                            staffInfo.id
+                    }
+                );
+
+
+            if(result.error)
+                throw result.error;
+
+
+            if(
+                result.data &&
+                result.data.success
+            ){
+
+                instruments =
+                    result.data.instruments ||
+                    [];
+
+                batches =
+                    result.data.batches ||
+                    [];
+
+            }
 
         }
 
-    }
-    else{
 
-        const userResult =
-            await supabaseClient.auth.getUser();
 
-        const user = userResult.data.user;
+        // =================================================
+        // OWNER
+        // =================================================
 
-        if(user){
+        else{
+
+            if(
+                !ownerInfo ||
+                !ownerInfo.id
+            ){
+
+                throw new Error(
+                    "Owner login information not found."
+                );
+
+            }
+
+
 
             const iResult =
                 await supabaseClient
                     .from("instruments")
                     .select("*")
-                    .eq("owner_id", user.id)
+                    .eq(
+                        "owner_id",
+                        ownerInfo.id
+                    )
                     .order("name");
+
+
+            if(iResult.error)
+                throw iResult.error;
+
+
 
             const bResult =
                 await supabaseClient
                     .from("batches")
                     .select("*")
-                    .eq("owner_id", user.id)
+                    .eq(
+                        "owner_id",
+                        ownerInfo.id
+                    )
                     .order("name");
 
+
+            if(bResult.error)
+                throw bResult.error;
+
+
+
             instruments =
-                iResult.data || [];
+                iResult.data ||
+                [];
+
 
             batches =
-                bResult.data || [];
+                bResult.data ||
+                [];
 
         }
 
+
+
+        // =================================================
+        // INSTRUMENT
+        // =================================================
+
+        instrumentSelect.innerHTML =
+            "";
+
+
+        instruments.forEach(
+            item => {
+
+                const name =
+                    item.name ||
+                    item.instrument ||
+                    item.instrument_name ||
+                    "";
+
+
+                if(!name)
+                    return;
+
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    name;
+
+                option.textContent =
+                    name;
+
+
+                instrumentSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+
+        // =================================================
+        // BATCH
+        // =================================================
+
+        batchSelect.innerHTML =
+            "";
+
+
+        batches.forEach(
+            item => {
+
+                const name =
+                    item.name ||
+                    item.batch ||
+                    item.batch_name ||
+                    "";
+
+
+                if(!name)
+                    return;
+
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    name;
+
+                option.textContent =
+                    name;
+
+
+                batchSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+
+        // =================================================
+        // SELECT CURRENT VALUES
+        // =================================================
+
+        instrumentSelect.value =
+            selectedStudent.instrument ||
+            "";
+
+
+        batchSelect.value =
+            selectedStudent.batch ||
+            "";
+
+
+
     }
+    catch(error){
+
+        console.error(
+            "Dropdown Error:",
+            error
+        );
 
 
-    instrumentSelect.innerHTML = "";
+        alert(
+            "Unable to load instrument/batch."
+        );
 
-    instruments.forEach(item => {
-
-        const option =
-            document.createElement("option");
-
-        option.value = item.name;
-        option.textContent = item.name;
-
-        instrumentSelect.appendChild(option);
-
-    });
-
-
-    batchSelect.innerHTML = "";
-
-    batches.forEach(item => {
-
-        const option =
-            document.createElement("option");
-
-        option.value = item.name;
-        option.textContent = item.name;
-
-        batchSelect.appendChild(option);
-
-    });
-
-
-    instrumentSelect.value =
-        selectedStudent.instrument || "";
-
-    batchSelect.value =
-        selectedStudent.batch || "";
+    }
 
 }
 
 
-/* =========================
-   SAVE
-========================= */
+
+// =====================================================
+// SAVE STUDENT
+// =====================================================
 
 async function saveStudent(){
 
-    if(!selectedStudent) return;
+    if(!selectedStudent){
 
-
-    const name =
-        document.getElementById("editName").value.trim();
-
-    const mobile =
-        document.getElementById("editMobile").value.trim();
-
-    const instrument =
-        document.getElementById("editInstrument").value;
-
-    const batch =
-        document.getElementById("editBatch").value;
-
-    const fees =
-        Number(document.getElementById("editFees").value || 0);
-
-    const joiningDate =
-        document.getElementById("editJoiningDate").value;
-
-
-    if(!name){
-
-        alert("Student name is required.");
+        alert(
+            "Student not selected."
+        );
 
         return;
 
     }
+
+
+
+    const name =
+        document.getElementById(
+            "editName"
+        )
+        .value
+        .trim();
+
+
+    const mobile =
+        document.getElementById(
+            "editMobile"
+        )
+        .value
+        .trim();
+
+
+    const instrument =
+        document.getElementById(
+            "editInstrument"
+        ).value;
+
+
+    const batch =
+        document.getElementById(
+            "editBatch"
+        ).value;
+
+
+    const fees =
+        Number(
+            document.getElementById(
+                "editFees"
+            ).value ||
+            0
+        );
+
+
+    const joiningDate =
+        document.getElementById(
+            "editJoiningDate"
+        ).value;
+
+
+
+    if(!name){
+
+        alert(
+            "Student name is required."
+        );
+
+        return;
+
+    }
+
+
+
+    if(!mobile){
+
+        alert(
+            "Mobile number is required."
+        );
+
+        return;
+
+    }
+
 
 
     try{
 
         let result;
 
+
+
+        // =================================================
+        // STAFF UPDATE
+        // =================================================
 
         if(isStaff){
 
@@ -1014,95 +1601,205 @@ async function saveStudent(){
                 await supabaseClient.rpc(
                     "staff_update_student",
                     {
-                        p_staff_id: staffInfo.id,
-                        p_student_id: selectedStudent.id,
-                        p_full_name: name,
-                        p_mobile: mobile,
-                        p_instrument: instrument,
-                        p_batch: batch,
-                        p_fees: fees,
-                        p_joining_date: joiningDate
+
+                        p_staff_id:
+                            staffInfo.id,
+
+                        p_student_id:
+                            selectedStudent.id,
+
+                        p_full_name:
+                            name,
+
+                        p_mobile:
+                            mobile,
+
+                        p_instrument:
+                            instrument,
+
+                        p_batch:
+                            batch,
+
+                        p_fees:
+                            fees,
+
+                        p_joining_date:
+                            joiningDate || null
+
                     }
                 );
 
+
+            if(result.error)
+                throw result.error;
+
+
+
+            if(
+                !result.data ||
+                result.data.success !== true
+            ){
+
+                throw new Error(
+                    result.data?.message ||
+                    "Student update failed."
+                );
+
+            }
+
         }
+
+
+
+        // =================================================
+        // OWNER UPDATE
+        // =================================================
+
         else{
+
+            if(
+                !ownerInfo ||
+                !ownerInfo.id
+            ){
+
+                throw new Error(
+                    "Owner login information not found."
+                );
+
+            }
+
+
 
             result =
                 await supabaseClient
                     .from("students")
                     .update({
-                        full_name: name,
-                        mobile_number: mobile,
-                        instrument: instrument,
-                        batch: batch,
-                        fees_amount: fees,
-                        joining_date: joiningDate
+
+                        full_name:
+                            name,
+
+                        mobile_number:
+                            mobile,
+
+                        instrument:
+                            instrument,
+
+                        batch:
+                            batch,
+
+                        fees_amount:
+                            fees,
+
+                        joining_date:
+                            joiningDate || null
+
                     })
-                    .eq("id", selectedStudent.id);
+                    .eq(
+                        "id",
+                        selectedStudent.id
+                    )
+                    .eq(
+                        "owner_id",
+                        ownerInfo.id
+                    )
+                    .select()
+                    .single();
+
+
+
+            if(result.error)
+                throw result.error;
+
+
+
+            if(!result.data){
+
+                throw new Error(
+                    "Student was not updated. Please check Owner access."
+                );
+
+            }
 
         }
 
 
-        if(result.error){
 
-            alert("❌ Update failed");
-
-            console.error(result.error);
-
-            return;
-
-        }
+        alert(
+            "✅ Student updated successfully."
+        );
 
 
-        if(isStaff && !result.data?.success){
 
-            alert(
-                "❌ " +
-                (result.data?.message || "Update failed")
-            );
+        selectedStudent =
+            null;
 
-            return;
-
-        }
-
-
-        alert("✅ Student updated successfully.");
 
         showList();
 
-        loadStudents();
+
+        await loadStudents();
+
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Update Student Error:",
+            error
+        );
 
-        alert("❌ Something went wrong.");
+
+        alert(
+            "❌ Student update failed:\n\n" +
+            (
+                error.message ||
+                error
+            )
+        );
 
     }
 
 }
 
 
-/* =========================
-   DELETE
-========================= */
+
+// =====================================================
+// DELETE STUDENT
+// =====================================================
 
 async function deleteStudent(id){
 
     const student =
-        students.find(s => s.id === id);
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
 
-    if(!student) return;
+
+    if(!student){
+
+        alert(
+            "Student not found."
+        );
+
+        return;
+
+    }
+
 
 
     const confirmDelete =
         confirm(
-            `Delete ${student.full_name}?`
+            "Delete " +
+            student.full_name +
+            "?"
         );
 
-    if(!confirmDelete) return;
+
+    if(!confirmDelete)
+        return;
+
 
 
     try{
@@ -1110,108 +1807,160 @@ async function deleteStudent(id){
         let result;
 
 
+
+        // =================================================
+        // STAFF
+        // =================================================
+
         if(isStaff){
 
             result =
                 await supabaseClient.rpc(
                     "staff_delete_student",
                     {
-                        p_staff_id: staffInfo.id,
-                        p_student_id: id
+
+                        p_staff_id:
+                            staffInfo.id,
+
+                        p_student_id:
+                            id
+
                     }
                 );
 
+
+            if(result.error)
+                throw result.error;
+
+
+
+            if(
+                !result.data ||
+                result.data.success !== true
+            ){
+
+                throw new Error(
+                    result.data?.message ||
+                    "Delete failed."
+                );
+
+            }
+
         }
+
+
+
+        // =================================================
+        // OWNER
+        // =================================================
+
         else{
 
             result =
                 await supabaseClient
                     .from("students")
                     .delete()
-                    .eq("id", id);
+                    .eq(
+                        "id",
+                        id
+                    )
+                    .eq(
+                        "owner_id",
+                        ownerInfo.id
+                    );
+
+
+            if(result.error)
+                throw result.error;
 
         }
 
 
-        if(result.error){
 
-            alert("❌ Delete failed");
-
-            console.error(result.error);
-
-            return;
-
-        }
+        alert(
+            "✅ Student deleted successfully."
+        );
 
 
-        if(isStaff && !result.data?.success){
-
-            alert(
-                "❌ " +
-                (result.data?.message || "Delete failed")
-            );
-
-            return;
-
-        }
-
-
-        alert("✅ Student deleted successfully.");
-
-        loadStudents();
+        await loadStudents();
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Delete Error:",
+            error
+        );
 
-        alert("❌ Something went wrong.");
+
+        alert(
+            "❌ Delete failed:\n\n" +
+            (
+                error.message ||
+                error
+            )
+        );
 
     }
 
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+
+// =====================================================
+// SEARCH
+// =====================================================
 
 document
-    .getElementById("searchInput")
+    .getElementById(
+        "searchInput"
+    )
     .addEventListener(
         "input",
         renderStudents
     );
 
 
+
 document
-    .getElementById("batchFilter")
+    .getElementById(
+        "batchFilter"
+    )
     .addEventListener(
         "change",
         renderStudents
     );
 
 
-/* =========================
-   SHOW LIST
-========================= */
+
+// =====================================================
+// SHOW LIST
+// =====================================================
 
 function showList(){
 
-    document.getElementById("detailsSection").style.display =
+    document.getElementById(
+        "detailsSection"
+    ).style.display =
         "none";
 
-    document.getElementById("listSection").style.display =
+
+    document.getElementById(
+        "listSection"
+    ).style.display =
         "block";
 
-    selectedStudent = null;
+
+    selectedStudent =
+        null;
 
 }
 
 
-/* =========================
-   BACK
-========================= */
+
+// =====================================================
+// BACK
+// =====================================================
 
 function goBack(){
 
@@ -1231,22 +1980,41 @@ function goBack(){
 }
 
 
-/* =========================
-   HTML ESCAPE
-========================= */
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
 
 function escapeHtml(value){
 
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
 
 }
 
 </script>
 
 </body>
+
 </html>
