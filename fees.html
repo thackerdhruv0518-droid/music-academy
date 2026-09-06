@@ -435,37 +435,21 @@
 
                 <tr>
 
-                    <th>
-                        Student
-                    </th>
+                    <th>Student</th>
 
-                    <th>
-                        Batch
-                    </th>
+                    <th>Batch</th>
 
-                    <th>
-                        Instrument
-                    </th>
+                    <th>Instrument</th>
 
-                    <th>
-                        Monthly Fees
-                    </th>
+                    <th>Monthly Fees</th>
 
-                    <th>
-                        Received
-                    </th>
+                    <th>Received</th>
 
-                    <th>
-                        Balance
-                    </th>
+                    <th>Balance</th>
 
-                    <th>
-                        Status
-                    </th>
+                    <th>Status</th>
 
-                    <th>
-                        Action
-                    </th>
+                    <th>Action</th>
 
                 </tr>
 
@@ -755,7 +739,6 @@
 
 <script>
 
-
 let allStudents = [];
 
 let selectedStudent = null;
@@ -795,12 +778,39 @@ async function detectLogin() {
 
     try {
 
-        const ownerLogin =
+        // =============================================
+        // OWNER - LOCAL + SESSION
+        // =============================================
+
+        let ownerLogin =
             localStorage.getItem("ownerLogin");
 
-        const staffLogin =
+        if (!ownerLogin) {
+
+            ownerLogin =
+                sessionStorage.getItem("ownerLogin");
+
+        }
+
+
+        // =============================================
+        // STAFF - LOCAL + SESSION
+        // =============================================
+
+        let staffLogin =
             localStorage.getItem("staffLogin");
 
+        if (!staffLogin) {
+
+            staffLogin =
+                sessionStorage.getItem("staffLogin");
+
+        }
+
+
+        // =============================================
+        // OWNER
+        // =============================================
 
         if (ownerLogin) {
 
@@ -821,6 +831,10 @@ async function detectLogin() {
         }
 
 
+        // =============================================
+        // STAFF
+        // =============================================
+
         if (staffLogin) {
 
             currentMode = "staff";
@@ -840,12 +854,17 @@ async function detectLogin() {
         }
 
 
+        // =============================================
+        // NO LOGIN
+        // =============================================
+
         alert(
             "Please login first."
         );
 
-        window.location.href =
-            "index.html";
+        window.location.replace(
+            "index.html"
+        );
 
     }
     catch (error) {
@@ -859,8 +878,9 @@ async function detectLogin() {
             "Login information error."
         );
 
-        window.location.href =
-            "index.html";
+        window.location.replace(
+            "index.html"
+        );
 
     }
 
@@ -1118,6 +1138,10 @@ async function loadStudents() {
 
     try {
 
+        // =============================================
+        // OWNER
+        // =============================================
+
         if (currentMode === "owner") {
 
             const {
@@ -1138,12 +1162,6 @@ async function loadStudents() {
 
             if (error)
                 throw error;
-
-
-            console.log(
-                "OWNER STUDENTS:",
-                data
-            );
 
 
             allStudents =
@@ -1198,6 +1216,12 @@ async function loadStudents() {
                 );
 
         }
+
+
+        // =============================================
+        // STAFF
+        // =============================================
+
         else {
 
             const {
@@ -1215,12 +1239,6 @@ async function loadStudents() {
 
             if (error)
                 throw error;
-
-
-            console.log(
-                "STAFF STUDENTS:",
-                data
-            );
 
 
             allStudents =
@@ -1277,12 +1295,6 @@ async function loadStudents() {
                 );
 
         }
-
-
-        console.log(
-            "FINAL STUDENTS:",
-            allStudents
-        );
 
 
         await loadFeeRecords();
@@ -1345,9 +1357,9 @@ async function loadFeeRecords() {
         let fees = [];
 
 
-        // =================================================
+        // =============================================
         // OWNER
-        // =================================================
+        // =============================================
 
         if (currentMode === "owner") {
 
@@ -1374,9 +1386,9 @@ async function loadFeeRecords() {
         }
 
 
-        // =================================================
+        // =============================================
         // STAFF
-        // =================================================
+        // =============================================
 
         else {
 
@@ -1395,7 +1407,6 @@ async function loadFeeRecords() {
 
                         p_year:
                             new Date().getFullYear()
-
                     }
                 );
 
@@ -1410,11 +1421,9 @@ async function loadFeeRecords() {
             ) {
 
                 fees =
-                    Array.isArray(
-                        data.fees
-                    )
-                    ? data.fees
-                    : [];
+                    Array.isArray(data.fees)
+                        ? data.fees
+                        : [];
 
             }
             else {
@@ -1427,12 +1436,6 @@ async function loadFeeRecords() {
             }
 
         }
-
-
-        console.log(
-            "FEE RECORDS:",
-            fees
-        );
 
 
         const feeMap = {};
@@ -1467,9 +1470,9 @@ async function loadFeeRecords() {
 
 
 
-        // =================================================
-        // OWNER ACTUAL PAYMENT TOTAL
-        // =================================================
+        // =============================================
+        // OWNER PAYMENT TOTAL
+        // =============================================
 
         if (currentMode === "owner") {
 
@@ -1483,10 +1486,8 @@ async function loadFeeRecords() {
             if (studentIds.length) {
 
                 const {
-                    data:
-                        payments,
-                    error:
-                        paymentError
+                    data: payments,
+                    error: paymentError
                 } =
                     await supabaseClient
                         .from("fee_payments")
@@ -1501,12 +1502,6 @@ async function loadFeeRecords() {
 
                 if (paymentError)
                     throw paymentError;
-
-
-                console.log(
-                    "ACTUAL PAYMENTS:",
-                    payments
-                );
 
 
                 const paymentTotals = {};
@@ -1638,10 +1633,9 @@ async function loadFeeRecords() {
         }
 
 
-
-        // =================================================
+        // =============================================
         // STAFF
-        // =================================================
+        // =============================================
 
         else {
 
@@ -1735,12 +1729,6 @@ async function loadFeeRecords() {
                 );
 
         }
-
-
-        console.log(
-            "FINAL FEE STUDENTS:",
-            allStudents
-        );
 
 
         renderTable();
@@ -1851,16 +1839,12 @@ function renderTable() {
 
     const totalFees =
         rows.reduce(
-            (
-                total,
-                student
-            ) => {
+            (total, student) => {
 
                 return (
                     total +
                     Number(
-                        student.monthly_fee ||
-                        0
+                        student.monthly_fee || 0
                     )
                 );
 
@@ -1871,16 +1855,12 @@ function renderTable() {
 
     const totalReceived =
         rows.reduce(
-            (
-                total,
-                student
-            ) => {
+            (total, student) => {
 
                 return (
                     total +
                     Number(
-                        student.paid_amount ||
-                        0
+                        student.paid_amount || 0
                     )
                 );
 
@@ -1892,17 +1872,13 @@ function renderTable() {
     document.getElementById(
         "totalFees"
     ).textContent =
-        money(
-            totalFees
-        );
+        money(totalFees);
 
 
     document.getElementById(
         "totalReceived"
     ).textContent =
-        money(
-            totalReceived
-        );
+        money(totalReceived);
 
 
     if (!rows.length) {
@@ -1935,15 +1911,13 @@ function renderTable() {
 
             const fee =
                 Number(
-                    student.monthly_fee ||
-                    0
+                    student.monthly_fee || 0
                 );
 
 
             const paid =
                 Number(
-                    student.paid_amount ||
-                    0
+                    student.paid_amount || 0
                 );
 
 
@@ -1981,10 +1955,7 @@ function renderTable() {
                 "Unpaid";
 
 
-            if (
-                status ===
-                "paid"
-            ) {
+            if (status === "paid") {
 
                 statusText =
                     "Paid";
@@ -1992,10 +1963,7 @@ function renderTable() {
             }
 
 
-            if (
-                status ===
-                "partial"
-            ) {
+            if (status === "partial") {
 
                 statusText =
                     "Partial";
@@ -2004,23 +1972,18 @@ function renderTable() {
 
 
             const tr =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
 
             tr.innerHTML =
                 `
                 <td>
-
                     <strong>
                         ${escapeHtml(
                             student.full_name
                         )}
                     </strong>
-
                 </td>
-
 
                 <td>
                     ${escapeHtml(
@@ -2028,36 +1991,27 @@ function renderTable() {
                     )}
                 </td>
 
-
                 <td>
                     ${escapeHtml(
                         student.instrument
                     )}
                 </td>
 
-
                 <td>
                     ${money(fee)}
                 </td>
-
 
                 <td>
                     ${money(paid)}
                 </td>
 
-
                 <td>
                     ${money(balance)}
                 </td>
 
-
-                <td
-                    class="${status}">
-
+                <td class="${status}">
                     ${statusText}
-
                 </td>
-
 
                 <td>
 
@@ -2091,9 +2045,7 @@ function renderTable() {
                 `;
 
 
-            tbody.appendChild(
-                tr
-            );
+            tbody.appendChild(tr);
 
         }
     );
@@ -2106,27 +2058,19 @@ function renderTable() {
 // OPEN PAYMENT
 // =====================================================
 
-function openPayment(
-    studentId
-) {
+function openPayment(studentId) {
 
     selectedStudent =
         allStudents.find(
             student =>
-                String(
-                    student.id
-                ) ===
-                String(
-                    studentId
-                )
+                String(student.id) ===
+                String(studentId)
         );
 
 
     if (!selectedStudent) {
 
-        alert(
-            "Student not found."
-        );
+        alert("Student not found.");
 
         return;
 
@@ -2176,8 +2120,7 @@ function closePayment() {
         "none";
 
 
-    selectedStudent =
-        null;
+    selectedStudent = null;
 
 }
 
@@ -2191,9 +2134,7 @@ async function savePayment() {
 
     if (!selectedStudent) {
 
-        alert(
-            "Student not selected."
-        );
+        alert("Student not selected.");
 
         return;
 
@@ -2220,10 +2161,7 @@ async function savePayment() {
         ).value;
 
 
-    if (
-        !amount ||
-        amount <= 0
-    ) {
+    if (!amount || amount <= 0) {
 
         alert(
             "Please enter payment amount."
@@ -2262,14 +2200,13 @@ async function savePayment() {
             selectedStudent.fee_id;
 
 
-        // =================================================
-        // OWNER CREATE FEE RECORD
-        // =================================================
+        // =============================================
+        // OWNER CREATE FEE
+        // =============================================
 
         if (
             !feeId &&
-            currentMode ===
-            "owner"
+            currentMode === "owner"
         ) {
 
             const {
@@ -2288,8 +2225,7 @@ async function savePayment() {
 
                         amount:
                             Number(
-                                selectedStudent.monthly_fee ||
-                                0
+                                selectedStudent.monthly_fee || 0
                             ),
 
                         paid_amount:
@@ -2317,14 +2253,13 @@ async function savePayment() {
         }
 
 
-        // =================================================
-        // STAFF MUST HAVE FEE RECORD
-        // =================================================
+        // =============================================
+        // STAFF FEE CHECK
+        // =============================================
 
         if (
             !feeId &&
-            currentMode ===
-            "staff"
+            currentMode === "staff"
         ) {
 
             alert(
@@ -2336,22 +2271,19 @@ async function savePayment() {
         }
 
 
-        // =================================================
+        // =============================================
         // OWNER PAYMENT
-        // =================================================
+        // =============================================
 
         if (
-            currentMode ===
-            "owner"
+            currentMode === "owner"
         ) {
 
             const {
                 error
             } =
                 await supabaseClient
-                    .from(
-                        "fee_payments"
-                    )
+                    .from("fee_payments")
                     .insert({
 
                         owner_id:
@@ -2382,9 +2314,9 @@ async function savePayment() {
         }
 
 
-        // =================================================
+        // =============================================
         // STAFF PAYMENT
-        // =================================================
+        // =============================================
 
         else {
 
@@ -2472,27 +2404,19 @@ async function savePayment() {
 // PAYMENT HISTORY
 // =====================================================
 
-async function openHistory(
-    studentId
-) {
+async function openHistory(studentId) {
 
     const student =
         allStudents.find(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    studentId
-                )
+                String(item.id) ===
+                String(studentId)
         );
 
 
     if (!student) {
 
-        alert(
-            "Student not found."
-        );
+        alert("Student not found.");
 
         return;
 
@@ -2528,9 +2452,7 @@ async function openHistory(
             error
         } =
             await supabaseClient
-                .from(
-                    "fee_payments"
-                )
+                .from("fee_payments")
                 .select("*")
                 .eq(
                     "student_id",
@@ -2539,8 +2461,7 @@ async function openHistory(
                 .order(
                     "payment_date",
                     {
-                        ascending:
-                            false
+                        ascending: false
                     }
                 );
 
@@ -2549,12 +2470,8 @@ async function openHistory(
             throw error;
 
 
-        const payments =
-            data || [];
-
-
         renderHistory(
-            payments
+            data || []
         );
 
     }
@@ -2593,9 +2510,7 @@ async function openHistory(
 // RENDER HISTORY
 // =====================================================
 
-function renderHistory(
-    payments
-) {
+function renderHistory(payments) {
 
     const box =
         document.getElementById(
@@ -2626,9 +2541,7 @@ function renderHistory(
         payment => {
 
             const div =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             div.className =
@@ -2638,9 +2551,7 @@ function renderHistory(
             div.innerHTML =
                 `
                 <strong>
-                    ${money(
-                        payment.amount
-                    )}
+                    ${money(payment.amount)}
                 </strong>
 
                 <br><br>
@@ -2687,9 +2598,7 @@ function renderHistory(
                 `;
 
 
-            box.appendChild(
-                div
-            );
+            box.appendChild(div);
 
         }
     );
@@ -2702,9 +2611,7 @@ function renderHistory(
 // OPEN EDIT PAYMENT
 // =====================================================
 
-async function openEditPayment(
-    paymentId
-) {
+async function openEditPayment(paymentId) {
 
     try {
 
@@ -2713,9 +2620,7 @@ async function openEditPayment(
             error
         } =
             await supabaseClient
-                .from(
-                    "fee_payments"
-                )
+                .from("fee_payments")
                 .select("*")
                 .eq(
                     "id",
@@ -2802,9 +2707,7 @@ async function openEditPayment(
 // PAYMENT DATE INPUT
 // =====================================================
 
-function paymentDateInput(
-    value
-) {
+function paymentDateInput(value) {
 
     if (!value)
         return todayInput();
@@ -2814,15 +2717,8 @@ function paymentDateInput(
         new Date(value);
 
 
-    if (
-        isNaN(
-            d.getTime()
-        )
-    ) {
-
+    if (isNaN(d.getTime()))
         return todayInput();
-
-    }
 
 
     const year =
@@ -2860,7 +2756,7 @@ function paymentDateInput(
 
 
 // =====================================================
-// CLOSE EDIT PAYMENT
+// CLOSE EDIT
 // =====================================================
 
 function closeEditPayment() {
@@ -2915,10 +2811,7 @@ async function saveEditedPayment() {
         ).value;
 
 
-    if (
-        !amount ||
-        amount <= 0
-    ) {
+    if (!amount || amount <= 0) {
 
         alert(
             "Please enter valid payment amount."
@@ -2953,22 +2846,19 @@ async function saveEditedPayment() {
 
     try {
 
-        // =================================================
+        // =============================================
         // OWNER
-        // =================================================
+        // =============================================
 
         if (
-            currentMode ===
-            "owner"
+            currentMode === "owner"
         ) {
 
             const {
                 error
             } =
                 await supabaseClient
-                    .from(
-                        "fee_payments"
-                    )
+                    .from("fee_payments")
                     .update({
 
                         amount:
@@ -2998,9 +2888,9 @@ async function saveEditedPayment() {
         }
 
 
-        // =================================================
+        // =============================================
         // STAFF
-        // =================================================
+        // =============================================
 
         else {
 
@@ -3058,9 +2948,7 @@ async function saveEditedPayment() {
 
         closeEditPayment();
 
-
         closeHistory();
-
 
         await loadStudents();
 
@@ -3091,9 +2979,7 @@ async function saveEditedPayment() {
 // DELETE PAYMENT
 // =====================================================
 
-async function deletePayment(
-    paymentId
-) {
+async function deletePayment(paymentId) {
 
     const ok =
         confirm(
@@ -3107,22 +2993,19 @@ async function deletePayment(
 
     try {
 
-        // =================================================
+        // =============================================
         // OWNER
-        // =================================================
+        // =============================================
 
         if (
-            currentMode ===
-            "owner"
+            currentMode === "owner"
         ) {
 
             const {
                 error
             } =
                 await supabaseClient
-                    .from(
-                        "fee_payments"
-                    )
+                    .from("fee_payments")
                     .delete()
                     .eq(
                         "id",
@@ -3140,9 +3023,9 @@ async function deletePayment(
         }
 
 
-        // =================================================
+        // =============================================
         // STAFF
-        // =================================================
+        // =============================================
 
         else {
 
@@ -3189,7 +3072,6 @@ async function deletePayment(
 
 
         closeHistory();
-
 
         await loadStudents();
 
@@ -3239,9 +3121,7 @@ function closeHistory() {
 // RECEIPT
 // =====================================================
 
-function openReceipt(
-    studentId
-) {
+function openReceipt(studentId) {
 
     window.location.href =
         "fee-receipt.html?student=" +
@@ -3254,26 +3134,39 @@ function openReceipt(
 
 
 // =====================================================
-// BACK
+// BACK - FIXED
 // =====================================================
 
 function goBack() {
 
-    if (
-        currentMode ===
-        "staff"
-    ) {
+    // STAFF
+    if (currentMode === "staff") {
 
-        window.location.href =
-            "staff-dashboard.html";
+        window.location.replace(
+            "staff-dashboard.html"
+        );
 
-    }
-    else {
-
-        window.location.href =
-            "dashboard.html";
+        return;
 
     }
+
+
+    // OWNER
+    if (currentMode === "owner") {
+
+        window.location.replace(
+            "dashboard.html"
+        );
+
+        return;
+
+    }
+
+
+    // FALLBACK
+    window.location.replace(
+        "index.html"
+    );
 
 }
 
@@ -3327,9 +3220,7 @@ function todayInput() {
 // MONEY
 // =====================================================
 
-function money(
-    value
-) {
+function money(value) {
 
     return "₹" +
         Number(
@@ -3337,11 +3228,8 @@ function money(
         ).toLocaleString(
             "en-IN",
             {
-                minimumFractionDigits:
-                    0,
-
-                maximumFractionDigits:
-                    2
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
             }
         );
 
@@ -3353,9 +3241,7 @@ function money(
 // DATE
 // =====================================================
 
-function formatDate(
-    value
-) {
+function formatDate(value) {
 
     if (!value)
         return "-";
@@ -3365,25 +3251,16 @@ function formatDate(
         new Date(value);
 
 
-    if (
-        isNaN(
-            d.getTime()
-        )
-    )
+    if (isNaN(d.getTime()))
         return "-";
 
 
     return d.toLocaleDateString(
         "en-IN",
         {
-            day:
-                "2-digit",
-
-            month:
-                "2-digit",
-
-            year:
-                "numeric"
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
         }
     );
 
@@ -3395,9 +3272,7 @@ function formatDate(
 // ESCAPE HTML
 // =====================================================
 
-function escapeHtml(
-    value
-) {
+function escapeHtml(value) {
 
     return String(
         value ?? ""
@@ -3484,7 +3359,6 @@ window.addEventListener(
 
     }
 );
-
 
 </script>
 
