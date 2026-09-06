@@ -198,6 +198,56 @@
 
         }
 
+        /* ========================= */
+        /* REMEMBER ME */
+        /* ========================= */
+
+        .remember-row {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-top: 16px;
+
+            color: #444;
+
+            font-size: 14px;
+
+            font-weight: normal;
+
+        }
+
+        .remember-row input {
+
+            width: 17px;
+
+            height: 17px;
+
+            margin: 0;
+
+            padding: 0;
+
+            cursor: pointer;
+
+            accent-color: #1d2671;
+
+        }
+
+        .remember-row label {
+
+            margin: 0;
+
+            font-size: 14px;
+
+            font-weight: normal;
+
+            cursor: pointer;
+
+        }
+
         button {
 
             width: 100%;
@@ -471,6 +521,27 @@
         >
 
 
+        <!-- ========================= -->
+        <!-- REMEMBER ME -->
+        <!-- ========================= -->
+
+        <div class="remember-row">
+
+            <input
+                type="checkbox"
+                id="rememberMe"
+                checked
+            >
+
+            <label for="rememberMe">
+
+                Remember Me
+
+            </label>
+
+        </div>
+
+
         <button
             id="loginButton"
             onclick="staffLogin()"
@@ -487,7 +558,7 @@
         ></div>
 
 
-        <!-- ONLY BUTTON -->
+        <!-- REQUEST ACCESS -->
 
         <button
             class="request-button"
@@ -642,6 +713,113 @@
 
 
 // ========================================
+// LOAD SAVED STAFF LOGIN
+// ========================================
+
+function loadSavedStaffLogin() {
+
+    let saved = null;
+
+    let storageType = null;
+
+
+    // First check localStorage
+
+    const localData =
+        localStorage.getItem("staffLogin");
+
+
+    if (localData) {
+
+        try {
+
+            saved =
+                JSON.parse(localData);
+
+            storageType =
+                "localStorage";
+
+        }
+        catch (error) {
+
+            localStorage.removeItem("staffLogin");
+
+        }
+
+    }
+
+
+    // If not found, check sessionStorage
+
+    if (!saved) {
+
+        const sessionData =
+            sessionStorage.getItem("staffLogin");
+
+
+        if (sessionData) {
+
+            try {
+
+                saved =
+                    JSON.parse(sessionData);
+
+                storageType =
+                    "sessionStorage";
+
+            }
+            catch (error) {
+
+                sessionStorage.removeItem("staffLogin");
+
+            }
+
+        }
+
+    }
+
+
+    if (!saved) {
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("loginName")
+        .value =
+        saved.name || "";
+
+
+    document
+        .getElementById("loginEmail")
+        .value =
+        saved.email || "";
+
+
+    document
+        .getElementById("loginMobile")
+        .value =
+        saved.mobile || "";
+
+
+    // Remember Me ON only for localStorage
+
+    document
+        .getElementById("rememberMe")
+        .checked =
+        storageType === "localStorage";
+
+
+    // Load branding if possible
+
+    loadBranding();
+
+}
+
+
+// ========================================
 // LOAD STAFF BRANDING
 // ========================================
 
@@ -742,7 +920,6 @@ document
     );
 
 
-
 // ========================================
 // STAFF LOGIN
 // ========================================
@@ -769,6 +946,12 @@ async function staffLogin() {
             .getElementById("loginMobile")
             .value
             .trim();
+
+
+    const rememberMe =
+        document
+            .getElementById("rememberMe")
+            .checked;
 
 
     if (!name || !email || !mobile) {
@@ -835,27 +1018,59 @@ async function staffLogin() {
         }
 
 
-        localStorage.setItem(
-            "staffLogin",
-            JSON.stringify({
+        // ====================================
+        // STAFF LOGIN DATA
+        // ====================================
 
-                id:
-                    data.id,
+        const staffData = {
 
-                owner_id:
-                    data.owner_id,
+            id:
+                data.id,
 
-                name:
-                    data.name,
+            owner_id:
+                data.owner_id,
 
-                email:
-                    data.email,
+            name:
+                data.name,
 
-                mobile:
-                    data.mobile
+            email:
+                data.email,
 
-            })
-        );
+            mobile:
+                data.mobile
+
+        };
+
+
+        // ====================================
+        // CLEAR OLD LOGIN DATA
+        // ====================================
+
+        localStorage.removeItem("staffLogin");
+
+        sessionStorage.removeItem("staffLogin");
+
+
+        // ====================================
+        // SAVE ACCORDING TO REMEMBER ME
+        // ====================================
+
+        if (rememberMe) {
+
+            localStorage.setItem(
+                "staffLogin",
+                JSON.stringify(staffData)
+            );
+
+        }
+        else {
+
+            sessionStorage.setItem(
+                "staffLogin",
+                JSON.stringify(staffData)
+            );
+
+        }
 
 
         showMessage(
@@ -1127,6 +1342,21 @@ function goBack() {
         "index.html";
 
 }
+
+
+
+// ========================================
+// PAGE LOAD
+// ========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadSavedStaffLogin();
+
+    }
+);
 
 </script>
 
