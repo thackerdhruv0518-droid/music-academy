@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,6 +100,7 @@ select{
     border-radius:12px;
     font-size:16px;
     outline:none;
+    background:white;
 }
 
 input:focus,
@@ -181,6 +183,7 @@ select:focus{
     border-radius:9px;
     cursor:pointer;
     font-size:14px;
+    font-weight:bold;
 }
 
 .edit-btn{
@@ -223,11 +226,6 @@ select:focus{
     margin-bottom:6px;
 }
 
-.detail-value{
-    font-size:17px;
-    font-weight:bold;
-}
-
 .form-buttons{
     display:flex;
     gap:10px;
@@ -251,6 +249,11 @@ select:focus{
     border:1px solid #ffffff55;
     border-radius:20px;
     font-size:12px;
+}
+
+.error-box{
+    color:#d33;
+    font-weight:bold;
 }
 
 @media(max-width:700px){
@@ -306,12 +309,9 @@ select:focus{
 
 </head>
 
-
 <body>
 
-
 <div class="container">
-
 
     <!-- HEADER -->
 
@@ -345,7 +345,6 @@ select:focus{
 
         </div>
 
-
         <button
             class="back-btn"
             onclick="goBack()"
@@ -356,14 +355,11 @@ select:focus{
     </div>
 
 
-
     <div class="content">
 
-
-        <!-- ================= LIST ================= -->
+        <!-- ================= STUDENT LIST ================= -->
 
         <div id="listSection">
-
 
             <div class="filters">
 
@@ -372,7 +368,6 @@ select:focus{
                     id="searchInput"
                     placeholder="🔎 Search student name or mobile"
                 >
-
 
                 <select id="batchFilter">
 
@@ -383,7 +378,6 @@ select:focus{
                 </select>
 
             </div>
-
 
 
             <div class="section-title">
@@ -402,7 +396,6 @@ select:focus{
             </div>
 
 
-
             <div
                 id="loading"
                 class="loading"
@@ -416,18 +409,15 @@ select:focus{
                 class="student-list"
             ></div>
 
-
         </div>
 
 
-
-        <!-- ================= DETAILS ================= -->
+        <!-- ================= EDIT ================= -->
 
         <div
             id="detailsSection"
             style="display:none;"
         >
-
 
             <div class="section-title">
 
@@ -438,9 +428,7 @@ select:focus{
             </div>
 
 
-
             <div class="details-grid">
-
 
                 <div class="detail-item">
 
@@ -454,7 +442,6 @@ select:focus{
                     >
 
                 </div>
-
 
 
                 <div class="detail-item">
@@ -471,7 +458,6 @@ select:focus{
                 </div>
 
 
-
                 <div class="detail-item">
 
                     <div class="detail-label">
@@ -483,7 +469,6 @@ select:focus{
                 </div>
 
 
-
                 <div class="detail-item">
 
                     <div class="detail-label">
@@ -493,7 +478,6 @@ select:focus{
                     <select id="editBatch"></select>
 
                 </div>
-
 
 
                 <div class="detail-item">
@@ -511,7 +495,6 @@ select:focus{
                 </div>
 
 
-
                 <div class="detail-item">
 
                     <div class="detail-label">
@@ -525,9 +508,7 @@ select:focus{
 
                 </div>
 
-
             </div>
-
 
 
             <div class="form-buttons">
@@ -539,7 +520,6 @@ select:focus{
                     💾 Save Changes
                 </button>
 
-
                 <button
                     class="btn cancel-btn"
                     onclick="showList()"
@@ -549,18 +529,18 @@ select:focus{
 
             </div>
 
-
         </div>
-
 
     </div>
 
 </div>
 
 
-
 <script>
 
+// =====================================================
+// GLOBAL VARIABLES
+// =====================================================
 
 let students = [];
 
@@ -571,7 +551,6 @@ let isStaff = false;
 let staffInfo = null;
 
 let ownerInfo = null;
-
 
 
 // =====================================================
@@ -588,7 +567,6 @@ document.addEventListener(
 );
 
 
-
 // =====================================================
 // DETECT LOGIN
 // =====================================================
@@ -597,38 +575,33 @@ async function detectLogin(){
 
     try{
 
-
         // =================================================
-        // STAFF - CHECK LOCAL STORAGE
+        // STAFF
         // =================================================
 
         let staffSaved =
-            localStorage.getItem(
-                "staffLogin"
-            );
-
-
-        // =================================================
-        // STAFF - CHECK SESSION STORAGE
-        // =================================================
+            localStorage.getItem("staffLogin");
 
         if(!staffSaved){
 
             staffSaved =
-                sessionStorage.getItem(
-                    "staffLogin"
-                );
+                sessionStorage.getItem("staffLogin");
 
         }
 
-
         if(staffSaved){
 
-            staffInfo =
-                JSON.parse(
-                    staffSaved
-                );
+            try{
 
+                staffInfo =
+                    JSON.parse(staffSaved);
+
+            }
+            catch(e){
+
+                staffInfo = null;
+
+            }
 
             if(
                 staffInfo &&
@@ -640,12 +613,10 @@ async function detectLogin(){
 
                 isStaff = true;
 
-
                 document.getElementById(
                     "staffBadge"
                 ).style.display =
                     "inline-block";
-
 
                 await loadStudents();
 
@@ -656,24 +627,33 @@ async function detectLogin(){
         }
 
 
-
         // =================================================
         // OWNER
         // =================================================
 
-        const ownerSaved =
-            localStorage.getItem(
-                "ownerLogin"
-            );
+        let ownerSaved =
+            localStorage.getItem("ownerLogin");
 
+        if(!ownerSaved){
+
+            ownerSaved =
+                sessionStorage.getItem("ownerLogin");
+
+        }
 
         if(ownerSaved){
 
-            ownerInfo =
-                JSON.parse(
-                    ownerSaved
-                );
+            try{
 
+                ownerInfo =
+                    JSON.parse(ownerSaved);
+
+            }
+            catch(e){
+
+                ownerInfo = null;
+
+            }
 
             if(
                 ownerInfo &&
@@ -682,6 +662,39 @@ async function detectLogin(){
 
                 isStaff = false;
 
+                // Get real authenticated user
+                try{
+
+                    const {
+                        data: authData
+                    } =
+                        await supabaseClient.auth.getUser();
+
+                    if(
+                        authData &&
+                        authData.user &&
+                        authData.user.id
+                    ){
+
+                        ownerInfo.id =
+                            authData.user.id;
+
+                        ownerInfo.email =
+                            authData.user.email ||
+                            ownerInfo.email;
+
+                    }
+
+                }
+                catch(e){
+
+                    console.log(
+                        "Auth user check skipped:",
+                        e
+                    );
+
+                }
+
                 await loadStudents();
 
                 return;
@@ -689,7 +702,6 @@ async function detectLogin(){
             }
 
         }
-
 
 
         // =================================================
@@ -700,10 +712,9 @@ async function detectLogin(){
             "Please login first."
         );
 
-
-        window.location.href =
-            "index.html";
-
+        window.location.replace(
+            "index.html"
+        );
 
     }
     catch(error){
@@ -713,19 +724,17 @@ async function detectLogin(){
             error
         );
 
-
         alert(
             "Login information error."
         );
 
-
-        window.location.href =
-            "index.html";
+        window.location.replace(
+            "index.html"
+        );
 
     }
 
 }
-
 
 
 // =====================================================
@@ -734,24 +743,27 @@ async function detectLogin(){
 
 async function loadStudents(){
 
-    document.getElementById(
-        "loading"
-    ).style.display =
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    loading.style.display =
         "block";
 
+    loading.innerHTML =
+        "Loading students...";
 
     document.getElementById(
         "studentList"
     ).innerHTML =
         "";
 
-
     try{
 
         let data = null;
 
         let error = null;
-
 
 
         // =================================================
@@ -775,7 +787,6 @@ async function loadStudents(){
                     }
                 );
 
-
             data =
                 result.data;
 
@@ -783,7 +794,6 @@ async function loadStudents(){
                 result.error;
 
         }
-
 
 
         // =================================================
@@ -803,7 +813,6 @@ async function loadStudents(){
 
             }
 
-
             const result =
                 await supabaseClient
                     .from("students")
@@ -816,7 +825,6 @@ async function loadStudents(){
                         "full_name"
                     );
 
-
             data =
                 result.data;
 
@@ -826,44 +834,59 @@ async function loadStudents(){
         }
 
 
+        if(error){
 
-        if(error)
             throw error;
-
-
-
-        // =================================================
-        // STAFF RESULT
-        // =================================================
-
-        if(isStaff){
-
-            if(
-                !data ||
-                data.success !== true
-            ){
-
-                throw new Error(
-                    data?.message ||
-                    "Staff access not approved."
-                );
-
-            }
-
-
-            students =
-                Array.isArray(
-                    data.students
-                )
-                ? data.students
-                : [];
 
         }
 
 
+        // =================================================
+        // STAFF DATA
+        // =================================================
+
+        if(isStaff){
+
+            /*
+             * Support both formats:
+             *
+             * 1. { success:true, students:[...] }
+             *
+             * 2. [ {...}, {...} ]
+             */
+
+            if(
+                data &&
+                data.success === true &&
+                Array.isArray(data.students)
+            ){
+
+                students =
+                    data.students;
+
+            }
+            else if(
+                Array.isArray(data)
+            ){
+
+                students =
+                    data;
+
+            }
+            else{
+
+                throw new Error(
+                    data?.message ||
+                    "No student data found."
+                );
+
+            }
+
+        }
+
 
         // =================================================
-        // OWNER RESULT
+        // OWNER DATA
         // =================================================
 
         else{
@@ -876,17 +899,66 @@ async function loadStudents(){
         }
 
 
+        // =================================================
+        // NORMALIZE STAFF DATA
+        // =================================================
 
-        document.getElementById(
-            "loading"
-        ).style.display =
+        students =
+            students.map(
+                student => {
+
+                    return {
+
+                        ...student,
+
+                        id:
+                            student.id,
+
+                        full_name:
+                            student.full_name ||
+                            student.student_name ||
+                            student.name ||
+                            student.fullName ||
+                            "",
+
+                        mobile_number:
+                            student.mobile_number ||
+                            student.mobile ||
+                            "",
+
+                        instrument:
+                            student.instrument ||
+                            student.instrument_name ||
+                            "",
+
+                        batch:
+                            student.batch ||
+                            student.batch_name ||
+                            "",
+
+                        fees_amount:
+                            student.fees_amount ??
+                            student.monthly_fee ??
+                            student.fee_amount ??
+                            student.fees ??
+                            0,
+
+                        joining_date:
+                            student.joining_date ||
+                            ""
+
+                    };
+
+                }
+            );
+
+
+        loading.style.display =
             "none";
-
 
         createBatchFilter();
 
         renderStudents();
-
 
     }
     catch(error){
@@ -896,18 +968,22 @@ async function loadStudents(){
             error
         );
 
+        loading.style.display =
+            "block";
 
-        document.getElementById(
-            "loading"
-        ).innerHTML =
+        loading.innerHTML =
             `
-            ❌ Error loading students
+            <div class="error-box">
 
-            <br><br>
+                ❌ Error loading students
 
-            ${escapeHtml(
-                error.message || ""
-            )}
+                <br><br>
+
+                ${escapeHtml(
+                    error.message || ""
+                )}
+
+            </div>
             `;
 
     }
@@ -915,9 +991,8 @@ async function loadStudents(){
 }
 
 
-
 // =====================================================
-// BATCH FILTER
+// CREATE BATCH FILTER
 // =====================================================
 
 function createBatchFilter(){
@@ -927,7 +1002,6 @@ function createBatchFilter(){
             "batchFilter"
         );
 
-
     select.innerHTML =
         `
         <option value="">
@@ -935,20 +1009,20 @@ function createBatchFilter(){
         </option>
         `;
 
-
     const batches =
         [
             ...new Set(
                 students
                     .map(
                         s =>
-                            s.batch
+                            s.batch ||
+                            s.batch_name ||
+                            ""
                     )
                     .filter(Boolean)
             )
         ]
         .sort();
-
 
     batches.forEach(
         batch => {
@@ -958,13 +1032,11 @@ function createBatchFilter(){
                     "option"
                 );
 
-
             option.value =
                 batch;
 
             option.textContent =
                 batch;
-
 
             select.appendChild(
                 option
@@ -974,7 +1046,6 @@ function createBatchFilter(){
     );
 
 }
-
 
 
 // =====================================================
@@ -988,7 +1059,6 @@ function renderStudents(){
             "studentList"
         );
 
-
     const search =
         document.getElementById(
             "searchInput"
@@ -997,12 +1067,10 @@ function renderStudents(){
         .toLowerCase()
         .trim();
 
-
     const batch =
         document.getElementById(
             "batchFilter"
         ).value;
-
 
 
     const filtered =
@@ -1012,20 +1080,25 @@ function renderStudents(){
                 const name =
                     String(
                         student.full_name ||
+                        student.student_name ||
+                        student.name ||
+                        student.fullName ||
                         ""
-                    ).toLowerCase();
-
+                    )
+                    .toLowerCase();
 
                 const mobile =
                     String(
                         student.mobile_number ||
+                        student.mobile ||
                         ""
-                    ).toLowerCase();
-
+                    )
+                    .toLowerCase();
 
                 const studentBatch =
                     String(
                         student.batch ||
+                        student.batch_name ||
                         ""
                     );
 
@@ -1035,12 +1108,9 @@ function renderStudents(){
                     name.includes(search) ||
                     mobile.includes(search);
 
-
                 const matchBatch =
                     !batch ||
-                    studentBatch ===
-                    batch;
-
+                    studentBatch === batch;
 
                 return (
                     matchSearch &&
@@ -1051,13 +1121,11 @@ function renderStudents(){
         );
 
 
-
     document.getElementById(
         "studentCount"
     ).textContent =
         filtered.length +
         " Students";
-
 
 
     if(filtered.length === 0){
@@ -1087,89 +1155,108 @@ function renderStudents(){
     }
 
 
-
     list.innerHTML =
         filtered
         .map(
-            student => `
+            student => {
 
-            <div class="student-card">
+                const studentName =
+                    student.full_name ||
+                    student.student_name ||
+                    student.name ||
+                    student.fullName ||
+                    "No Name";
 
-                <div class="student-main">
+                const studentMobile =
+                    student.mobile_number ||
+                    student.mobile ||
+                    "-";
 
-                    <div class="student-icon">
-                        👤
+                const studentInstrument =
+                    student.instrument ||
+                    student.instrument_name ||
+                    "-";
+
+                const studentBatch =
+                    student.batch ||
+                    student.batch_name ||
+                    "-";
+
+                return `
+
+                <div class="student-card">
+
+                    <div class="student-main">
+
+                        <div class="student-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <div class="student-name">
+
+                                ${escapeHtml(
+                                    studentName
+                                )}
+
+                            </div>
+
+                            <div class="student-info">
+
+                                📱
+                                ${escapeHtml(
+                                    studentMobile
+                                )}
+
+                                &nbsp; | &nbsp;
+
+                                🎵
+                                ${escapeHtml(
+                                    studentInstrument
+                                )}
+
+                                &nbsp; | &nbsp;
+
+                                🕐
+                                ${escapeHtml(
+                                    studentBatch
+                                )}
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div>
 
-                        <div class="student-name">
+                    <div class="student-actions">
 
-                            ${escapeHtml(
-                                student.full_name ||
-                                "No Name"
-                            )}
+                        <button
+                            class="btn edit-btn"
+                            onclick="editStudent('${student.id}')"
+                        >
+                            ✏️ Edit
+                        </button>
 
-                        </div>
-
-                        <div class="student-info">
-
-                            📱
-                            ${escapeHtml(
-                                student.mobile_number ||
-                                "-"
-                            )}
-
-                            &nbsp; | &nbsp;
-
-                            🎵
-                            ${escapeHtml(
-                                student.instrument ||
-                                "-"
-                            )}
-
-                            &nbsp; | &nbsp;
-
-                            🕐
-                            ${escapeHtml(
-                                student.batch ||
-                                "-"
-                            )}
-
-                        </div>
+                        <button
+                            class="btn delete-btn"
+                            onclick="deleteStudent('${student.id}')"
+                        >
+                            🗑️ Delete
+                        </button>
 
                     </div>
 
                 </div>
 
+                `;
 
-                <div class="student-actions">
-
-                    <button
-                        class="btn edit-btn"
-                        onclick="editStudent('${student.id}')"
-                    >
-                        ✏️ Edit
-                    </button>
-
-
-                    <button
-                        class="btn delete-btn"
-                        onclick="deleteStudent('${student.id}')"
-                    >
-                        🗑️ Delete
-                    </button>
-
-                </div>
-
-            </div>
-
-            `
+            }
         )
         .join("");
 
 }
-
 
 
 // =====================================================
@@ -1197,12 +1284,10 @@ async function editStudent(id){
     }
 
 
-
     document.getElementById(
         "listSection"
     ).style.display =
         "none";
-
 
     document.getElementById(
         "detailsSection"
@@ -1210,11 +1295,13 @@ async function editStudent(id){
         "block";
 
 
-
     document.getElementById(
         "editName"
     ).value =
         selectedStudent.full_name ||
+        selectedStudent.student_name ||
+        selectedStudent.name ||
+        selectedStudent.fullName ||
         "";
 
 
@@ -1222,6 +1309,7 @@ async function editStudent(id){
         "editMobile"
     ).value =
         selectedStudent.mobile_number ||
+        selectedStudent.mobile ||
         "";
 
 
@@ -1230,7 +1318,9 @@ async function editStudent(id){
     ).value =
         selectedStudent.fees_amount ??
         selectedStudent.monthly_fee ??
-        "";
+        selectedStudent.fee_amount ??
+        selectedStudent.fees ??
+        0;
 
 
     document.getElementById(
@@ -1240,11 +1330,9 @@ async function editStudent(id){
         "";
 
 
-
     await loadEditDropdowns();
 
 }
-
 
 
 // =====================================================
@@ -1258,7 +1346,6 @@ async function loadEditDropdowns(){
             "editInstrument"
         );
 
-
     const batchSelect =
         document.getElementById(
             "editBatch"
@@ -1270,9 +1357,7 @@ async function loadEditDropdowns(){
     let batches = [];
 
 
-
     try{
-
 
         // =================================================
         // STAFF
@@ -1296,7 +1381,7 @@ async function loadEditDropdowns(){
 
             if(
                 result.data &&
-                result.data.success
+                result.data.success === true
             ){
 
                 instruments =
@@ -1308,9 +1393,16 @@ async function loadEditDropdowns(){
                     [];
 
             }
+            else{
+
+                throw new Error(
+                    result.data?.message ||
+                    "Unable to load dropdowns."
+                );
+
+            }
 
         }
-
 
 
         // =================================================
@@ -1331,7 +1423,6 @@ async function loadEditDropdowns(){
             }
 
 
-
             const iResult =
                 await supabaseClient
                     .from("instruments")
@@ -1340,12 +1431,13 @@ async function loadEditDropdowns(){
                         "owner_id",
                         ownerInfo.id
                     )
-                    .order("name");
+                    .order(
+                        "name"
+                    );
 
 
             if(iResult.error)
                 throw iResult.error;
-
 
 
             const bResult =
@@ -1356,18 +1448,18 @@ async function loadEditDropdowns(){
                         "owner_id",
                         ownerInfo.id
                     )
-                    .order("name");
+                    .order(
+                        "name"
+                    );
 
 
             if(bResult.error)
                 throw bResult.error;
 
 
-
             instruments =
                 iResult.data ||
                 [];
-
 
             batches =
                 bResult.data ||
@@ -1376,14 +1468,12 @@ async function loadEditDropdowns(){
         }
 
 
-
         // =================================================
         // INSTRUMENT
         // =================================================
 
         instrumentSelect.innerHTML =
             "";
-
 
         instruments.forEach(
             item => {
@@ -1394,23 +1484,19 @@ async function loadEditDropdowns(){
                     item.instrument_name ||
                     "";
 
-
                 if(!name)
                     return;
-
 
                 const option =
                     document.createElement(
                         "option"
                     );
 
-
                 option.value =
                     name;
 
                 option.textContent =
                     name;
-
 
                 instrumentSelect.appendChild(
                     option
@@ -1420,14 +1506,12 @@ async function loadEditDropdowns(){
         );
 
 
-
         // =================================================
         // BATCH
         // =================================================
 
         batchSelect.innerHTML =
             "";
-
 
         batches.forEach(
             item => {
@@ -1438,23 +1522,19 @@ async function loadEditDropdowns(){
                     item.batch_name ||
                     "";
 
-
                 if(!name)
                     return;
-
 
                 const option =
                     document.createElement(
                         "option"
                     );
 
-
                 option.value =
                     name;
 
                 option.textContent =
                     name;
-
 
                 batchSelect.appendChild(
                     option
@@ -1464,21 +1544,19 @@ async function loadEditDropdowns(){
         );
 
 
-
         // =================================================
-        // SELECT CURRENT VALUES
+        // CURRENT VALUES
         // =================================================
 
         instrumentSelect.value =
             selectedStudent.instrument ||
+            selectedStudent.instrument_name ||
             "";
-
 
         batchSelect.value =
             selectedStudent.batch ||
+            selectedStudent.batch_name ||
             "";
-
-
 
     }
     catch(error){
@@ -1488,15 +1566,17 @@ async function loadEditDropdowns(){
             error
         );
 
-
         alert(
-            "Unable to load instrument/batch."
+            "Unable to load instrument/batch.\n\n" +
+            (
+                error.message ||
+                ""
+            )
         );
 
     }
 
 }
-
 
 
 // =====================================================
@@ -1514,7 +1594,6 @@ async function saveStudent(){
         return;
 
     }
-
 
 
     const name =
@@ -1560,7 +1639,6 @@ async function saveStudent(){
         ).value;
 
 
-
     if(!name){
 
         alert(
@@ -1570,7 +1648,6 @@ async function saveStudent(){
         return;
 
     }
-
 
 
     if(!mobile){
@@ -1584,12 +1661,7 @@ async function saveStudent(){
     }
 
 
-
     try{
-
-        let result;
-
-
 
         // =================================================
         // STAFF UPDATE
@@ -1597,7 +1669,7 @@ async function saveStudent(){
 
         if(isStaff){
 
-            result =
+            const result =
                 await supabaseClient.rpc(
                     "staff_update_student",
                     {
@@ -1624,7 +1696,8 @@ async function saveStudent(){
                             fees,
 
                         p_joining_date:
-                            joiningDate || null
+                            joiningDate ||
+                            null
 
                     }
                 );
@@ -1632,7 +1705,6 @@ async function saveStudent(){
 
             if(result.error)
                 throw result.error;
-
 
 
             if(
@@ -1647,81 +1719,122 @@ async function saveStudent(){
 
             }
 
-        }
 
+            alert(
+                "✅ Student updated successfully."
+            );
+
+
+            selectedStudent =
+                null;
+
+
+            await loadStudents();
+
+            showList();
+
+            return;
+
+        }
 
 
         // =================================================
         // OWNER UPDATE
         // =================================================
 
-        else{
+        if(
+            !ownerInfo ||
+            !ownerInfo.id
+        ){
+
+            throw new Error(
+                "Owner login information not found."
+            );
+
+        }
+
+
+        let ownerId =
+            ownerInfo.id;
+
+
+        try{
+
+            const {
+                data: authData
+            } =
+                await supabaseClient.auth.getUser();
 
             if(
-                !ownerInfo ||
-                !ownerInfo.id
+                authData &&
+                authData.user &&
+                authData.user.id
             ){
 
-                throw new Error(
-                    "Owner login information not found."
-                );
-
-            }
-
-
-
-            result =
-                await supabaseClient
-                    .from("students")
-                    .update({
-
-                        full_name:
-                            name,
-
-                        mobile_number:
-                            mobile,
-
-                        instrument:
-                            instrument,
-
-                        batch:
-                            batch,
-
-                        fees_amount:
-                            fees,
-
-                        joining_date:
-                            joiningDate || null
-
-                    })
-                    .eq(
-                        "id",
-                        selectedStudent.id
-                    )
-                    .eq(
-                        "owner_id",
-                        ownerInfo.id
-                    )
-                    .select()
-                    .single();
-
-
-
-            if(result.error)
-                throw result.error;
-
-
-
-            if(!result.data){
-
-                throw new Error(
-                    "Student was not updated. Please check Owner access."
-                );
+                ownerId =
+                    authData.user.id;
 
             }
 
         }
+        catch(e){
 
+            console.log(
+                "Auth check skipped:",
+                e
+            );
+
+        }
+
+
+        const result =
+            await supabaseClient
+                .from("students")
+                .update({
+
+                    full_name:
+                        name,
+
+                    mobile_number:
+                        mobile,
+
+                    instrument:
+                        instrument,
+
+                    batch:
+                        batch,
+
+                    fees_amount:
+                        fees,
+
+                    joining_date:
+                        joiningDate ||
+                        null
+
+                })
+                .eq(
+                    "id",
+                    selectedStudent.id
+                )
+                .eq(
+                    "owner_id",
+                    ownerId
+                )
+                .select()
+                .single();
+
+
+        if(result.error)
+            throw result.error;
+
+
+        if(!result.data){
+
+            throw new Error(
+                "Student was not updated."
+            );
+
+        }
 
 
         alert(
@@ -1729,16 +1842,13 @@ async function saveStudent(){
         );
 
 
-
         selectedStudent =
             null;
 
 
-        showList();
-
-
         await loadStudents();
 
+        showList();
 
     }
     catch(error){
@@ -1747,7 +1857,6 @@ async function saveStudent(){
             "Update Student Error:",
             error
         );
-
 
         alert(
             "❌ Student update failed:\n\n" +
@@ -1760,7 +1869,6 @@ async function saveStudent(){
     }
 
 }
-
 
 
 // =====================================================
@@ -1788,11 +1896,18 @@ async function deleteStudent(id){
     }
 
 
+    const studentName =
+        student.full_name ||
+        student.student_name ||
+        student.name ||
+        student.fullName ||
+        "this student";
+
 
     const confirmDelete =
         confirm(
             "Delete " +
-            student.full_name +
+            studentName +
             "?"
         );
 
@@ -1801,12 +1916,7 @@ async function deleteStudent(id){
         return;
 
 
-
     try{
-
-        let result;
-
-
 
         // =================================================
         // STAFF
@@ -1814,7 +1924,7 @@ async function deleteStudent(id){
 
         if(isStaff){
 
-            result =
+            const result =
                 await supabaseClient.rpc(
                     "staff_delete_student",
                     {
@@ -1833,7 +1943,6 @@ async function deleteStudent(id){
                 throw result.error;
 
 
-
             if(
                 !result.data ||
                 result.data.success !== true
@@ -1849,14 +1958,58 @@ async function deleteStudent(id){
         }
 
 
-
         // =================================================
         // OWNER
         // =================================================
 
         else{
 
-            result =
+            if(
+                !ownerInfo ||
+                !ownerInfo.id
+            ){
+
+                throw new Error(
+                    "Owner login information not found."
+                );
+
+            }
+
+
+            let ownerId =
+                ownerInfo.id;
+
+
+            try{
+
+                const {
+                    data: authData
+                } =
+                    await supabaseClient.auth.getUser();
+
+                if(
+                    authData &&
+                    authData.user &&
+                    authData.user.id
+                ){
+
+                    ownerId =
+                        authData.user.id;
+
+                }
+
+            }
+            catch(e){
+
+                console.log(
+                    "Auth check skipped:",
+                    e
+                );
+
+            }
+
+
+            const result =
                 await supabaseClient
                     .from("students")
                     .delete()
@@ -1866,15 +2019,27 @@ async function deleteStudent(id){
                     )
                     .eq(
                         "owner_id",
-                        ownerInfo.id
-                    );
+                        ownerId
+                    )
+                    .select();
 
 
             if(result.error)
                 throw result.error;
 
-        }
 
+            if(
+                !result.data ||
+                result.data.length === 0
+            ){
+
+                throw new Error(
+                    "Student was not deleted."
+                );
+
+            }
+
+        }
 
 
         alert(
@@ -1892,7 +2057,6 @@ async function deleteStudent(id){
             error
         );
 
-
         alert(
             "❌ Delete failed:\n\n" +
             (
@@ -1904,7 +2068,6 @@ async function deleteStudent(id){
     }
 
 }
-
 
 
 // =====================================================
@@ -1921,7 +2084,6 @@ document
     );
 
 
-
 document
     .getElementById(
         "batchFilter"
@@ -1930,7 +2092,6 @@ document
         "change",
         renderStudents
     );
-
 
 
 // =====================================================
@@ -1944,18 +2105,15 @@ function showList(){
     ).style.display =
         "none";
 
-
     document.getElementById(
         "listSection"
     ).style.display =
         "block";
 
-
     selectedStudent =
         null;
 
 }
-
 
 
 // =====================================================
@@ -1966,19 +2124,31 @@ function goBack(){
 
     if(isStaff){
 
-        window.location.href =
-            "staff-dashboard.html";
+        window.location.replace(
+            "staff-dashboard.html"
+        );
+
+        return;
 
     }
-    else{
 
-        window.location.href =
-            "dashboard.html";
+
+    if(ownerInfo){
+
+        window.location.replace(
+            "dashboard.html"
+        );
+
+        return;
 
     }
+
+
+    window.location.replace(
+        "index.html"
+    );
 
 }
-
 
 
 // =====================================================
@@ -2018,3 +2188,4 @@ function escapeHtml(value){
 </body>
 
 </html>
+```
