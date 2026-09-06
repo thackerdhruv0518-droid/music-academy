@@ -4,1790 +4,1667 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Fee Receipt</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+
 <style>
 
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #eef2f7;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #172033;
-}
-
-.topbar {
-    background: #172554;
-    color: white;
-    min-height: 64px;
-    padding: 10px 22px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.topbar h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.back-btn {
-    border: 0;
-    background: white;
-    color: #172554;
-    padding: 9px 16px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.page {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
-    padding: 25px 18px 35px;
-}
-
-.actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-}
-
-.action-btn {
-    border: 0;
-    padding: 11px 18px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.pdf-btn {
-    background: #172554;
-    color: white;
-}
-
-.share-btn {
-    background: #15803d;
-    color: white;
-}
-
-.print-btn {
-    background: #bd2863;
-    color: white;
-}
-
-#receipt {
-    background: white;
-    width: 100%;
-    padding: 38px 42px;
-    border-radius: 14px;
-    box-shadow: 0 8px 30px rgba(15,23,42,.10);
-}
-
-/* ================= HEADER ================= */
-
-.receipt-header {
-    position: relative;
-    min-height: 100px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 8px 110px 18px 25px;
-
-    border-bottom: 1px solid #dbe3ee;
-}
-
-.academy-name {
-    width: 100%;
-    text-align: center;
-}
-
-.academy-name h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: #172554;
-}
-
-.owner-line {
-    margin-top: 7px;
-    font-size: 13px;
-    color: #64748b;
-}
-
-.logo-area {
-    position: absolute;
-    right: 3px;
-    top: 0;
-    width: 82px;
-    height: 82px;
-}
-
-.logo-area img {
-    width: 82px;
-    height: 82px;
-    object-fit: contain;
-    border-radius: 8px;
-}
-
-/* ================= TITLE ================= */
-
-.receipt-title {
-    text-align: center;
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
-.receipt-title h2 {
-    margin: 0;
-    font-size: 22px;
-    color: #172033;
-}
-
-/* ================= SECTIONS ================= */
-
-.section-title {
-    margin-top: 22px;
-    margin-bottom: 11px;
-    font-size: 15px;
-    font-weight: bold;
-    color: #172554;
-}
-
-/* ================= STUDENT ================= */
-
-.student-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 11px;
-}
-
-.info-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px 14px;
-    min-height: 56px;
-}
-
-.label {
-    color: #64748b;
-    font-size: 11px;
-    margin-bottom: 5px;
-}
-
-.value {
-    font-size: 14px;
-    font-weight: bold;
-    color: #172033;
-}
-
-/* ================= PAYMENT ================= */
-
-.payment-box {
-    border: 1px solid #dbe3ee;
-    border-radius: 9px;
-    overflow: hidden;
-    margin-top: 3px;
-}
-
-.payment-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 53px;
-    padding: 11px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    gap: 20px;
-}
-
-.payment-row:last-child {
-    border-bottom: 0;
-}
-
-.payment-label {
-    color: #64748b;
-    font-size: 14px;
-}
-
-.payment-value {
-    font-size: 15px;
-    font-weight: bold;
-    color: #172033;
-    text-align: right;
-}
-
-.received {
-    color: #15803d;
-}
-
-.balance {
-    color: #dc2626;
-}
-
-.status-paid {
-    color: #15803d;
-}
-
-.status-partial {
-    color: #d97706;
-}
-
-.status-unpaid {
-    color: #dc2626;
-}
-
-/* ================= FOOTER ================= */
-
-.footer {
-    margin-top: 42px;
-    padding-top: 21px;
-    border-top: 1px solid #dbe3ee;
-}
-
-.thank-you {
-    text-align: center;
-    color: #475569;
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0 10px;
-}
-
-.footer-content {
-    margin-top: 35px;
-    min-height: 90px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-
-    padding: 0 5px;
-}
-
-.owner-details {
-    width: 45%;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #172033;
-}
-
-.owner-name {
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.owner-mobile {
-    color: #475569;
-}
-
-.signature-area {
-    width: 200px;
-    min-height: 85px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-
-    text-align: center;
-}
-
-.signature-img {
-    width: 155px;
-    height: 65px;
-    object-fit: contain;
-    margin: 0 auto 7px;
-}
-
-.signature-line {
-    width: 185px;
-    border-top: 1px solid #334155;
-    padding-top: 7px;
-    font-size: 13px;
-    color: #334155;
-}
-
-/* ================= LOADING ================= */
-
-.loading {
-    text-align: center;
-    padding: 60px 20px;
-    color: #64748b;
-}
-
-.error {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 15px;
-    border-radius: 9px;
-    text-align: center;
-    line-height: 1.6;
-}
-
 /* =====================================================
-   PDF MODE
-   ONE PAGE A4
+   GLOBAL
 ===================================================== */
 
-body.pdf-generating {
-    background: white !important;
+*{
+    box-sizing:border-box;
 }
 
-body.pdf-generating .topbar,
-body.pdf-generating .actions {
-    display: none !important;
+html,
+body{
+    margin:0;
+    padding:0;
 }
 
-body.pdf-generating .page {
-    width: 794px !important;
-    max-width: 794px !important;
-    padding: 0 !important;
-    margin: 0 !important;
+body{
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#f2f3f7;
+
+    color:#222;
 }
 
-body.pdf-generating #receipt {
-    width: 794px !important;
-    max-width: 794px !important;
 
-    height: auto !important;
-    min-height: 0 !important;
+/* =====================================================
+   TOP BAR
+===================================================== */
 
-    padding: 24px 32px !important;
+.top-bar{
 
-    margin: 0 !important;
+    background:
+        linear-gradient(
+            135deg,
+            #1d2671,
+            #c33764
+        );
 
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    padding:14px;
+
+    text-align:center;
 }
 
-/* PDF HEADER */
+.top-bar button{
 
-body.pdf-generating .receipt-header {
-    min-height: 76px !important;
-    padding: 4px 88px 9px 12px !important;
+    background:#fff;
+
+    border:none;
+
+    color:#1d2671;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    padding:9px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
 }
 
-body.pdf-generating .academy-name h1 {
-    font-size: 23px !important;
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    text-align:center;
+
+    padding:55px 20px;
+
+    color:#777;
+
+    font-size:15px;
 }
 
-body.pdf-generating .owner-line {
-    margin-top: 3px !important;
-    font-size: 10px !important;
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error{
+
+    text-align:center;
+
+    padding:30px 20px;
+
+    color:#c62828;
+
+    font-weight:bold;
 }
 
-body.pdf-generating .logo-area {
-    width: 62px !important;
-    height: 62px !important;
-    right: 0 !important;
-    top: 0 !important;
+
+/* =====================================================
+   RECEIPT CONTAINER
+===================================================== */
+
+.receipt-container{
+
+    width:100%;
+
+    max-width:794px;
+
+    margin:24px auto;
+
+    padding:0 15px;
 }
 
-body.pdf-generating .logo-area img {
-    width: 62px !important;
-    height: 62px !important;
+
+/* =====================================================
+   RECEIPT
+===================================================== */
+
+.receipt{
+
+    width:100%;
+
+    min-height:1050px;
+
+    background:#fff;
+
+    padding:32px 36px;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 6px 28px
+        rgba(0,0,0,.12);
+
+    position:relative;
 }
 
-/* PDF TITLE */
 
-body.pdf-generating .receipt-title {
-    margin-top: 9px !important;
-    margin-bottom: 9px !important;
+/* =====================================================
+   HEADER
+===================================================== */
+
+.receipt-header{
+
+    position:relative;
+
+    text-align:center;
+
+    padding-bottom:18px;
+
+    border-bottom:
+        2px solid #1d2671;
+
+    min-height:92px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
 }
 
-body.pdf-generating .receipt-title h2 {
-    font-size: 18px !important;
+
+.logo{
+
+    position:absolute;
+
+    right:0;
+
+    top:0;
+
+    width:72px;
+
+    height:72px;
+
+    object-fit:contain;
 }
 
-/* PDF SECTION */
 
-body.pdf-generating .section-title {
-    margin-top: 7px !important;
-    margin-bottom: 4px !important;
-    font-size: 12px !important;
+.academy-name{
+
+    width:100%;
+
+    padding-left:20px;
+
+    padding-right:90px;
+
+    color:#1d2671;
+
+    font-size:26px;
+
+    font-weight:700;
+
+    line-height:1.25;
+
+    text-align:center;
+
+    word-break:break-word;
 }
 
-/* PDF STUDENT */
 
-body.pdf-generating .student-grid {
-    gap: 5px !important;
+.receipt-title{
+
+    margin-top:6px;
+
+    color:#333;
+
+    font-size:19px;
+
+    font-weight:700;
 }
 
-body.pdf-generating .info-box {
-    padding: 5px 8px !important;
-    min-height: 36px !important;
-    border-radius: 5px !important;
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.student-section{
+
+    margin-top:22px;
 }
 
-body.pdf-generating .label {
-    font-size: 7px !important;
-    margin-bottom: 1px !important;
+.payment-section{
+
+    margin-top:22px;
 }
 
-body.pdf-generating .value {
-    font-size: 10px !important;
+.history-section{
+
+    margin-top:22px;
 }
 
-/* PDF PAYMENT */
+.section-title{
 
-body.pdf-generating .payment-box {
-    margin-top: 1px !important;
-    border-radius: 6px !important;
+    margin-bottom:10px;
+
+    padding-left:9px;
+
+    border-left:
+        4px solid #c33764;
+
+    color:#1d2671;
+
+    font-size:16px;
+
+    font-weight:700;
 }
 
-body.pdf-generating .payment-row {
-    min-height: 31px !important;
-    padding: 4px 10px !important;
+
+/* =====================================================
+   STUDENT DETAILS
+===================================================== */
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:9px 12px;
 }
 
-body.pdf-generating .payment-label {
-    font-size: 10px !important;
+.info-box{
+
+    min-height:55px;
+
+    padding:10px 12px;
+
+    border:
+        1px solid #dfe2e8;
+
+    border-radius:7px;
+
+    background:#fafbfc;
 }
 
-body.pdf-generating .payment-value {
-    font-size: 11px !important;
+.info-label{
+
+    margin-bottom:4px;
+
+    color:#777;
+
+    font-size:10.5px;
+
+    font-weight:600;
+
+    text-transform:uppercase;
+
+    letter-spacing:.35px;
 }
 
-/* PDF FOOTER */
+.info-value{
 
-body.pdf-generating .footer {
-    margin-top: 11px !important;
-    padding-top: 7px !important;
+    color:#222;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    line-height:1.25;
 }
 
-/*
-   IMPORTANT:
-   Do NOT use avoid-all on the whole footer.
-   That was causing the signature to jump to page 2.
-*/
 
-body.pdf-generating .thank-you {
-    font-size: 9px !important;
-    line-height: 1.25 !important;
-    padding: 0 3px !important;
+/* =====================================================
+   PAYMENT TABLE
+===================================================== */
+
+.payment-table{
+
+    width:100%;
+
+    border:
+        1px solid #d9dce3;
+
+    border-collapse:collapse;
 }
 
-body.pdf-generating .footer-content {
-    margin-top: 7px !important;
-    min-height: 52px !important;
-    padding: 0 2px !important;
+.payment-table td{
+
+    padding:10px 13px;
+
+    border-bottom:
+        1px solid #e1e3e8;
+
+    font-size:13.5px;
+
+    line-height:1.25;
 }
 
-body.pdf-generating .owner-details {
-    width: 45% !important;
-    font-size: 9px !important;
-    line-height: 1.3 !important;
+.payment-table tr:last-child td{
+
+    border-bottom:none;
 }
 
-body.pdf-generating .owner-name {
-    font-size: 10px !important;
+.payment-table td:first-child{
+
+    width:52%;
+
+    background:#f6f7fa;
+
+    color:#444;
+
+    font-weight:700;
 }
 
-body.pdf-generating .owner-mobile {
-    font-size: 9px !important;
+.payment-table td:last-child{
+
+    text-align:right;
+
+    color:#1d2671;
+
+    font-weight:700;
 }
 
-body.pdf-generating .signature-area {
-    width: 150px !important;
-    min-height: 48px !important;
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-paid{
+
+    color:#198754 !important;
+
+    font-weight:700 !important;
 }
 
-body.pdf-generating .signature-img {
-    width: 105px !important;
-    height: 36px !important;
-    margin: 0 auto 1px !important;
+.status-partial{
+
+    color:#e67e00 !important;
+
+    font-weight:700 !important;
 }
 
-body.pdf-generating .signature-line {
-    width: 135px !important;
-    padding-top: 2px !important;
-    font-size: 9px !important;
+.status-unpaid{
+
+    color:#d32f2f !important;
+
+    font-weight:700 !important;
 }
 
-/*
-   Only small blocks are prevented from splitting.
-   Footer itself is NOT forced to page 2.
-*/
 
-body.pdf-generating .receipt-header,
-body.pdf-generating .receipt-title,
-body.pdf-generating .student-grid,
-body.pdf-generating .payment-box {
-    break-inside: avoid;
-    page-break-inside: avoid;
+/* =====================================================
+   PAYMENT HISTORY
+===================================================== */
+
+.history-table{
+
+    width:100%;
+
+    border:
+        1px solid #d9dce3;
+
+    border-collapse:collapse;
 }
 
-/* ================= MOBILE ================= */
+.history-table th{
 
-@media(max-width:600px) {
+    padding:8px 10px;
 
-    .page {
-        padding: 12px 8px 30px;
+    background:#1d2671;
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-align:left;
+}
+
+.history-table td{
+
+    padding:7px 10px;
+
+    border:
+        1px solid #e0e2e7;
+
+    color:#333;
+
+    font-size:12px;
+
+    line-height:1.2;
+}
+
+.history-table tbody tr:nth-child(even){
+
+    background:#fafbfc;
+}
+
+
+/* =====================================================
+   THANK YOU
+===================================================== */
+
+.thank-you{
+
+    margin-top:23px;
+
+    padding:10px;
+
+    border-top:
+        1px solid #e3e5e9;
+
+    border-bottom:
+        1px solid #e3e5e9;
+
+    color:#1d2671;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    text-align:center;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.receipt-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    margin-top:25px;
+
+    padding-top:14px;
+
+    border-top:
+        1px solid #e1e3e8;
+
+    min-height:90px;
+}
+
+
+/* =====================================================
+   OWNER FOOTER LEFT
+===================================================== */
+
+.footer-owner{
+
+    text-align:left;
+
+    color:#333;
+
+    font-size:12.5px;
+
+    line-height:1.7;
+
+    max-width:55%;
+}
+
+
+.footer-owner-name{
+
+    color:#222;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+
+.footer-owner-mobile{
+
+    color:#555;
+
+    font-size:12.5px;
+
+    font-weight:500;
+}
+
+
+/* =====================================================
+   SIGNATURE FOOTER RIGHT
+===================================================== */
+
+.footer-signature{
+
+    width:185px;
+
+    text-align:center;
+}
+
+
+.signature{
+
+    display:block;
+
+    width:145px;
+
+    height:55px;
+
+    margin:0 auto 3px;
+
+    object-fit:contain;
+}
+
+
+.signature-line{
+
+    margin-top:3px;
+
+    padding-top:6px;
+
+    border-top:
+        1px solid #444;
+
+    color:#333;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    max-width:794px;
+
+    margin:18px auto 25px;
+
+    padding:0 15px;
+}
+
+.action-btn{
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:11px 18px;
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.pdf-btn{
+
+    background:#c33764;
+}
+
+.print-btn{
+
+    background:#1d2671;
+}
+
+.back-btn{
+
+    background:#555;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    .receipt-container{
+
+        margin:15px auto;
+
+        padding:0 8px;
     }
 
-    #receipt {
-        padding: 25px 18px;
-        border-radius: 10px;
+    .receipt{
+
+        min-height:auto;
+
+        padding:23px 18px;
+
+        border-radius:10px;
     }
 
-    .receipt-header {
-        min-height: 88px;
-        padding: 8px 75px 15px 8px;
+    .receipt-header{
+
+        min-height:78px;
     }
 
-    .academy-name h1 {
-        font-size: 21px;
+    .academy-name{
+
+        padding-left:3px;
+
+        padding-right:65px;
+
+        font-size:21px;
     }
 
-    .logo-area {
-        width: 65px;
-        height: 65px;
-        right: 0;
+    .receipt-title{
+
+        font-size:17px;
     }
 
-    .logo-area img {
-        width: 65px;
-        height: 65px;
+    .logo{
+
+        width:58px;
+
+        height:58px;
     }
 
-    .student-grid {
-        grid-template-columns: 1fr;
+    .info-grid{
+
+        grid-template-columns:1fr;
+
+        gap:8px;
     }
 
-    .payment-row {
-        min-height: 51px;
-        padding: 10px 12px;
+    .info-box{
+
+        min-height:auto;
+
+        padding:9px 11px;
     }
 
-    .payment-label {
-        font-size: 13px;
+    .payment-table td{
+
+        padding:9px 10px;
+
+        font-size:13px;
     }
 
-    .payment-value {
-        font-size: 14px;
+    .history-table th,
+    .history-table td{
+
+        padding:7px 6px;
+
+        font-size:11px;
     }
 
-    .footer {
-        margin-top: 38px;
-        padding-top: 20px;
+    .receipt-footer{
+
+        margin-top:20px;
+
+        min-height:80px;
     }
 
-    .thank-you {
-        font-size: 13px;
+    .footer-owner{
+
+        font-size:11.5px;
+
+        line-height:1.6;
     }
 
-    .footer-content {
-        margin-top: 30px;
-        min-height: 90px;
-        padding: 0;
+    .footer-owner-name{
+
+        font-size:12px;
     }
 
-    .owner-details {
-        width: 45%;
-        font-size: 12px;
+    .footer-owner-mobile{
+
+        font-size:11.5px;
     }
 
-    .owner-name {
-        font-size: 13px;
+    .footer-signature{
+
+        width:140px;
     }
 
-    .signature-area {
-        width: 155px;
-        min-height: 80px;
+    .signature{
+
+        width:115px;
+
+        height:48px;
     }
 
-    .signature-img {
-        width: 125px;
-        height: 55px;
+    .signature-line{
+
+        font-size:10.5px;
     }
 
-    .signature-line {
-        width: 140px;
-        font-size: 12px;
+    .actions{
+
+        flex-direction:column;
+
+        padding:0 12px;
     }
+
+    .action-btn{
+
+        width:100%;
+    }
+
 }
 
-/* ================= PRINT ================= */
 
-@media print {
+/* =====================================================
+   PRINT
+===================================================== */
 
-    @page {
-        size: A4 portrait;
-        margin: 5mm;
+@media print{
+
+    @page{
+
+        size:A4 portrait;
+
+        margin:0;
     }
 
-    body {
-        background: white;
+    html,
+    body{
+
+        width:210mm;
+
+        min-height:297mm;
+
+        background:#fff;
     }
 
-    .topbar,
-    .actions {
-        display: none !important;
+    .top-bar,
+    .actions{
+
+        display:none !important;
     }
 
-    .page {
-        max-width: none;
-        padding: 0;
+    .receipt-container{
+
+        width:210mm;
+
+        max-width:none;
+
+        margin:0;
+
+        padding:0;
     }
 
-    #receipt {
-        width: 190mm;
-        max-width: 190mm;
+    .receipt{
 
-        margin: 0 auto;
+        width:210mm;
 
-        box-shadow: none;
-        border-radius: 0;
+        height:297mm;
 
-        padding: 8mm 10mm;
+        min-height:297mm;
+
+        margin:0;
+
+        padding:10mm 11mm;
+
+        border-radius:0;
+
+        box-shadow:none;
     }
 
     .receipt-header,
-    .receipt-title,
-    .student-grid,
-    .payment-box {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
+    .student-section,
+    .payment-section,
+    .history-section,
+    .thank-you,
+    .receipt-footer{
 
+        break-inside:avoid;
+
+        page-break-inside:avoid;
+    }
+}
+
+
+/* =====================================================
+   PDF EXACT A4
+===================================================== */
+
+.pdf-mode{
+
+    width:794px !important;
+
+    height:1123px !important;
+
+    min-height:1123px !important;
+
+    margin:0 !important;
+
+    padding:32px 36px !important;
+
+    border-radius:0 !important;
+
+    box-shadow:none !important;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<div class="topbar">
 
-    <h2>Fee Receipt</h2>
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
-    <button
-        class="back-btn"
-        onclick="goBack()">
+<div class="top-bar">
+
+    <button onclick="goBack()">
+
         ← Back
+
     </button>
 
 </div>
 
-<div class="page">
 
-    <div class="actions">
+<!-- =====================================================
+     LOADING
+===================================================== -->
 
-        <button
-            class="action-btn pdf-btn"
-            onclick="downloadPDF()">
-            📄 Download PDF
-        </button>
+<div id="loading"
+class="loading">
 
-        <button
-            class="action-btn share-btn"
-            onclick="shareReceipt()">
-            📤 Share
-        </button>
-
-        <button
-            class="action-btn print-btn"
-            onclick="window.print()">
-            🖨 Print
-        </button>
-
-    </div>
-
-    <div
-        id="loading"
-        class="loading">
-        Loading receipt...
-    </div>
-
-    <div
-        id="error"
-        class="error"
-        style="display:none;">
-    </div>
-
-    <div
-        id="receipt"
-        style="display:none;">
-
-        <!-- HEADER -->
-
-        <div class="receipt-header">
-
-            <div class="academy-name">
-
-                <h1 id="academyName">
-                    Music Academy
-                </h1>
-
-                <div
-                    class="owner-line"
-                    id="headerOwner">
-                </div>
-
-            </div>
-
-            <div
-                class="logo-area"
-                id="logoArea"
-                style="display:none;">
-
-                <img
-                    id="academyLogo"
-                    src=""
-                    alt="Academy Logo">
-
-            </div>
-
-        </div>
-
-        <!-- TITLE -->
-
-        <div class="receipt-title">
-
-            <h2>Fee Receipt</h2>
-
-        </div>
-
-        <!-- STUDENT DETAILS -->
-
-        <div class="section-title">
-            Student Details
-        </div>
-
-        <div class="student-grid">
-
-            <div class="info-box">
-
-                <div class="label">
-                    Name
-                </div>
-
-                <div
-                    class="value"
-                    id="studentName">
-                    -
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <div class="label">
-                    Number
-                </div>
-
-                <div
-                    class="value"
-                    id="studentNumber">
-                    -
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <div class="label">
-                    Instrument
-                </div>
-
-                <div
-                    class="value"
-                    id="instrument">
-                    -
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <div class="label">
-                    Batch
-                </div>
-
-                <div
-                    class="value"
-                    id="batch">
-                    -
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <div class="label">
-                    Fees Month & Year
-                </div>
-
-                <div
-                    class="value"
-                    id="feesMonthYear">
-                    -
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <div class="label">
-                    Payment Date
-                </div>
-
-                <div
-                    class="value"
-                    id="paymentDate">
-                    -
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- PAYMENT -->
-
-        <div class="section-title">
-            Payment Details
-        </div>
-
-        <div class="payment-box">
-
-            <div class="payment-row">
-
-                <span class="payment-label">
-                    Total Fees
-                </span>
-
-                <span
-                    class="payment-value"
-                    id="totalFees">
-                    ₹0.00
-                </span>
-
-            </div>
-
-            <div class="payment-row">
-
-                <span class="payment-label">
-                    Total Received
-                </span>
-
-                <span
-                    class="payment-value received"
-                    id="receivedAmount">
-                    ₹0.00
-                </span>
-
-            </div>
-
-            <div class="payment-row">
-
-                <span class="payment-label">
-                    Balance
-                </span>
-
-                <span
-                    class="payment-value balance"
-                    id="balanceDue">
-                    ₹0.00
-                </span>
-
-            </div>
-
-            <div class="payment-row">
-
-                <span class="payment-label">
-                    Status
-                </span>
-
-                <span
-                    class="payment-value"
-                    id="paymentStatus">
-                    Unpaid
-                </span>
-
-            </div>
-
-            <div class="payment-row">
-
-                <span class="payment-label">
-                    Payment Mode
-                </span>
-
-                <span
-                    class="payment-value"
-                    id="paymentMode">
-                    -
-                </span>
-
-            </div>
-
-        </div>
-
-        <!-- FOOTER -->
-
-        <div class="footer">
-
-            <div class="thank-you">
-
-                Thank you for choosing our academy.
-                We truly appreciate your support.
-
-            </div>
-
-            <div class="footer-content">
-
-                <!-- OWNER -->
-
-                <div class="owner-details">
-
-                    <div
-                        class="owner-name"
-                        id="ownerName">
-                        -
-                    </div>
-
-                    <div
-                        class="owner-mobile"
-                        id="ownerMobile">
-                        -
-                    </div>
-
-                </div>
-
-                <!-- SIGNATURE -->
-
-                <div class="signature-area">
-
-                    <img
-                        id="signatureImage"
-                        class="signature-img"
-                        style="display:none;"
-                        src=""
-                        alt="Signature">
-
-                    <div class="signature-line">
-                        Signature
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    Loading receipt...
 
 </div>
+
+
+<!-- =====================================================
+     ERROR
+===================================================== -->
+
+<div id="error"
+class="error"
+style="display:none;">
+
+</div>
+
+
+<!-- =====================================================
+     RECEIPT
+===================================================== -->
+
+<div id="receiptArea"
+style="display:none;">
+
+<div class="receipt-container">
+
+<div
+id="receipt"
+class="receipt">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="receipt-header">
+
+
+<img
+id="academyLogo"
+class="logo"
+style="display:none;"
+alt="Academy Logo">
+
+
+<div
+id="academyName"
+class="academy-name">
+
+Music Academy
+
+</div>
+
+
+<div class="receipt-title">
+
+Fee Receipt
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     STUDENT DETAILS
+===================================================== -->
+
+<div class="student-section">
+
+
+<div class="section-title">
+
+Student Details
+
+</div>
+
+
+<div class="info-grid">
+
+
+<div class="info-box">
+
+<div class="info-label">
+
+Student Name
+
+</div>
+
+<div
+id="studentName"
+class="info-value">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+
+Mobile Number
+
+</div>
+
+<div
+id="studentMobile"
+class="info-value">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+
+Instrument
+
+</div>
+
+<div
+id="studentInstrument"
+class="info-value">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+
+Batch
+
+</div>
+
+<div
+id="studentBatch"
+class="info-value">
+
+-
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     PAYMENT DETAILS
+===================================================== -->
+
+<div class="payment-section">
+
+
+<div class="section-title">
+
+Payment Details
+
+</div>
+
+
+<table class="payment-table">
+
+
+<tr>
+
+<td>
+
+Total Fees
+
+</td>
+
+<td
+id="totalFees">
+
+₹0
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+
+Total Received
+
+</td>
+
+<td
+id="totalReceived">
+
+₹0
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+
+Balance
+
+</td>
+
+<td
+id="balance">
+
+₹0
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+
+Status
+
+</td>
+
+<td
+id="status">
+
+Unpaid
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+
+Payment Mode
+
+</td>
+
+<td
+id="paymentMode">
+
+-
+
+</td>
+
+</tr>
+
+
+</table>
+
+</div>
+
+
+<!-- =====================================================
+     PAYMENT HISTORY
+===================================================== -->
+
+<div class="history-section">
+
+
+<div class="section-title">
+
+Payment History
+
+</div>
+
+
+<table class="history-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+
+Date
+
+</th>
+
+<th>
+
+Amount
+
+</th>
+
+<th>
+
+Mode
+
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="historyBody">
+
+<tr>
+
+<td
+colspan="3"
+style="text-align:center;">
+
+No payment history
+
+</td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+<!-- =====================================================
+     THANK YOU
+===================================================== -->
+
+<div class="thank-you">
+
+Thank you for your payment.
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<div class="receipt-footer">
+
+
+<!-- OWNER LEFT -->
+
+<div class="footer-owner">
+
+
+<div class="footer-owner-name">
+
+Owner:
+<span id="footerOwnerName">
+
+Owner
+
+</span>
+
+</div>
+
+
+<div class="footer-owner-mobile">
+
+Mobile:
+<span id="footerOwnerMobile">
+
+-
+
+</span>
+
+</div>
+
+
+</div>
+
+
+<!-- SIGNATURE RIGHT -->
+
+<div class="footer-signature">
+
+
+<img
+id="signatureImage"
+class="signature"
+style="display:none;"
+alt="Owner Signature">
+
+
+<div class="signature-line">
+
+Authorized Signature
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div class="actions">
+
+
+<button
+class="action-btn pdf-btn"
+onclick="downloadPDF()">
+
+Download PDF
+
+</button>
+
+
+<button
+class="action-btn print-btn"
+onclick="window.print()">
+
+Print
+
+</button>
+
+
+<button
+class="action-btn back-btn"
+onclick="goBack()">
+
+Back
+
+</button>
+
+
+</div>
+
 
 <script>
 
 /* =====================================================
-   URL
+   VARIABLES
 ===================================================== */
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+let currentMode = null;
 
-const urlStudentId =
-    params.get("student") ||
-    params.get("student_id") ||
-    params.get("id") ||
-    "";
+let ownerLogin = null;
 
-const urlMobile =
-    params.get("mobile") ||
-    params.get("mobile_number") ||
-    params.get("phone") ||
-    "";
+let staffLogin = null;
 
-const isStaff =
-    params.get("staff") === "1";
+let studentLogin = null;
 
-let receiptData = null;
+let studentData = null;
+
+let paymentHistory = [];
+
+let receiptStudentId = null;
+
+let receiptMobile = null;
+
+let brandingData = null;
 
 
 /* =====================================================
-   BACK
+   PAGE LOAD
 ===================================================== */
 
-function goBack() {
+document.addEventListener(
+"DOMContentLoaded",
+async function(){
 
-    if (isStaff) {
+    await loadReceipt();
 
-        window.location.href =
-            "fees.html?staff=1";
-
-        return;
-    }
-
-    if (getStudentLogin()) {
-
-        window.location.href =
-            "student-fees.html";
-
-        return;
-    }
-
-    if (urlMobile) {
-
-        window.location.href =
-            "student-fees.html";
-
-        return;
-    }
-
-    window.location.href =
-        "fees.html";
-}
+});
 
 
 /* =====================================================
-   MONEY
+   LOAD RECEIPT
 ===================================================== */
 
-function money(value) {
+async function loadReceipt(){
 
-    return "₹" +
-        Number(value || 0).toLocaleString(
-            "en-IN",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+    try{
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        receiptStudentId =
+            params.get("student");
+
+
+        receiptMobile =
+            params.get("mobile");
+
+
+        /* =============================================
+           STAFF MODE
+        ============================================= */
+
+        if(
+            params.get("staff") === "1"
+        ){
+
+            let savedStaff =
+                localStorage.getItem(
+                    "staffLogin"
+                );
+
+
+            if(!savedStaff){
+
+                savedStaff =
+                    sessionStorage.getItem(
+                        "staffLogin"
+                    );
+
             }
-        );
-}
 
 
-/* =====================================================
-   MONTH
-===================================================== */
+            if(savedStaff){
 
-function monthName(month) {
+                try{
 
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ];
+                    staffLogin =
+                        JSON.parse(
+                            savedStaff
+                        );
 
-    return months[month - 1] || "-";
-}
+                }
+                catch(e){
+
+                    staffLogin = null;
+
+                }
+
+            }
 
 
-/* =====================================================
-   DATE
-===================================================== */
+            if(
+                staffLogin &&
+                staffLogin.id
+            ){
 
-function formatDate(value) {
+                currentMode =
+                    "staff";
 
-    if (!value) {
-        return "-";
-    }
+            }
 
-    const date =
-        new Date(value);
-
-    if (isNaN(date.getTime())) {
-        return "-";
-    }
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        }
-    );
-}
-
-
-/* =====================================================
-   OWNER LOGIN
-===================================================== */
-
-function getOwnerLogin() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                "ownerLogin"
-            );
-
-        if (!saved) {
-            return null;
         }
 
-        return JSON.parse(saved);
 
-    }
-    catch (error) {
+        /* =============================================
+           STUDENT MODE
+        ============================================= */
 
-        console.error(error);
+        if(!currentMode){
 
-        return null;
-    }
-}
+            let savedStudent =
+                localStorage.getItem(
+                    "studentLogin"
+                );
 
 
-/* =====================================================
-   STAFF LOGIN
-===================================================== */
+            if(!savedStudent){
 
-function getStaffLogin() {
+                savedStudent =
+                    sessionStorage.getItem(
+                        "studentLogin"
+                    );
 
-    try {
+            }
 
-        const localSaved =
-            localStorage.getItem(
-                "staffLogin"
-            );
 
-        if (localSaved) {
+            if(savedStudent){
 
-            return JSON.parse(
-                localSaved
-            );
+                try{
+
+                    studentLogin =
+                        JSON.parse(
+                            savedStudent
+                        );
+
+                }
+                catch(e){
+
+                    studentLogin = null;
+
+                }
+
+            }
+
+
+            if(
+                studentLogin &&
+                (
+                    receiptMobile ||
+                    studentLogin.mobile
+                )
+            ){
+
+                currentMode =
+                    "student";
+
+
+                if(!receiptMobile){
+
+                    receiptMobile =
+                        studentLogin.mobile;
+
+                }
+
+            }
+
         }
 
-        const sessionSaved =
-            sessionStorage.getItem(
-                "staffLogin"
-            );
 
-        if (sessionSaved) {
+        /* =============================================
+           OWNER MODE
+        ============================================= */
 
-            return JSON.parse(
-                sessionSaved
-            );
+        if(!currentMode){
+
+            let savedOwner =
+                localStorage.getItem(
+                    "ownerLogin"
+                );
+
+
+            if(!savedOwner){
+
+                savedOwner =
+                    sessionStorage.getItem(
+                        "ownerLogin"
+                    );
+
+            }
+
+
+            if(savedOwner){
+
+                try{
+
+                    ownerLogin =
+                        JSON.parse(
+                            savedOwner
+                        );
+
+                }
+                catch(e){
+
+                    ownerLogin = null;
+
+                }
+
+            }
+
+
+            if(
+                ownerLogin &&
+                ownerLogin.id
+            ){
+
+                currentMode =
+                    "owner";
+
+            }
+
         }
 
-        return null;
 
-    }
-    catch (error) {
+        /* =============================================
+           LOGIN CHECK
+        ============================================= */
 
-        console.error(error);
+        if(!currentMode){
 
-        return null;
-    }
-}
-
-
-/* =====================================================
-   STUDENT LOGIN
-===================================================== */
-
-function getStudentLogin() {
-
-    try {
-
-        const localSaved =
-            localStorage.getItem(
-                "studentLogin"
+            throw new Error(
+                "Please login first."
             );
 
-        if (localSaved) {
-
-            return JSON.parse(
-                localSaved
-            );
         }
 
-        const sessionSaved =
-            sessionStorage.getItem(
-                "studentLogin"
-            );
 
-        if (sessionSaved) {
+        /* =============================================
+           LOAD RECEIPT DATA
+        ============================================= */
 
-            return JSON.parse(
-                sessionSaved
-            );
+        if(
+            currentMode === "owner"
+        ){
+
+            await loadOwnerReceipt();
+
         }
 
-        return null;
+        else if(
+            currentMode === "staff"
+        ){
+
+            await loadStaffReceipt();
+
+        }
+
+        else if(
+            currentMode === "student"
+        ){
+
+            await loadStudentReceipt();
+
+        }
+
+
+        /* =============================================
+           LOAD BRANDING
+        ============================================= */
+
+        await loadBranding();
+
+
+        /* =============================================
+           RENDER
+        ============================================= */
+
+        renderReceipt();
+
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "receiptArea"
+        ).style.display =
+            "block";
 
     }
-    catch (error) {
+    catch(error){
 
         console.error(
-            "Student login error:",
+            "Receipt Error:",
             error
         );
 
-        return null;
-    }
-}
 
-
-/* =====================================================
-   STUDENT MOBILE
-===================================================== */
-
-function getStudentMobile() {
-
-    let mobile =
-        String(
-            urlMobile || ""
-        ).trim();
-
-    if (mobile) {
-        return mobile;
-    }
-
-    const login =
-        getStudentLogin();
-
-    if (!login) {
-        return "";
-    }
-
-    mobile =
-        login.mobile ||
-        login.mobile_number ||
-        login.mobileNumber ||
-        login.phone ||
-        "";
-
-    return String(
-        mobile
-    ).trim();
-}
-
-
-/* =====================================================
-   LOCAL ACADEMY SETTINGS
-===================================================== */
-
-function getLocalAcademySettings() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                "academySettings"
-            );
-
-        if (saved) {
-
-            return JSON.parse(
-                saved
-            );
-        }
-
-    }
-    catch (error) {
-
-        console.log(
-            "Local academy settings unavailable."
-        );
-    }
-
-    return null;
-}
-
-
-/* =====================================================
-   STUDENT ACADEMY SETTINGS
-===================================================== */
-
-async function loadStudentAcademySettings(
-    ownerId
-) {
-
-    let settings = null;
-
-    /*
-       FIRST:
-       Try Supabase directly.
-    */
-
-    if (ownerId) {
-
-        try {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("academy_settings")
-                    .select("*")
-                    .eq(
-                        "owner_id",
-                        ownerId
-                    )
-                    .limit(1);
-
-            if (
-                !error &&
-                data &&
-                data.length > 0
-            ) {
-
-                settings =
-                    data[0];
-            }
-
-        }
-        catch (error) {
-
-            console.log(
-                "Academy settings direct read failed."
-            );
-        }
-    }
-
-
-    /*
-       SECOND:
-       Local storage fallback.
-    */
-
-    if (!settings) {
-
-        settings =
-            getLocalAcademySettings();
-    }
-
-
-    return settings;
-}
-
-
-/* =====================================================
-   STUDENT RECEIPT
-===================================================== */
-
-async function loadStudentReceipt() {
-
-    const mobile =
-        getStudentMobile();
-
-    console.log(
-        "Student receipt mobile:",
-        mobile
-    );
-
-    if (!mobile) {
-
-        throw new Error(
-            "Student mobile number is missing. Please open the receipt from Student My Fees."
-        );
-    }
-
-
-    /* ===============================
-       STUDENT + FEE + ACADEMY RPC
-    =============================== */
-
-    const {
-        data: feeRpcData,
-        error: feeRpcError
-    } =
-        await supabaseClient.rpc(
-            "student_get_fees_by_mobile",
-            {
-                p_mobile:
-                    mobile
-            }
+        showError(
+            error.message ||
+            "Unable to load receipt."
         );
 
-
-    if (feeRpcError) {
-
-        throw new Error(
-            "Unable to load student fees: " +
-            feeRpcError.message
-        );
     }
 
-
-    const feeResponse =
-        Array.isArray(feeRpcData)
-            ? (
-                feeRpcData[0] ||
-                null
-            )
-            : feeRpcData;
-
-
-    if (!feeResponse) {
-
-        throw new Error(
-            "Student information not found."
-        );
-    }
-
-
-    if (
-        feeResponse.success !== true
-    ) {
-
-        throw new Error(
-            feeResponse.message ||
-            "Student not found."
-        );
-    }
-
-
-    const student =
-        feeResponse.student ||
-        {};
-
-
-    const fee =
-        feeResponse.fee ||
-        {};
-
-
-    /*
-       IMPORTANT:
-       New RPC returns academy data.
-    */
-
-    const rpcAcademy =
-        feeResponse.academy ||
-        {};
-
-
-    /* ===============================
-       PAYMENT HISTORY
-    =============================== */
-
-    const {
-        data: historyRpcData,
-        error: historyError
-    } =
-        await supabaseClient.rpc(
-            "student_get_payment_history_by_mobile",
-            {
-                p_mobile:
-                    mobile
-            }
-        );
-
-
-    if (historyError) {
-
-        throw new Error(
-            "Unable to load payment history: " +
-            historyError.message
-        );
-    }
-
-
-    const historyResponse =
-        Array.isArray(historyRpcData)
-            ? (
-                historyRpcData[0] ||
-                null
-            )
-            : historyRpcData;
-
-
-    let payments = [];
-
-
-    if (
-        historyResponse &&
-        historyResponse.success === true &&
-        Array.isArray(
-            historyResponse.payments
-        )
-    ) {
-
-        payments =
-            historyResponse.payments;
-    }
-
-
-    payments.sort(
-        (a, b) => {
-
-            const aDate =
-                new Date(
-                    a.payment_date || 0
-                ).getTime();
-
-            const bDate =
-                new Date(
-                    b.payment_date || 0
-                ).getTime();
-
-            return bDate - aDate;
-        }
-    );
-
-
-    const latestPayment =
-        payments.length > 0
-            ? payments[0]
-            : null;
-
-
-    /* ===============================
-       TOTAL FEES
-    =============================== */
-
-    const totalFees =
-        Number(
-            student.fees_amount ??
-            fee.amount ??
-            fee.monthly_amount ??
-            0
-        );
-
-
-    /* ===============================
-       TOTAL RECEIVED
-    =============================== */
-
-    const totalReceived =
-        payments.reduce(
-            (total, payment) => {
-
-                return total +
-                    Number(
-                        payment.amount || 0
-                    );
-
-            },
-            0
-        );
-
-
-    /* ===============================
-       BALANCE
-    =============================== */
-
-    const balance =
-        Math.max(
-            totalFees -
-            totalReceived,
-            0
-        );
-
-
-    /* ===============================
-       STATUS
-    =============================== */
-
-    let status = "Unpaid";
-
-
-    if (
-        totalFees > 0 &&
-        totalReceived >= totalFees
-    ) {
-
-        status = "Paid";
-
-    }
-    else if (
-        totalReceived > 0 &&
-        totalReceived < totalFees
-    ) {
-
-        status = "Partial";
-    }
-
-
-    /* ===============================
-       MONTH / YEAR
-    =============================== */
-
-    const dateSource =
-        latestPayment?.payment_date ||
-        null;
-
-
-    let receiptMonth = "-";
-    let receiptYear = "-";
-
-
-    if (dateSource) {
-
-        const d =
-            new Date(dateSource);
-
-        if (!isNaN(d.getTime())) {
-
-            receiptMonth =
-                d.getMonth() + 1;
-
-            receiptYear =
-                d.getFullYear();
-        }
-    }
-
-
-    /* ===============================
-       ACADEMY SETTINGS
-    =============================== */
-
-    const localSettings =
-        getLocalAcademySettings();
-
-
-    const settings =
-        await loadStudentAcademySettings(
-            student.owner_id
-        );
-
-
-    /*
-       PRIORITY:
-
-       1. RPC academy
-       2. Supabase academy settings
-       3. Local academy settings
-    */
-
-    const academy = {
-
-        class_name:
-            rpcAcademy.class_name ||
-            settings?.class_name ||
-            localSettings?.class_name ||
-            "Music Academy",
-
-        owner_name:
-            rpcAcademy.owner_name ||
-            settings?.owner_name ||
-            localSettings?.owner_name ||
-            "",
-
-        owner_mobile:
-            rpcAcademy.owner_mobile ||
-            settings?.owner_mobile ||
-            localSettings?.owner_mobile ||
-            "",
-
-        logo_url:
-            rpcAcademy.logo_url ||
-            settings?.logo_url ||
-            localSettings?.logo_url ||
-            null,
-
-        signature_url:
-            rpcAcademy.signature_url ||
-            settings?.signature_url ||
-            localSettings?.signature_url ||
-            null
-    };
-
-
-    console.log(
-        "Student receipt academy:",
-        academy
-    );
-
-
-    return {
-
-        success: true,
-
-        student: {
-
-            id:
-                student.id ||
-                student.student_id ||
-                urlStudentId ||
-                "",
-
-            full_name:
-                student.full_name ||
-                "",
-
-            mobile_number:
-                student.mobile_number ||
-                mobile,
-
-            instrument:
-                student.instrument ||
-                "",
-
-            batch:
-                student.batch ||
-                "",
-
-            fees_amount:
-                totalFees
-        },
-
-        academy:
-
-            academy,
-
-        fee: {
-
-            fee_id:
-                fee.id ||
-                null,
-
-            amount:
-                totalFees,
-
-            monthly_amount:
-                totalFees,
-
-            paid_amount:
-                totalReceived,
-
-            balance_due:
-                balance,
-
-            status:
-                status,
-
-            fees_month:
-                receiptMonth,
-
-            fees_year:
-                receiptYear,
-
-            payment_date:
-                latestPayment?.payment_date ||
-                null,
-
-            payment_mode:
-                latestPayment?.payment_mode ||
-                "-"
-        },
-
-        payments:
-            payments
-    };
 }
 
 
@@ -1795,340 +1672,92 @@ async function loadStudentReceipt() {
    OWNER RECEIPT
 ===================================================== */
 
-async function loadOwnerReceipt() {
+async function loadOwnerReceipt(){
 
-    const owner =
-        getOwnerLogin();
-
-
-    if (
-        !owner ||
-        !owner.id
-    ) {
+    if(!receiptStudentId){
 
         throw new Error(
-            "Owner login session not found."
+            "Student ID not found."
         );
-    }
 
-
-    if (!urlStudentId) {
-
-        throw new Error(
-            "Student information missing."
-        );
     }
 
 
     const {
-        data: studentList,
-        error: studentError
+        data:student,
+        error:studentError
     } =
-        await supabaseClient
-            .from("students")
-            .select("*")
-            .eq(
-                "id",
-                urlStudentId
-            )
-            .eq(
-                "owner_id",
-                owner.id
-            )
-            .limit(1);
+    await supabaseClient
+    .from("students")
+    .select("*")
+    .eq(
+        "id",
+        receiptStudentId
+    )
+    .eq(
+        "owner_id",
+        ownerLogin.id
+    )
+    .single();
 
 
-    if (studentError) {
+    if(studentError){
 
-        throw new Error(
-            "Student not found: " +
-            studentError.message
-        );
+        throw studentError;
+
     }
 
 
-    const student =
-        studentList?.length
-            ? studentList[0]
-            : null;
-
-
-    if (!student) {
+    if(!student){
 
         throw new Error(
             "Student not found."
         );
+
     }
+
+
+    studentData =
+        normalizeStudent(
+            student
+        );
 
 
     const {
-        data: settingsList
+        data:payments,
+        error:paymentError
     } =
-        await supabaseClient
-            .from("academy_settings")
-            .select("*")
-            .eq(
-                "owner_id",
-                owner.id
-            )
-            .limit(1);
-
-
-    const settings =
-        settingsList?.length
-            ? settingsList[0]
-            : null;
-
-
-    const {
-        data: feeData,
-        error: feeError
-    } =
-        await supabaseClient
-            .from("fees")
-            .select("*")
-            .eq(
-                "owner_id",
-                owner.id
-            )
-            .eq(
-                "student_id",
-                urlStudentId
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            )
-            .limit(1);
-
-
-    if (feeError) {
-
-        throw new Error(
-            "Fee record error: " +
-            feeError.message
-        );
-    }
-
-
-    const fee =
-        feeData?.length
-            ? feeData[0]
-            : null;
-
-
-    const {
-        data: payments,
-        error: paymentError
-    } =
-        await supabaseClient
-            .from("fee_payments")
-            .select("*")
-            .eq(
-                "owner_id",
-                owner.id
-            )
-            .eq(
-                "student_id",
-                urlStudentId
-            )
-            .order(
-                "payment_date",
-                {
-                    ascending: false
-                }
-            );
-
-
-    if (paymentError) {
-
-        throw new Error(
-            "Payment history error: " +
-            paymentError.message
-        );
-    }
-
-
-    const paymentList =
-        payments || [];
-
-
-    const latestPayment =
-        paymentList.length
-            ? paymentList[0]
-            : null;
-
-
-    const totalFees =
-        Number(
-            student.fees_amount ??
-            fee?.amount ??
-            0
-        );
-
-
-    const totalReceived =
-        paymentList.reduce(
-            (total, payment) => {
-
-                return total +
-                    Number(
-                        payment.amount || 0
-                    );
-
-            },
-            0
-        );
-
-
-    const balance =
-        Math.max(
-            totalFees -
-            totalReceived,
-            0
-        );
-
-
-    let status = "Unpaid";
-
-
-    if (
-        totalFees > 0 &&
-        totalReceived >= totalFees
-    ) {
-
-        status = "Paid";
-
-    }
-    else if (
-        totalReceived > 0 &&
-        totalReceived < totalFees
-    ) {
-
-        status = "Partial";
-    }
-
-
-    const dateSource =
-        latestPayment?.payment_date ||
-        fee?.created_at ||
-        student.joining_date ||
-        null;
-
-
-    let receiptMonth = "-";
-    let receiptYear = "-";
-
-
-    if (dateSource) {
-
-        const d =
-            new Date(dateSource);
-
-        if (!isNaN(d.getTime())) {
-
-            receiptMonth =
-                d.getMonth() + 1;
-
-            receiptYear =
-                d.getFullYear();
+    await supabaseClient
+    .from("fee_payments")
+    .select("*")
+    .eq(
+        "student_id",
+        student.id
+    )
+    .eq(
+        "owner_id",
+        ownerLogin.id
+    )
+    .order(
+        "payment_date",
+        {
+            ascending:false
         }
+    );
+
+
+    if(paymentError){
+
+        throw paymentError;
+
     }
 
 
-    return {
+    paymentHistory =
+        Array.isArray(payments)
+        ? payments
+        : [];
 
-        success: true,
-
-        student: {
-
-            id:
-                student.id,
-
-            full_name:
-                student.full_name ||
-                "",
-
-            mobile_number:
-                student.mobile_number ||
-                "",
-
-            instrument:
-                student.instrument ||
-                "",
-
-            batch:
-                student.batch ||
-                "",
-
-            fees_amount:
-                totalFees
-        },
-
-        academy: {
-
-            class_name:
-                settings?.class_name ||
-                "Music Academy",
-
-            owner_name:
-                settings?.owner_name ||
-                "",
-
-            owner_mobile:
-                settings?.owner_mobile ||
-                "",
-
-            logo_url:
-                settings?.logo_url ||
-                null,
-
-            signature_url:
-                settings?.signature_url ||
-                null
-        },
-
-        fee: {
-
-            fee_id:
-                fee?.id ||
-                null,
-
-            amount:
-                totalFees,
-
-            monthly_amount:
-                totalFees,
-
-            paid_amount:
-                totalReceived,
-
-            balance_due:
-                balance,
-
-            status:
-                status,
-
-            fees_month:
-                receiptMonth,
-
-            fees_year:
-                receiptYear,
-
-            payment_date:
-                latestPayment?.payment_date ||
-                null,
-
-            payment_mode:
-                latestPayment?.payment_mode ||
-                "-"
-        },
-
-        payments:
-            paymentList
-    };
 }
 
 
@@ -2136,624 +1765,1057 @@ async function loadOwnerReceipt() {
    STAFF RECEIPT
 ===================================================== */
 
-async function loadStaffReceipt() {
+async function loadStaffReceipt(){
 
-    const staff =
-        getStaffLogin();
+    /*
+     * If mobile already comes from fees.html,
+     * use it directly.
+     */
 
+    if(!receiptMobile){
 
-    if (
-        !staff ||
-        !staff.id
-    ) {
+        if(!receiptStudentId){
 
-        throw new Error(
-            "Staff login session not found."
-        );
-    }
+            throw new Error(
+                "Student information not found."
+            );
 
-
-    if (!urlStudentId) {
-
-        throw new Error(
-            "Student information missing."
-        );
-    }
+        }
 
 
-    const {
-        data: students,
-        error: studentError
-    } =
+        const {
+            data,
+            error
+        } =
         await supabaseClient.rpc(
             "staff_get_students",
             {
                 p_staff_id:
-                    staff.id
+                    staffLogin.id
             }
         );
 
 
-    if (studentError) {
+        if(error){
 
-        throw new Error(
-            "Unable to load student: " +
-            studentError.message
-        );
+            throw error;
+
+        }
+
+
+        let list = [];
+
+
+        if(Array.isArray(data)){
+
+            list = data;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.students)
+        ){
+
+            list =
+                data.students;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.data)
+        ){
+
+            list =
+                data.data;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.result)
+        ){
+
+            list =
+                data.result;
+
+        }
+
+
+        const found =
+            list.find(
+                s =>
+                    String(
+                        s.id ||
+                        s.student_id
+                    ) ===
+                    String(
+                        receiptStudentId
+                    )
+            );
+
+
+        if(found){
+
+            receiptMobile =
+                found.mobile_number ||
+                found.mobile ||
+                "";
+
+        }
+
     }
 
 
-    const studentList =
-        Array.isArray(students)
-            ? students
-            : [];
+    if(!receiptMobile){
+
+        throw new Error(
+            "Student mobile number not found."
+        );
+
+    }
 
 
-    const student =
-        studentList.find(
-            item =>
-                String(
-                    item.id ||
-                    item.student_id
-                ) ===
-                String(urlStudentId)
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.rpc(
+        "student_get_fees_by_mobile",
+        {
+            p_mobile:
+                receiptMobile
+        }
+    );
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    const result =
+        extractStudent(
+            data
         );
 
 
-    if (!student) {
+    if(!result){
 
         throw new Error(
             "Student not found."
         );
+
     }
 
 
-    const {
-        data: staffFees,
-        error: staffFeeError
-    } =
+    studentData =
+        normalizeStudent(
+            result
+        );
+
+
+    const historyResult =
         await supabaseClient.rpc(
-            "staff_get_fees",
+            "student_get_payment_history_by_mobile",
             {
-                p_staff_id:
-                    staff.id
+                p_mobile:
+                    receiptMobile
             }
         );
 
 
-    if (staffFeeError) {
+    if(historyResult.error){
 
-        throw new Error(
-            "Unable to load fees: " +
-            staffFeeError.message
+        console.error(
+            "History Error:",
+            historyResult.error
         );
+
+        paymentHistory = [];
+
+    }
+    else{
+
+        paymentHistory =
+            extractPayments(
+                historyResult.data
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   STUDENT RECEIPT
+===================================================== */
+
+async function loadStudentReceipt(){
+
+    if(!receiptMobile){
+
+        if(
+            studentLogin &&
+            studentLogin.mobile
+        ){
+
+            receiptMobile =
+                studentLogin.mobile;
+
+        }
+
     }
 
 
-    const feeResponse =
-        Array.isArray(staffFees)
-            ? (
-                staffFees[0] ||
-                {}
-            )
-            : (
-                staffFees || {}
-            );
+    if(!receiptMobile){
 
+        throw new Error(
+            "Student mobile number not found."
+        );
 
-    const feeList =
-        Array.isArray(
-            feeResponse.fees
-        )
-            ? feeResponse.fees
-            : [];
-
-
-    const fee =
-        feeList.find(
-            item =>
-                String(
-                    item.student_id ||
-                    item.id
-                ) ===
-                String(urlStudentId)
-        ) || null;
+    }
 
 
     const {
-        data: payments,
-        error: paymentError
+        data,
+        error
     } =
-        await supabaseClient
-            .from("fee_payments")
-            .select("*")
-            .eq(
-                "student_id",
-                urlStudentId
-            )
-            .order(
-                "payment_date",
-                {
-                    ascending: false
-                }
-            );
+    await supabaseClient.rpc(
+        "student_get_fees_by_mobile",
+        {
+            p_mobile:
+                receiptMobile
+        }
+    );
 
 
-    if (paymentError) {
+    if(error){
+
+        throw error;
+
+    }
+
+
+    const result =
+        extractStudent(
+            data
+        );
+
+
+    if(!result){
 
         throw new Error(
-            "Payment history error: " +
-            paymentError.message
+            "Student not found."
         );
+
     }
 
 
-    const paymentList =
-        payments || [];
-
-
-    const latestPayment =
-        paymentList.length
-            ? paymentList[0]
-            : null;
-
-
-    const totalFees =
-        Number(
-            student.fees_amount ??
-            fee?.amount ??
-            fee?.monthly_amount ??
-            0
+    studentData =
+        normalizeStudent(
+            result
         );
 
 
-    const totalReceived =
-        paymentList.reduce(
-            (total, payment) => {
-
-                return total +
-                    Number(
-                        payment.amount || 0
-                    );
-
-            },
-            0
-        );
-
-
-    const balance =
-        Math.max(
-            totalFees -
-            totalReceived,
-            0
-        );
-
-
-    let status = "Unpaid";
-
-
-    if (
-        totalFees > 0 &&
-        totalReceived >= totalFees
-    ) {
-
-        status = "Paid";
-
-    }
-    else if (
-        totalReceived > 0 &&
-        totalReceived < totalFees
-    ) {
-
-        status = "Partial";
-    }
-
-
-    let settings = null;
-
-
-    const owner =
-        getOwnerLogin();
-
-
-    if (
-        owner &&
-        owner.id
-    ) {
-
-        const {
-            data
-        } =
-            await supabaseClient
-                .from("academy_settings")
-                .select("*")
-                .eq(
-                    "owner_id",
-                    owner.id
-                )
-                .limit(1);
-
-
-        if (
-            data &&
-            data.length
-        ) {
-
-            settings =
-                data[0];
+    const {
+        data:historyData,
+        error:historyError
+    } =
+    await supabaseClient.rpc(
+        "student_get_payment_history_by_mobile",
+        {
+            p_mobile:
+                receiptMobile
         }
-    }
+    );
 
 
-    if (!settings) {
-
-        settings =
-            getLocalAcademySettings();
-    }
-
-
-    const dateSource =
-        latestPayment?.payment_date ||
-        student.joining_date ||
-        null;
-
-
-    let receiptMonth = "-";
-    let receiptYear = "-";
-
-
-    if (dateSource) {
-
-        const d =
-            new Date(dateSource);
-
-        if (!isNaN(d.getTime())) {
-
-            receiptMonth =
-                d.getMonth() + 1;
-
-            receiptYear =
-                d.getFullYear();
-        }
-    }
-
-
-    return {
-
-        success: true,
-
-        student: {
-
-            id:
-                student.id ||
-                student.student_id,
-
-            full_name:
-                student.full_name ||
-                student.name ||
-                student.student_name ||
-                "",
-
-            mobile_number:
-                student.mobile_number ||
-                student.mobile ||
-                "",
-
-            instrument:
-                student.instrument ||
-                "",
-
-            batch:
-                student.batch ||
-                "",
-
-            fees_amount:
-                totalFees
-        },
-
-        academy: {
-
-            class_name:
-                settings?.class_name ||
-                "Music Academy",
-
-            owner_name:
-                settings?.owner_name ||
-                "",
-
-            owner_mobile:
-                settings?.owner_mobile ||
-                "",
-
-            logo_url:
-                settings?.logo_url ||
-                null,
-
-            signature_url:
-                settings?.signature_url ||
-                null
-        },
-
-        fee: {
-
-            fee_id:
-                fee?.id ||
-                null,
-
-            amount:
-                totalFees,
-
-            monthly_amount:
-                totalFees,
-
-            paid_amount:
-                totalReceived,
-
-            balance_due:
-                balance,
-
-            status:
-                status,
-
-            fees_month:
-                receiptMonth,
-
-            fees_year:
-                receiptYear,
-
-            payment_date:
-                latestPayment?.payment_date ||
-                null,
-
-            payment_mode:
-                latestPayment?.payment_mode ||
-                "-"
-        },
-
-        payments:
-            paymentList
-    };
-}
-
-
-/* =====================================================
-   MAIN LOAD
-===================================================== */
-
-async function loadReceipt() {
-
-    try {
-
-        if (isStaff) {
-
-            console.log(
-                "Receipt mode: STAFF"
-            );
-
-            receiptData =
-                await loadStaffReceipt();
-
-        }
-
-        else if (
-            urlMobile ||
-            getStudentLogin()
-        ) {
-
-            console.log(
-                "Receipt mode: STUDENT"
-            );
-
-            receiptData =
-                await loadStudentReceipt();
-
-        }
-
-        else {
-
-            console.log(
-                "Receipt mode: OWNER"
-            );
-
-            receiptData =
-                await loadOwnerReceipt();
-        }
-
-
-        if (!receiptData) {
-
-            throw new Error(
-                "Receipt data not found."
-            );
-        }
-
-
-        renderReceipt();
-
-    }
-    catch (error) {
+    if(historyError){
 
         console.error(
-            "Receipt Error:",
-            error
+            "History Error:",
+            historyError
         );
 
-        showError(
-            error.message ||
-            "Could not load receipt."
-        );
+        paymentHistory = [];
+
     }
+    else{
+
+        paymentHistory =
+            extractPayments(
+                historyData
+            );
+
+    }
+
 }
 
 
 /* =====================================================
-   RENDER
+   EXTRACT STUDENT
 ===================================================== */
 
-function renderReceipt() {
+function extractStudent(data){
 
-    const student =
-        receiptData?.student ||
-        {};
+    if(!data){
 
-    const academy =
-        receiptData?.academy ||
-        {};
+        return null;
 
-    const fee =
-        receiptData?.fee ||
-        {};
+    }
 
 
-    /* ACADEMY */
+    if(Array.isArray(data)){
 
-    document.getElementById(
-        "academyName"
-    ).textContent =
-        academy.class_name ||
-        "Music Academy";
+        return data.length
+            ? data[0]
+            : null;
 
-
-    document.getElementById(
-        "headerOwner"
-    ).textContent =
-        academy.owner_name ||
-        "";
+    }
 
 
-    /* LOGO */
+    if(
+        data.student &&
+        typeof data.student === "object"
+    ){
 
-    if (academy.logo_url) {
+        return data.student;
+
+    }
+
+
+    if(
+        data.data &&
+        data.data.student &&
+        typeof data.data.student === "object"
+    ){
+
+        return data.data.student;
+
+    }
+
+
+    if(
+        data.data &&
+        !Array.isArray(data.data) &&
+        typeof data.data === "object"
+    ){
+
+        return data.data;
+
+    }
+
+
+    if(
+        data.result &&
+        typeof data.result === "object" &&
+        !Array.isArray(data.result)
+    ){
+
+        return data.result;
+
+    }
+
+
+    if(
+        data.success !== undefined &&
+        (
+            data.id ||
+            data.student_id ||
+            data.full_name ||
+            data.student_name
+        )
+    ){
+
+        return data;
+
+    }
+
+
+    if(
+        data.id ||
+        data.student_id ||
+        data.full_name ||
+        data.student_name
+    ){
+
+        return data;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   EXTRACT PAYMENTS
+===================================================== */
+
+function extractPayments(data){
+
+    if(!data){
+
+        return [];
+
+    }
+
+
+    if(Array.isArray(data)){
+
+        return data;
+
+    }
+
+
+    if(
+        data.payments &&
+        Array.isArray(
+            data.payments
+        )
+    ){
+
+        return data.payments;
+
+    }
+
+
+    if(
+        data.data &&
+        Array.isArray(
+            data.data
+        )
+    ){
+
+        return data.data;
+
+    }
+
+
+    if(
+        data.data &&
+        data.data.payments &&
+        Array.isArray(
+            data.data.payments
+        )
+    ){
+
+        return data.data.payments;
+
+    }
+
+
+    if(
+        data.result &&
+        Array.isArray(
+            data.result
+        )
+    ){
+
+        return data.result;
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =====================================================
+   BRANDING
+===================================================== */
+
+async function loadBranding(){
+
+    try{
+
+        let ownerId = null;
+
+
+        /* =============================================
+           FIND OWNER ID
+        ============================================= */
+
+        if(
+            currentMode === "owner" &&
+            ownerLogin
+        ){
+
+            ownerId =
+                ownerLogin.id;
+
+        }
+
+
+        else if(
+            currentMode === "staff" &&
+            staffLogin
+        ){
+
+            ownerId =
+                staffLogin.owner_id ||
+                staffLogin.ownerId ||
+                null;
+
+        }
+
+
+        else if(
+            currentMode === "student" &&
+            studentLogin
+        ){
+
+            ownerId =
+                studentLogin.owner_id ||
+                studentLogin.ownerId ||
+                null;
+
+        }
+
+
+        /* =============================================
+           DIRECT ACADEMY SETTINGS
+        ============================================= */
+
+        if(ownerId){
+
+            const {
+                data,
+                error
+            } =
+            await supabaseClient
+            .from("academy_settings")
+            .select(
+                "class_name,owner_name,owner_mobile,logo_url,signature_url"
+            )
+            .eq(
+                "owner_id",
+                ownerId
+            )
+            .maybeSingle();
+
+
+            if(!error && data){
+
+                brandingData =
+                    data;
+
+            }
+
+        }
+
+
+        /* =============================================
+           OWNER RPC FALLBACK
+        ============================================= */
+
+        if(
+            !brandingData &&
+            currentMode === "owner" &&
+            ownerLogin &&
+            ownerLogin.email
+        ){
+
+            const response =
+                await supabaseClient.rpc(
+                    "get_owner_branding",
+                    {
+                        p_email:
+                            ownerLogin.email
+                    }
+                );
+
+
+            if(!response.error){
+
+                brandingData =
+                    extractBranding(
+                        response.data
+                    );
+
+            }
+
+        }
+
+
+        /* =============================================
+           STAFF RPC FALLBACK
+        ============================================= */
+
+        if(
+            !brandingData &&
+            currentMode === "staff" &&
+            staffLogin
+        ){
+
+            const response =
+                await supabaseClient.rpc(
+                    "get_staff_branding",
+                    {
+                        p_email:
+                            staffLogin.email,
+
+                        p_mobile:
+                            staffLogin.mobile ||
+                            staffLogin.mobile_number ||
+                            ""
+                    }
+                );
+
+
+            if(!response.error){
+
+                brandingData =
+                    extractBranding(
+                        response.data
+                    );
+
+            }
+
+        }
+
+
+        /* =============================================
+           STUDENT RPC FALLBACK
+        ============================================= */
+
+        if(
+            !brandingData &&
+            currentMode === "student"
+        ){
+
+            /*
+             * Student branding can only be loaded
+             * when student login contains owner_id.
+             */
+
+            if(
+                studentLogin &&
+                (
+                    studentLogin.owner_id ||
+                    studentLogin.ownerId
+                )
+            ){
+
+                const studentOwnerId =
+                    studentLogin.owner_id ||
+                    studentLogin.ownerId;
+
+
+                const {
+                    data,
+                    error
+                } =
+                await supabaseClient
+                .from("academy_settings")
+                .select(
+                    "class_name,owner_name,owner_mobile,logo_url,signature_url"
+                )
+                .eq(
+                    "owner_id",
+                    studentOwnerId
+                )
+                .maybeSingle();
+
+
+                if(!error && data){
+
+                    brandingData =
+                        data;
+
+                }
+
+            }
+
+        }
+
+
+        /* =============================================
+           DEFAULT
+        ============================================= */
+
+        if(!brandingData){
+
+            brandingData = {
+
+                class_name:
+                    "Music Academy",
+
+                owner_name:
+                    "Owner",
+
+                owner_mobile:
+                    "",
+
+                logo_url:
+                    "",
+
+                signature_url:
+                    ""
+
+            };
+
+        }
+
+
+        console.log(
+            "FINAL RECEIPT BRANDING:",
+            brandingData
+        );
+
+
+        /* =============================================
+           CLASS NAME
+        ============================================= */
+
+        const className =
+            brandingData.class_name ||
+            brandingData.className ||
+            brandingData.academy_name ||
+            brandingData.academyName ||
+            "Music Academy";
+
+
+        document.getElementById(
+            "academyName"
+        ).textContent =
+            className;
+
+
+        /* =============================================
+           OWNER NAME
+        ============================================= */
+
+        const ownerName =
+            brandingData.owner_name ||
+            brandingData.ownerName ||
+            "Owner";
+
+
+        document.getElementById(
+            "footerOwnerName"
+        ).textContent =
+            ownerName;
+
+
+        /* =============================================
+           OWNER MOBILE
+        ============================================= */
+
+        const ownerMobile =
+            brandingData.owner_mobile ||
+            brandingData.ownerMobile ||
+            brandingData.mobile_number ||
+            brandingData.mobile ||
+            "";
+
+
+        document.getElementById(
+            "footerOwnerMobile"
+        ).textContent =
+            ownerMobile || "-";
+
+
+        /* =============================================
+           LOGO
+        ============================================= */
+
+        const logoUrl =
+            brandingData.logo_url ||
+            brandingData.logoUrl ||
+            "";
+
 
         const logo =
             document.getElementById(
                 "academyLogo"
             );
 
-        const logoArea =
+
+        if(
+            logoUrl &&
+            String(logoUrl).trim() !== ""
+        ){
+
+            logo.src =
+                logoUrl;
+
+            logo.style.display =
+                "block";
+
+        }
+        else{
+
+            logo.style.display =
+                "none";
+
+        }
+
+
+        /* =============================================
+           SIGNATURE
+        ============================================= */
+
+        const signatureUrl =
+            brandingData.signature_url ||
+            brandingData.signatureUrl ||
+            "";
+
+
+        const signature =
             document.getElementById(
-                "logoArea"
+                "signatureImage"
             );
 
-        logo.src =
-            academy.logo_url;
 
-        logoArea.style.display =
-            "block";
+        if(
+            signatureUrl &&
+            String(signatureUrl).trim() !== ""
+        ){
+
+            signature.src =
+                signatureUrl;
+
+            signature.style.display =
+                "block";
+
+        }
+        else{
+
+            signature.style.display =
+                "none";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Branding Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   EXTRACT BRANDING
+===================================================== */
+
+function extractBranding(data){
+
+    if(!data){
+
+        return null;
+
     }
 
 
-    /* STUDENT */
+    if(Array.isArray(data)){
+
+        return data[0] || null;
+
+    }
+
+
+    if(
+        data.data &&
+        !Array.isArray(data.data)
+    ){
+
+        if(
+            data.data.branding
+        ){
+
+            return data.data.branding;
+
+        }
+
+        return data.data;
+
+    }
+
+
+    if(
+        data.branding &&
+        typeof data.branding === "object"
+    ){
+
+        return data.branding;
+
+    }
+
+
+    if(
+        data.result &&
+        typeof data.result === "object"
+    ){
+
+        return data.result;
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =====================================================
+   NORMALIZE STUDENT
+===================================================== */
+
+function normalizeStudent(student){
+
+    return{
+
+        id:
+            student.id ||
+            student.student_id ||
+            receiptStudentId,
+
+
+        full_name:
+            student.full_name ||
+            student.student_name ||
+            student.name ||
+            "",
+
+
+        mobile_number:
+            student.mobile_number ||
+            student.mobile ||
+            receiptMobile ||
+            "",
+
+
+        instrument:
+            student.instrument ||
+            student.instrument_name ||
+            student.instrumentName ||
+            "",
+
+
+        batch:
+            student.batch ||
+            student.batch_name ||
+            student.batchName ||
+            "",
+
+
+        fees_amount:
+            Number(
+                student.fees_amount ??
+                student.monthly_fee ??
+                student.fee_amount ??
+                student.fees ??
+                student.amount ??
+                0
+            )
+
+    };
+
+}
+
+
+/* =====================================================
+   RENDER RECEIPT
+===================================================== */
+
+function renderReceipt(){
+
+    if(!studentData){
+
+        throw new Error(
+            "Student data not available."
+        );
+
+    }
+
+
+    /* =============================================
+       STUDENT NAME
+    ============================================= */
 
     document.getElementById(
         "studentName"
     ).textContent =
-        student.full_name ||
+        studentData.full_name ||
         "-";
 
 
+    /* =============================================
+       STUDENT MOBILE
+    ============================================= */
+
     document.getElementById(
-        "studentNumber"
+        "studentMobile"
     ).textContent =
-        student.mobile_number ||
+        studentData.mobile_number ||
+        receiptMobile ||
         "-";
 
 
+    /* =============================================
+       INSTRUMENT
+    ============================================= */
+
     document.getElementById(
-        "instrument"
+        "studentInstrument"
     ).textContent =
-        student.instrument ||
+        studentData.instrument ||
         "-";
 
 
+    /* =============================================
+       BATCH
+    ============================================= */
+
     document.getElementById(
-        "batch"
+        "studentBatch"
     ).textContent =
-        student.batch ||
+        studentData.batch ||
         "-";
 
 
-    /* MONTH YEAR */
-
-    const month =
-        Number(
-            fee.fees_month || 0
-        );
-
-    const year =
-        Number(
-            fee.fees_year || 0
-        );
-
-
-    let monthYear = "-";
-
-
-    if (
-        month >= 1 &&
-        month <= 12 &&
-        year > 0
-    ) {
-
-        monthYear =
-            monthName(month) +
-            " " +
-            year;
-    }
-
-    else if (
-        month >= 1 &&
-        month <= 12
-    ) {
-
-        monthYear =
-            monthName(month);
-    }
-
-    else if (year > 0) {
-
-        monthYear =
-            String(year);
-    }
-
-
-    document.getElementById(
-        "feesMonthYear"
-    ).textContent =
-        monthYear;
-
-
-    /* PAYMENT DATE */
-
-    document.getElementById(
-        "paymentDate"
-    ).textContent =
-        formatDate(
-            fee.payment_date
-        );
-
-
-    /* TOTAL FEES */
+    /* =============================================
+       TOTAL FEES
+    ============================================= */
 
     const totalFees =
         Number(
-            fee.amount ??
-            fee.monthly_amount ??
-            student.fees_amount ??
-            0
+            studentData.fees_amount || 0
         );
 
 
-    /* TOTAL RECEIVED */
+    /* =============================================
+       TOTAL RECEIVED
+    ============================================= */
 
     const totalReceived =
-        Number(
-            fee.paid_amount ??
+        paymentHistory.reduce(
+            (total,payment)=>
+
+                total +
+                Number(
+                    payment.amount || 0
+                ),
+
             0
         );
 
 
-    /* BALANCE */
+    /* =============================================
+       BALANCE
+    ============================================= */
 
     const balance =
         Math.max(
@@ -2763,27 +2825,61 @@ function renderReceipt() {
         );
 
 
-    /* STATUS */
+    /* =============================================
+       STATUS
+    ============================================= */
 
-    let status = "Unpaid";
+    let status =
+        "Unpaid";
 
 
-    if (
+    if(
         totalFees > 0 &&
         totalReceived >= totalFees
-    ) {
+    ){
 
-        status = "Paid";
+        status =
+            "Paid";
 
     }
-    else if (
-        totalReceived > 0 &&
-        totalReceived < totalFees
-    ) {
 
-        status = "Partial";
+    else if(
+        totalReceived > 0
+    ){
+
+        status =
+            "Partial";
+
     }
 
+
+    /* =============================================
+       PAYMENT MODE
+    ============================================= */
+
+    let latestPaymentMode =
+        "-";
+
+
+    if(
+        paymentHistory.length > 0
+    ){
+
+        const latest =
+            paymentHistory[0];
+
+
+        latestPaymentMode =
+            latest.payment_mode ||
+            latest.mode ||
+            "-";
+
+    }
+
+
+    /* =============================================
+       DISPLAY AMOUNTS
+    ============================================= */
 
     document.getElementById(
         "totalFees"
@@ -2792,20 +2888,24 @@ function renderReceipt() {
 
 
     document.getElementById(
-        "receivedAmount"
+        "totalReceived"
     ).textContent =
         money(totalReceived);
 
 
     document.getElementById(
-        "balanceDue"
+        "balance"
     ).textContent =
         money(balance);
 
 
+    /* =============================================
+       DISPLAY STATUS
+    ============================================= */
+
     const statusElement =
         document.getElementById(
-            "paymentStatus"
+            "status"
         );
 
 
@@ -2814,87 +2914,317 @@ function renderReceipt() {
 
 
     statusElement.className =
-        "payment-value";
+        "";
 
 
-    if (status === "Paid") {
+    if(status === "Paid"){
 
         statusElement.classList.add(
             "status-paid"
         );
 
     }
-    else if (status === "Partial") {
+
+    else if(status === "Partial"){
 
         statusElement.classList.add(
             "status-partial"
         );
 
     }
-    else {
+
+    else{
 
         statusElement.classList.add(
             "status-unpaid"
         );
+
     }
 
 
-    /* PAYMENT MODE */
+    /* =============================================
+       PAYMENT MODE
+    ============================================= */
 
     document.getElementById(
         "paymentMode"
     ).textContent =
-        fee.payment_mode ||
-        "-";
+        latestPaymentMode;
 
 
-    /* OWNER NAME */
+    /* =============================================
+       HISTORY
+    ============================================= */
 
-    document.getElementById(
-        "ownerName"
-    ).textContent =
-        academy.owner_name ||
-        "-";
+    renderHistory();
 
-
-    /* OWNER MOBILE */
-
-    document.getElementById(
-        "ownerMobile"
-    ).textContent =
-        academy.owner_mobile ||
-        "-";
+}
 
 
-    /* SIGNATURE */
+/* =====================================================
+   PAYMENT HISTORY
+===================================================== */
 
-    if (academy.signature_url) {
+function renderHistory(){
 
-        const signature =
-            document.getElementById(
-                "signatureImage"
-            );
+    const tbody =
+        document.getElementById(
+            "historyBody"
+        );
 
-        signature.src =
-            academy.signature_url;
 
-        signature.style.display =
-            "block";
+    if(
+        !paymentHistory ||
+        !paymentHistory.length
+    ){
+
+        tbody.innerHTML =
+
+        `
+        <tr>
+
+            <td
+            colspan="3"
+            style="text-align:center;">
+
+                No payment history
+
+            </td>
+
+        </tr>
+        `;
+
+        return;
+
     }
 
 
-    /* SHOW RECEIPT */
-
-    document.getElementById(
-        "loading"
-    ).style.display =
-        "none";
+    tbody.innerHTML = "";
 
 
-    document.getElementById(
-        "receipt"
-    ).style.display =
-        "block";
+    paymentHistory.forEach(
+        payment => {
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML =
+
+            `
+            <td>
+                ${escapeHtml(
+                    formatDate(
+                        payment.payment_date
+                    )
+                )}
+            </td>
+
+            <td>
+                ${money(
+                    payment.amount
+                )}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    payment.payment_mode ||
+                    payment.mode ||
+                    "-"
+                )}
+            </td>
+            `;
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DOWNLOAD PDF
+===================================================== */
+
+async function downloadPDF(){
+
+    const element =
+        document.getElementById(
+            "receipt"
+        );
+
+
+    if(!element){
+
+        alert(
+            "Receipt not ready."
+        );
+
+        return;
+
+    }
+
+
+    const studentName =
+        (
+            studentData &&
+            studentData.full_name
+        )
+        ?
+        studentData.full_name
+            .replace(
+                /[^a-z0-9]/gi,
+                "_"
+            )
+        :
+        "Student";
+
+
+    element.classList.add(
+        "pdf-mode"
+    );
+
+
+    const options = {
+
+        margin:0,
+
+        filename:
+            "Fee_Receipt_" +
+            studentName +
+            ".pdf",
+
+
+        image:{
+
+            type:"jpeg",
+
+            quality:0.98
+
+        },
+
+
+        html2canvas:{
+
+            scale:2,
+
+            useCORS:true,
+
+            allowTaint:true,
+
+            backgroundColor:"#ffffff",
+
+            scrollY:0
+
+        },
+
+
+        jsPDF:{
+
+            unit:"mm",
+
+            format:"a4",
+
+            orientation:"portrait"
+
+        },
+
+
+        pagebreak:{
+
+            mode:[
+                "avoid-all"
+            ]
+
+        }
+
+    };
+
+
+    try{
+
+        await html2pdf()
+            .set(options)
+            .from(element)
+            .save();
+
+    }
+    catch(error){
+
+        console.error(
+            "PDF Error:",
+            error
+        );
+
+        alert(
+            "Unable to create PDF."
+        );
+
+    }
+
+
+    element.classList.remove(
+        "pdf-mode"
+    );
+
+}
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function goBack(){
+
+    if(
+        currentMode === "staff"
+    ){
+
+        window.location.replace(
+            "fees.html?staff=1"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        currentMode === "student"
+    ){
+
+        window.location.replace(
+            "student-fees.html"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        currentMode === "owner"
+    ){
+
+        window.location.replace(
+            "fees.html"
+        );
+
+        return;
+
+    }
+
+
+    window.location.replace(
+        "index.html"
+    );
+
 }
 
 
@@ -2902,7 +3232,7 @@ function renderReceipt() {
    ERROR
 ===================================================== */
 
-function showError(message) {
+function showError(message){
 
     document.getElementById(
         "loading"
@@ -2910,525 +3240,113 @@ function showError(message) {
         "none";
 
 
-    const box =
+    const errorBox =
         document.getElementById(
             "error"
         );
 
 
-    box.textContent =
+    errorBox.textContent =
         message;
 
 
-    box.style.display =
+    errorBox.style.display =
         "block";
+
 }
 
 
 /* =====================================================
-   WAIT FOR IMAGES
+   MONEY
 ===================================================== */
 
-async function waitForImages(container) {
+function money(value){
 
-    const images =
-        container.querySelectorAll(
-            "img"
-        );
-
-
-    const promises =
-        Array.from(images).map(
-            img => {
-
-                if (
-                    img.complete &&
-                    img.naturalWidth > 0
-                ) {
-
-                    return Promise.resolve();
-                }
-
-
-                return new Promise(
-                    resolve => {
-
-                        let finished =
-                            false;
-
-
-                        const done =
-                            () => {
-
-                                if (
-                                    finished
-                                ) {
-                                    return;
-                                }
-
-                                finished = true;
-
-                                resolve();
-                            };
-
-
-                        img.addEventListener(
-                            "load",
-                            done,
-                            {
-                                once: true
-                            }
-                        );
-
-
-                        img.addEventListener(
-                            "error",
-                            done,
-                            {
-                                once: true
-                            }
-                        );
-
-
-                        setTimeout(
-                            done,
-                            4000
-                        );
-                    }
-                );
+    return "₹" +
+        Number(
+            value || 0
+        ).toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits:0,
+                maximumFractionDigits:2
             }
         );
 
+}
 
-    await Promise.all(
-        promises
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+
+    const d =
+        new Date(value);
+
+
+    if(
+        isNaN(
+            d.getTime()
+        )
+    ){
+
+        return "-";
+
+    }
+
+
+    return d.toLocaleDateString(
+        "en-IN",
+        {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+        }
     );
+
 }
 
 
 /* =====================================================
-   DOWNLOAD PDF
-   ONE PAGE
+   ESCAPE HTML
 ===================================================== */
 
-async function downloadPDF() {
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
-    const receipt =
-        document.getElementById(
-            "receipt"
-        );
-
-
-    if (
-        !receipt ||
-        receipt.style.display === "none"
-    ) {
-
-        alert(
-            "Receipt is not ready yet."
-        );
-
-        return;
-    }
-
-
-    const studentName =
-        receiptData?.student?.full_name ||
-        "Student";
-
-
-    const safeName =
-        studentName.replace(
-            /[^a-z0-9]/gi,
-            "-"
-        );
-
-
-    const month =
-        Number(
-            receiptData?.fee?.fees_month ||
-            0
-        );
-
-
-    const year =
-        Number(
-            receiptData?.fee?.fees_year ||
-            0
-        );
-
-
-    const monthText =
-        month >= 1 &&
-        month <= 12
-            ? monthName(month)
-            : "";
-
-
-    const filename =
-        "Fee-Receipt-" +
-        safeName +
-        "-" +
-        monthText +
-        "-" +
-        (year || "") +
-        ".pdf";
-
-
-    try {
-
-        /* PDF MODE */
-
-        document.body.classList.add(
-            "pdf-generating"
-        );
-
-
-        /*
-           Wait for layout
-        */
-
-        await new Promise(
-            resolve =>
-                requestAnimationFrame(
-                    () =>
-                        requestAnimationFrame(
-                            resolve
-                        )
-                )
-        );
-
-
-        /*
-           Wait for logo/signature
-        */
-
-        await waitForImages(
-            receipt
-        );
-
-
-        /*
-           Extra layout time
-        */
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    300
-                )
-        );
-
-
-        /*
-           IMPORTANT:
-           Check actual height.
-           A4 usable height at 794px width
-           is approximately 1123px.
-        */
-
-        const currentHeight =
-            receipt.scrollHeight;
-
-
-        console.log(
-            "PDF receipt height:",
-            currentHeight
-        );
-
-
-        /*
-           Generate PDF.
-
-           NO "avoid-all".
-           That was the main reason
-           footer/signature could move
-           to page 2.
-        */
-
-        await html2pdf()
-            .set({
-
-                margin: 0,
-
-                filename:
-                    filename,
-
-                image: {
-
-                    type: "jpeg",
-
-                    quality: 0.98
-                },
-
-                html2canvas: {
-
-                    scale: 2,
-
-                    useCORS: true,
-
-                    allowTaint: false,
-
-                    backgroundColor:
-                        "#ffffff",
-
-                    width: 794,
-
-                    windowWidth: 794,
-
-                    scrollX: 0,
-
-                    scrollY: 0
-                },
-
-                jsPDF: {
-
-                    unit: "mm",
-
-                    format: "a4",
-
-                    orientation:
-                        "portrait",
-
-                    compress: true
-                },
-
-                pagebreak: {
-
-                    mode: [
-                        "css"
-                    ]
-                }
-
-            })
-            .from(receipt)
-            .save();
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "PDF Error:",
-            error
-        );
-
-
-        alert(
-            "PDF could not be generated."
-        );
-
-    }
-    finally {
-
-        document.body.classList.remove(
-            "pdf-generating"
-        );
-    }
 }
-
-
-/* =====================================================
-   SHARE
-===================================================== */
-
-async function shareReceipt() {
-
-    const student =
-        receiptData?.student?.full_name ||
-        "Student";
-
-
-    const academy =
-        receiptData?.academy?.class_name ||
-        "Music Academy";
-
-
-    const totalFees =
-        Number(
-            receiptData?.fee?.amount ??
-            receiptData?.fee?.monthly_amount ??
-            receiptData?.student?.fees_amount ??
-            0
-        );
-
-
-    const totalReceived =
-        Number(
-            receiptData?.fee?.paid_amount ??
-            0
-        );
-
-
-    const balance =
-        Math.max(
-            totalFees -
-            totalReceived,
-            0
-        );
-
-
-    let status = "Unpaid";
-
-
-    if (
-        totalFees > 0 &&
-        totalReceived >= totalFees
-    ) {
-
-        status = "Paid";
-
-    }
-    else if (
-        totalReceived > 0 &&
-        totalReceived < totalFees
-    ) {
-
-        status = "Partial";
-    }
-
-
-    const month =
-        Number(
-            receiptData?.fee?.fees_month ||
-            0
-        );
-
-
-    const year =
-        Number(
-            receiptData?.fee?.fees_year ||
-            0
-        );
-
-
-    let feesMonthYear = "-";
-
-
-    if (
-        month >= 1 &&
-        month <= 12 &&
-        year > 0
-    ) {
-
-        feesMonthYear =
-            monthName(month) +
-            " " +
-            year;
-
-    }
-    else if (
-        month >= 1 &&
-        month <= 12
-    ) {
-
-        feesMonthYear =
-            monthName(month);
-
-    }
-    else if (year > 0) {
-
-        feesMonthYear =
-            String(year);
-    }
-
-
-    const paymentDate =
-        formatDate(
-            receiptData?.fee?.payment_date
-        );
-
-
-    const mode =
-        receiptData?.fee?.payment_mode ||
-        "-";
-
-
-    const message =
-
-        "Fee Receipt\n\n" +
-
-        "Academy: " +
-        academy +
-
-        "\nStudent: " +
-        student +
-
-        "\nFees Month & Year: " +
-        feesMonthYear +
-
-        "\nPayment Date: " +
-        paymentDate +
-
-        "\nTotal Fees: " +
-        money(totalFees) +
-
-        "\nTotal Received: " +
-        money(totalReceived) +
-
-        "\nBalance: " +
-        money(balance) +
-
-        "\nStatus: " +
-        status +
-
-        "\nPayment Mode: " +
-        mode;
-
-
-    if (navigator.share) {
-
-        try {
-
-            await navigator.share({
-
-                title:
-                    "Fee Receipt",
-
-                text:
-                    message
-            });
-
-        }
-        catch (error) {
-
-            console.log(
-                "Share cancelled."
-            );
-        }
-
-    }
-    else {
-
-        try {
-
-            await navigator.clipboard
-                .writeText(
-                    message
-                );
-
-
-            alert(
-                "Receipt details copied. You can paste them in WhatsApp."
-            );
-
-        }
-        catch (error) {
-
-            alert(
-                message
-            );
-        }
-    }
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-loadReceipt();
 
 </script>
 
