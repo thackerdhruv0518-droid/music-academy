@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -244,6 +245,16 @@ button:disabled{
     color:#222;
 }
 
+.create-owner-button{
+
+    background:white;
+
+    color:#c33764;
+
+    border:2px solid #c33764;
+
+}
+
 .links{
 
     text-align:center;
@@ -264,6 +275,17 @@ button:disabled{
     cursor:pointer;
 
     text-decoration:none;
+}
+
+.create-link{
+
+    color:#c33764 !important;
+
+    font-weight:bold;
+
+    font-size:15px !important;
+
+    margin-top:18px !important;
 }
 
 .message{
@@ -313,6 +335,25 @@ button:disabled{
     color:#2e7d32;
 
     font-weight:bold;
+}
+
+.info-box{
+
+    background:#f5f5ff;
+
+    color:#555;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    margin-top:15px;
+
+    text-align:center;
 }
 
 @media(max-width:500px){
@@ -479,6 +520,15 @@ class="message">
 <div class="links">
 
 
+<a
+class="create-link"
+onclick="showCreateOwner()">
+
+➕ Create New Owner
+
+</a>
+
+
 <a onclick="showForgotPassword()">
 
 Forgot Password?
@@ -501,6 +551,184 @@ class="back-button"
 onclick="goBack()">
 
 ← Back
+
+</button>
+
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- CREATE NEW OWNER -->
+<!-- ================================================= -->
+
+<div
+class="card section"
+id="createOwnerSection">
+
+
+<div class="header">
+
+
+<div class="logo">
+
+👤
+
+</div>
+
+
+<div class="academy-name">
+
+Create New Owner
+
+</div>
+
+
+<div class="subtitle">
+
+Create a new Owner account
+
+</div>
+
+
+</div>
+
+
+<h2>
+
+➕ New Owner
+
+</h2>
+
+
+<label>
+
+Owner Name
+
+</label>
+
+
+<input
+type="text"
+id="createOwnerName"
+placeholder="Enter owner name"
+autocomplete="name">
+
+
+<label>
+
+Email Address
+
+</label>
+
+
+<input
+type="email"
+id="createOwnerEmail"
+placeholder="Enter owner email"
+autocomplete="email">
+
+
+<label>
+
+Password
+
+</label>
+
+
+<input
+type="password"
+id="createOwnerPassword"
+placeholder="Minimum 6 characters"
+autocomplete="new-password">
+
+
+<label>
+
+Confirm Password
+
+</label>
+
+
+<input
+type="password"
+id="createOwnerConfirmPassword"
+placeholder="Confirm password"
+autocomplete="new-password">
+
+
+<label>
+
+Owner Birth Date
+
+</label>
+
+
+<input
+type="date"
+id="createOwnerBirthDate">
+
+
+<label>
+
+4-Digit PIN
+
+</label>
+
+
+<input
+type="password"
+id="createOwnerPin"
+class="pin-input"
+maxlength="4"
+inputmode="numeric"
+placeholder="••••">
+
+
+<label>
+
+Confirm 4-Digit PIN
+
+</label>
+
+
+<input
+type="password"
+id="createOwnerConfirmPin"
+class="pin-input"
+maxlength="4"
+inputmode="numeric"
+placeholder="••••">
+
+
+<div class="info-box">
+
+Birth Date is used only for Owner account recovery.
+
+</div>
+
+
+<button
+id="createOwnerButton"
+onclick="createNewOwner()">
+
+CREATE OWNER
+
+</button>
+
+
+<div
+id="createOwnerMessage"
+class="message">
+</div>
+
+
+<button
+class="back-button"
+onclick="showLogin()">
+
+← Back to Login
 
 </button>
 
@@ -869,11 +1097,9 @@ document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-setupPinInputs();
+    setupPinInputs();
 
-loadBranding();
-
-checkRememberedLogin();
+    checkRememberedLogin();
 
 });
 
@@ -885,70 +1111,83 @@ checkRememberedLogin();
 
 async function loadBranding(){
 
-const email =
-document
-.getElementById("loginEmail")
-.value
-.trim();
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
 
-if(!email){
 
-return;
+    if(!email){
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "get_owner_branding",
+            {
+                p_email:email
+            }
+        );
+
+
+        if(error){
+
+            console.log(
+                "Branding Error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(data && data.success){
+
+            document
+            .getElementById(
+                "academyName"
+            )
+            .textContent =
+                data.class_name ||
+                "Music Academy";
+
+
+            if(data.logo_url){
+
+                document
+                .getElementById(
+                    "logoBox"
+                )
+                .innerHTML =
+                `
+                <img
+                src="${data.logo_url}"
+                alt="Logo">
+                `;
+
+            }
+
+        }
+
+    }
+    catch(error){
+
+        console.log(error);
+
+    }
 
 }
 
-try{
-
-const {
-data,
-error
-} =
-await supabaseClient.rpc(
-"get_owner_branding",
-{
-p_email:email
-}
-);
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-if(data && data.success){
-
-document
-.getElementById("academyName")
-.textContent =
-data.class_name ||
-"Music Academy";
-
-if(data.logo_url){
-
-document
-.getElementById("logoBox")
-.innerHTML =
-`
-<img
-src="${data.logo_url}"
-alt="Logo">
-`;
-
-}
-
-}
-
-}
-catch(error){
-
-console.log(error);
-
-}
-
-}
 
 
 document
@@ -966,41 +1205,44 @@ loadBranding
 
 async function checkRememberedLogin(){
 
-const saved =
-localStorage.getItem(
-"ownerLogin"
-);
+    const saved =
+        localStorage.getItem(
+            "ownerLogin"
+        );
 
-if(!saved){
 
-return;
+    if(!saved){
 
-}
+        return;
 
-try{
+    }
 
-const {
-data
-} =
-await supabaseClient
-.auth
-.getSession();
 
-if(data.session){
+    try{
 
-window.location.href =
-"dashboard.html";
+        const {
+            data
+        } =
+        await supabaseClient
+        .auth
+        .getSession();
 
-}
 
-}
-catch(error){
+        if(data.session){
 
-localStorage.removeItem(
-"ownerLogin"
-);
+            window.location.href =
+                "dashboard.html";
 
-}
+        }
+
+    }
+    catch(error){
+
+        localStorage.removeItem(
+            "ownerLogin"
+        );
+
+    }
 
 }
 
@@ -1012,265 +1254,748 @@ localStorage.removeItem(
 
 async function ownerLogin(){
 
-const email =
-document
-.getElementById("loginEmail")
-.value
-.trim();
-
-const password =
-document
-.getElementById("loginPassword")
-.value;
-
-const pin =
-document
-.getElementById("loginPin")
-.value
-.trim();
-
-const remember =
-document
-.getElementById("rememberMe")
-.checked;
+    const email =
+        document
+        .getElementById(
+            "loginEmail"
+        )
+        .value
+        .trim();
 
 
-if(!email){
+    const password =
+        document
+        .getElementById(
+            "loginPassword"
+        )
+        .value;
 
-showMessage(
-"loginMessage",
-"Please enter email.",
-"error"
-);
 
-return;
+    const pin =
+        document
+        .getElementById(
+            "loginPin"
+        )
+        .value
+        .trim();
+
+
+    const remember =
+        document
+        .getElementById(
+            "rememberMe"
+        )
+        .checked;
+
+
+    if(!email){
+
+        showMessage(
+            "loginMessage",
+            "Please enter email.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!password){
+
+        showMessage(
+            "loginMessage",
+            "Please enter password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!/^\d{4}$/.test(pin)){
+
+        showMessage(
+            "loginMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+        .getElementById(
+            "loginButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "LOGGING IN...";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .auth
+        .signInWithPassword({
+
+            email:email,
+
+            password:password
+
+        });
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        if(!user){
+
+            throw new Error(
+                "Owner account not found."
+            );
+
+        }
+
+
+        const {
+            data:profile,
+            error:profileError
+        } =
+        await supabaseClient
+        .from("profiles")
+        .select(
+            "id,role,email"
+        )
+        .eq(
+            "id",
+            user.id
+        )
+        .maybeSingle();
+
+
+        if(
+            profileError ||
+            !profile ||
+            String(profile.role)
+            .toLowerCase() !== "owner"
+        ){
+
+            await supabaseClient
+            .auth
+            .signOut();
+
+
+            throw new Error(
+                "This account is not an Owner account."
+            );
+
+        }
+
+
+        const {
+            data:pinResult,
+            error:pinError
+        } =
+        await supabaseClient
+        .rpc(
+            "check_owner_pin",
+            {
+                p_pin:pin
+            }
+        );
+
+
+        if(pinError){
+
+            throw pinError;
+
+        }
+
+
+        let pinCorrect = false;
+
+
+        if(typeof pinResult === "boolean"){
+
+            pinCorrect =
+                pinResult;
+
+        }
+        else if(pinResult){
+
+            pinCorrect =
+                pinResult.success === true ||
+                pinResult.valid === true ||
+                pinResult.correct === true;
+
+        }
+
+
+        if(!pinCorrect){
+
+            await supabaseClient
+            .auth
+            .signOut();
+
+
+            throw new Error(
+                "Incorrect 4-digit PIN."
+            );
+
+        }
+
+
+        const ownerData = {
+
+            id:user.id,
+
+            email:email,
+
+            role:"owner"
+
+        };
+
+
+        if(remember){
+
+            localStorage.setItem(
+                "ownerLogin",
+                JSON.stringify(ownerData)
+            );
+
+            sessionStorage.removeItem(
+                "ownerLogin"
+            );
+
+        }
+        else{
+
+            localStorage.removeItem(
+                "ownerLogin"
+            );
+
+            sessionStorage.setItem(
+                "ownerLogin",
+                JSON.stringify(ownerData)
+            );
+
+        }
+
+
+        showMessage(
+            "loginMessage",
+            "Login successful.",
+            "success"
+        );
+
+
+        setTimeout(
+            function(){
+
+                window.location.href =
+                    "dashboard.html";
+
+            },
+            500
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Owner Login Error:",
+            error
+        );
+
+
+        showMessage(
+            "loginMessage",
+            error.message ||
+            "Login failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "LOGIN";
+
+    }
 
 }
 
 
-if(!password){
 
-showMessage(
-"loginMessage",
-"Please enter password.",
-"error"
-);
+// =================================================
+// CREATE NEW OWNER
+// =================================================
 
-return;
+function showCreateOwner(){
 
-}
+    hideAllSections();
 
 
-if(!/^\d{4}$/.test(pin)){
-
-showMessage(
-"loginMessage",
-"PIN must be exactly 4 digits.",
-"error"
-);
-
-return;
-
-}
+    document
+    .getElementById(
+        "createOwnerSection"
+    )
+    .style.display =
+        "block";
 
 
-const button =
-document
-.getElementById("loginButton");
-
-button.disabled = true;
-
-button.textContent =
-"LOGGING IN...";
-
-
-try{
-
-
-const {
-data,
-error
-} =
-await supabaseClient
-.auth
-.signInWithPassword({
-
-email:email,
-
-password:password
-
-});
-
-
-if(error){
-
-throw error;
+    document
+    .getElementById(
+        "createOwnerMessage"
+    )
+    .style.display =
+        "none";
 
 }
 
 
-const user =
-data.user;
+
+// =================================================
+// CREATE OWNER
+// =================================================
+
+async function createNewOwner(){
+
+    const name =
+        document
+        .getElementById(
+            "createOwnerName"
+        )
+        .value
+        .trim();
 
 
-if(!user){
-
-throw new Error(
-"Owner account not found."
-);
-
-}
-
-
-const {
-data:profile,
-error:profileError
-} =
-await supabaseClient
-.from("profiles")
-.select("id,role")
-.eq("id",user.id)
-.maybeSingle();
+    const email =
+        document
+        .getElementById(
+            "createOwnerEmail"
+        )
+        .value
+        .trim()
+        .toLowerCase();
 
 
-if(
-profileError ||
-!profile ||
-String(profile.role)
-.toLowerCase() !== "owner"
-){
-
-await supabaseClient
-.auth
-.signOut();
-
-throw new Error(
-"This account is not an Owner account."
-);
-
-}
+    const password =
+        document
+        .getElementById(
+            "createOwnerPassword"
+        )
+        .value;
 
 
-const {
-data:pinResult,
-error:pinError
-} =
-await supabaseClient.rpc(
-"check_owner_pin",
-{
-p_pin:pin
-}
-);
+    const confirmPassword =
+        document
+        .getElementById(
+            "createOwnerConfirmPassword"
+        )
+        .value;
 
 
-if(pinError){
-
-throw pinError;
-
-}
-
-
-let pinCorrect = false;
+    const birthDate =
+        document
+        .getElementById(
+            "createOwnerBirthDate"
+        )
+        .value;
 
 
-if(typeof pinResult === "boolean"){
-
-pinCorrect =
-pinResult;
-
-}
-else if(pinResult){
-
-pinCorrect =
-pinResult.success === true ||
-pinResult.valid === true ||
-pinResult.correct === true;
-
-}
+    const pin =
+        document
+        .getElementById(
+            "createOwnerPin"
+        )
+        .value
+        .trim();
 
 
-if(!pinCorrect){
-
-await supabaseClient
-.auth
-.signOut();
-
-throw new Error(
-"Incorrect 4-digit PIN."
-);
-
-}
+    const confirmPin =
+        document
+        .getElementById(
+            "createOwnerConfirmPin"
+        )
+        .value
+        .trim();
 
 
-if(remember){
+    // =============================================
+    // VALIDATION
+    // =============================================
 
-localStorage.setItem(
-"ownerLogin",
-JSON.stringify({
+    if(!name){
 
-id:user.id,
+        showMessage(
+            "createOwnerMessage",
+            "Please enter owner name.",
+            "error"
+        );
 
-email:email,
+        return;
 
-role:"owner"
-
-})
-);
-
-}
-else{
-
-localStorage.removeItem(
-"ownerLogin"
-);
-
-}
+    }
 
 
-showMessage(
-"loginMessage",
-"Login successful.",
-"success"
-);
+    if(!email){
+
+        showMessage(
+            "createOwnerMessage",
+            "Please enter email.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
-setTimeout(
-function(){
+    if(!password){
 
-/*
- * IMPORTANT:
- * Dashboard file name is
- * dashboard.html
- */
+        showMessage(
+            "createOwnerMessage",
+            "Please enter password.",
+            "error"
+        );
 
-window.location.href =
-"dashboard.html";
+        return;
 
-},
-500
-);
+    }
 
 
-}
-catch(error){
+    if(password.length < 6){
 
-console.error(error);
+        showMessage(
+            "createOwnerMessage",
+            "Password must be at least 6 characters.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
-showMessage(
-"loginMessage",
-error.message ||
-"Login failed.",
-"error"
-);
+    if(password !== confirmPassword){
+
+        showMessage(
+            "createOwnerMessage",
+            "Passwords do not match.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
-button.disabled = false;
+    if(!birthDate){
 
-button.textContent =
-"LOGIN";
+        showMessage(
+            "createOwnerMessage",
+            "Please select birth date.",
+            "error"
+        );
 
-}
+        return;
+
+    }
+
+
+    if(!/^\d{4}$/.test(pin)){
+
+        showMessage(
+            "createOwnerMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(pin !== confirmPin){
+
+        showMessage(
+            "createOwnerMessage",
+            "PINs do not match.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+        .getElementById(
+            "createOwnerButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "CREATING...";
+
+
+    try{
+
+        // =========================================
+        // CREATE SUPABASE AUTH USER
+        // =========================================
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .auth
+        .signUp({
+
+            email:email,
+
+            password:password
+
+        });
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        if(!user){
+
+            throw new Error(
+                "Owner account could not be created."
+            );
+
+        }
+
+
+        // =========================================
+        // CREATE OWNER PROFILE
+        // =========================================
+
+        const {
+            error:profileError
+        } =
+        await supabaseClient
+        .from("profiles")
+        .upsert({
+
+            id:user.id,
+
+            email:email,
+
+            role:"owner"
+
+        });
+
+
+        if(profileError){
+
+            throw profileError;
+
+        }
+
+
+        // =========================================
+        // SAVE OWNER PIN
+        // =========================================
+
+        const {
+            data:pinResult,
+            error:pinError
+        } =
+        await supabaseClient
+        .rpc(
+            "set_owner_pin",
+            {
+                p_pin:pin
+            }
+        );
+
+
+        if(pinError){
+
+            console.error(
+                "PIN Error:",
+                pinError
+            );
+
+            throw pinError;
+
+        }
+
+
+        // =========================================
+        // CREATE ACADEMY SETTINGS
+        // =========================================
+
+        const {
+            error:settingsError
+        } =
+        await supabaseClient
+        .from("academy_settings")
+        .upsert({
+
+            owner_id:user.id,
+
+            class_name:"Music Academy",
+
+            owner_name:name,
+
+            birth_date:birthDate
+
+        });
+
+
+        if(settingsError){
+
+            console.error(
+                "Settings Error:",
+                settingsError
+            );
+
+            throw settingsError;
+
+        }
+
+
+        // =========================================
+        // SIGN OUT
+        // =========================================
+
+        await supabaseClient
+        .auth
+        .signOut();
+
+
+        localStorage.removeItem(
+            "ownerLogin"
+        );
+
+        sessionStorage.removeItem(
+            "ownerLogin"
+        );
+
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        showMessage(
+            "createOwnerMessage",
+            "Owner account created successfully. Please login.",
+            "success"
+        );
+
+
+        button.textContent =
+            "OWNER CREATED";
+
+
+        setTimeout(
+            function(){
+
+                showLogin();
+
+
+                document
+                .getElementById(
+                    "loginEmail"
+                )
+                .value =
+                    email;
+
+
+            },
+            1500
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Create Owner Error:",
+            error
+        );
+
+
+        let message =
+            error.message ||
+            "Unable to create owner account.";
+
+
+        const lowerMessage =
+            message.toLowerCase();
+
+
+        if(
+            lowerMessage.includes(
+                "already registered"
+            ) ||
+            lowerMessage.includes(
+                "already exists"
+            ) ||
+            lowerMessage.includes(
+                "user already registered"
+            )
+        ){
+
+            message =
+                "This email is already registered.";
+
+        }
+
+
+        showMessage(
+            "createOwnerMessage",
+            message,
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "CREATE OWNER";
+
+    }
 
 }
 
@@ -1282,16 +2007,18 @@ button.textContent =
 
 function showForgotPassword(){
 
-hideAllSections();
+    hideAllSections();
 
-document
-.getElementById(
-"forgotPasswordSection"
-)
-.style.display =
-"block";
 
-resetPasswordRecoveryUI();
+    document
+    .getElementById(
+        "forgotPasswordSection"
+    )
+    .style.display =
+        "block";
+
+
+    resetPasswordRecoveryUI();
 
 }
 
@@ -1303,148 +2030,145 @@ resetPasswordRecoveryUI();
 
 async function verifyPasswordRecovery(){
 
-const email =
-document
-.getElementById(
-"forgotPasswordEmail"
-)
-.value
-.trim();
-
-const birthDate =
-document
-.getElementById(
-"forgotPasswordBirthDate"
-)
-.value;
+    const email =
+        document
+        .getElementById(
+            "forgotPasswordEmail"
+        )
+        .value
+        .trim();
 
 
-if(!email || !birthDate){
-
-showMessage(
-"passwordVerifyMessage",
-"Please enter email and birth date.",
-"error"
-);
-
-return;
-
-}
+    const birthDate =
+        document
+        .getElementById(
+            "forgotPasswordBirthDate"
+        )
+        .value;
 
 
-const button =
-document
-.getElementById(
-"verifyPasswordButton"
-);
+    if(!email || !birthDate){
 
-button.disabled = true;
+        showMessage(
+            "passwordVerifyMessage",
+            "Please enter email and birth date.",
+            "error"
+        );
 
-button.textContent =
-"VERIFYING...";
+        return;
 
-
-try{
-
-const {
-data,
-error
-} =
-await supabaseClient.rpc(
-"verify_owner_recovery",
-{
-
-p_email:email,
-
-p_birth_date:birthDate
-
-}
-);
+    }
 
 
-if(error){
-
-throw error;
-
-}
-
-
-let verified = false;
+    const button =
+        document
+        .getElementById(
+            "verifyPasswordButton"
+        );
 
 
-if(typeof data === "boolean"){
+    button.disabled = true;
 
-verified =
-data;
-
-}
-else if(data){
-
-verified =
-data.success === true ||
-data.verified === true;
-
-}
+    button.textContent =
+        "VERIFYING...";
 
 
-if(!verified){
+    try{
 
-throw new Error(
-"Email or birth date is incorrect."
-);
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .rpc(
+            "verify_owner_recovery",
+            {
 
-}
+                p_email:email,
 
+                p_birth_date:birthDate
 
-recoveryVerifiedEmail =
-email;
-
-recoveryVerifiedBirthDate =
-birthDate;
-
-
-/*
- * IMPORTANT:
- * Hide the complete verification
- * section after successful verification.
- */
-
-document
-.getElementById(
-"passwordVerificationStep"
-)
-.style.display =
-"none";
+            }
+        );
 
 
-document
-.getElementById(
-"newPasswordBox"
-)
-.style.display =
-"block";
+        if(error){
+
+            throw error;
+
+        }
 
 
-}
-catch(error){
-
-console.error(error);
+        let verified = false;
 
 
-showMessage(
-"passwordVerifyMessage",
-error.message ||
-"Verification failed.",
-"error"
-);
+        if(typeof data === "boolean"){
+
+            verified =
+                data;
+
+        }
+        else if(data){
+
+            verified =
+                data.success === true ||
+                data.verified === true;
+
+        }
 
 
-button.disabled = false;
+        if(!verified){
 
-button.textContent =
-"VERIFY";
+            throw new Error(
+                "Email or birth date is incorrect."
+            );
 
-}
+        }
+
+
+        recoveryVerifiedEmail =
+            email;
+
+        recoveryVerifiedBirthDate =
+            birthDate;
+
+
+        document
+        .getElementById(
+            "passwordVerificationStep"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "newPasswordBox"
+        )
+        .style.display =
+            "block";
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+            "passwordVerifyMessage",
+            error.message ||
+            "Verification failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "VERIFY";
+
+    }
 
 }
 
@@ -1456,209 +2180,210 @@ button.textContent =
 
 async function resetPassword(){
 
-const password =
-document
-.getElementById(
-"newPassword"
-)
-.value;
+    const password =
+        document
+        .getElementById(
+            "newPassword"
+        )
+        .value;
 
-const confirm =
-document
-.getElementById(
-"confirmPassword"
-)
-.value;
 
+    const confirm =
+        document
+        .getElementById(
+            "confirmPassword"
+        )
+        .value;
 
-if(!recoveryVerifiedEmail){
 
-showMessage(
-"passwordResetMessage",
-"Please verify your account first.",
-"error"
-);
+    if(!recoveryVerifiedEmail){
 
-return;
+        showMessage(
+            "passwordResetMessage",
+            "Please verify your account first.",
+            "error"
+        );
 
-}
+        return;
 
+    }
 
-if(!recoveryVerifiedBirthDate){
 
-showMessage(
-"passwordResetMessage",
-"Birth Date verification is missing.",
-"error"
-);
+    if(!recoveryVerifiedBirthDate){
 
-return;
+        showMessage(
+            "passwordResetMessage",
+            "Birth Date verification is missing.",
+            "error"
+        );
 
-}
+        return;
 
+    }
 
-if(!password || !confirm){
 
-showMessage(
-"passwordResetMessage",
-"Please enter both passwords.",
-"error"
-);
+    if(!password || !confirm){
 
-return;
+        showMessage(
+            "passwordResetMessage",
+            "Please enter both passwords.",
+            "error"
+        );
 
-}
+        return;
 
+    }
 
-if(password !== confirm){
 
-showMessage(
-"passwordResetMessage",
-"Passwords do not match.",
-"error"
-);
+    if(password !== confirm){
 
-return;
+        showMessage(
+            "passwordResetMessage",
+            "Passwords do not match.",
+            "error"
+        );
 
-}
+        return;
 
+    }
 
-if(password.length < 6){
 
-showMessage(
-"passwordResetMessage",
-"Password must be at least 6 characters.",
-"error"
-);
+    if(password.length < 6){
 
-return;
+        showMessage(
+            "passwordResetMessage",
+            "Password must be at least 6 characters.",
+            "error"
+        );
 
-}
+        return;
 
+    }
 
-const button =
-document
-.getElementById(
-"savePasswordButton"
-);
 
-button.disabled = true;
+    const button =
+        document
+        .getElementById(
+            "savePasswordButton"
+        );
 
-button.textContent =
-"SAVING...";
 
+    button.disabled = true;
 
-try{
+    button.textContent =
+        "SAVING...";
 
 
-const SUPABASE_URL =
-"https://ehchhgqjohsdkxmouozm.supabase.co";
+    try{
 
+        const SUPABASE_URL =
+            "https://ehchhgqjohsdkxmouozm.supabase.co";
 
-const SUPABASE_KEY =
-"sb_publishable_41E2ivZKj4l5YfIpoCzwHA_MjyQAHfq";
 
+        const SUPABASE_KEY =
+            "sb_publishable_41E2ivZKj4l5YfIpoCzwHA_MjyQAHfq";
 
-const response =
-await fetch(
-`${SUPABASE_URL}/functions/v1/owner-reset-password`,
-{
 
-method:"POST",
+        const response =
+            await fetch(
+                `${SUPABASE_URL}/functions/v1/owner-reset-password`,
+                {
 
-headers:{
+                    method:"POST",
 
-"Content-Type":
-"application/json",
+                    headers:{
 
-"apikey":
-SUPABASE_KEY
+                        "Content-Type":
+                            "application/json",
 
-},
+                        "apikey":
+                            SUPABASE_KEY
 
-body:
-JSON.stringify({
+                    },
 
-email:
-recoveryVerifiedEmail,
+                    body:
+                    JSON.stringify({
 
-birth_date:
-recoveryVerifiedBirthDate,
+                        email:
+                            recoveryVerifiedEmail,
 
-new_password:
-password
+                        birth_date:
+                            recoveryVerifiedBirthDate,
 
-})
+                        new_password:
+                            password
 
-}
-);
+                    })
 
+                }
+            );
 
-const result =
-await response.json();
 
+        const result =
+            await response.json();
 
-if(!response.ok){
 
-throw new Error(
-result.message ||
-"Password reset failed."
-);
+        if(!response.ok){
 
-}
+            throw new Error(
+                result.message ||
+                "Password reset failed."
+            );
 
+        }
 
-if(result.success === false){
 
-throw new Error(
-result.message ||
-"Password reset failed."
-);
+        if(result.success === false){
 
-}
+            throw new Error(
+                result.message ||
+                "Password reset failed."
+            );
 
+        }
 
-showMessage(
-"passwordResetMessage",
-"Password changed successfully.",
-"success"
-);
 
+        showMessage(
+            "passwordResetMessage",
+            "Password changed successfully.",
+            "success"
+        );
 
-button.textContent =
-"PASSWORD SAVED";
 
+        button.textContent =
+            "PASSWORD SAVED";
 
-setTimeout(
-function(){
 
-showLogin();
+        setTimeout(
+            function(){
 
-},
-1200
-);
+                showLogin();
 
+            },
+            1200
+        );
 
-}
-catch(error){
 
-console.error(error);
+    }
+    catch(error){
 
+        console.error(error);
 
-showMessage(
-"passwordResetMessage",
-error.message ||
-"Password reset failed.",
-"error"
-);
 
+        showMessage(
+            "passwordResetMessage",
+            error.message ||
+            "Password reset failed.",
+            "error"
+        );
 
-button.disabled = false;
 
-button.textContent =
-"SAVE PASSWORD";
+        button.disabled = false;
 
-}
+        button.textContent =
+            "SAVE PASSWORD";
+
+    }
 
 }
 
@@ -1670,16 +2395,18 @@ button.textContent =
 
 function showForgotPin(){
 
-hideAllSections();
+    hideAllSections();
 
-document
-.getElementById(
-"forgotPinSection"
-)
-.style.display =
-"block";
 
-resetPinRecoveryUI();
+    document
+    .getElementById(
+        "forgotPinSection"
+    )
+    .style.display =
+        "block";
+
+
+    resetPinRecoveryUI();
 
 }
 
@@ -1691,142 +2418,144 @@ resetPinRecoveryUI();
 
 async function verifyPinRecovery(){
 
-const email =
-document
-.getElementById(
-"forgotPinEmail"
-)
-.value
-.trim();
-
-const birthDate =
-document
-.getElementById(
-"forgotPinBirthDate"
-)
-.value;
+    const email =
+        document
+        .getElementById(
+            "forgotPinEmail"
+        )
+        .value
+        .trim();
 
 
-if(!email || !birthDate){
-
-showMessage(
-"pinVerifyMessage",
-"Please enter email and birth date.",
-"error"
-);
-
-return;
-
-}
+    const birthDate =
+        document
+        .getElementById(
+            "forgotPinBirthDate"
+        )
+        .value;
 
 
-const button =
-document
-.getElementById(
-"verifyPinButton"
-);
+    if(!email || !birthDate){
 
-button.disabled = true;
+        showMessage(
+            "pinVerifyMessage",
+            "Please enter email and birth date.",
+            "error"
+        );
 
-button.textContent =
-"VERIFYING...";
+        return;
 
-
-try{
-
-const {
-data,
-error
-} =
-await supabaseClient.rpc(
-"verify_owner_recovery",
-{
-
-p_email:email,
-
-p_birth_date:birthDate
-
-}
-);
+    }
 
 
-if(error){
-
-throw error;
-
-}
-
-
-let verified = false;
+    const button =
+        document
+        .getElementById(
+            "verifyPinButton"
+        );
 
 
-if(typeof data === "boolean"){
+    button.disabled = true;
 
-verified =
-data;
-
-}
-else if(data){
-
-verified =
-data.success === true ||
-data.verified === true;
-
-}
+    button.textContent =
+        "VERIFYING...";
 
 
-if(!verified){
+    try{
 
-throw new Error(
-"Email or birth date is incorrect."
-);
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "verify_owner_recovery",
+            {
 
-}
+                p_email:email,
 
+                p_birth_date:birthDate
 
-recoveryVerifiedEmail =
-email;
-
-recoveryVerifiedBirthDate =
-birthDate;
-
-
-document
-.getElementById(
-"pinVerificationStep"
-)
-.style.display =
-"none";
+            }
+        );
 
 
-document
-.getElementById(
-"newPinBox"
-)
-.style.display =
-"block";
+        if(error){
+
+            throw error;
+
+        }
 
 
-}
-catch(error){
-
-console.error(error);
+        let verified = false;
 
 
-showMessage(
-"pinVerifyMessage",
-error.message ||
-"Verification failed.",
-"error"
-);
+        if(typeof data === "boolean"){
+
+            verified =
+                data;
+
+        }
+        else if(data){
+
+            verified =
+                data.success === true ||
+                data.verified === true;
+
+        }
 
 
-button.disabled = false;
+        if(!verified){
 
-button.textContent =
-"VERIFY";
+            throw new Error(
+                "Email or birth date is incorrect."
+            );
 
-}
+        }
+
+
+        recoveryVerifiedEmail =
+            email;
+
+        recoveryVerifiedBirthDate =
+            birthDate;
+
+
+        document
+        .getElementById(
+            "pinVerificationStep"
+        )
+        .style.display =
+            "none";
+
+
+        document
+        .getElementById(
+            "newPinBox"
+        )
+        .style.display =
+            "block";
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+            "pinVerifyMessage",
+            error.message ||
+            "Verification failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "VERIFY";
+
+    }
 
 }
 
@@ -1838,169 +2567,171 @@ button.textContent =
 
 async function resetPin(){
 
-const newPin =
-document
-.getElementById(
-"newPin"
-)
-.value
-.trim();
-
-const confirmPin =
-document
-.getElementById(
-"confirmPin"
-)
-.value
-.trim();
+    const newPin =
+        document
+        .getElementById(
+            "newPin"
+        )
+        .value
+        .trim();
 
 
-if(!recoveryVerifiedEmail){
-
-showMessage(
-"pinResetMessage",
-"Please verify your account first.",
-"error"
-);
-
-return;
-
-}
+    const confirmPin =
+        document
+        .getElementById(
+            "confirmPin"
+        )
+        .value
+        .trim();
 
 
-if(!/^\d{4}$/.test(newPin)){
+    if(!recoveryVerifiedEmail){
 
-showMessage(
-"pinResetMessage",
-"PIN must be exactly 4 digits.",
-"error"
-);
+        showMessage(
+            "pinResetMessage",
+            "Please verify your account first.",
+            "error"
+        );
 
-return;
+        return;
 
-}
-
-
-if(newPin !== confirmPin){
-
-showMessage(
-"pinResetMessage",
-"PINs do not match.",
-"error"
-);
-
-return;
-
-}
+    }
 
 
-const button =
-document
-.getElementById(
-"savePinButton"
-);
+    if(!/^\d{4}$/.test(newPin)){
 
-button.disabled = true;
+        showMessage(
+            "pinResetMessage",
+            "PIN must be exactly 4 digits.",
+            "error"
+        );
 
-button.textContent =
-"SAVING...";
+        return;
 
-
-try{
-
-const {
-data,
-error
-} =
-await supabaseClient.rpc(
-"reset_owner_pin",
-{
-
-p_email:
-recoveryVerifiedEmail,
-
-p_pin:
-newPin
-
-}
-);
+    }
 
 
-if(error){
+    if(newPin !== confirmPin){
 
-throw error;
+        showMessage(
+            "pinResetMessage",
+            "PINs do not match.",
+            "error"
+        );
 
-}
+        return;
 
-
-let success = false;
-
-
-if(typeof data === "boolean"){
-
-success =
-data;
-
-}
-else if(data){
-
-success =
-data.success === true ||
-data.updated === true;
-
-}
+    }
 
 
-if(!success){
-
-throw new Error(
-"PIN reset failed."
-);
-
-}
+    const button =
+        document
+        .getElementById(
+            "savePinButton"
+        );
 
 
-showMessage(
-"pinResetMessage",
-"PIN changed successfully.",
-"success"
-);
+    button.disabled = true;
+
+    button.textContent =
+        "SAVING...";
 
 
-button.textContent =
-"PIN SAVED";
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "reset_owner_pin",
+            {
+
+                p_email:
+                    recoveryVerifiedEmail,
+
+                p_pin:
+                    newPin
+
+            }
+        );
 
 
-setTimeout(
-function(){
+        if(error){
 
-showLogin();
+            throw error;
 
-},
-1200
-);
+        }
 
 
-}
-catch(error){
-
-console.error(error);
+        let success = false;
 
 
-showMessage(
-"pinResetMessage",
-error.message ||
-"PIN reset failed.",
-"error"
-);
+        if(typeof data === "boolean"){
+
+            success =
+                data;
+
+        }
+        else if(data){
+
+            success =
+                data.success === true ||
+                data.updated === true;
+
+        }
 
 
-button.disabled = false;
+        if(!success){
 
-button.textContent =
-"SAVE PIN";
+            throw new Error(
+                "PIN reset failed."
+            );
 
-}
+        }
+
+
+        showMessage(
+            "pinResetMessage",
+            "PIN changed successfully.",
+            "success"
+        );
+
+
+        button.textContent =
+            "PIN SAVED";
+
+
+        setTimeout(
+            function(){
+
+                showLogin();
+
+            },
+            1200
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+            "pinResetMessage",
+            error.message ||
+            "PIN reset failed.",
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "SAVE PIN";
+
+    }
 
 }
 
@@ -2012,39 +2743,40 @@ button.textContent =
 
 function resetPasswordRecoveryUI(){
 
-recoveryVerifiedEmail =
-"";
+    recoveryVerifiedEmail =
+        "";
 
-recoveryVerifiedBirthDate =
-"";
-
-
-document
-.getElementById(
-"passwordVerificationStep"
-)
-.style.display =
-"block";
+    recoveryVerifiedBirthDate =
+        "";
 
 
-document
-.getElementById(
-"newPasswordBox"
-)
-.style.display =
-"none";
+    document
+    .getElementById(
+        "passwordVerificationStep"
+    )
+    .style.display =
+        "block";
 
 
-const button =
-document
-.getElementById(
-"verifyPasswordButton"
-);
+    document
+    .getElementById(
+        "newPasswordBox"
+    )
+    .style.display =
+        "none";
 
-button.disabled = false;
 
-button.textContent =
-"VERIFY";
+    const button =
+        document
+        .getElementById(
+            "verifyPasswordButton"
+        );
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "VERIFY";
 
 }
 
@@ -2056,72 +2788,81 @@ button.textContent =
 
 function resetPinRecoveryUI(){
 
-recoveryVerifiedEmail =
-"";
+    recoveryVerifiedEmail =
+        "";
 
-recoveryVerifiedBirthDate =
-"";
-
-
-document
-.getElementById(
-"pinVerificationStep"
-)
-.style.display =
-"block";
+    recoveryVerifiedBirthDate =
+        "";
 
 
-document
-.getElementById(
-"newPinBox"
-)
-.style.display =
-"none";
+    document
+    .getElementById(
+        "pinVerificationStep"
+    )
+    .style.display =
+        "block";
 
 
-const button =
-document
-.getElementById(
-"verifyPinButton"
-);
+    document
+    .getElementById(
+        "newPinBox"
+    )
+    .style.display =
+        "none";
 
-button.disabled = false;
 
-button.textContent =
-"VERIFY";
+    const button =
+        document
+        .getElementById(
+            "verifyPinButton"
+        );
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "VERIFY";
 
 }
 
 
 
 // =================================================
-// HIDE ALL
+// HIDE ALL SECTIONS
 // =================================================
 
 function hideAllSections(){
 
-document
-.getElementById(
-"loginSection"
-)
-.style.display =
-"none";
+    document
+    .getElementById(
+        "loginSection"
+    )
+    .style.display =
+        "none";
 
 
-document
-.getElementById(
-"forgotPasswordSection"
-)
-.style.display =
-"none";
+    document
+    .getElementById(
+        "createOwnerSection"
+    )
+    .style.display =
+        "none";
 
 
-document
-.getElementById(
-"forgotPinSection"
-)
-.style.display =
-"none";
+    document
+    .getElementById(
+        "forgotPasswordSection"
+    )
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById(
+        "forgotPinSection"
+    )
+    .style.display =
+        "none";
 
 }
 
@@ -2133,22 +2874,22 @@ document
 
 function showLogin(){
 
-hideAllSections();
+    hideAllSections();
 
 
-document
-.getElementById(
-"loginSection"
-)
-.style.display =
-"block";
+    document
+    .getElementById(
+        "loginSection"
+    )
+    .style.display =
+        "block";
 
 
-recoveryVerifiedEmail =
-"";
+    recoveryVerifiedEmail =
+        "";
 
-recoveryVerifiedBirthDate =
-"";
+    recoveryVerifiedBirthDate =
+        "";
 
 }
 
@@ -2160,8 +2901,8 @@ recoveryVerifiedBirthDate =
 
 function goBack(){
 
-window.location.href =
-"index.html";
+    window.location.href =
+        "index.html";
 
 }
 
@@ -2172,24 +2913,27 @@ window.location.href =
 // =================================================
 
 function showMessage(
-elementId,
-message,
-type
+    elementId,
+    message,
+    type
 ){
 
-const element =
-document.getElementById(
-elementId
-);
+    const element =
+        document.getElementById(
+            elementId
+        );
 
-element.textContent =
-message;
 
-element.className =
-"message " + type;
+    element.textContent =
+        message;
 
-element.style.display =
-"block";
+
+    element.className =
+        "message " + type;
+
+
+    element.style.display =
+        "block";
 
 }
 
@@ -2201,29 +2945,29 @@ element.style.display =
 
 function setupPinInputs(){
 
-const inputs =
-document.querySelectorAll(
-".pin-input"
-);
+    const inputs =
+        document.querySelectorAll(
+            ".pin-input"
+        );
 
 
-inputs.forEach(
-function(input){
+    inputs.forEach(
+        function(input){
 
-input.addEventListener(
-"input",
-function(){
+            input.addEventListener(
+                "input",
+                function(){
 
-this.value =
-this.value
-.replace(/\D/g,"")
-.slice(0,4);
+                    this.value =
+                        this.value
+                        .replace(/\D/g,"")
+                        .slice(0,4);
 
-}
-);
+                }
+            );
 
-}
-);
+        }
+    );
 
 }
 
@@ -2233,3 +2977,4 @@ this.value
 </body>
 
 </html>
+```
